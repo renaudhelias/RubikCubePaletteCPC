@@ -76,7 +76,7 @@ public class RubikCubeCPC {
 	public static void main(String[] args) throws IOException {
 		// noir
 		//face(0,2,Color.BLUE,0,2,Color.RED,0,Color.GREEN);
-		face(2,0,Color.RED,2,0,Color.BLUE,0,Color.GREEN);
+		face(2,0,Color.BLUE,2,0,Color.RED,0,Color.GREEN);
 		//face(0,2,Color.GREEN,0,2,Color.BLUE,0,Color.RED);
 		face(2,0,Color.BLUE,0,2,Color.GREEN,0,Color.RED);
 		
