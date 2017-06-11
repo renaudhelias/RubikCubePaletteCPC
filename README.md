@@ -19,6 +19,6 @@ Puis écrire un petit script basic directement sur le CPC pour afficher l'image 
 30 INK 0,0:INK 1,1:INK 2,2...
 40 LOAD"image.scr",&C000
 50 CALL &BB18
-save"hop.bas```
-
+save"hop.bas
+```
 Ici j'utilise le RubikCube pour remplir la palette ligne 30 avec les couleurs de la palette affiché en bas de ConvImgCpc.
