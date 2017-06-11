@@ -21,4 +21,4 @@ Puis écrire un petit script basic directement sur le CPC pour afficher l'image 
 50 CALL &BB18
 save"hop.bas
 ```
-Ici j'utilise le RubikCube pour remplir la palette ligne 30 avec les couleurs de la palette affiché en bas de ConvImgCpc.
+Ici j'utilise le RubikCubePaletteCPC pour remplir la palette ligne 30 avec les couleurs de la palette affiché en bas de ConvImgCpc.
