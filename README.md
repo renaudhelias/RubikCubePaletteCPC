@@ -13,6 +13,7 @@ Prenons une image, par exemple ici un morceau de l'affiche du [THSF 2017](http:/
 
 Je retouche l'image avec Gimp, en commençant par un clique droit Couleurs>Maximum RVB. J'épaissie et isole quelques traits : en utilisant la baguette magique dans Gimp je sélectionne ce qui entoure un dessin (pas les traits mais le fond), puis je fais Gimp>Sélection>Inverser (ça sélectionne les traits), puis enfin Gimp>Sélection>Agrandir... 1 pixel. Je donne un bon coup de pinceau noir, puis je refais Gimp>Sélection>Inverser (ça sélectionne le fond), je donne un bon coup de pinceau blanc.
 ![thsf2017-640x400-maxRGB_16.png](thsf2017-640x400-maxRGB_16.png)
+
 Sous MSPAINT, j'enregistre en bmp 16bit.
 
 Après on peut l'utiliser pour sélectionner les INK d'une image CPC créé via ConvImgCpc :
