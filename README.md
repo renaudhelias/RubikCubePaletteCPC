@@ -3,12 +3,12 @@ Inspiré d'une vidéo CPC de MacDeath26 : http://www.youtube.com/watch?v=iMo0bCS
 
 RubikCube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
 
-![image0ComicNumbers.png](image0ComicNumbers.png)
-![image1ComicNumbers.png](image1ComicNumbers.png)
-![image2ComicNumbers.png](image2ComicNumbers.png)
-![image3ComicNumbers.png](image3ComicNumbers.png)
-![image4ComicNumbers.png](image4ComicNumbers.png)
-![image5ComicNumbers.png](image5ComicNumbers.png)
+![image0ComicNumbers.png](image0ComicNumbers.png = 99x99)
+![image1ComicNumbers.png](image1ComicNumbers.png = 99x99)
+![image2ComicNumbers.png](image2ComicNumbers.png = 99x99)
+![image3ComicNumbers.png](image3ComicNumbers.png = 99x99)
+![image4ComicNumbers.png](image4ComicNumbers.png = 99x99)
+![image5ComicNumbers.png](image5ComicNumbers.png = 99x99)
 
 On peut l'acheter physiquement en utilisant le site suivant : http://www.rubiksphotocube.com/fr/designer
 
