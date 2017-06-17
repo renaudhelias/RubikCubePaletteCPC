@@ -33,7 +33,7 @@ ManageDsk [amstrad.eu](http://amstrad.eu/modules/TDMDownloads/) > [ManageDsk](ht
 
 ![ManageDsk.png](ManageDsk.png)
 
-J'écris finalement un petit programme basic directement sur le CPC pour afficher l'image :
+J'écris finalement un petit programme basic directement sur le CPC pour afficher l'image (inspiré du script d'Antoine R sur fb Amstrad.eu) :
 ```
 10 MODE 0
 20 BORDER 0
