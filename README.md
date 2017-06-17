@@ -47,3 +47,5 @@ Ici j'utilise le RubikCubePaletteCPC pour remplir la palette ligne 30 avec les c
 Et j'obtiens finalement sur l'Amstrad CPC, lors d'un run :
 
 ![RubikCubePaletteNumbersCPC-run.png](RubikCubePaletteNumbersCPC-run.png)
+
+[thsf2017.dsk](thsf2017.dsk)
