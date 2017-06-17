@@ -40,7 +40,7 @@ J'écris finalement un petit programme basic directement sur le CPC pour affiche
 30 INK 0,11:INK 1,8:INK 2,20...
 40 LOAD"image.scr",&C000
 50 CALL &BB18
-save"hop.bas
+save"thsf2017.bas
 ```
 Ici j'utilise le RubikCubePaletteCPC pour remplir la palette ligne 30 avec les couleurs de la palette affichée en bas de ConvImgCpc.
 
