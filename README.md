@@ -34,7 +34,8 @@ ManageDsk [amstrad.eu](http://amstrad.eu/modules/TDMDownloads/) > [ManageDsk](ht
 ![ManageDsk.png](ManageDsk.png)
 
 J'écris finalement un petit programme basic directement sur le CPC pour afficher l'image :
-```10 MODE 0
+```
+10 MODE 0
 20 BORDER 0
 30 INK 0,11:INK 1,8:INK 2,20...
 40 LOAD"image.scr",&C000
