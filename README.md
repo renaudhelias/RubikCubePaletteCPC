@@ -16,19 +16,19 @@ Je retouche l'image avec Gimp, en commençant par un clique droit Couleurs>Maxim
 
 Sous MSPAINT, j'enregistre en bmp 16bit.
 
-Après on peut l'utiliser pour sélectionner les INK d'une image CPC créé via ConvImgCpc :
+ConvImgCpc est utilisé pour transformer une image BMP en image SCR (image pour Amstrad CPC), en bas de ConvImgCpc on a une palette CPC affichée, le RubicCubePaletteCPC va être utile pour mapper cette palette (la liste des INK) dans le programme basic :
 
 ConvImgCpc [amstrad.eu](http://amstrad.eu/modules/TDMDownloads/) > [ConvImgCpc](http://amstrad.eu/modules/TDMDownloads/singlefile.php?cid=13&lid=186)
 
 ![ConvImgCpc.png](ConvImgCpc.png)
 
-Puis Transférer le fichier image.scr résultat sur une disquette via ManageDsk :
+Je transfére le fichier image.scr résultant sur une disquette (fichier .DSK) via ManageDsk :
 
 ManageDsk [amstrad.eu](http://amstrad.eu/modules/TDMDownloads/) > [ManageDsk](http://amstrad.eu/modules/TDMDownloads/singlefile.php?cid=13&lid=187)
 
 ![ManageDsk.png](ManageDsk.png)
 
-Puis écrire un petit script basic directement sur le CPC pour afficher l'image :
+J'écris un petit programme basic directement sur le CPC pour afficher l'image :
 ```10 MODE 0
 20 BORDER 0
 30 INK 0,11:INK 1,8:INK 2,20...
