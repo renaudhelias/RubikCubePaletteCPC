@@ -6,7 +6,7 @@ RubikCube aux couleurs de la palette CPC qu'on peut acheter physiquement en util
 ![RubikCubePaletteCPC.png](RubikCubePaletteCPC.png)
 
 ![RubikCubePaletteNumbersCPC-photo.png](RubikCubePaletteNumbersCPC-photo.png)
-Le RubikCube est assez petit par rapport à un RubikCube original mais ça va. A l'intérieur c'est blanc (quand on commence à faire tourner un axe). J'ai imprimé les deux versions, avec ou sans chiffre, sans chiffre je trouve ça nul en fait, car de toute façon il va finir par être mélangé. Avec les chiffres, c'est assez cool. Bon les couleurs ne semble pas 100% parfaite (le rouge fait un peu marron), mais ça fait la chose, comme je vais le démontrer ici.
+Le RubikCube est assez petit par rapport à un RubikCube original mais ça va. A l'intérieur c'est blanc (quand on commence à faire tourner un axe). J'ai imprimé les deux versions, avec ou sans chiffres, sans chiffre je trouve ça nul en fait, car de toute façon il va finir par être mélangé. Avec les chiffres, c'est assez cool. Bon les couleurs ne semble pas 100% parfaite (le rouge fait un peu marron), mais ça fait la chose, comme je vais le démontrer ici.
 
 Prenons une image, par exemple ici un morceau de l'affiche du [THSF 2017](http://www.thsf.net/), taillé en 640x400.
 ![thsf2017-640x400.png](thsf2017-640x400.png)
