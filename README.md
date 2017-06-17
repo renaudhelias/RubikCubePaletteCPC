@@ -3,7 +3,7 @@ Inspiré d'une vidéo CPC de MacDeath26 : http://www.youtube.com/watch?v=iMo0bCS
 
 RubikCube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
 
-![image0ComicNumbers.png](image0ComicNumbers.png){:height="99px" width="99px"}
+![image0ComicNumbers.png](image0ComicNumbers.png){:height="25%" width="25%"}
 ![image1ComicNumbers.png](image1ComicNumbers.png){:height="99px" width="99px"}
 ![image2ComicNumbers.png](image2ComicNumbers.png){:height="99px" width="99px"}
 ![image3ComicNumbers.png](image3ComicNumbers.png){:height="99px" width="99px"}
