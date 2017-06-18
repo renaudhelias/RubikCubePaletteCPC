@@ -1,7 +1,7 @@
 # RubikCubePaletteCPC
 Inspiré d'une vidéo CPC de MacDeath26 : http://www.youtube.com/watch?v=iMo0bCSMAQ0
 
-RubikCube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
+Rubik's cube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
 
 [image0ComicNumbers.png](image0ComicNumbers.png)
 [image1ComicNumbers.png](image1ComicNumbers.png)
