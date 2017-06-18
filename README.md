@@ -56,3 +56,16 @@ Et j'obtiens finalement sur l'Amstrad CPC, lors d'un run :
 ![RubikCubePaletteNumbersCPC-run.png](RubikCubePaletteNumbersCPC-run.png)
 
 [thsf2017.dsk](thsf2017.dsk)
+
+Et pour Miganuts :
+```
+10 MODE 0
+20 BORDER 0
+30 INK 0,11:INK 1,8:INK 2,20...
+35 MEMORY &3FFF
+40 LOAD"THSF2017.SCR",&4000
+45 OUT &BCFF, 12:OUT &BDFF, &40
+45 OUT &BCFF, 12:OUT &BDFF, &10
+50 CALL &BB18
+save"thsf2017.bas
+```
