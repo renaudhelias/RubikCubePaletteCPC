@@ -69,3 +69,6 @@ Et pour Miganuts :
 50 CALL &BB18
 save"thsf2017.bas
 ```
+
+[![[JDVA#1] Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
+http://www.youtube.com/watch?v=hSEadYkiBrc
