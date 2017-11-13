@@ -70,5 +70,5 @@ Et pour Miganuts :
 save"thsf2017.bas
 ```
 
-[![[JDVA#1] Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
+[![JDVA#1 Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
 http://www.youtube.com/watch?v=hSEadYkiBrc
