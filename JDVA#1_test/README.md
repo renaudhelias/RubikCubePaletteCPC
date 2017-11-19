@@ -1,7 +1,7 @@
 # [JDVA#1] Hello World en C sur Amstrad CPC !
 # Tested by Renaud
 
-Inspiré d'une vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=hSEadYkiBrc
+Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=hSEadYkiBrc
 
 Je vais tester ce hello.c
 
