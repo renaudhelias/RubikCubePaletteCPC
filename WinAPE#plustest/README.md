@@ -28,7 +28,7 @@ Si j'utilise WinAPE (sans ROM Maxam) :
 		- org &8000
 		- run &8000
 		- write direct "a:plustest.bin"
-	-menu Assemble > Assemble
+	- menu Assemble > Assemble
 - cat
 
 Voilà :)
