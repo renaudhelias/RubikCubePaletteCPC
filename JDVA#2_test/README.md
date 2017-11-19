@@ -1,7 +1,7 @@
 # [JDVA#2] Passage en mode 0 et tracé de point lent
 # Tested by Renaud
 
-Inspiré d'une vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=xFnF3tZkzSs
+Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=xFnF3tZkzSs
 
 http://www.cantrell.org.uk/david/tech/cpc/cpc-firmware/ > Graphics
 
