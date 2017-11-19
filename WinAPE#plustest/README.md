@@ -27,7 +27,7 @@ Si j'utilise WinAPE (sans ROM Maxam) :
 	- Je reviens dans l'Assembler, j'ajoute en première ligne les trois lignes suivantes :
 		-org &8000
 		-run &8000
-		-write "plustest.bin"
+		-write direct "a:plustest.bin"
 	-menu Assemble > Assemble
 - cat
 
