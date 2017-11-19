@@ -25,9 +25,9 @@ Si j'utilise WinAPE (sans ROM Maxam) :
 	- menu Assemble > Run
 - Là l'application se lance avec écrit en haut "Select a test to run".
 	- Je reviens dans l'Assembler, j'ajoute en première ligne les trois lignes suivantes :
-		-org &8000
-		-run &8000
-		-write direct "a:plustest.bin"
+		- org &8000
+		- run &8000
+		- write direct "a:plustest.bin"
 	-menu Assemble > Assemble
 - cat
 
