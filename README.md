@@ -1,7 +1,14 @@
 # RubikCubePaletteCPC
 Inspiré d'une vidéo CPC de MacDeath26 : http://www.youtube.com/watch?v=iMo0bCSMAQ0
 
-RubikCube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
+Rubik's cube aux couleurs de la palette CPC utilisable pour le mapping des couleurs d'une image CPC.
+
+[image0ComicNumbers.png](image0ComicNumbers.png)
+[image1ComicNumbers.png](image1ComicNumbers.png)
+[image2ComicNumbers.png](image2ComicNumbers.png)
+[image3ComicNumbers.png](image3ComicNumbers.png)
+[image4ComicNumbers.png](image4ComicNumbers.png)
+[image5ComicNumbers.png](image5ComicNumbers.png)
 
 On peut l'acheter physiquement en utilisant le site suivant : http://www.rubiksphotocube.com/fr/designer
 
@@ -9,7 +16,7 @@ On peut l'acheter physiquement en utilisant le site suivant : http://www.rubiksp
 
 ![RubikCubePaletteNumbersCPC-photo.png](RubikCubePaletteNumbersCPC-photo.png)
 
-J'ai testé, le RubikCube est assez petit par rapport à un RubikCube original (mais du coup on peut le spin dans la main). A l'intérieur c'est blanc (quand on commence à faire tourner un axe). Avec les chiffres, c'est assez cool : on s'en fou que ce soit mélangé, à noter que le cube 13 (le gris) et "au milieu" du RubikCube. Bon les couleurs ne semblent pas 100% parfaite (le rouge fait un peu marron, ça viendrait de mon pattern ?), mais ça fait la chose, comme je vais le démontrer ici.
+J'ai testé, le RubikCube est assez petit par rapport à un Rubik's cube original (mais du coup on peut le spin dans la main). A l'intérieur c'est blanc (quand on commence à faire tourner un axe), ça sent fort la peinture fraîche une bonne semaine. Avec les chiffres, c'est assez cool : on s'en fou que ce soit mélangé, à noter que le cube 13 (le gris) et "au milieu" du RubikCube. Bon les couleurs ne semblent pas 100% parfaite (le rouge fait un peu marron, ça viendrait de mon pattern ?), mais ça fait la chose, comme je vais le démontrer ici.
 
 Prenons une image, par exemple ici un morceau de l'affiche du [THSF 2017](http://www.thsf.net/), taillé en 640x400.
 
@@ -33,7 +40,7 @@ ManageDsk [amstrad.eu](http://amstrad.eu/modules/TDMDownloads/) > [ManageDsk](ht
 
 ![ManageDsk.png](ManageDsk.png)
 
-J'écris finalement un petit programme basic directement sur le CPC pour afficher l'image :
+J'écris finalement un petit programme basic directement sur le CPC pour afficher l'image (inspiré du script d'Antoine R sur fb Amstrad.eu) :
 ```
 10 MODE 0
 20 BORDER 0
@@ -47,3 +54,22 @@ Ici j'utilise le RubikCubePaletteCPC pour remplir la palette ligne 30 avec les c
 Et j'obtiens finalement sur l'Amstrad CPC, lors d'un run :
 
 ![RubikCubePaletteNumbersCPC-run.png](RubikCubePaletteNumbersCPC-run.png)
+
+[thsf2017.dsk](thsf2017.dsk)
+
+Et pour Miganuts :
+```
+10 MODE 0
+20 BORDER 0
+30 INK 0,11:INK 1,8:INK 2,20...
+35 MEMORY &3FFF
+40 LOAD"THSF2017.SCR",&4000
+45 OUT &BCFF, 12:OUT &BDFF, &40
+45 OUT &BCFF, 12:OUT &BDFF, &10
+50 CALL &BB18
+save"thsf2017.bas
+```
+
+D'autres trucs :
+
+[![[JDVA#1] Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
