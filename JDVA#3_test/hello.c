@@ -146,8 +146,9 @@ void main(void)
 	plot(4,16);
 	put_pixel0(4,16,7);
 	pen(4);
-	move(10,0);
-	line(100,100);
+	move(10+1,1);
+	line(10+100,100);
+	line(10+200,1);
 	
 	
 	

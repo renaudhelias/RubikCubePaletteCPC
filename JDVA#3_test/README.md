@@ -7,4 +7,6 @@ J'ai tapé le même code qu'avec plot() et move/line() via la nouvelle fonction 
 
 On remarque que le Y (vertical) est inversé, et que la ligne de 100 pixels (boucle for) en diagonale va plus loin.
 
+Via le firmware, on peut tracer aisément un angle droit... si votre écran est correct :p
+
 ![JDVA3.dsk.png](JDVA3.dsk.png)
