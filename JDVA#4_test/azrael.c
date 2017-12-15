@@ -1,5 +1,15 @@
 
-// 15 chats de 16x10 pixels
+//                                                        5.
+//                          **442*        4.  1.B.7**2      
+//                            CC  1.E.C.A.        *.  7.C4F.
+//                          C4      44**  1*DC2C9*FCE4C.C.  
+//                          5..C9E1C6.C.C.C.C.    .4.C3*C.C.
+//                          C.C*C.        .4C.C.C.C.C4      
+//    Azrael                    3.C.D*C.            9*C.3C64
+//                          **        1464CC5.64*.        64
+//                          CC*.1.C.2*                      
+
+// 15 chats de 16x10 pixels (16x20 pixels en vrai ? une palette 16bit tenant un caractère hexa 0-F)
 const unsigned char azrael[]={
 	           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         ,      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
