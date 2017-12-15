@@ -21,3 +21,4 @@ Je clique sur "Calculer", ça calcul une palette, j'ai dans le log les inks de c
 Je la personnalise un peu : 2,15,26,3,0,12,13,16,25,6,13,13,0,0,0,0.
 ![Azrael_ConvImgCpc.exe.png](Azrael_ConvImgCpc.exe.png)
 Je coche "Mode 'asm'" et "Linéaire", j'obtiens un fichier avec 8*300 valeurs donc 8*300=2400=240*10 valeurs, ça semble bon.
+J'ai donc selon mon bmp des images de 20(*8/10)=16 en hauteur, sur 50(*8/10)=40 en largeur, donc sur CPC j'ai 15 chats de 16x10 pixels :)
