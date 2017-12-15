@@ -1,4 +1,4 @@
-# [JDVA#3] Architecture de la mémoire vidéo en mode 0
+# [JDVA#4] CONVERSION D'IMAGES, RONDS ET POISSONS ROUGES
 # Tested by Renaud
 
 Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=DQGPwtsD11o
