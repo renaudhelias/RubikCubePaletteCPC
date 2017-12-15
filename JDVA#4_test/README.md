@@ -11,7 +11,7 @@ Je modifie ConvImgCpc.exe grâce à PE Explorer afin d'agrandir la fenêtre en l
 Je vais chercher des sprites, je prend par exemple Azrael :
 https://www.spriters-resource.com/game_boy_advance/revengeofthesmurfs/sheet/60325/
 
-Et je vais les mettre en vertical, sur disons une image de 100x1200, pour un objectif final de 50 en largeur, et l'hauteur de l'Amstrad en overscan disons 300 en hauteur.
+Et je vais les mettre en vertical, sur disons une image de 100x1200, pour un objectif final de 50 en largeur, et l'hauteur de l'Amstrad en overscan disons 300 en hauteur (résolution 800x600 donc 800x300 mode 2 à peu près)
 Chaque sprite sur des zones de 80 pixels en hauteur, alors sous Gimp on peut cliquer pour prendre la règle et relacher sur l'image, et poser ainsi des guides, tout les 80px.
 
 ![Azrael_sprites.png](Azrael_sprites.png)
