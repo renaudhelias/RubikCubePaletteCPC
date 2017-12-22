@@ -313,6 +313,6 @@ const unsigned char azrael[]={
         ,      0x00, 0x44, 0xF0, 0x14, 0xB0, 0x00, 0x00, 0x88
 };
 
-const unsigned char palette[]={
+const unsigned char azrael_palette[]={
 	2,15,26,3,0,12,13,16,25,6,13,13,0,0,0,0
 };

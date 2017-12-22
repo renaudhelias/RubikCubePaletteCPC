@@ -1,4 +1,4 @@
-const unsigned char palette[]=
+const unsigned char poisson_palette[]=
 {
 		2,16,0,26,17,25,14,18,20,0,0,0,0,0,0,0
 };

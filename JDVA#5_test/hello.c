@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * JDVA#5 On affiche enfin des images, et on commence à ranger notre code
+ */
+#include "azrael.h"
+#include "jdvapi_frame.h"
+#include "jdvapi_frame.c"
+
+
 void pen(unsigned char p)
 {
 	__asm
@@ -117,9 +125,12 @@ void line(unsigned int x,unsigned int y)
 	set_pixel_color0((unsigned char *)nAddress, nColor, nPixel);
 }
 
+unsigned char *chats[15];
+
 void main(void)
 {
 	unsigned char c = 0;
+	unsigned int d = 0;
 	mode2();
 	mode(0);
 	// JDVA#1 Hello World en C sur Amstrad CPC !
@@ -150,7 +161,16 @@ void main(void)
 	line(10+100,100);
 	line(10+200,1);
 	
-	
-	
-	while(1){}
+	// JDVA#5
+	for (c=0;c<15;c=c+1) {
+		chats[c]=azrael+((10*16)*c);
+	}
+	set_palette(azrael_palette);
+	while(1){
+		for (c=0;c<15;c=c+1) {
+			put_frame(vram(20,100),10,16,chats[c]);
+			for (d=0;d<30000;d=d+1) {}
+		}
+		
+	}
 }

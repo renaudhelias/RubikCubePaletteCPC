@@ -1,4 +1,4 @@
-//static 
+
 void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
   __asm
