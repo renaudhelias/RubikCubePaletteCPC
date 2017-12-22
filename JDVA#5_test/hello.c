@@ -173,6 +173,5 @@ void main(void)
 			put_frame(vram(25,100),10,16,chats[c]);
 			for (d=0;d<30000;d=d+1) {}
 		}
-		
 	}
 }
