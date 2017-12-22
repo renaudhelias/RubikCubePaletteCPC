@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+// gfx poisson
+#include "poisson.h"
 // set_palette, put_frame
 #include "jdvapi_frame.h"
 
 #define	vram(nX,nY) (unsigned char *)(0xC000 + ((nY / 8u) * 80u) + ((nY % 8u) * 2048u) + nX)
 
-extern const unsigned char palette[];
-extern const unsigned char poisson1[];
-extern const unsigned char poisson2[];
-extern const unsigned char poisson_groupe[];
+
+//extern const unsigned char palette[];
+//extern const unsigned char poisson1[];
+//extern const unsigned char poisson2[];
+//extern const unsigned char poisson_groupe[];
 
 
 unsigned char *fish[12];
