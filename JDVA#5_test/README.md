@@ -8,6 +8,6 @@ J'ai aussi deux GFX : poisson.c qui est le gfx de la vidéo, et azrael.c qui est
 
 A noter le #include "jdvapi_frame.h" et le #include "jdvapi_frame.c" au début de main.c (c'est sale mais ça marche...)
 
-Je repose ici mon hello.c, qui comprendra mon main. Je modifi le _compil.bat afin d'insérer main.bin et hello.bin dans une seule disquette.
+Je repose ici mon hello.c, qui comprendra mon main. Je modifie le _compil.bat afin d'insérer main.bin et hello.bin dans une seule disquette.
 
 ![JDVA5.dsk.png](JDVA5.dsk.png)
