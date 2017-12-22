@@ -5,6 +5,7 @@
  * JDVA#5 On affiche enfin des images, et on commence à ranger notre code
  */
 #include "azrael.h"
+#include "gargamel.h"
 #include "jdvapi_frame.h"
 #include "jdvapi_frame.c"
 
@@ -166,9 +167,10 @@ void main(void)
 		chats[c]=azrael+((10*16)*c);
 	}
 	set_palette(azrael_palette);
+	put_frame(vram(30,0),23,120,gargamel);
 	while(1){
 		for (c=0;c<15;c=c+1) {
-			put_frame(vram(30,100),10,16,chats[c]);
+			put_frame(vram(25,100),10,16,chats[c]);
 			for (d=0;d<30000;d=d+1) {}
 		}
 		

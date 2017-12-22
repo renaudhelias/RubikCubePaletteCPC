@@ -31,3 +31,5 @@ Quelques retouches avec l'éditeur, afin de retirer les pixels trop contrastés 
 Je coche "Mode 'asm'" et "Linéaire", j'obtiens un fichier avec 8*300 valeurs donc 8*300=2400=240*10 valeurs, ça semble bon.
 
 J'ai donc selon mon bmp des images de 20(*8/10)=16 en hauteur, sur 50(*8/10)=40 en largeur, donc sur CPC j'ai 15 chats de 16x10 pixels :)
+
+Ajout d'un Gargamel, de 120x23 pixels, via blocage de la palette azrael (save/load palette azrael, clique sur les boutons à cocher sous les couleur, calculer)
