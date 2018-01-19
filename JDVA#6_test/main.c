@@ -9,10 +9,14 @@
 
 unsigned char *fish[12];
 
+unsigned int *vram;
+
 void main(void)
 {
 	char x;
 	x=10;
+	
+	vram=precalc_vram();
 	
 	fish[0]=poisson1;
 	fish[1]=poisson2;
@@ -23,7 +27,6 @@ void main(void)
 	
 	mode(0);
 	set_palette(poisson_palette);
-	
 
 	while(1){
 		check_controller();
@@ -35,7 +38,8 @@ void main(void)
 		// synchro en bas de l'écran
 		vsync();
 		// effacer poisson
-		put_frame(vram(x,100),6,16,fish[5]);
+		put_frame(vram(x,50),6,16,fish[5]);
+		put_frame((unsigned char *)(vram[100]+x),6,16,fish[5]);
 		if (get_key(Key_O)) {
 			x--;
 		}		
@@ -43,6 +47,7 @@ void main(void)
 			x++;
 		}
 		// afficher poisson
-		put_frame(vram(x,100),6,16,fish[1]);
+		put_frame(vram(x,50),6,16,fish[4]);
+		put_frame((unsigned char *)(vram[100]+x),6,16,fish[1]);
 	}
 }

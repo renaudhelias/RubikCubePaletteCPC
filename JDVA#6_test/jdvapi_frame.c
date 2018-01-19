@@ -51,3 +51,21 @@ void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHei
        DJNZ _loop_alto		; Enlève 1 à la hauteur, si on à pas tout traité, on reboucle au début _loop_alto
   __endasm;
 }
+
+/**
+ * JDVA#6 ON FAIT BOUGER UN POULPE
+ */
+unsigned int private_precalc_vram[200];
+
+unsigned int * precalc_vram()
+{
+	char i;
+	
+	for (i=0;i<200;i++)
+	{
+		private_precalc_vram[i]=(0xC000 + ((i / 8u) * 80u) + ((i % 8u) * 2048u));		
+		
+	}
+	
+	return (unsigned int *)private_precalc_vram;
+}

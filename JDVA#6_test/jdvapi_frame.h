@@ -9,4 +9,9 @@ extern void set_palette(const unsigned char *pPalette);
 
 extern void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image);
 
+/**
+ * JDVA#6 ON FAIT BOUGER UN POULPE
+ */
+char * precalc_vram();
+
 #endif
