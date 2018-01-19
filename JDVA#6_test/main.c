@@ -4,6 +4,8 @@
 #include "poisson.h"
 #include "jdvapi_basic.h"
 #include "jdvapi_frame.h"
+#include "jdvapi_keyb.h"
+#include "jdvapi_sync.h"
 
 unsigned char *fish[12];
 
@@ -18,7 +20,16 @@ void main(void)
 	
 	mode(0);
 	set_palette(poisson_palette);
-	put_frame(vram(10,100),6,16,fish[3]);
+	
 
-	while(1){}
+	while(1){
+		check_controller();
+		if (get_key(Key_A) || get_key(Key_Space)) {
+			
+			put_frame(vram(10,100),6,16,fish[1]);
+			
+			
+		}
+			
+	}
 }
