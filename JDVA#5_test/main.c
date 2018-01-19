@@ -3,7 +3,6 @@
 
 #include "poisson.h"
 #include "jdvapi_frame.h"
-#include "jdvapi_frame.c"
 
 unsigned char *fish[12];
 

@@ -7,7 +7,6 @@
 #include "azrael.h"
 #include "gargamel.h"
 #include "jdvapi_frame.h"
-#include "jdvapi_frame.c"
 
 
 void pen(unsigned char p)
