@@ -2,17 +2,10 @@
 #include <stdlib.h>
 
 #include "poisson.h"
+#include "jdvapi_basic.h"
 #include "jdvapi_frame.h"
 
 unsigned char *fish[12];
-
-void mode(unsigned char m)
-{
-	__asm
-		ld a,4(IX)
-		CALL #0xBC0E
-	__endasm;
-}
 
 void main(void)
 {
