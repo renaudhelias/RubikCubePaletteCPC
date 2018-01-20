@@ -313,15 +313,14 @@ for (n=0;n<18;n++) {
 }
 
 
-
-//char private_preview2[5];
-
-char private_preview[5][5];
+char private_preview[7][7];
 
 /*
  * preview[][]
  * niveauTaille : 15,21,35
  * niveauNb : 3,5,7
+ * 
+ * https://stackoverflow.com/questions/16724368/how-to-pass-a-2d-array-by-pointer-in-c
  */
 void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	char offset_x;char offset_y;char x; char y;
@@ -332,9 +331,8 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
+			//piece(offset_x+x*21,offset_y+y*21,*preview[x*niveauNb*2+y*2],niveauTaille); // la piece
 			piece(offset_x+x*21,offset_y+y*21,private_preview[x][y],niveauTaille); // la piece
-			//piece(offset_x+x*21,offset_y+y*21,private_preview2[x],niveauTaille); // la piece
-			//piece(offset_x+x*21,offset_y+y*21,(x+y)%18,niveauTaille); // la piece
 		}
 	}
 }
@@ -345,12 +343,6 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
  */
 char ** makePreview(char niveauNb) {
 	// de 0 à 17
-
-	//private_preview2[0]=1;
-	//private_preview2[1]=2;
-	//private_preview2[2]=5;
-	//private_preview2[3]=2;
-	//private_preview2[4]=16;
 
 	private_preview[0][0] = 1;
 	private_preview[1][0] = 2;
@@ -382,7 +374,7 @@ char ** makePreview(char niveauNb) {
 	private_preview[3][4] = 1;
 	private_preview[4][4] = 0;
 	
-	return (char **)private_preview;
+	return private_preview;
 }
 
 
