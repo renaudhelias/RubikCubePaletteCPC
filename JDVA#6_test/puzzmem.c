@@ -379,7 +379,13 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
 	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
 	piece(offset_x,offset_y,select,niveauTaille);
-	
+	if (curseurBas==CURSEUR_BAS_SELECT) {
+		if (etatSelect==SELECT_ON) {
+			piece(offset_x,offset_y,20,niveauTaille);
+		} else {
+			piece(offset_x,offset_y,21,niveauTaille);
+		}
+	}
 }
 
 /*
@@ -516,7 +522,7 @@ if (get_key(Key_CursorUp)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_y;p>0;p=p-1) {
+					for (p=grille_y;p>=0;p=p-1) {
 						if (private_grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p;pp<grille_y;pp=pp+1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
@@ -592,7 +598,16 @@ if (get_key(Key_CursorRight)) {
 					curseurBas=curseurBas+1;
 				}
 			} else if (curseurBas < niveauNb) {
-				curseurBas=CURSEUR_BAS_SELECT;
+				// on peut effectivement y poser une piece mais pas pousser ? oups...
+				if (etatSelect==SELECT_ON) {
+					if (select==CASE_VIDE) {
+						select=private_grille[niveauNb - 1][0];
+						private_grille[niveauNb - 1][0]=CASE_VIDE;
+						curseurBas=CURSEUR_BAS_SELECT;
+					}
+				} else {
+					curseurBas=CURSEUR_BAS_SELECT;
+				}
 			}
 		}
 	}
@@ -615,7 +630,7 @@ if (get_key(Key_CursorLeft)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_x;p>0;p=p-1) {
+					for (p=grille_x;p>=0;p=p-1) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
@@ -637,7 +652,7 @@ if (get_key(Key_CursorLeft)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_x;p>0;p=p-1) {
+					for (p=grille_x;p>=0;p=p-1) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
