@@ -471,14 +471,17 @@ void main(void)
 	offset_x=22+1;
 	offset_y=22+21;
 	piece(offset_x,offset_y,5,21);
+
+	niveauNb=5;
+	niveauTaille=21;
 	
+	// état
 	curseurHaut=0;
 	curseurBas=0;
 	etatSelect=SELECT_OFF;
 	etatZone=EN_BAS;
 
-	niveauNb=5;
-	niveauTaille=21;
+	// modèle
 	preview=makePreview(niveauNb);
 	nbPieces=computeNbPiece(preview,niveauNb);
 	grille=newEmptyGrille(); // rempli avec des CASE_VIDE
@@ -487,6 +490,8 @@ void main(void)
 	private_grille[2][2] = 15;
 	select=14;
 
+	// rendu
+	vsync();
 	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 	fillPreview(preview,niveauTaille,niveauNb);
 	fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
