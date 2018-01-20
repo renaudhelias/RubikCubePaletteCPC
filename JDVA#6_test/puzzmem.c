@@ -9,6 +9,7 @@
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
 #define	CASE_VIDE 18
+#define	CURSEUR_BAS_SELECT 7*7
 #define EN_HAUT 1
 #define EN_BAS 2
 #define SELECT_OFF 0
@@ -462,6 +463,8 @@ void main(void)
 	char offset_x; char offset_y;
 	char curseurHaut;char curseurBas;char etatSelect; char etatZone;
 	char niveauNb;char niveauTaille;
+	char grille_x;char grille_y;char p; char pp;
+	char one_key;
 	mode(1);
 	printf("Hello World !");
 	put_pixel1(20,20,2);
@@ -496,7 +499,211 @@ void main(void)
 	fillPreview(preview,niveauTaille,niveauNb);
 	fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 
-	while(1){}
+while (1) {
+one_key=0;
+check_controller();
+//TOUCHE_HAUT
+if (get_key(Key_CursorUp)) {
+	one_key=1;
+	if (etatZone==EN_HAUT) {
+		if ((curseurHaut % 2) == 0) {
+			curseurHaut=curseurHaut+1;
+		}
+	} else {
+		if (curseurBas != CURSEUR_BAS_SELECT) {
+			if (curseurBas > niveauNb - 1) {
+				if (etatSelect==SELECT_ON) {
+					grille_x=curseurBas%niveauNb;
+					grille_y=curseurBas/niveauNb;
+					// pousser
+					for (p=grille_y;p>0;p=p-1) {
+						if (grille[grille_x][p]==CASE_VIDE) {
+							for (pp=p+1;pp<grille_y;pp=pp+1) {
+								grille[grille_x][pp]=grille[grille_x][pp-1];
+							}
+							grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBas=curseurBas-niveauNb;
+							break;
+						}
+					}
+				} else {
+					curseurBas=curseurBas-niveauNb;
+				}
+			}
+		}
+	}
+}
+//TOUCHE_BAS
+if (get_key(Key_CursorDown)) {
+	one_key=1;
+	if (etatZone==EN_HAUT) {
+		if ((curseurHaut % 2) == 1) {
+			curseurHaut=curseurHaut-1;
+		}
+	} else {
+		if (curseurBas != CURSEUR_BAS_SELECT) {
+			if (curseurBas < niveauNb*(niveauNb-1)) {
+				if (etatSelect==SELECT_ON) {
+					grille_x=curseurBas%niveauNb;
+					grille_y=curseurBas/niveauNb;
+					// pousser
+					for (p=grille_y;p<niveauNb;p=p+1) {
+						if (grille[grille_x][p]==CASE_VIDE) {
+							for (pp=p-1;pp>grille_y;pp=pp-1) {
+								grille[grille_x][pp]=grille[grille_x][pp+1];
+							}
+							grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBas=curseurBas+niveauNb;
+							break;
+						}
+					}
+				} else {
+					curseurBas=curseurBas+niveauNb;
+				}
+			}
+		}
+	}
+}
+//TOUCHE_DROITE
+if (get_key(Key_CursorRight)) {
+	one_key=1;
+	if (etatZone==EN_HAUT) {
+		if (curseurHaut <20) {
+			curseurHaut=curseurHaut+2;
+		}
+	} else {
+		if (curseurBas != CURSEUR_BAS_SELECT) {
+			if (curseurBas % niveauNb < niveauNb - 1) {
+				if (etatSelect==SELECT_ON) {
+					grille_x=curseurBas%niveauNb;
+					grille_y=curseurBas/niveauNb;
+					// pousser
+					for (p=grille_x;p<niveauNb;p=p+1) {
+						if (grille[p][grille_y]==CASE_VIDE) {
+							for (pp=p-1;pp>grille_x;pp=pp-1) {
+								grille[pp][grille_y]=grille[pp+1][grille_y];
+							}
+							grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBas=curseurBas+1;
+							break;
+						}
+					}
+				} else {
+					curseurBas=curseurBas+1;
+				}
+			}
+		}
+	}
+}
+//TOUCHE_GAUCHE
+if (get_key(Key_CursorLeft)) {
+	one_key=1;
+	if (etatZone==EN_HAUT) {
+		if (curseurHaut >2) {
+			curseurHaut=curseurHaut-2;
+		}
+	} else {
+		if (curseurBas == CURSEUR_BAS_SELECT) {
+			if (etatSelect==SELECT_ON) {
+				if (grille[niveauNb - 1][0]==CASE_VIDE) {
+					grille[niveauNb - 1][0]=select;select=CASE_VIDE;
+					curseurBas=niveauNb - 1;
+				} else {
+					curseurBas=niveauNb - 1;
+					grille_x=curseurBas%niveauNb;
+					grille_y=curseurBas/niveauNb;
+					// pousser
+					for (p=grille_x;p>0;p=p-1) {
+						if (grille[p][grille_y]==CASE_VIDE) {
+							for (pp=p+1;pp<grille_x;pp=pp+1) {
+								grille[pp][grille_y]=grille[pp-1][grille_y];
+							}
+							grille[niveauNb - 1][0]=select;
+							select=CASE_VIDE;
+							curseurBas=niveauNb - 1;
+							break;
+						}
+					}
+					// pousser ?
+				}
+			} else {
+				curseurBas = niveauNb - 1;
+			}
+		} else {
+			if (curseurBas % niveauNb > 0) {
+				if (etatSelect==SELECT_ON) {
+					grille_x=curseurBas%niveauNb;
+					grille_y=curseurBas/niveauNb;
+					// pousser
+					for (p=grille_x;p>0;p=p-1) {
+						if (grille[p][grille_y]==CASE_VIDE) {
+							for (pp=p+1;pp<grille_x;pp=pp+1) {
+								grille[pp][grille_y]=grille[pp-1][grille_y];
+							}
+							grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBas=curseurBas-1;
+							break;
+						}
+					}
+				} else {
+					curseurBas=curseurBas-1;
+				}
+			}
+		}
+	}
+}
+//TOUCHE_ESPACE
+if (get_key(Key_Space)) {
+	one_key=1;
+	if (etatZone==EN_HAUT) {
+		etatZone=EN_BAS;
+	} else {
+		etatZone=EN_HAUT;
+	}
+	etatSelect=SELECT_OFF;
+	curseurHaut=0;
+	curseurBas=CURSEUR_BAS_SELECT;
+}
+//TOUCHE_ENTREE
+if (get_key(Key_Return)) {
+	one_key=1;
+	if (etatSelect==SELECT_ON) {
+		etatSelect=SELECT_OFF;
+	} else {
+		if (etatZone==EN_HAUT) {
+			if (nbPieces[curseurHaut]>0) {
+				if (select!=CASE_VIDE) {
+					nbPieces[select]=nbPieces[select]+1;
+				}
+				select=curseurHaut;
+				nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
+			}
+		} else {
+			if (curseurBas == CURSEUR_BAS_SELECT) {
+				if (select != CASE_VIDE) {
+					etatSelect=SELECT_ON;
+				}
+			} else {
+				grille_x=curseurBas%niveauNb;
+				grille_y=curseurBas/niveauNb;
+				if (grille[grille_x][grille_y] != CASE_VIDE) {
+					etatSelect=SELECT_ON;
+				}
+			}
+		}
+	}
+}
+if (one_key==1) {
+	// reafficher
+	vsync();
+	//fillPreview(preview,niveauTaille,niveauNb);
+	if (etatZone==EN_HAUT) {
+		fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
+	} else {
+		fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
+	}
+}
+}
 }
 
 
