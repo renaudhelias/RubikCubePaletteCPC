@@ -1,6 +1,8 @@
 #ifndef JDVAPI_BASIC_H
 #define JDVAPI_BASIC_H
 
+void set_palette(const unsigned char *pPalette);
+
 void pen(unsigned char p);
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent

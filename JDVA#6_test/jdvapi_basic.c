@@ -8,6 +8,24 @@ void pen(unsigned char p)
 	__endasm;
 }
 
+void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
+{
+  __asm
+    ld a, 4 (ix)
+    ld b, 5 (ix)
+    ld c, b
+    call #0xBC32 ;SCR SET INK
+    __endasm;
+}
+
+void set_palette(const unsigned char *pPalette)
+{
+  unsigned char nColor = 0;
+
+  for(nColor = 0; nColor < 16; nColor++)
+    set_color(nColor, pPalette[nColor]);
+}
+
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent
  */

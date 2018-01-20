@@ -452,6 +452,11 @@ char * computeNbPiece(char ** preview, char niveauNb) {
 	return (char *)private_nbPieces;
 }
 
+const unsigned char puzzmem_palette[]=
+{
+		0,3,26,2,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
 //char nbPieces[18]={
 //	1, 1,1,1,1, 1,1,1,1,
 //    1, 1,1,1,1, 1,1,1,1
@@ -472,6 +477,7 @@ void main(void)
 	char grille_x;char grille_y;char p; char pp;
 	char one_key;
 	mode(1);
+	set_palette(puzzmem_palette);
 	printf("Hello World! ");
 	//put_pixel1(20,20,2);
 	//offset_x=22;
