@@ -310,6 +310,11 @@ for (n=0;n<20-3;n++) {
 }
 
 
+
+//char private_preview2[5];
+
+char private_preview[5][5];
+
 /*
  * preview[][]
  * niveauTaille : 15,21,35
@@ -321,28 +326,59 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	offset_x=2*10;
 	offset_y=2*(21+4)+2*10;
 	piece(offset_x,offset_y,19,105); // bordure rouge
+	
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
-			piece(offset_x+x*21,offset_y+y*21,preview[x][y],niveauTaille); // la piece
+			piece(offset_x+x*21,offset_y+y*21,private_preview[x][y],niveauTaille); // la piece
+			//piece(offset_x+x*21,offset_y+y*21,private_preview2[x],niveauTaille); // la piece
+			//piece(offset_x+x*21,offset_y+y*21,(x+y)%18,niveauTaille); // la piece
 		}
 	}
 }
 
 
-
-char private_preview[5][5] = {
-		{1,2,5,2,16},
-		{17,3,10,13,12},
-		{9,11,15,4,6},
-		{8,9,7,4,6},
-		{0,1,0,1,0}
-	};
 /*
  * niveauNb : 5 :p
  */
 char ** makePreview(char niveauNb) {
 	// de 0 à 17
-	//private_preview=
+
+	//private_preview2[0]=1;
+	//private_preview2[1]=2;
+	//private_preview2[2]=5;
+	//private_preview2[3]=2;
+	//private_preview2[4]=16;
+
+	private_preview[0][0] = 1;
+	private_preview[1][0] = 2;
+	private_preview[2][0] = 5;
+	private_preview[3][0] = 2;
+	private_preview[4][0] = 16;
+
+	private_preview[0][1] = 17;
+	private_preview[1][1] = 3;
+	private_preview[2][1] = 10;
+	private_preview[3][1] = 13;
+	private_preview[4][1] = 12;
+
+	private_preview[0][2] = 9;
+	private_preview[1][2] = 11;
+	private_preview[2][2] = 15;
+	private_preview[3][2] = 4;
+	private_preview[4][2] = 6;
+
+	private_preview[0][3] = 8;
+	private_preview[1][3] = 9;
+	private_preview[2][3] = 7;
+	private_preview[3][3] = 4;
+	private_preview[4][3] = 6;
+
+	private_preview[0][4] = 0;
+	private_preview[1][4] = 1;
+	private_preview[2][4] = 0;
+	private_preview[3][4] = 1;
+	private_preview[4][4] = 0;
+	
 	return (char **)private_preview;
 }
 
