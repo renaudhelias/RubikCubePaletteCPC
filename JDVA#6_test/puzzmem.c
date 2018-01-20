@@ -377,11 +377,27 @@ char ** makePreview(char niveauNb) {
 	return private_preview;
 }
 
+char private_nbPieces[18];
+char * computeNbPiece(char ** preview, char niveauNb) {
+	char x;char y;
+	for (x=0;x<18;x=x+1) {
+		private_nbPieces[x]=0;
+	}
+	for (x=0;x<niveauNb;x=x+1) {
+		for (y=0;y<niveauNb;y=y+1) {
+			//private_nbPieces[preview[x][y]]=private_nbPieces[preview[x][y]]+1;
+			private_nbPieces[private_preview[x][y]]=private_nbPieces[private_preview[x][y]]+1;
+		}
+	}
+	return (char *)private_nbPieces;
+}
 
-char nbPieces[18]={
-	1, 1,1,1,1, 1,1,1,1,
-    1, 1,1,1,1, 1,1,1,1
-};
+//char nbPieces[18]={
+//	1, 1,1,1,1, 1,1,1,1,
+//    1, 1,1,1,1, 1,1,1,1
+//};
+
+char * nbPieces;
 
 char ** preview;
 
@@ -403,12 +419,15 @@ void main(void)
 	curseurHaut=0;
 	etatSelect=SELECT_OFF;
 	etatZone=EN_HAUT;
-	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 
 	niveauNb=5;
 	niveauTaille=21;
 	preview=makePreview(niveauNb);
+	nbPieces=computeNbPiece(preview,niveauNb);
+
+	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 	fillPreview(preview,niveauTaille,niveauNb);
+	
 
 	while(1){}
 }
