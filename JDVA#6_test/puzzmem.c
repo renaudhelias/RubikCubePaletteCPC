@@ -8,10 +8,13 @@
 /**
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
+#define	CASE_VIDE 18
 #define EN_HAUT 1
 #define EN_BAS 2
 #define SELECT_OFF 0
 #define SELECT_ON 1
+#define ESPACEMENT 4
+
 /*
  * offset_x
  * offset_y
@@ -256,13 +259,13 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			if (x<tailleTile/4 || x>tailleTile*3/4) {
 				put_pixel1(offset_x+x,offset_y+0,0);
-				put_pixel1(offset_x+x,offset_y+tailleTile,1);
+				put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
 			}
 		}
 		for (y=0;y<tailleTile;y++) {
 			if (y<tailleTile/4 || y>tailleTile*3/4) {
 				put_pixel1(offset_x+0,offset_y+y,0);
-				put_pixel1(offset_x+tailleTile,offset_y+y,1);
+				put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
 			}
 		}
 	return;
@@ -270,11 +273,11 @@ switch(noTile) {
 		// unselect rouge
 		for (x=0;x<tailleTile;x++) {
 			put_pixel1(offset_x+x,offset_y+0,0);
-			put_pixel1(offset_x+x,offset_y+tailleTile,1);
+			put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
 		}
 		for (y=0;y<tailleTile;y++) {
 			put_pixel1(offset_x+0,offset_y+y,0);
-			put_pixel1(offset_x+tailleTile,offset_y+y,1);
+			put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
 		}
 	return;
 }
@@ -293,8 +296,8 @@ for (n=0;n<18;n++) {
 	x=n/2;
 	y=n%2;
 	//moveTo
-	offset_x=x*(21+4)+10;
-	offset_y=y*(21+4)+10;
+	offset_x=x*(21+ESPACEMENT)+ESPACEMENT;
+	offset_y=y*(21+ESPACEMENT)+ESPACEMENT+2*ESPACEMENT;
 	piece(offset_x,offset_y,19,21); // bordure rouge
 	printf("%c",nbPieces[n]); // texte dessous la case : nombre de pièces
 	if (nbPieces[n]>0) {
@@ -325,8 +328,8 @@ char private_preview[7][7];
 void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	char offset_x;char offset_y;char x; char y;
 	//moveTo
-	offset_x=2*10;
-	offset_y=2*(21+4)+2*10;
+	offset_x=2*ESPACEMENT;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
 	piece(offset_x,offset_y,19,105); // bordure rouge
 	
 	for (x=0;x<niveauNb;x=x+1) {
@@ -337,6 +340,46 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	}
 }
 
+char private_grille[7][7];
+
+/*
+ * grille[][]
+ * niveauTaille 15,21,35
+ * niveauNb : 3,5,7
+ * curseurBas : position du curseur, EN_BAS
+ * select : la pièce actuellement sélectionnée, CASE_VIDE
+ * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
+ * etatZone : EN_BAS ou EN_HAUT : si EN_HAUT alors ne pas afficher de curseur via cette fonction
+ */
+void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;char x; char y;
+	//moveTo
+	offset_x=105+2*2*ESPACEMENT;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
+	// plateau
+	piece(offset_x,offset_y,19,105); // bordure rouge
+
+	for (x=0;x<niveauNb;x=x+1) {
+		for (y=0;y<niveauNb;y=y+1) {
+			
+			piece(offset_x+x*21,offset_y+y*21,private_grille[x][y],niveauTaille); // la piece
+			if ((curseurBas==(x+y*niveauNb)) && (etatZone==EN_BAS)) {
+				if (etatSelect==SELECT_ON) {
+					piece(offset_x+x*21,offset_y+y*21,20,21);
+				} else {
+					piece(offset_x+x*21,offset_y+y*21,21,21);
+				}
+			}
+		}
+	}
+
+	// selection
+	offset_x=2*105+2*2*ESPACEMENT+1;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
+	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
+	piece(offset_x,offset_y,select,niveauTaille);
+	
+}
 
 /*
  * niveauNb : 5 :p
@@ -377,6 +420,16 @@ char ** makePreview(char niveauNb) {
 	return private_preview;
 }
 
+char ** newEmptyGrille() {
+	char x;char y;
+	for (x=0;x<7;x=x+1) {
+		for (y=0;y<7;y=y+1) {
+			private_grille[x][y]=CASE_VIDE;
+		}
+	}
+	return (char **)private_grille;
+}
+
 char private_nbPieces[18];
 char * computeNbPiece(char ** preview, char niveauNb) {
 	char x;char y;
@@ -401,10 +454,13 @@ char * nbPieces;
 
 char ** preview;
 
+char ** grille;
+char select;
+
 void main(void)
 {
 	char offset_x; char offset_y;
-	char curseurHaut;char etatSelect; char etatZone;
+	char curseurHaut;char curseurBas;char etatSelect; char etatZone;
 	char niveauNb;char niveauTaille;
 	mode(1);
 	printf("Hello World !");
@@ -417,17 +473,23 @@ void main(void)
 	piece(offset_x,offset_y,5,21);
 	
 	curseurHaut=0;
+	curseurBas=0;
 	etatSelect=SELECT_OFF;
-	etatZone=EN_HAUT;
+	etatZone=EN_BAS;
 
 	niveauNb=5;
 	niveauTaille=21;
 	preview=makePreview(niveauNb);
 	nbPieces=computeNbPiece(preview,niveauNb);
+	grille=newEmptyGrille(); // rempli avec des CASE_VIDE
+	select=CASE_VIDE;
+	
+	private_grille[2][2] = 15;
+	select=14;
 
 	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 	fillPreview(preview,niveauTaille,niveauNb);
-	
+	fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 
 	while(1){}
 }
