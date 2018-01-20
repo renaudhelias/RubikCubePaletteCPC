@@ -300,7 +300,7 @@ for (n=0;n<18;n++) {
 	offset_x=x*(21+ESPACEMENT)+ESPACEMENT;
 	offset_y=y*(21+ESPACEMENT)+ESPACEMENT+2*ESPACEMENT;
 	piece(offset_x,offset_y,19,21); // bordure rouge
-	printf("%c",nbPieces[n]); // texte dessous la case : nombre de pièces
+	printf("%c",nbPieces[n]+48); // texte dessous la case : nombre de pièces
 	if (nbPieces[n]>0) {
 		piece(offset_x,offset_y,n,21); // la piece
 	} else {
@@ -394,35 +394,35 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 char ** makePreview(char niveauNb) {
 	// de 0 à 17
 
-	private_preview[0][0] = 1;
-	private_preview[1][0] = 2;
-	private_preview[2][0] = 5;
-	private_preview[3][0] = 2;
-	private_preview[4][0] = 16;
+	private_preview[0][0] = 2;
+	private_preview[1][0] = 1;
+	private_preview[2][0] = 1;
+	private_preview[3][0] = 1;
+	private_preview[4][0] = 5;
 
-	private_preview[0][1] = 17;
-	private_preview[1][1] = 3;
-	private_preview[2][1] = 10;
-	private_preview[3][1] = 13;
-	private_preview[4][1] = 12;
+	private_preview[0][1] = 3;
+	private_preview[1][1] = 17;
+	private_preview[2][1] = 12;
+	private_preview[3][1] = 16;
+	private_preview[4][1] = 4;
 
-	private_preview[0][2] = 9;
-	private_preview[1][2] = 11;
-	private_preview[2][2] = 15;
-	private_preview[3][2] = 4;
-	private_preview[4][2] = 6;
+	private_preview[0][2] = 1;
+	private_preview[1][2] = 12;
+	private_preview[2][2] = 12;
+	private_preview[3][2] = 1;
+	private_preview[4][2] = 1;
 
-	private_preview[0][3] = 8;
+	private_preview[0][3] = 9;
 	private_preview[1][3] = 9;
-	private_preview[2][3] = 7;
-	private_preview[3][3] = 4;
-	private_preview[4][3] = 6;
+	private_preview[2][3] = 9;
+	private_preview[3][3] = 9;
+	private_preview[4][3] = 9;
 
-	private_preview[0][4] = 0;
-	private_preview[1][4] = 1;
-	private_preview[2][4] = 0;
-	private_preview[3][4] = 1;
-	private_preview[4][4] = 0;
+	private_preview[0][4] = 2;
+	private_preview[1][4] = 2;
+	private_preview[2][4] = 2;
+	private_preview[3][4] = 2;
+	private_preview[4][4] = 2;
 	
 	return private_preview;
 }
@@ -472,14 +472,14 @@ void main(void)
 	char grille_x;char grille_y;char p; char pp;
 	char one_key;
 	mode(1);
-	printf("Hello World !");
-	put_pixel1(20,20,2);
-	offset_x=22;
-	offset_y=22;
-	piece(offset_x,offset_y,5,21);
-	offset_x=22+1;
-	offset_y=22+21;
-	piece(offset_x,offset_y,5,21);
+	printf("Hello World! ");
+	//put_pixel1(20,20,2);
+	//offset_x=22;
+	//offset_y=22;
+	//piece(offset_x,offset_y,5,21);
+	//offset_x=22+1;
+	//offset_y=22+21;
+	//piece(offset_x,offset_y,5,21);
 
 	niveauNb=5;
 	niveauTaille=21;
@@ -496,8 +496,8 @@ void main(void)
 	grille=newEmptyGrille(); // rempli avec des CASE_VIDE
 	select=CASE_VIDE;
 	
-	private_grille[2][2] = 15;
-	select=14;
+	//private_grille[2][2] = 15;
+	//select=14;
 
 	// rendu
 	vsync();
@@ -512,8 +512,8 @@ check_controller();
 if (get_key(Key_CursorUp)) {
 	one_key=1;
 	if (etatZone==EN_HAUT) {
-		if ((curseurHaut % 2) == 0) {
-			curseurHaut=curseurHaut+1;
+		if ((curseurHaut % 2) == 1) {
+			curseurHaut=curseurHaut-1;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
@@ -543,8 +543,8 @@ if (get_key(Key_CursorUp)) {
 if (get_key(Key_CursorDown)) {
 	one_key=1;
 	if (etatZone==EN_HAUT) {
-		if ((curseurHaut % 2) == 1) {
-			curseurHaut=curseurHaut-1;
+		if ((curseurHaut % 2) == 0) {
+			curseurHaut=curseurHaut+1;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
