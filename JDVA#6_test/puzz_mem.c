@@ -1,14 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "jdvapi_frame.h"
-#include "jdvapi_frame.c"
+#include "jdvapi_basic.h"
+#include "jdvapi_keyb.h"
+#include "jdvapi_sync.h"
 
 /**
- * JDVA#6 
+ * JDVA#6 ON FAIT BOUGER UN POULPE
  */
+#define	CASE_VIDE 18
+#define	CURSEUR_BAS_SELECT 7*7
+#define EN_HAUT 1
+#define EN_BAS 2
+#define SELECT_OFF 0
+#define SELECT_ON 1
  
-piece(char noTile,char tailleTile) {
+/*
+ * offset_x
+ * offset_y
+ * noTile no de l'image à tracer en offset_x,offset_y
+ * tailleTile taille de l'image : 15 21 ou 35
+ */
+void piece(char offset_x,char offset_y,char noTile,char tailleTile) {
 char x;
 char y;
 switch(noTile) {
@@ -16,7 +29,7 @@ switch(noTile) {
 		// case blanche
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				pixel(x,y,2);
+				put_pixel1(offset_x+x,offset_y+y,2);
 			}
 		}
 	return;
@@ -24,7 +37,7 @@ switch(noTile) {
 		// case bleu
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				pixel(x,y,3);
+				put_pixel1(offset_x+x,offset_y+y,3);
 			}
 		}
 	return;
@@ -33,9 +46,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x+y<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -45,9 +58,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x+y>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -57,9 +70,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x+tailleTile-y<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -69,9 +82,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x+tailleTile-y>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -81,9 +94,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -93,9 +106,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -105,9 +118,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (y<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -117,9 +130,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (y>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -129,9 +142,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x<tailleTile/2 && y<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -141,9 +154,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x>tailleTile/2 && y<tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -153,9 +166,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x>tailleTile/2 && y>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -164,9 +177,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x<tailleTile/2 && y>tailleTile/2) {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				}
 			}
 		}
@@ -176,9 +189,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x<tailleTile/2 && y<tailleTile/2) {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				}
 			}
 		}
@@ -188,9 +201,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x>tailleTile/2 && y<tailleTile/2) {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				}
 			}
 		}
@@ -200,9 +213,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x>tailleTile/2 && y>tailleTile/2) {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				}
 			}
 		}
@@ -211,9 +224,9 @@ switch(noTile) {
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
 				if (x<tailleTile/2 && y>tailleTile/2) {
-					pixel(x,y,3);
+					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
-					pixel(x,y,2);
+					put_pixel1(offset_x+x,offset_y+y,2);
 				}
 			}
 		}
@@ -221,45 +234,47 @@ switch(noTile) {
 		// case vide
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				pixel(x,y,0);
+				put_pixel1(offset_x+x,offset_y+y,0);
 			}
 		}
 	return;
 	case 19 :
 		// bordure rouge
-		for (x=-1;x<=tailleTile;x++) {
-			pixel(x,-1,0);
-			pixel(x,tailleTile,1);
+		//for (x=-1;x<=tailleTile;x++) {
+		for (x=0;x<tailleTile+2;x++) {
+			put_pixel1(offset_x+x-1,offset_y-1,0);
+			put_pixel1(offset_x+x-1,offset_y+tailleTile,1);
 		}
-		for (y=-1;y<=tailleTile;y++) {
-			pixel(-1,y,0);
-			pixel(tailleTile,y,1);
+		//for (y=-1;y<=tailleTile;y++) {
+		for (y=0;y<tailleTile+2;y++) {
+			put_pixel1(offset_x-1,offset_y+y-1,0);
+			put_pixel1(offset_x+tailleTile,offset_y+y-1,1);
 		}
 	return;
 	case 20 :
 		// select rouge
 		for (x=0;x<tailleTile;x++) {
 			if (x<tailleTile/4 || x>tailleTile*3/4) {
-				pixel(x,0,0);
-				pixel(x,tailleTile,1);
+				put_pixel1(offset_x+x,offset_y+0,0);
+				put_pixel1(offset_x+x,offset_y+tailleTile,1);
 			}
 		}
 		for (y=0;y<tailleTile;y++) {
 			if (y<tailleTile/4 || y>tailleTile*3/4) {
-				pixel(0,y,0);
-				pixel(tailleTile,y,1);
+				put_pixel1(offset_x+0,offset_y+y,0);
+				put_pixel1(offset_x+tailleTile,offset_y+y,1);
 			}
 		}
 	return;
 	case 21 :
 		// unselect rouge
 		for (x=0;x<tailleTile;x++) {
-			pixel(x,0,0);
-			pixel(x,tailleTile,1);
+			put_pixel1(offset_x+x,offset_y+0,0);
+			put_pixel1(offset_x+x,offset_y+tailleTile,1);
 		}
 		for (y=0;y<tailleTile;y++) {
-			pixel(0,y,0);
-			pixel(tailleTile,y,1);
+			put_pixel1(offset_x+0,offset_y+y,0);
+			put_pixel1(offset_x+tailleTile,offset_y+y,1);
 		}
 	return;
 }
@@ -271,24 +286,27 @@ switch(noTile) {
  * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
  * etatZone : EN_BAS ou EN_HAUT : si EN_BAS alors ne pas afficher de curseur via cette fonction
  */
-fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
+void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
 char n;char x;char y;
+char offset_x;char offset_y;
 for (n=0;n<20-3;n++) {
 	x=n/2;
 	y=n%2;
-	moveTo(x*(21+4)+10,y*(21+4)+10);
-	piece(19,21); // bordure rouge
-	texte(nbPieces[n]); // texte dessous la case : nombre de pièces
+	//moveTo
+	offset_x=x*(21+4)+10;
+	offset_y=y*(21+4)+10;
+	piece(offset_x,offset_y,19,21); // bordure rouge
+	printf("%c",nbPieces[n]); // texte dessous la case : nombre de pièces
 	if (nbPieces[n]>0) {
-		piece(n,21); // la piece
+		piece(offset_x,offset_y,n,21); // la piece
 	} else {
-		piece(18,21); // case vide
+		piece(offset_x,offset_y,18,21); // case vide
 	}
-	if (n=curseurHaut && etatZone=EN_HAUT) {
-		if (etatSelect=ON) {
-			piece(20,21)
+	if ((n==curseurHaut) && (etatZone==EN_HAUT)) {
+		if (etatSelect==SELECT_ON) {
+			piece(offset_x,offset_y,20,21);
 		} else {
-			piece(21,21)
+			piece(offset_x,offset_y,21,21);
 		}
 	}
 }
@@ -299,17 +317,15 @@ for (n=0;n<20-3;n++) {
  * niveauTaille : 15,21,35
  * niveauNb : 3,5,7
  */
-fillPreview(char * preview,char niveauTaille,char niveauNb) {
+void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	char offset_x;char offset_y;char x; char y;
+	//moveTo
 	offset_x=2*10;
-	offset_y=2*(21+4)+2*10);
-	moveTo(offset_x,offset_y);
-	piece(19,105); // bordure rouge
-	
+	offset_y=2*(21+4)+2*10;
+	piece(offset_x,offset_y,19,105); // bordure rouge
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
-			moveTo(offset_x+x*21,offset_y+y*21);
-			piece(preview[x][y],niveauTaille); // la piece
+			piece(offset_x+x*21,offset_y+y*21,preview[x][y],niveauTaille); // la piece
 		}
 	}
 }
@@ -323,77 +339,86 @@ fillPreview(char * preview,char niveauTaille,char niveauNb) {
  * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
  * etatZone : EN_BAS ou EN_HAUT : si EN_HAUT alors ne pas afficher de curseur via cette fonction
  */
-fillGrilleEtSelect(char * grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
+void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
 	char offset_x;char offset_y;char x; char y;
+	//moveTo
 	offset_x=105+2*2*10;
 	offset_y=2*(21+4)+2*10;
 	// plateau
-	moveTo(offset_x,offset_y);
-	piece(19,105); // bordure rouge
+	piece(offset_x,offset_y,19,105); // bordure rouge
 
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
-			moveTo(offset_x+x*21,offset_y+y*21);
-			piece(grille[x][y],niveauTaille); // la piece
-			if (x+y*niveauNb=curseurBas && etatZone=EN_BAS) {
-				if (etatSelect=ON) {
-					piece(20,21)
+			
+			piece(offset_x+x*21,offset_y+y*21,grille[x][y],niveauTaille); // la piece
+			if ((curseurBas==(x+y*niveauNb)) && (etatZone==EN_BAS)) {
+				if (etatSelect==SELECT_ON) {
+					piece(offset_x+x*21,offset_y+y*21,20,21);
 				} else {
-					piece(21,21)
+					piece(offset_x+x*21,offset_y+y*21,21,21);
 				}
 			}
 		}
 	}
 
 	// selection
-	moveTo(2*105+3*2*10,2*(21+4)+2*10);
-	piece(select,niveauTaille); // bordure rouge
+	offset_x=2*105+3*2*10;
+	offset_y=2*(21+4)+2*10;
+	piece(offset_x,offset_y,select,niveauTaille); // bordure rouge
 	
 }
 
-/*
- * niveauNb : 5 :p
- */
-char * makePreview(char niveauNb) {
-	char *  preview = new char[5][5];
-	// de 0 à 17
-	preview = {
+char private_preview[5][5] = {
 		{1,2,5,2,16},
 		{17,3,10,13,12},
 		{9,11,15,4,6},
 		{8,9,7,4,6},
 		{0,1,0,1,0}
 	};
-	return preview;
+/*
+ * niveauNb : 5 :p
+ */
+char ** makePreview(char niveauNb) {
+	// de 0 à 17
+	//private_preview=
+	return (char **)private_preview;
 }
 
-char * newEmptyGrille() {
+char private_grille[7][7];
+char ** newEmptyGrille() {
 	char x;char y;
-	char *grille = new char[7][7];
 	for (x=0;x<7;x=x+1) {
 		for (y=0;y<7;y=y+1) {
-			grille[x][y]=CASE_VIDE;
+			private_grille[x][y]=CASE_VIDE;
 		}
 	}
-	return grille;
+	return (char **)private_grille;
 }
 
-char * computeNbPiece(char * preview, char niveauNb) {
+char private_nbPieces[18];
+char * computeNbPiece(char ** preview, char niveauNb) {
 	char x;char y;
-	char * nbPieces=new char[18];
 	for (x=0;x<18;x=x+1) {
-		nbPieces[x]=0;
+		private_nbPieces[x]=0;
 	}
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
-			nbPieces[preview[x][y]]=nbPieces[preview[x][y]]+1;
+			private_nbPieces[preview[x][y]]=private_nbPieces[preview[x][y]]+1;
 		}
 	}
-	return nbPieces;
+	return (char *)private_nbPieces;
 }
 
-main() {
+
+char ** preview;
+char ** grille;
+char * nbPieces;
+char select;
+
+void main(void) {
 char grille_x;char grille_y;char p;char pp; // pour pousser
+char niveauNb;char niveauTaille;
+char etatZone;char etatSelect;char curseurHaut;char curseurBas;
 // mode 1
 mode(1);
 // niveau
@@ -405,42 +430,40 @@ niveauNb=5;
 niveauTaille=21;
 
 
-constant CASE_VIDE=18;
-constant CURSEUR_BAS_SELECT=7*7;
-
 
 // modèle
-char * preview=makePreview(niveauNb);
-char * grille=newEmptyGrille(); // rempli avec des CASE_VIDE
-char select=CASE_VIDE;
-char nbPieces[20-3]=computeNbPiece(preview);
+preview=makePreview(niveauNb);
+grille=newEmptyGrille(); // rempli avec des CASE_VIDE
+select=CASE_VIDE;
+nbPieces=computeNbPiece(preview,niveauNb);
 // état
 etatZone=EN_HAUT;
-etatSelect=OFF;
+etatSelect=SELECT_OFF;
 curseurHaut=0;
 curseurBas=0;
 // rendu
-fillPreview(preview);
+vsync();
+fillPreview(preview,niveauTaille,niveauNb);
 fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 
 while (1) {
-if (touche()) {
-switch() {
-case TOUCHE_HAUT:
-	if (etatZone=EN_HAUT) {
-		if (curseurHaut % 2 = 0) {
+check_controller();
+//TOUCHE_HAUT
+if (get_key(Key_CursorUp)) {
+	if (etatZone==EN_HAUT) {
+		if ((curseurHaut % 2) == 0) {
 			curseurHaut=curseurHaut+1;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
 			if (curseurBas > 7 - 1) {
-				if (etatSelect=ON) {
+				if (etatSelect==SELECT_ON) {
 					grille_x=curseurBas%7;
 					grille_y=curseurBas/7;
 					// pousser
 					for (p=grille_y;p>0;p=p-1) {
-						if (grille[grille_x][p]=CASE_VIDE) {
+						if (grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p+1;pp<grille_y;pp=pp+1) {
 								grille[grille_x][pp]=grille[grille_x][pp-1];
 							}
@@ -455,20 +478,22 @@ case TOUCHE_HAUT:
 			}
 		}
 	}
-case TOUCHE_BAS:
-	if (etatZone=EN_HAUT) {
-		if (curseurHaut % 2 = 1) {
+}
+//TOUCHE_BAS
+if (get_key(Key_CursorDown)) {
+	if (etatZone==EN_HAUT) {
+		if ((curseurHaut % 2) == 1) {
 			curseurHaut=curseurHaut-1;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
 			if (curseurBas < 7*(niveauNb-1)) {
-				if (etatSelect=ON) {
+				if (etatSelect==SELECT_ON) {
 					grille_x=curseurBas%7;
 					grille_y=curseurBas/7;
 					// pousser
 					for (p=grille_y;p<niveauNb;p=p+1) {
-						if (grille[grille_x][p]=CASE_VIDE) {
+						if (grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p-1;pp>grille_y;pp=pp-1) {
 								grille[grille_x][pp]=grille[grille_x][pp+1];
 							}
@@ -483,20 +508,22 @@ case TOUCHE_BAS:
 			}
 		}
 	}
-case TOUCHE_DROITE:
-	if (etatZone=EN_HAUT) {
+}
+//TOUCHE_DROITE
+if (get_key(Key_CursorRight)) {
+	if (etatZone==EN_HAUT) {
 		if (curseurHaut <20) {
 			curseurHaut=curseurHaut+2;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
 			if (curseurBas % 7 < niveauNb - 1) {
-				if (etatSelect=ON) {
+				if (etatSelect==SELECT_ON) {
 					grille_x=curseurBas%7;
 					grille_y=curseurBas/7;
 					// pousser
 					for (p=grille_x;p<niveauNb;p=p+1) {
-						if (grille[p][grille_y]=CASE_VIDE) {
+						if (grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p-1;pp>grille_x;pp=pp-1) {
 								grille[pp][grille_y]=grille[pp+1][grille_y];
 							}
@@ -511,15 +538,17 @@ case TOUCHE_DROITE:
 			}
 		}
 	}
-case TOUCHE_GAUCHE:
-	if (etatZone=EN_HAUT) {
+}
+//TOUCHE_GAUCHE
+if (get_key(Key_CursorLeft)) {
+	if (etatZone==EN_HAUT) {
 		if (curseurHaut >2) {
 			curseurHaut=curseurHaut-2;
 		}
 	} else {
-		if (curseurBas = CURSEUR_BAS_SELECT) {
-			if (etatSelect=ON) {
-				if (grille[niveauNb - 1][0]=CASE_VIDE) {
+		if (curseurBas == CURSEUR_BAS_SELECT) {
+			if (etatSelect==SELECT_ON) {
+				if (grille[niveauNb - 1][0]==CASE_VIDE) {
 					grille[niveauNb - 1][0]=select;select=CASE_VIDE;
 					curseurBas=niveauNb - 1;
 				} else {
@@ -528,7 +557,7 @@ case TOUCHE_GAUCHE:
 					grille_y=curseurBas/7;
 					// pousser
 					for (p=grille_x;p>0;p=p-1) {
-						if (grille[p][grille_y]=CASE_VIDE) {
+						if (grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p+1;pp<grille_x;pp=pp+1) {
 								grille[pp][grille_y]=grille[pp-1][grille_y];
 							}
@@ -545,12 +574,12 @@ case TOUCHE_GAUCHE:
 			}
 		} else {
 			if (curseurBas % 7 > 0) {
-				if (etatSelect=ON) {
+				if (etatSelect==SELECT_ON) {
 					grille_x=curseurBas%7;
 					grille_y=curseurBas/7;
 					// pousser
 					for (p=grille_x;p>0;p=p-1) {
-						if (grille[p][grille_y]=CASE_VIDE) {
+						if (grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p+1;pp<grille_x;pp=pp+1) {
 								grille[pp][grille_y]=grille[pp-1][grille_y];
 							}
@@ -565,21 +594,24 @@ case TOUCHE_GAUCHE:
 			}
 		}
 	}
-case TOUCHE_ESPACE:
-	if (etatZone=EN_HAUT) {
+}
+//TOUCHE_ESPACE
+if (get_key(Key_Space)) {
+	if (etatZone==EN_HAUT) {
 		etatZone=EN_BAS;
 	} else {
-		etatZone=EN_HAUT
+		etatZone=EN_HAUT;
 	}
-	etatSelect=OFF;
+	etatSelect=SELECT_OFF;
 	curseurHaut=0;
 	curseurBas=CURSEUR_BAS_SELECT;
-break;
-case TOUCHE_ENTREE:
-	if (etatSelect=ON) {
-		etatSelect=OFF;
+}
+//TOUCHE_ENTREE
+if (get_key(Key_Return)) {
+	if (etatSelect==SELECT_ON) {
+		etatSelect=SELECT_OFF;
 	} else {
-		if (etatZone=EN_HAUT) {
+		if (etatZone==EN_HAUT) {
 			if (nbPieces[curseurHaut]>0) {
 				if (select!=CASE_VIDE) {
 					nbPieces[select]=nbPieces[select]+1;
@@ -588,29 +620,29 @@ case TOUCHE_ENTREE:
 				nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
 			}
 		} else {
-			if (curseurBas = CURSEUR_BAS_SELECT) {
+			if (curseurBas == CURSEUR_BAS_SELECT) {
 				if (select != CASE_VIDE) {
-					etatSelect=ON;
+					etatSelect=SELECT_ON;
 				}
 			} else {
-				if (grille[curseurBas] != CASE_VIDE) {
-					etatSelect=ON;
+				grille_x=curseurBas%7;
+				grille_y=curseurBas/7;
+				if (grille[grille_x][grille_y] != CASE_VIDE) {
+					etatSelect=SELECT_ON;
 				}
 			}
 		}
 	}
-	
-break;
 }
 // reafficher
 vsync();
-fillPreview(preview);
+fillPreview(preview,niveauTaille,niveauNb);
 fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
 fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 }
 }
 
-}
+
 
 
 
