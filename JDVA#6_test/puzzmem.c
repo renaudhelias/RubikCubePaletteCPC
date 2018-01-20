@@ -309,15 +309,56 @@ for (n=0;n<20-3;n++) {
 }
 }
 
+
+/*
+ * preview[][]
+ * niveauTaille : 15,21,35
+ * niveauNb : 3,5,7
+ */
+void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
+	char offset_x;char offset_y;char x; char y;
+	//moveTo
+	offset_x=2*10;
+	offset_y=2*(21+4)+2*10;
+	piece(offset_x,offset_y,19,105); // bordure rouge
+	for (x=0;x<niveauNb;x=x+1) {
+		for (y=0;y<niveauNb;y=y+1) {
+			piece(offset_x+x*21,offset_y+y*21,preview[x][y],niveauTaille); // la piece
+		}
+	}
+}
+
+
+
+char private_preview[5][5] = {
+		{1,2,5,2,16},
+		{17,3,10,13,12},
+		{9,11,15,4,6},
+		{8,9,7,4,6},
+		{0,1,0,1,0}
+	};
+/*
+ * niveauNb : 5 :p
+ */
+char ** makePreview(char niveauNb) {
+	// de 0 à 17
+	//private_preview=
+	return (char **)private_preview;
+}
+
+
 char nbPieces[18]={
 	1, 1,1,1,1, 1,1,1,1,
     1, 1,1,1,1, 1,1,1,1
 };
 
+char ** preview;
+
 void main(void)
 {
 	char offset_x; char offset_y;
 	char curseurHaut;char etatSelect; char etatZone;
+	char niveauNb;char niveauTaille;
 	mode(1);
 	printf("Hello World !");
 	put_pixel1(20,20,2);
@@ -332,6 +373,11 @@ void main(void)
 	etatSelect=SELECT_OFF;
 	etatZone=EN_HAUT;
 	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
+
+	niveauNb=5;
+	niveauTaille=21;
+	preview=makePreview(niveauNb);
+	fillPreview(preview,niveauTaille,niveauNb);
 
 	while(1){}
 }
