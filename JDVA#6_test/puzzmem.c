@@ -8,6 +8,10 @@
 /**
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
+#define EN_HAUT 1
+#define EN_BAS 2
+#define SELECT_OFF 0
+#define SELECT_ON 1
 /*
  * offset_x
  * offset_y
@@ -273,10 +277,47 @@ switch(noTile) {
 }
 }
 
+/*
+ * nbPieces[]
+ * curseurHaut : position du curseur, EN_HAUT
+ * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
+ * etatZone : EN_BAS ou EN_HAUT : si EN_BAS alors ne pas afficher de curseur via cette fonction
+ */
+void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
+char n;char x;char y;
+char offset_x;char offset_y;
+for (n=0;n<20-3;n++) {
+	x=n/2;
+	y=n%2;
+	//moveTo
+	offset_x=x*(21+4)+10;
+	offset_y=y*(21+4)+10;
+	piece(offset_x,offset_y,19,21); // bordure rouge
+	printf("%c",nbPieces[n]); // texte dessous la case : nombre de pièces
+	if (nbPieces[n]>0) {
+		piece(offset_x,offset_y,n,21); // la piece
+	} else {
+		piece(offset_x,offset_y,18,21); // case vide
+	}
+	if ((n==curseurHaut) && (etatZone==EN_HAUT)) {
+		if (etatSelect==SELECT_ON) {
+			piece(offset_x,offset_y,20,21);
+		} else {
+			piece(offset_x,offset_y,21,21);
+		}
+	}
+}
+}
+
+char nbPieces[18]={
+	1, 1,1,1,1, 1,1,1,1,
+    1, 1,1,1,1, 1,1,1,1
+};
 
 void main(void)
 {
 	char offset_x; char offset_y;
+	char curseurHaut;char etatSelect; char etatZone;
 	mode(1);
 	printf("Hello World !");
 	put_pixel1(20,20,2);
@@ -286,6 +327,12 @@ void main(void)
 	offset_x=22+1;
 	offset_y=22+21;
 	piece(offset_x,offset_y,5,21);
+	
+	curseurHaut=0;
+	etatSelect=SELECT_OFF;
+	etatZone=EN_HAUT;
+	fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
+
 	while(1){}
 }
 
