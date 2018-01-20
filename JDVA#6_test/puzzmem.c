@@ -169,6 +169,7 @@ switch(noTile) {
 				}
 			}
 		}
+	return;
 	case 13 :
 		// carré blanc 4
 		for (x=0;x<tailleTile;x++) {
@@ -216,6 +217,7 @@ switch(noTile) {
 				}
 			}
 		}
+	return;
 	case 17 :
 		// carré bleu 4
 		for (x=0;x<tailleTile;x++) {
@@ -227,6 +229,7 @@ switch(noTile) {
 				}
 			}
 		}
+	return;
 	case 18 :
 		// case vide
 		for (x=0;x<tailleTile;x++) {
@@ -286,7 +289,7 @@ switch(noTile) {
 void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
 char n;char x;char y;
 char offset_x;char offset_y;
-for (n=0;n<20-3;n++) {
+for (n=0;n<18;n++) {
 	x=n/2;
 	y=n%2;
 	//moveTo
