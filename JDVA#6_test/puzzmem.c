@@ -518,8 +518,8 @@ if (get_key(Key_CursorUp)) {
 					// pousser
 					for (p=grille_y;p>0;p=p-1) {
 						if (private_grille[grille_x][p]==CASE_VIDE) {
-							for (pp=p+1;pp<grille_y;pp=pp+1) {
-								private_grille[grille_x][pp]=private_grille[grille_x][pp-1];
+							for (pp=p;pp<grille_y;pp=pp+1) {
+								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas-niveauNb;
@@ -549,8 +549,8 @@ if (get_key(Key_CursorDown)) {
 					// pousser
 					for (p=grille_y;p<niveauNb;p=p+1) {
 						if (private_grille[grille_x][p]==CASE_VIDE) {
-							for (pp=p-1;pp>grille_y;pp=pp-1) {
-								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
+							for (pp=p;pp>grille_y;pp=pp-1) {
+								private_grille[grille_x][pp]=private_grille[grille_x][pp-1];
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas+niveauNb;
@@ -617,8 +617,8 @@ if (get_key(Key_CursorLeft)) {
 					// pousser
 					for (p=grille_x;p>0;p=p-1) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
-							for (pp=p+1;pp<grille_x;pp=pp+1) {
-								private_grille[pp][grille_y]=private_grille[pp-1][grille_y];
+							for (pp=p;pp<grille_x;pp=pp+1) {
+								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
 							}
 							private_grille[niveauNb - 1][0]=select;
 							select=CASE_VIDE;
@@ -639,8 +639,8 @@ if (get_key(Key_CursorLeft)) {
 					// pousser
 					for (p=grille_x;p>0;p=p-1) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
-							for (pp=p+1;pp<grille_x;pp=pp+1) {
-								private_grille[pp][grille_y]=private_grille[pp-1][grille_y];
+							for (pp=p;pp<grille_x;pp=pp+1) {
+								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas-1;
