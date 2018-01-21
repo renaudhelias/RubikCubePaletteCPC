@@ -10,3 +10,5 @@ Un vieux jeu que je jouais quand j'étais tout petit, je ne sais plus son nom. U
 ![puzzmem.dsk.png](puzzmem.dsk.png)
 
 ![puzzmem_mist-board.png](puzzmem_mist-board.png)
+
+keys : ENTER, SPACE, arrows.
