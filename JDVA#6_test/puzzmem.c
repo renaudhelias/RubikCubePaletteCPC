@@ -297,9 +297,14 @@ for (n=0;n<18;n++) {
 	x=n/2;
 	y=n%2;
 	//moveTo
-	offset_x=x*(21+ESPACEMENT)+ESPACEMENT;
-	offset_y=y*(21+ESPACEMENT)+ESPACEMENT+2*ESPACEMENT;
+	offset_x=x*(21+3)+ESPACEMENT+ESPACEMENT;
+	offset_y=y*(21+ESPACEMENT+2*ESPACEMENT)+ESPACEMENT+ESPACEMENT;
 	piece(offset_x,offset_y,19,21); // bordure rouge
+	if (y==0) {
+		locate(3+x*3,5);
+	} else {
+		locate(3+x*3,9);
+	}
 	printf("%c",nbPieces[n]+48); // texte dessous la case : nombre de pièces
 	if (nbPieces[n]>0) {
 		piece(offset_x,offset_y,n,21); // la piece
@@ -330,7 +335,7 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	char offset_x;char offset_y;char x; char y;
 	//moveTo
 	offset_x=2*ESPACEMENT;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	piece(offset_x,offset_y,19,105); // bordure rouge
 	
 	for (x=0;x<niveauNb;x=x+1) {
@@ -356,7 +361,7 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	char offset_x;char offset_y;char x; char y;
 	//moveTo
 	offset_x=105+2*2*ESPACEMENT;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+4*ESPACEMENT;
 	// plateau
 	piece(offset_x,offset_y,19,105); // bordure rouge
 
@@ -376,7 +381,7 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 
 	// selection
 	offset_x=2*105+2*2*ESPACEMENT+1;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+2*ESPACEMENT;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+4*ESPACEMENT;
 	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
 	piece(offset_x,offset_y,select,niveauTaille);
 	if (curseurBas==CURSEUR_BAS_SELECT) {
@@ -478,7 +483,7 @@ void main(void)
 	char one_key;
 	mode(1);
 	set_palette(puzzmem_palette);
-	printf("Hello World! ");
+	//printf("Hello World! ");
 	//put_pixel1(20,20,2);
 	//offset_x=22;
 	//offset_y=22;

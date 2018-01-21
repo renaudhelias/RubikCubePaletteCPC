@@ -8,6 +8,16 @@ void pen(unsigned char p)
 	__endasm;
 }
 
+void locate(unsigned char x,unsigned char y)
+{
+	__asm
+		ld A,4 (IX)
+		call #0xBB6F
+		ld A,5 (IX)
+		call #0xBB72
+	__endasm;
+}
+
 void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
   __asm

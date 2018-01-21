@@ -4,6 +4,9 @@
 void set_palette(const unsigned char *pPalette);
 
 void pen(unsigned char p);
+
+void locate(unsigned char x,unsigned char y);
+
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent
  */
