@@ -46,7 +46,7 @@ switch(noTile) {
 		// triangle 1
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x+y<tailleTile) {
+				if (x+y<tailleTile-1) {
 					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,3);
@@ -58,7 +58,7 @@ switch(noTile) {
 		// triangle 2
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x+y>tailleTile) {
+				if (x+y>tailleTile-1) {
 					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,3);
@@ -70,7 +70,7 @@ switch(noTile) {
 		// triangle 3
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x+tailleTile-y<tailleTile) {
+				if (x+tailleTile-1-y<tailleTile-1) {
 					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,3);
@@ -82,7 +82,7 @@ switch(noTile) {
 		// triangle 4
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x+tailleTile-y>tailleTile) {
+				if (x+tailleTile-1-y>tailleTile-1) {
 					put_pixel1(offset_x+x,offset_y+y,2);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,3);
@@ -190,7 +190,7 @@ switch(noTile) {
 		// carré bleu 1
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x<tailleTile/2 && y<tailleTile/2) {
+				if (x<tailleTile/2 && y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,2);
@@ -202,7 +202,7 @@ switch(noTile) {
 		// carré bleu 2
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x>tailleTile/2 && y<tailleTile/2) {
+				if (x>tailleTile/2 && y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,2);
@@ -214,7 +214,7 @@ switch(noTile) {
 		// carré bleu 3
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x>tailleTile/2 && y>tailleTile/2) {
+				if (x>tailleTile/2 && y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,2);
@@ -226,7 +226,7 @@ switch(noTile) {
 		// carré bleu 4
 		for (x=0;x<tailleTile;x++) {
 			for (y=0;y<tailleTile;y++) {
-				if (x<tailleTile/2 && y>tailleTile/2) {
+				if (x<tailleTile/2 && y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
 				} else {
 					put_pixel1(offset_x+x,offset_y+y,2);
@@ -246,12 +246,12 @@ switch(noTile) {
 		// bordure rouge
 		//for (x=-1;x<=tailleTile;x++) {
 		for (x=0;x<tailleTile+2;x++) {
-			put_pixel1(offset_x+x-1,offset_y-1,0);
+			put_pixel1(offset_x+x-1,offset_y-1,1);
 			put_pixel1(offset_x+x-1,offset_y+tailleTile,1);
 		}
 		//for (y=-1;y<=tailleTile;y++) {
 		for (y=0;y<tailleTile+2;y++) {
-			put_pixel1(offset_x-1,offset_y+y-1,0);
+			put_pixel1(offset_x-1,offset_y+y-1,1);
 			put_pixel1(offset_x+tailleTile,offset_y+y-1,1);
 		}
 	return;
@@ -259,13 +259,13 @@ switch(noTile) {
 		// select rouge
 		for (x=0;x<tailleTile;x++) {
 			if (x<tailleTile/4 || x>tailleTile*3/4) {
-				put_pixel1(offset_x+x,offset_y+0,0);
+				put_pixel1(offset_x+x,offset_y+0,1);
 				put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
 			}
 		}
 		for (y=0;y<tailleTile;y++) {
 			if (y<tailleTile/4 || y>tailleTile*3/4) {
-				put_pixel1(offset_x+0,offset_y+y,0);
+				put_pixel1(offset_x+0,offset_y+y,1);
 				put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
 			}
 		}
@@ -273,11 +273,11 @@ switch(noTile) {
 	case 21 :
 		// unselect rouge
 		for (x=0;x<tailleTile;x++) {
-			put_pixel1(offset_x+x,offset_y+0,0);
+			put_pixel1(offset_x+x,offset_y+0,1);
 			put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
 		}
 		for (y=0;y<tailleTile;y++) {
-			put_pixel1(offset_x+0,offset_y+y,0);
+			put_pixel1(offset_x+0,offset_y+y,1);
 			put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
 		}
 	return;
@@ -441,7 +441,7 @@ char private_nbPieces[18];
 char * computeNbPiece(char ** preview, char niveauNb) {
 	char x;char y;
 	for (x=0;x<18;x=x+1) {
-		private_nbPieces[x]=0;
+		private_nbPieces[x]=0+1;
 	}
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {

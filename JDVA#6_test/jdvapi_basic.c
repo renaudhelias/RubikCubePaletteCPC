@@ -150,21 +150,21 @@ void set_pixel_color1(unsigned char *pByteAddress, unsigned char nColor, unsigne
 {
 	unsigned char nByte = *pByteAddress;
 	if (nPixel == 0) {
-		nByte&=119;
-		if (nColor & 1) nByte |=128;
-		if (nColor & 2) nByte |=8;
+		nByte&=119;                  //0111 0111
+		if (nColor & 1) nByte |=128; //1000 0000
+		if (nColor & 2) nByte |=8;   //0000 1000
 	} else if (nPixel == 1) {
-		nByte&=187;
-		if (nColor & 1) nByte |=64;
-		if (nColor & 2) nByte |=4;
+		nByte&=187;                  //1011 1011
+		if (nColor & 1) nByte |=64;  //0100 0000
+		if (nColor & 2) nByte |=4;   //0000 0100
 	} else if (nPixel == 2) {
-		nByte&=234;
-		if (nColor & 1) nByte |=32;
-		if (nColor & 2) nByte |=2;
+		nByte&=221;                  //1101 1101
+		if (nColor & 1) nByte |=32;  //0010 0000
+		if (nColor & 2) nByte |=2;   //0000 0010
 	} else {
-		nByte&=238;
-		if (nColor & 1) nByte |=16;
-		if (nColor & 2) nByte |=1;
+		nByte&=238;                  //1110 1110
+		if (nColor & 1) nByte |=16;  //0001 0000
+		if (nColor & 2) nByte |=1;   //0000 0001
 	}
 	
 	*pByteAddress = nByte;
