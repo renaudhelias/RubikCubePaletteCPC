@@ -5,6 +5,9 @@
 #include "jdvapi_keyb.h"
 #include "jdvapi_sync.h"
 
+#include "bluegirl.h"
+#include "jdvapi_frame.h"
+
 /**
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
@@ -297,13 +300,13 @@ for (n=0;n<18;n++) {
 	x=n/2;
 	y=n%2;
 	//moveTo
-	offset_x=x*(21+3)+ESPACEMENT+ESPACEMENT;
+	offset_x=x*(21+3)+2;
 	offset_y=y*(21+ESPACEMENT+2*ESPACEMENT)+ESPACEMENT+ESPACEMENT;
 	piece(offset_x,offset_y,19,21); // bordure rouge
 	if (y==0) {
-		locate(3+x*3,5);
+		locate(2+x*3,5);
 	} else {
-		locate(3+x*3,9);
+		locate(2+x*3,9);
 	}
 	printf("%c",nbPieces[n]+48); // texte dessous la case : nombre de pièces
 	if (nbPieces[n]>0) {
@@ -334,8 +337,8 @@ char private_preview[7][7];
 void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 	char offset_x;char offset_y;char x; char y;
 	//moveTo
-	offset_x=2*ESPACEMENT;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
+	offset_x=2;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+6*ESPACEMENT+2+1;
 	piece(offset_x,offset_y,19,105); // bordure rouge
 	
 	for (x=0;x<niveauNb;x=x+1) {
@@ -360,8 +363,8 @@ char private_grille[7][7];
 void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
 	char offset_x;char offset_y;char x; char y;
 	//moveTo
-	offset_x=105+2*2*ESPACEMENT;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+4*ESPACEMENT;
+	offset_x=105+2+3;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	// plateau
 	piece(offset_x,offset_y,19,105); // bordure rouge
 
@@ -380,8 +383,8 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	}
 
 	// selection
-	offset_x=2*105+2*2*ESPACEMENT+1;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+4*ESPACEMENT;
+	offset_x=2*105+2+3+1;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
 	piece(offset_x,offset_y,select,niveauTaille);
 	if (curseurBas==CURSEUR_BAS_SELECT) {
@@ -446,7 +449,7 @@ char private_nbPieces[18];
 char * computeNbPiece(char ** preview, char niveauNb) {
 	char x;char y;
 	for (x=0;x<18;x=x+1) {
-		private_nbPieces[x]=0+1;
+		private_nbPieces[x]=0;
 	}
 	for (x=0;x<niveauNb;x=x+1) {
 		for (y=0;y<niveauNb;y=y+1) {
@@ -483,6 +486,10 @@ void main(void)
 	char one_key;
 	mode(1);
 	set_palette(puzzmem_palette);
+	//put_frame(vram(0,0),80,200,bluegirl);
+	put_frame(vram(45,0),80,200,bluegirl);
+	//put_frame(vram(200,0),80,200,bluegirl);
+	//while (1) {}
 	//printf("Hello World! ");
 	//put_pixel1(20,20,2);
 	//offset_x=22;
