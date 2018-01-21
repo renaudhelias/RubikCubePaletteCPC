@@ -357,38 +357,22 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 
 char private_grille[7][7];
 
-/*
- * grille[][]
- * niveauTaille 15,21,35
- * niveauNb : 3,5,7
- * curseurBas : position du curseur, EN_BAS
- * select : la pièce actuellement sélectionnée, CASE_VIDE
- * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
- * etatZone : EN_BAS ou EN_HAUT : si EN_HAUT alors ne pas afficher de curseur via cette fonction
- */
-void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char x; char y;
-	//moveTo
-	offset_x=105+2+3;
-	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
-	// plateau
-	piece(offset_x,offset_y,19,105); // bordure rouge
-
-	for (x=0;x<niveauNb;x=x+1) {
-		for (y=0;y<niveauNb;y=y+1) {
-			
-			piece(offset_x+x*21,offset_y+y*21,private_grille[x][y],niveauTaille); // la piece
-			if ((curseurBas==(x+y*niveauNb)) && (etatZone==EN_BAS)) {
-				if (etatSelect==SELECT_ON) {
-					piece(offset_x+x*21,offset_y+y*21,20,21);
-				} else {
-					piece(offset_x+x*21,offset_y+y*21,21,21);
-				}
+void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char curseurBas,char select,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;char x; char y;char n;
+		x=n%niveauNb;
+		y=n/niveauNb;
+		piece(offset_x+x*21,offset_y+y*21,private_grille[x][y],niveauTaille); // la piece
+		if ((curseurBas==(x+y*niveauNb)) && (etatZone==EN_BAS)) {
+			if (etatSelect==SELECT_ON) {
+				piece(offset_x+x*21,offset_y+y*21,20,21);
+			} else {
+				piece(offset_x+x*21,offset_y+y*21,21,21);
 			}
 		}
-	}
 
-	// selection
+}
+void fillSelect(char ** grille,char niveauTaille,char niveauNb, char curseurBas,char select,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;char x; char y;char n;
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
@@ -400,6 +384,31 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 			piece(offset_x,offset_y,21,niveauTaille);
 		}
 	}
+}
+
+/*
+ * grille[][]
+ * niveauTaille 15,21,35
+ * niveauNb : 3,5,7
+ * curseurBas : position du curseur, EN_BAS
+ * select : la pièce actuellement sélectionnée, CASE_VIDE
+ * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
+ * etatZone : EN_BAS ou EN_HAUT : si EN_HAUT alors ne pas afficher de curseur via cette fonction
+ */
+void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;char x; char y;char n;
+	//moveTo
+	offset_x=105+2+3;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
+	// plateau
+	piece(offset_x,offset_y,19,105); // bordure rouge
+
+	for (n=0;n<niveauNb*niveauNb;n++) {
+		fill1Grille(grille,niveauTaille,niveauNb,n,curseurBas,select,etatSelect,etatZone);
+	}
+
+	// selection
+	fillSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 }
 
 /*
@@ -487,7 +496,7 @@ void main(void)
 {
 	//char offset_x; char offset_y;
 	char curseurHaut;char curseurBas;char etatSelect; char etatZone;
-	char curseurHautOld;
+	char curseurHautOld;char curseurBasOld;
 	char niveauNb;char niveauTaille;
 	char grille_x;char grille_y;char p; char pp;
 	char one_key;
@@ -651,7 +660,7 @@ if (get_key(Key_CursorRight)) {
 //TOUCHE_GAUCHE
 if (get_key(Key_CursorLeft)) {
 	if (etatZone==EN_HAUT) {
-		if (curseurHaut >2) {
+		if (curseurHaut >=2) {
 			curseurHautOld=curseurHaut;
 			curseurHaut=curseurHaut-2;
 			one_key=EN_HAUT;
