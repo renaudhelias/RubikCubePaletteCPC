@@ -21,17 +21,17 @@ void check_controller()
   __asm
     di
     ld hl, #_aKeyboard
-    ld bc,#0xf782
+    ld bc,#0xf782 ; PPI port A out /C out
     out (c),c
-    ld bc,#0xf40e
+    ld bc,#0xf40e ; Select Ay reg 14 on ppi port A 
     ld e,b
     out (c),c
-    ld bc,#0xf6c0
+    ld bc,#0xf6c0 ; This value is an AY index (R14) 
     ld d,b
     out (c),c
-    ld c,#0x00
+    ld c,#0x00 ; Validate!! out (c),0
     out (c),c
-    ld bc,#0xf792
+    ld bc,#0xf792 ; PPI port A in/C out 
     out (c),c
     ld a,#0x40
     ld c,#0x4a
@@ -43,8 +43,8 @@ void check_controller()
     inc a
     cp c
     jr c,_loop
-    ld bc,#0xf782
+    ld bc,#0xf782 ; PPI port A out / C out 
     out (c),c
-    ei
+    ei ; 211 microseconds
   __endasm;
 }
