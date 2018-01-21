@@ -7,6 +7,7 @@ Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch
 ![JDVA6.dsk.png](JDVA6.dsk.png)
 
 Un vieux jeu que je jouais quand j'étais tout petit, je ne sais plus son nom, je l'ai recréé de mémoire. Un jeu de puzzle et de mémoire :
+
 ![puzzmem.dsk.png](puzzmem.dsk.png)
 
 ![puzzmem_mist-board.png](puzzmem_mist-board.png)
