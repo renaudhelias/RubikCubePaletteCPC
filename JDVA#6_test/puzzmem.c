@@ -261,34 +261,34 @@ switch(noTile) {
 	return;
 	case 20 :
 		// select rouge
-		for (x=0;x<tailleTile;x++) {
-			if (x<tailleTile/4 || x>tailleTile*3/4) {
-				put_pixel1(offset_x+x,offset_y+0,1);
-				put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
+		for (x=1;x<tailleTile-1;x++) {
+			if (x<=tailleTile/4+1 || x>=tailleTile*3/4) {
+				put_pixel1(offset_x+x,offset_y+1,1);
+				put_pixel1(offset_x+x,offset_y+tailleTile-2,1);
 			}
 		}
-		for (y=0;y<tailleTile;y++) {
-			if (y<tailleTile/4 || y>tailleTile*3/4) {
-				put_pixel1(offset_x+0,offset_y+y,1);
-				put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
+		for (y=1;y<tailleTile-1;y++) {
+			if (y<=tailleTile/4+1 || y>=tailleTile*3/4) {
+				put_pixel1(offset_x+1,offset_y+y,1);
+				put_pixel1(offset_x+tailleTile-2,offset_y+y,1);
 			}
 		}
 	return;
 	case 21 :
 		// unselect rouge
-		for (x=0;x<tailleTile;x++) {
-			put_pixel1(offset_x+x,offset_y+0,1);
-			put_pixel1(offset_x+x,offset_y+tailleTile-1,1);
+		for (x=1;x<tailleTile-1;x++) {
+			put_pixel1(offset_x+x,offset_y+1,1);
+			put_pixel1(offset_x+x,offset_y+tailleTile-2,1);
 		}
-		for (y=0;y<tailleTile;y++) {
-			put_pixel1(offset_x+0,offset_y+y,1);
-			put_pixel1(offset_x+tailleTile-1,offset_y+y,1);
+		for (y=1;y<tailleTile-1;y++) {
+			put_pixel1(offset_x+1,offset_y+y,1);
+			put_pixel1(offset_x+tailleTile-2,offset_y+y,1);
 		}
 	return;
 }
 }
 
-void fillListe1Piece(char * nbPieces,char n,char curseurHaut,char etatSelect,char etatZone) {
+void fillListe1Piece(char * nbPieces,char n,char curseurHaut,char etatSelect,char etatZone,char bordure) {
 char x;char y;
 char offset_x;char offset_y;
 	x=n/2;
@@ -296,7 +296,9 @@ char offset_x;char offset_y;
 	//moveTo
 	offset_x=x*(21+3)+2;
 	offset_y=y*(21+ESPACEMENT+2*ESPACEMENT)+ESPACEMENT+ESPACEMENT;
-	piece(offset_x,offset_y,19,21); // bordure rouge
+	if (bordure==1) {
+		piece(offset_x,offset_y,19,21); // bordure rouge
+	}
 	if (y==0) {
 		locate(2+x*3,5);
 	} else {
@@ -326,7 +328,7 @@ char offset_x;char offset_y;
 void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
 char n;
 for (n=0;n<18;n++) {
-	fillListe1Piece(nbPieces,n,curseurHaut,etatSelect,etatZone);
+	fillListe1Piece(nbPieces,n,curseurHaut,etatSelect,etatZone,1);
 }
 }
 
@@ -378,7 +380,7 @@ void fillSelect(char niveauTaille,char curseurBas,char select,char etatSelect,ch
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	piece(offset_x,offset_y,select,niveauTaille);
-	if (curseurBas==CURSEUR_BAS_SELECT && (etatZone==EN_BAS)) {
+	if ((curseurBas==CURSEUR_BAS_SELECT) && (etatZone==EN_BAS)) {
 		if (etatSelect==SELECT_ON) {
 			piece(offset_x,offset_y,20,niveauTaille);
 		} else {
@@ -499,10 +501,10 @@ char select;
 void main(void)
 {
 	//char offset_x; char offset_y;
-	char curseurHaut;volatile char curseurBas;char etatSelect; char etatZone;
-	char curseurHautOld;volatile char curseurBasOld;
+	char curseurHaut;char curseurBas;char etatSelect;char etatZone;
+	char curseurHautOld;char curseurBasOld;
 	char niveauNb;char niveauTaille;
-	char grille_x;char grille_y;volatile char p; volatile char pp;
+	char grille_x;char grille_y;char p;char pp;
 	char one_key;
 	mode(1);
 	set_palette(puzzmem_palette);
@@ -524,7 +526,9 @@ void main(void)
 	
 	// état
 	curseurHaut=0;
+	curseurHautOld=0;
 	curseurBas=0;
+	curseurBasOld=0;
 	etatSelect=SELECT_OFF;
 	etatZone=EN_BAS;
 
@@ -545,7 +549,9 @@ void main(void)
 
 while (1) {
 one_key=0;
-check_controller();
+do {
+	check_controller();
+} while (get_key(Key_CursorUp)+get_key(Key_CursorDown)+get_key(Key_CursorRight)+get_key(Key_CursorLeft)+get_key(Key_Space)+get_key(Key_Return)!=1);
 //TOUCHE_HAUT
 if (get_key(Key_CursorUp)) {
 	if (etatZone==EN_HAUT) {
@@ -561,7 +567,7 @@ if (get_key(Key_CursorUp)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_y;p>=0) {// 0-1==0...
+					for (p=grille_y;p>=0;) {// 0-1==0...
 						if (private_grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p;pp<grille_y;pp=pp+1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
@@ -693,8 +699,8 @@ if (get_key(Key_CursorLeft)) {
 			if (etatSelect==SELECT_ON) {
 				if (private_grille[niveauNb - 1][0]==CASE_VIDE) {
 					private_grille[niveauNb - 1][0]=select;select=CASE_VIDE;
-					curseurBas=niveauNb - 1;
 					curseurBasOld=curseurBas;
+					curseurBas=niveauNb - 1;
 					one_key=EN_BAS;
 				} else {
 					curseurBas=niveauNb - 1;
@@ -713,6 +719,7 @@ if (get_key(Key_CursorLeft)) {
 								select=CASE_VIDE;
 								curseurBasOld=curseurBas; // leger
 								curseurBas=niveauNb - 1;
+								fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 								one_key=EN_BAS;
 								break;
 							}
@@ -746,6 +753,7 @@ if (get_key(Key_CursorLeft)) {
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas-1;
+							fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 							one_key=EN_BAS;
 							break;
 						}
@@ -769,10 +777,19 @@ if (get_key(Key_Space)) {
 	one_key=EN_HAUT_ET_EN_BAS;
 	if (etatZone==EN_HAUT) {
 		etatZone=EN_BAS;
+		if ((select==CASE_VIDE) && (nbPieces[curseurHaut]>0)) {
+			select=curseurHaut;
+			nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
+			etatSelect=SELECT_ON;
+		} else if (select==CASE_VIDE) {
+			etatSelect=SELECT_OFF;
+		} else {
+			etatSelect=SELECT_ON;
+		}
 	} else {
 		etatZone=EN_HAUT;
+		etatSelect=SELECT_OFF;
 	}
-	etatSelect=SELECT_OFF;
 	curseurHautOld=curseurHaut;
 	curseurHaut=0;
 	curseurBasOld=curseurBas;
@@ -821,15 +838,25 @@ if (one_key!=0) {
 	vsync();
 	//fillPreview(preview,niveauTaille,niveauNb);
 	if ((one_key==EN_HAUT) || (one_key==EN_HAUT_ET_EN_BAS)) {
-		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone);
-		fillListe1Piece(nbPieces,curseurHautOld,curseurHaut,etatSelect,etatZone);
+		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone,0);
+		if (curseurHautOld!=curseurHaut) {
+			fillListe1Piece(nbPieces,curseurHautOld,curseurHaut,etatSelect,etatZone,0);
+		}
 	}
 	if ((one_key==EN_BAS) || (one_key==EN_HAUT_ET_EN_BAS)) {
-		fill1Grille(grille,niveauTaille,niveauNb,curseurBas,curseurBas,etatSelect,etatZone);
-		if (curseurBasOld!=curseurBas) {
-			fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+		if (curseurBas==CURSEUR_BAS_SELECT) {
+			fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
+		} else {
+			fill1Grille(grille,niveauTaille,niveauNb,curseurBas,curseurBas,etatSelect,etatZone);
 		}
-		fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
+		if (curseurBasOld!=curseurBas) {
+			if (curseurBasOld==CURSEUR_BAS_SELECT) {
+				fillSelect(niveauTaille,curseurBasOld,select,etatSelect,etatZone);
+			} else {
+				fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+			}
+		}
+		
 	}
 }
 }
