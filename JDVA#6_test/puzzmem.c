@@ -15,6 +15,7 @@
 #define	CURSEUR_BAS_SELECT 7*7
 #define EN_HAUT 1
 #define EN_BAS 2
+#define EN_HAUT_ET_EN_BAS 3
 #define SELECT_OFF 0
 #define SELECT_ON 1
 #define ESPACEMENT 4
@@ -287,16 +288,9 @@ switch(noTile) {
 }
 }
 
-/*
- * nbPieces[]
- * curseurHaut : position du curseur, EN_HAUT
- * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
- * etatZone : EN_BAS ou EN_HAUT : si EN_BAS alors ne pas afficher de curseur via cette fonction
- */
-void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
-char n;char x;char y;
+void fillListe1Piece(char * nbPieces,char n,char curseurHaut,char etatSelect,char etatZone) {
+char x;char y;
 char offset_x;char offset_y;
-for (n=0;n<18;n++) {
 	x=n/2;
 	y=n%2;
 	//moveTo
@@ -321,6 +315,18 @@ for (n=0;n<18;n++) {
 			piece(offset_x,offset_y,21,21);
 		}
 	}
+}
+
+/*
+ * nbPieces[]
+ * curseurHaut : position du curseur, EN_HAUT
+ * etatSelect : si on affiche un carré rouge aux bords continue (OFF) ou discontinue (ON)
+ * etatZone : EN_BAS ou EN_HAUT : si EN_BAS alors ne pas afficher de curseur via cette fonction
+ */
+void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
+char n;char x;char y;
+for (n=0;n<18;n++) {
+	fillListe1Piece(nbPieces,n,curseurHaut,etatSelect,etatZone);
 }
 }
 
@@ -479,8 +485,9 @@ char select;
 
 void main(void)
 {
-	char offset_x; char offset_y;
+	//char offset_x; char offset_y;
 	char curseurHaut;char curseurBas;char etatSelect; char etatZone;
+	char curseurHautOld;
 	char niveauNb;char niveauTaille;
 	char grille_x;char grille_y;char p; char pp;
 	char one_key;
@@ -528,10 +535,11 @@ one_key=0;
 check_controller();
 //TOUCHE_HAUT
 if (get_key(Key_CursorUp)) {
-	one_key=1;
 	if (etatZone==EN_HAUT) {
 		if ((curseurHaut % 2) == 1) {
+			curseurHautOld=curseurHaut;
 			curseurHaut=curseurHaut-1;
+			one_key=EN_HAUT;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
@@ -547,11 +555,13 @@ if (get_key(Key_CursorUp)) {
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas-niveauNb;
+							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
 					curseurBas=curseurBas-niveauNb;
+					one_key=EN_BAS;
 				}
 			}
 		}
@@ -559,10 +569,11 @@ if (get_key(Key_CursorUp)) {
 }
 //TOUCHE_BAS
 if (get_key(Key_CursorDown)) {
-	one_key=1;
 	if (etatZone==EN_HAUT) {
 		if ((curseurHaut % 2) == 0) {
+			curseurHautOld=curseurHaut;
 			curseurHaut=curseurHaut+1;
+			one_key=EN_HAUT;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
@@ -578,11 +589,13 @@ if (get_key(Key_CursorDown)) {
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas+niveauNb;
+							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
 					curseurBas=curseurBas+niveauNb;
+					one_key=EN_BAS;
 				}
 			}
 		}
@@ -590,10 +603,11 @@ if (get_key(Key_CursorDown)) {
 }
 //TOUCHE_DROITE
 if (get_key(Key_CursorRight)) {
-	one_key=1;
 	if (etatZone==EN_HAUT) {
 		if (curseurHaut <20) {
+			curseurHautOld=curseurHaut;
 			curseurHaut=curseurHaut+2;
+			one_key=EN_HAUT;
 		}
 	} else {
 		if (curseurBas != CURSEUR_BAS_SELECT) {
@@ -609,11 +623,13 @@ if (get_key(Key_CursorRight)) {
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas+1;
+							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
 					curseurBas=curseurBas+1;
+					one_key=EN_BAS;
 				}
 			} else if (curseurBas < niveauNb) {
 				// on peut effectivement y poser une piece mais pas pousser ? oups...
@@ -622,9 +638,11 @@ if (get_key(Key_CursorRight)) {
 						select=private_grille[niveauNb - 1][0];
 						private_grille[niveauNb - 1][0]=CASE_VIDE;
 						curseurBas=CURSEUR_BAS_SELECT;
+						one_key=EN_BAS;
 					}
 				} else {
 					curseurBas=CURSEUR_BAS_SELECT;
+					one_key=EN_BAS;
 				}
 			}
 		}
@@ -632,10 +650,11 @@ if (get_key(Key_CursorRight)) {
 }
 //TOUCHE_GAUCHE
 if (get_key(Key_CursorLeft)) {
-	one_key=1;
 	if (etatZone==EN_HAUT) {
 		if (curseurHaut >2) {
+			curseurHautOld=curseurHaut;
 			curseurHaut=curseurHaut-2;
+			one_key=EN_HAUT;
 		}
 	} else {
 		if (curseurBas == CURSEUR_BAS_SELECT) {
@@ -643,6 +662,7 @@ if (get_key(Key_CursorLeft)) {
 				if (private_grille[niveauNb - 1][0]==CASE_VIDE) {
 					private_grille[niveauNb - 1][0]=select;select=CASE_VIDE;
 					curseurBas=niveauNb - 1;
+					one_key=EN_BAS;
 				} else {
 					curseurBas=niveauNb - 1;
 					grille_x=curseurBas%niveauNb;
@@ -656,6 +676,7 @@ if (get_key(Key_CursorLeft)) {
 							private_grille[niveauNb - 1][0]=select;
 							select=CASE_VIDE;
 							curseurBas=niveauNb - 1;
+							one_key=EN_BAS;
 							break;
 						}
 					}
@@ -663,6 +684,7 @@ if (get_key(Key_CursorLeft)) {
 				}
 			} else {
 				curseurBas = niveauNb - 1;
+				one_key=EN_BAS;
 			}
 		} else {
 			if (curseurBas % niveauNb > 0) {
@@ -677,11 +699,13 @@ if (get_key(Key_CursorLeft)) {
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBas=curseurBas-1;
+							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
 					curseurBas=curseurBas-1;
+					one_key=EN_BAS;
 				}
 			}
 		}
@@ -689,21 +713,22 @@ if (get_key(Key_CursorLeft)) {
 }
 //TOUCHE_ESPACE
 if (get_key(Key_Space)) {
-	one_key=1;
+	one_key=EN_HAUT_ET_EN_BAS;
 	if (etatZone==EN_HAUT) {
 		etatZone=EN_BAS;
 	} else {
 		etatZone=EN_HAUT;
 	}
 	etatSelect=SELECT_OFF;
+	curseurHautOld=curseurHaut;
 	curseurHaut=0;
 	curseurBas=CURSEUR_BAS_SELECT;
 }
 //TOUCHE_ENTREE
 if (get_key(Key_Return)) {
-	one_key=1;
 	if (etatSelect==SELECT_ON) {
 		etatSelect=SELECT_OFF;
+		one_key=etatZone; // EN_HAUT ou EN_BAS
 	} else {
 		if (etatZone==EN_HAUT) {
 			if (nbPieces[curseurHaut]>0) {
@@ -712,29 +737,34 @@ if (get_key(Key_Return)) {
 				}
 				select=curseurHaut;
 				nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
+				one_key=EN_HAUT_ET_EN_BAS; // le compteur décrémente, et select bouge
 			}
 		} else {
 			if (curseurBas == CURSEUR_BAS_SELECT) {
 				if (select != CASE_VIDE) {
 					etatSelect=SELECT_ON;
+					one_key=EN_BAS;
 				}
 			} else {
 				grille_x=curseurBas%niveauNb;
 				grille_y=curseurBas/niveauNb;
 				if (private_grille[grille_x][grille_y] != CASE_VIDE) {
 					etatSelect=SELECT_ON;
+					one_key=EN_BAS;
 				}
 			}
 		}
 	}
 }
-if (one_key==1) {
+if (one_key!=0) {
 	// reafficher
 	vsync();
 	//fillPreview(preview,niveauTaille,niveauNb);
-	if (etatZone==EN_HAUT) {
-		fillListePieces(nbPieces,curseurHaut,etatSelect,etatZone);
-	} else {
+	if (one_key==EN_HAUT || one_key==EN_HAUT_ET_EN_BAS) {
+		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone);
+		fillListe1Piece(nbPieces,curseurHautOld,curseurHaut,etatSelect,etatZone);
+	}
+	if (one_key==EN_BAS || one_key==EN_HAUT_ET_EN_BAS) {
 		fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 	}
 }
