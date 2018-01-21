@@ -549,9 +549,9 @@ void main(void)
 
 while (1) {
 one_key=0;
-do {
+//do {
 	check_controller();
-} while (get_key(Key_CursorUp)+get_key(Key_CursorDown)+get_key(Key_CursorRight)+get_key(Key_CursorLeft)+get_key(Key_Space)+get_key(Key_Return)!=1);
+//} while (get_key(Key_CursorUp)+get_key(Key_CursorDown)+get_key(Key_CursorRight)+get_key(Key_CursorLeft)+get_key(Key_Space)+get_key(Key_Return)!=1);
 //TOUCHE_HAUT
 if (get_key(Key_CursorUp)) {
 	if (etatZone==EN_HAUT) {
@@ -580,11 +580,11 @@ if (get_key(Key_CursorUp)) {
 							one_key=EN_BAS;
 							break;
 						}
-					}
-					if (p==0) {
-						break;
-					} else {
-						p=p-1;
+						if (p==0) {
+							break;
+						} else {
+							p=p-1;
+						}
 					}
 				} else {
 					curseurBasOld=curseurBas;
