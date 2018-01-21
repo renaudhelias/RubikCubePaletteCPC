@@ -412,7 +412,7 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
-	fillSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
+	fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 }
 
 /*
@@ -499,10 +499,10 @@ char select;
 void main(void)
 {
 	//char offset_x; char offset_y;
-	char curseurHaut;char curseurBas;char etatSelect; char etatZone;
-	char curseurHautOld;char curseurBasOld;
+	char curseurHaut;volatile char curseurBas;char etatSelect; char etatZone;
+	char curseurHautOld;volatile char curseurBasOld;
 	char niveauNb;char niveauTaille;
-	char grille_x;char grille_y;char p; char pp;
+	char grille_x;char grille_y;volatile char p; volatile char pp;
 	char one_key;
 	mode(1);
 	set_palette(puzzmem_palette);
@@ -561,7 +561,7 @@ if (get_key(Key_CursorUp)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_y;p>=0;p=p-1) {
+					for (p=grille_y;p>=0) {// 0-1==0...
 						if (private_grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p;pp<grille_y;pp=pp+1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
@@ -574,6 +574,11 @@ if (get_key(Key_CursorUp)) {
 							one_key=EN_BAS;
 							break;
 						}
+					}
+					if (p==0) {
+						break;
+					} else {
+						p=p-1;
 					}
 				} else {
 					curseurBasOld=curseurBas;
@@ -696,19 +701,26 @@ if (get_key(Key_CursorLeft)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_x;p>=0;p=p-1) {
-						if (private_grille[p][grille_y]==CASE_VIDE) {
-							for (pp=p;pp<grille_x;pp=pp+1) {
-								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
-								curseurBasOld=pp+grille_y*niveauNb;
-								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+					if (grille_x>0) {
+						for (p=grille_x;p>=0;) { // 0-1==0...
+							if (private_grille[p][grille_y]==CASE_VIDE) {
+								for (pp=p;pp<grille_x;pp=pp+1) {
+									private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
+									curseurBasOld=pp+grille_y*niveauNb;
+									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								}
+								private_grille[niveauNb - 1][0]=select;
+								select=CASE_VIDE;
+								curseurBasOld=curseurBas; // leger
+								curseurBas=niveauNb - 1;
+								one_key=EN_BAS;
+								break;
 							}
-							private_grille[niveauNb - 1][0]=select;
-							select=CASE_VIDE;
-							curseurBasOld=curseurBas; // leger
-							curseurBas=niveauNb - 1;
-							one_key=EN_BAS;
-							break;
+							if (p==0) {
+								break;
+							} else {
+								p=p-1;
+							}
 						}
 					}
 					// pousser ?
@@ -724,7 +736,7 @@ if (get_key(Key_CursorLeft)) {
 					grille_x=curseurBas%niveauNb;
 					grille_y=curseurBas/niveauNb;
 					// pousser
-					for (p=grille_x;p>=0;p=p-1) {
+					for (p=grille_x;p>=0;) { // 0-1==0...
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
@@ -736,6 +748,11 @@ if (get_key(Key_CursorLeft)) {
 							curseurBas=curseurBas-1;
 							one_key=EN_BAS;
 							break;
+						}
+						if (p==0) {
+							break;
+						} else {
+							p=p-1;
 						}
 					}
 				} else {
