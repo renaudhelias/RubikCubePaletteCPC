@@ -324,7 +324,7 @@ char offset_x;char offset_y;
  * etatZone : EN_BAS ou EN_HAUT : si EN_BAS alors ne pas afficher de curseur via cette fonction
  */
 void fillListePieces(char * nbPieces,char curseurHaut,char etatSelect,char etatZone) {
-char n;char x;char y;
+char n;
 for (n=0;n<18;n++) {
 	fillListe1Piece(nbPieces,n,curseurHaut,etatSelect,etatZone);
 }
@@ -357,8 +357,10 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 
 char private_grille[7][7];
 
-void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char curseurBas,char select,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char x; char y;char n;
+void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char curseurBas,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;char x; char y;
+	offset_x=105+2+3;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 		x=n%niveauNb;
 		y=n/niveauNb;
 		piece(offset_x+x*21,offset_y+y*21,private_grille[x][y],niveauTaille); // la piece
@@ -371,13 +373,12 @@ void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char cur
 		}
 
 }
-void fillSelect(char ** grille,char niveauTaille,char niveauNb, char curseurBas,char select,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char x; char y;char n;
+void fillSelect(char niveauTaille,char curseurBas,char select,char etatSelect,char etatZone) {
+	char offset_x;char offset_y;
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
-	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
 	piece(offset_x,offset_y,select,niveauTaille);
-	if (curseurBas==CURSEUR_BAS_SELECT) {
+	if (curseurBas==CURSEUR_BAS_SELECT && (etatZone==EN_BAS)) {
 		if (etatSelect==SELECT_ON) {
 			piece(offset_x,offset_y,20,niveauTaille);
 		} else {
@@ -396,7 +397,7 @@ void fillSelect(char ** grille,char niveauTaille,char niveauNb, char curseurBas,
  * etatZone : EN_BAS ou EN_HAUT : si EN_HAUT alors ne pas afficher de curseur via cette fonction
  */
 void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curseurBas,char select,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char x; char y;char n;
+	char offset_x;char offset_y;char n;
 	//moveTo
 	offset_x=105+2+3;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
@@ -404,10 +405,13 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	piece(offset_x,offset_y,19,105); // bordure rouge
 
 	for (n=0;n<niveauNb*niveauNb;n++) {
-		fill1Grille(grille,niveauTaille,niveauNb,n,curseurBas,select,etatSelect,etatZone);
+		fill1Grille(grille,niveauTaille,niveauNb,n,curseurBas,etatSelect,etatZone);
 	}
 
 	// selection
+	offset_x=2*105+2+3+1;
+	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
+	piece(offset_x,offset_y,19,niveauTaille); // bordure rouge
 	fillSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
 }
 
@@ -561,14 +565,18 @@ if (get_key(Key_CursorUp)) {
 						if (private_grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p;pp<grille_y;pp=pp+1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
+								curseurBasOld=grille_x+pp*niveauNb;
+								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas-niveauNb;
 							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
+					curseurBasOld=curseurBas;
 					curseurBas=curseurBas-niveauNb;
 					one_key=EN_BAS;
 				}
@@ -595,14 +603,18 @@ if (get_key(Key_CursorDown)) {
 						if (private_grille[grille_x][p]==CASE_VIDE) {
 							for (pp=p;pp>grille_y;pp=pp-1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp-1];
+								curseurBasOld=grille_x+pp*niveauNb;
+								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas+niveauNb;
 							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
+					curseurBasOld=curseurBas;
 					curseurBas=curseurBas+niveauNb;
 					one_key=EN_BAS;
 				}
@@ -629,14 +641,18 @@ if (get_key(Key_CursorRight)) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp>grille_x;pp=pp-1) {
 								private_grille[pp][grille_y]=private_grille[pp-1][grille_y];
+								curseurBasOld=pp+grille_y*niveauNb;
+								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas+1;
 							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
+					curseurBasOld=curseurBas;
 					curseurBas=curseurBas+1;
 					one_key=EN_BAS;
 				}
@@ -646,10 +662,12 @@ if (get_key(Key_CursorRight)) {
 					if (select==CASE_VIDE) {
 						select=private_grille[niveauNb - 1][0];
 						private_grille[niveauNb - 1][0]=CASE_VIDE;
+						curseurBasOld=curseurBas;
 						curseurBas=CURSEUR_BAS_SELECT;
 						one_key=EN_BAS;
 					}
 				} else {
+					curseurBasOld=curseurBas;
 					curseurBas=CURSEUR_BAS_SELECT;
 					one_key=EN_BAS;
 				}
@@ -671,6 +689,7 @@ if (get_key(Key_CursorLeft)) {
 				if (private_grille[niveauNb - 1][0]==CASE_VIDE) {
 					private_grille[niveauNb - 1][0]=select;select=CASE_VIDE;
 					curseurBas=niveauNb - 1;
+					curseurBasOld=curseurBas;
 					one_key=EN_BAS;
 				} else {
 					curseurBas=niveauNb - 1;
@@ -681,9 +700,12 @@ if (get_key(Key_CursorLeft)) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
+								curseurBasOld=pp+grille_y*niveauNb;
+								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 							}
 							private_grille[niveauNb - 1][0]=select;
 							select=CASE_VIDE;
+							curseurBasOld=curseurBas; // leger
 							curseurBas=niveauNb - 1;
 							one_key=EN_BAS;
 							break;
@@ -692,6 +714,7 @@ if (get_key(Key_CursorLeft)) {
 					// pousser ?
 				}
 			} else {
+				curseurBasOld=curseurBas;
 				curseurBas = niveauNb - 1;
 				one_key=EN_BAS;
 			}
@@ -705,14 +728,18 @@ if (get_key(Key_CursorLeft)) {
 						if (private_grille[p][grille_y]==CASE_VIDE) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
+								curseurBasOld=pp+grille_y*niveauNb;
+								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
+							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas-1;
 							one_key=EN_BAS;
 							break;
 						}
 					}
 				} else {
+					curseurBasOld=curseurBas;
 					curseurBas=curseurBas-1;
 					one_key=EN_BAS;
 				}
@@ -731,6 +758,7 @@ if (get_key(Key_Space)) {
 	etatSelect=SELECT_OFF;
 	curseurHautOld=curseurHaut;
 	curseurHaut=0;
+	curseurBasOld=curseurBas;
 	curseurBas=CURSEUR_BAS_SELECT;
 }
 //TOUCHE_ENTREE
@@ -747,11 +775,16 @@ if (get_key(Key_Return)) {
 				select=curseurHaut;
 				nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
 				one_key=EN_HAUT_ET_EN_BAS; // le compteur décrémente, et select bouge
+				etatZone=EN_BAS;
+				etatSelect=SELECT_ON;
+				curseurBasOld=curseurBas;
+				curseurBas=CURSEUR_BAS_SELECT;
 			}
 		} else {
 			if (curseurBas == CURSEUR_BAS_SELECT) {
 				if (select != CASE_VIDE) {
 					etatSelect=SELECT_ON;
+					curseurBasOld=curseurBas; // cheeting
 					one_key=EN_BAS;
 				}
 			} else {
@@ -759,6 +792,7 @@ if (get_key(Key_Return)) {
 				grille_y=curseurBas/niveauNb;
 				if (private_grille[grille_x][grille_y] != CASE_VIDE) {
 					etatSelect=SELECT_ON;
+					curseurBasOld=curseurBas; // cheeting
 					one_key=EN_BAS;
 				}
 			}
@@ -769,12 +803,16 @@ if (one_key!=0) {
 	// reafficher
 	vsync();
 	//fillPreview(preview,niveauTaille,niveauNb);
-	if (one_key==EN_HAUT || one_key==EN_HAUT_ET_EN_BAS) {
+	if ((one_key==EN_HAUT) || (one_key==EN_HAUT_ET_EN_BAS)) {
 		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone);
 		fillListe1Piece(nbPieces,curseurHautOld,curseurHaut,etatSelect,etatZone);
 	}
-	if (one_key==EN_BAS || one_key==EN_HAUT_ET_EN_BAS) {
-		fillGrilleEtSelect(grille,niveauTaille,niveauNb,curseurBas,select,etatSelect,etatZone);
+	if ((one_key==EN_BAS) || (one_key==EN_HAUT_ET_EN_BAS)) {
+		fill1Grille(grille,niveauTaille,niveauNb,curseurBas,curseurBas,etatSelect,etatZone);
+		if (curseurBasOld!=curseurBas) {
+			fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+		}
+		fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 	}
 }
 }
