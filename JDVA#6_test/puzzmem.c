@@ -12,6 +12,7 @@
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
 #define	CASE_VIDE 18
+#define	AUCUNE_CASE 22
 #define	CURSEUR_BAS_SELECT 7*7
 #define EN_HAUT 1
 #define EN_BAS 2
@@ -26,18 +27,20 @@
 #define TOUCHE_ESPACE 5
 #define TOUCHE_ENTREE 6
 
+// le preview s'affichait quand on avait mis toutes les pièces dans la grille, la grille se "fermait" (la case de transmission disparait, le curseur aussi), en haut les cases disparaissaient quand la case était vide, ce qui facilitait les déplacements. C'est au moment de la fermeture de la grille qu'on check si gagné ou pas.
+
 /*
  * offset_x
  * offset_y
  * noTile no de l'image à tracer en offset_x,offset_y
  * tailleTile taille de l'image : 15 21 ou 35
- * noTile2 no de la seconde image a enchainer (22 pour pas de seconde image à enchainer)
+ * noTile2 no de la seconde image a enchainer (AUCUNE_CASE pour pas de seconde image à enchainer)
  */
 void piece(char offset_x,char offset_y,char noTile,char tailleTile,char noTile2) {
 char x;
 char y;
 char mod4=offset_x%4;
-if (noTile2==22) {
+if (noTile2==AUCUNE_CASE) {
 	vsync();
 }
 switch(noTile) {
@@ -400,21 +403,21 @@ switch(noTile) {
 		}
 	break;
 }
-if (noTile2!=22) {
-	piece(offset_x,offset_y,noTile2,tailleTile,22);
+if (noTile2!=AUCUNE_CASE) {
+	piece(offset_x,offset_y,noTile2,tailleTile,AUCUNE_CASE);
 }
 }
 
 void fillListe1Piece(char * nbPieces,char n,char curseurHaut,char etatSelect,char etatZone,char bordure) {
 char x;char y;
-char offset_x;char offset_y;char secondePiece=22;
+char offset_x;char offset_y;char secondePiece=AUCUNE_CASE;
 	x=n/2;
 	y=n%2;
 	//moveTo
 	offset_x=x*(21+3)+2;
 	offset_y=y*(21+ESPACEMENT+2*ESPACEMENT)+ESPACEMENT+ESPACEMENT;
 	if (bordure==1) {
-		piece(offset_x,offset_y,19,21,22); // bordure rouge
+		piece(offset_x,offset_y,19,21,AUCUNE_CASE); // bordure rouge
 	}
 	if (y==0) {
 		locate(2+x*3,5);
@@ -482,7 +485,7 @@ char private_grille[7][7];
  * curseurBas : la case où est le curseur select (si EN_BAS)
  */
 void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char curseurBas,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char x; char y;char secondePiece=22;
+	char offset_x;char offset_y;char x; char y;char secondePiece=AUCUNE_CASE;
 	offset_x=105+2+3;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 		x=n%niveauNb;
@@ -501,7 +504,7 @@ void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char cur
  * select : la valeur de la case select
  */
 void fillSelect(char niveauTaille,char curseurBas,char select,char etatSelect,char etatZone) {
-	char offset_x;char offset_y;char secondePiece=22;
+	char offset_x;char offset_y;char secondePiece=AUCUNE_CASE;
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	if ((curseurBas==CURSEUR_BAS_SELECT) && (etatZone==EN_BAS)) {
@@ -529,7 +532,7 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	offset_x=105+2+3;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
 	// plateau
-	piece(offset_x,offset_y,19,105,22); // bordure rouge
+	piece(offset_x,offset_y,19,105,AUCUNE_CASE); // bordure rouge
 
 	for (n=0;n<niveauNb*niveauNb;n++) {
 		fill1Grille(grille,niveauTaille,niveauNb,n,curseurBas,etatSelect,etatZone);
@@ -538,7 +541,7 @@ void fillGrilleEtSelect(char ** grille,char niveauTaille,char niveauNb,char curs
 	// selection
 	offset_x=2*105+2+3+1;
 	offset_y=2*(21+2*ESPACEMENT)+2*ESPACEMENT+5*ESPACEMENT;
-	piece(offset_x,offset_y,19,niveauTaille,22); // bordure rouge
+	piece(offset_x,offset_y,19,niveauTaille,AUCUNE_CASE); // bordure rouge
 	fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 }
 
