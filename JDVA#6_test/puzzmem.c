@@ -771,7 +771,6 @@ if (get_key(Key_CursorLeft)) {
 					if (grille_x>0) {
 						for (p=grille_x;p>=0;) { // 0-1==0...
 							if (private_grille[p][grille_y]==CASE_VIDE) {
-								fillSelect(niveauTaille,niveauNb - 1,CASE_VIDE,etatSelect,etatZone); //optim
 								for (pp=p;pp<grille_x;pp=pp+1) {
 									private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
 									curseurBasOld=pp+grille_y*niveauNb;
@@ -781,9 +780,9 @@ if (get_key(Key_CursorLeft)) {
 								}
 								private_grille[niveauNb - 1][0]=select;
 								select=CASE_VIDE;
-								// leger
+								curseurBasOld=curseurBas; // leger
 								curseurBas=niveauNb - 1;
-								curseurBas=curseurBasOld; //optim
+								fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 								one_key=EN_BAS;
 								break;
 							}
