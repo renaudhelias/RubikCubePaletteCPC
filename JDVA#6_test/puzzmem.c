@@ -867,13 +867,14 @@ if (get_key(Key_Return)) {
 	} else {
 		if (etatZone==EN_HAUT) {
 			if (nbPieces[curseurHaut]>0) {
+				etatZone=EN_BAS;
 				if (select!=CASE_VIDE) {
 					nbPieces[select]=nbPieces[select]+1;
+					fillListe1Piece(nbPieces,select,select,etatSelect,etatZone,0);
 				}
 				select=curseurHaut;
 				nbPieces[curseurHaut]=nbPieces[curseurHaut]-1;
 				one_key=EN_HAUT_ET_EN_BAS; // le compteur décrémente, et select bouge
-				etatZone=EN_BAS;
 				etatSelect=SELECT_ON;
 				curseurBasOld=curseurBas;
 				curseurBas=CURSEUR_BAS_SELECT;
