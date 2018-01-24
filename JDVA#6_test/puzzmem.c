@@ -819,7 +819,6 @@ if (get_key(Key_CursorLeft)) {
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
 							curseurBas=curseurBas-1;
-							//fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 							one_key=EN_BAS;
 							break;
 						}
