@@ -188,3 +188,44 @@ void put_pixel1(unsigned char nX, unsigned char nY, unsigned char nColor)
 	nPixel = nX % 4;
 	set_pixel_color1((unsigned char *)nAddress, nColor, nPixel);
 }
+
+
+// 0..319 et 0..199
+//void put_pixel_byte1(unsigned char nX, unsigned char nY, unsigned char nColor0, unsigned char nColor1, unsigned char nColor2, unsigned char nColor3)
+//{
+//	unsigned char nByte=0;
+//	unsigned char * pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 4);
+//	if (nColor0 & 1) nByte |=128;
+//	if (nColor0 & 2) nByte |=8;
+//	if (nColor1 & 1) nByte |=64;
+//	if (nColor1 & 2) nByte |=4;
+//	if (nColor2 & 1) nByte |=32;
+//	if (nColor2 & 2) nByte |=2;
+//	if (nColor3 & 1) nByte |=16;
+//	if (nColor3 & 2) nByte |=1;
+//	*pByteAddress = nByte;
+//}
+
+// 0..319 et 0..199
+void put_pixel_byte1(unsigned char nX, unsigned char nY, unsigned char nColor0123)
+{
+	unsigned char nByte=0;
+	unsigned char * pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 4);
+	switch(nColor0123) {
+	case 0 :
+		nByte=0;
+	break;
+	case 1 :
+		nByte=240;
+	break;
+	case 2 :
+		nByte=15;
+	break;
+	case 3 :
+		nByte=255;
+	break;
+	}
+//	nByte=240;
+	*pByteAddress = nByte;
+}
+

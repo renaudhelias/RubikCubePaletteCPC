@@ -34,4 +34,10 @@ void line(unsigned int x,unsigned int y);
  // 0..319 et 0..199
  void put_pixel1(unsigned char nX, unsigned char nY, unsigned char nColor);
  
+ // 0..319 et 0..199
+ //void put_pixel_byte1(unsigned char nX, unsigned char nY, unsigned char nColor0, unsigned char nColor1, unsigned char nColor2, unsigned char nColor3);
+ 
+ // 0..319 et 0..199
+ void put_pixel_byte1(unsigned char nX, unsigned char nY, unsigned char nColor0123);
+ 
  #endif
