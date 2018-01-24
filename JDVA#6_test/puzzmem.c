@@ -903,10 +903,10 @@ if (one_key!=0) {
 	vsync();
 	//fillPreview(preview,niveauTaille,niveauNb);
 	if ((one_key==EN_HAUT) || (one_key==EN_HAUT_ET_EN_BAS)) {
-		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone,0);
 		if (curseurHautOld!=curseurHaut) {
 			fillListe1Piece(nbPieces,curseurHautOld,curseurHaut,etatSelect,etatZone,0);
 		}
+		fillListe1Piece(nbPieces,curseurHaut,curseurHaut,etatSelect,etatZone,0);
 	}
 	if ((one_key==EN_BAS) || (one_key==EN_HAUT_ET_EN_BAS)) {
 		if (curseurBasOld!=curseurBas) {
