@@ -179,96 +179,153 @@ switch(noTile) {
 	break;
 	case 10 :
 		// carré blanc 1
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x<tailleTile/2 && y<tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
-				} else {
+				} else if (y<tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,3);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,3);
+					}
 				}
 			}
 		}
 	break;
 	case 11 :
 		// carré blanc 2
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x>tailleTile/2 && y<tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
-				} else {
+				} else if (y<tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,3);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,3);
+					}
 				}
 			}
 		}
 	break;
 	case 12 :
 		// carré blanc 3
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x>tailleTile/2 && y>tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
-				} else {
+				} else if (y>tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,3);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,3);
+					}
 				}
 			}
 		}
 	break;
 	case 13 :
 		// carré blanc 4
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x<tailleTile/2 && y>tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
-				} else {
+				} else if (y>tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,3);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,3);
+					}
 				}
 			}
 		}
 	break;
 	case 14 :
 		// carré bleu 1
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x<tailleTile/2 && y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
-				} else {
+				} else if (y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,2);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,2);
+					}
 				}
+					
 			}
 		}
 	break;
 	case 15 :
 		// carré bleu 2
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x>tailleTile/2 && y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
-				} else {
+				} else if (y<=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,2);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,2);
+					}
 				}
 			}
 		}
 	break;
 	case 16 :
 		// carré bleu 3
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x>tailleTile/2 && y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
-				} else {
+				} else if (y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,2);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,2);
+					}
 				}
 			}
 		}
 	break;
 	case 17 :
 		// carré bleu 4
-		for (x=0;x<tailleTile;x++) {
-			for (y=0;y<tailleTile;y++) {
+		for (y=0;y<tailleTile;y++) {
+			for (x=0;x<tailleTile;x++) {
 				if (x<tailleTile/2 && y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,3);
-				} else {
+				} else if (y>=tailleTile/2) {
 					put_pixel1(offset_x+x,offset_y+y,2);
+				} else {
+					if (x<tailleTile-4 && x%4==(4-mod4)%4) {
+						put_pixel_byte1(offset_x+x,offset_y+y,2);
+						x+=3; // x+=4;
+					} else {
+						put_pixel1(offset_x+x,offset_y+y,2);
+					}
 				}
 			}
 		}
