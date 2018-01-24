@@ -406,6 +406,10 @@ void fillPreview(char ** preview,char niveauTaille,char niveauNb) {
 
 char private_grille[7][7];
 
+/*
+ * n : la case à tracer
+ * curseurBas : la case où est le curseur select (si EN_BAS)
+ */
 void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char curseurBas,char etatSelect,char etatZone) {
 	char offset_x;char offset_y;char x; char y;
 	offset_x=105+2+3;
@@ -422,6 +426,10 @@ void fill1Grille(char ** grille,char niveauTaille,char niveauNb,char n, char cur
 		}
 
 }
+/*
+ * curseurBas : la case où est le curseur select (si EN_BAS)
+ * select : la valeur de la case select
+ */
 void fillSelect(char niveauTaille,char curseurBas,char select,char etatSelect,char etatZone) {
 	char offset_x;char offset_y;
 	offset_x=2*105+2+3+1;
@@ -619,7 +627,9 @@ if (get_key(Key_CursorUp)) {
 							for (pp=p;pp<grille_y;pp=pp+1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp+1];
 								curseurBasOld=grille_x+pp*niveauNb;
-								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								if (curseurBasOld!=curseurBas) {
+									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								}
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
@@ -662,7 +672,9 @@ if (get_key(Key_CursorDown)) {
 							for (pp=p;pp>grille_y;pp=pp-1) {
 								private_grille[grille_x][pp]=private_grille[grille_x][pp-1];
 								curseurBasOld=grille_x+pp*niveauNb;
-								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								if (curseurBasOld!=curseurBas) {
+									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								}
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
@@ -700,7 +712,9 @@ if (get_key(Key_CursorRight)) {
 							for (pp=p;pp>grille_x;pp=pp-1) {
 								private_grille[pp][grille_y]=private_grille[pp-1][grille_y];
 								curseurBasOld=pp+grille_y*niveauNb;
-								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								if (curseurBasOld!=curseurBas) {
+									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								}
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
@@ -761,7 +775,9 @@ if (get_key(Key_CursorLeft)) {
 								for (pp=p;pp<grille_x;pp=pp+1) {
 									private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
 									curseurBasOld=pp+grille_y*niveauNb;
-									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+									if (curseurBasOld!=curseurBas) {
+										fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+									}
 								}
 								private_grille[niveauNb - 1][0]=select;
 								select=CASE_VIDE;
@@ -796,7 +812,9 @@ if (get_key(Key_CursorLeft)) {
 							for (pp=p;pp<grille_x;pp=pp+1) {
 								private_grille[pp][grille_y]=private_grille[pp+1][grille_y];
 								curseurBasOld=pp+grille_y*niveauNb;
-								fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								if (curseurBasOld!=curseurBas) {
+									fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
+								}
 							}
 							private_grille[grille_x][grille_y]=CASE_VIDE;
 							curseurBasOld=curseurBas; // leger
@@ -894,7 +912,7 @@ if (one_key!=0) {
 	if ((one_key==EN_BAS) || (one_key==EN_HAUT_ET_EN_BAS)) {
 		if (curseurBasOld!=curseurBas) {
 			if (curseurBasOld==CURSEUR_BAS_SELECT) {
-				fillSelect(niveauTaille,curseurBasOld,select,etatSelect,etatZone);
+				fillSelect(niveauTaille,curseurBas,select,etatSelect,etatZone);
 			} else {
 				fill1Grille(grille,niveauTaille,niveauNb,curseurBasOld,curseurBas,etatSelect,etatZone);
 			}
