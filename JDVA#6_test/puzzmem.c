@@ -19,6 +19,12 @@
 #define SELECT_OFF 0
 #define SELECT_ON 1
 #define ESPACEMENT 4
+#define TOUCHE_HAUT 1
+#define TOUCHE_BAS 2
+#define TOUCHE_DROITE 3
+#define TOUCHE_GAUCHE 4
+#define TOUCHE_ESPACE 5
+#define TOUCHE_ENTREE 6
 
 /*
  * offset_x
@@ -620,7 +626,7 @@ char select;
 void main(void)
 {
 	//char offset_x; char offset_y;
-	char curseurHaut;char curseurBas;char etatSelect;char etatZone;
+	char curseurHaut;char curseurBas;char etatSelect;char etatZone;char touche;
 	char curseurHautOld;char curseurBasOld;
 	char niveauNb;char niveauTaille;
 	char grille_x;char grille_y;char p;char pp;
@@ -668,11 +674,34 @@ void main(void)
 
 while (1) {
 one_key=0;
-//do {
-	check_controller();
-//} while (get_key(Key_CursorUp)+get_key(Key_CursorDown)+get_key(Key_CursorRight)+get_key(Key_CursorLeft)+get_key(Key_Space)+get_key(Key_Return)!=1);
-//TOUCHE_HAUT
+check_controller();
+touche=0;
 if (get_key(Key_CursorUp) || get_key(Key_Joy1Up)) {
+	touche=TOUCHE_HAUT;
+}
+if (get_key(Key_CursorDown) || get_key(Key_Joy1Down)) {
+	if (touche!=0) continue;
+	touche=TOUCHE_BAS;
+}
+if (get_key(Key_CursorRight) || get_key(Key_Joy1Right)) {
+	if (touche!=0) continue;
+	touche=TOUCHE_DROITE;
+}
+if (get_key(Key_CursorLeft) || get_key(Key_Joy1Left)) {
+	if (touche!=0) continue;
+	touche=TOUCHE_GAUCHE;
+}
+if (get_key(Key_Space) || get_key(Key_Joy1Fire1)) {
+	if (touche!=0) continue;
+	touche=TOUCHE_ESPACE;
+}
+if (get_key(Key_Return) || get_key(Key_Joy1Fire2) || get_key(Key_Joy1Fire3)) {
+	if (touche!=0) continue;
+	touche=TOUCHE_ENTREE;
+}
+switch (touche) {
+//TOUCHE_HAUT
+case TOUCHE_HAUT:
 	if (etatZone==EN_HAUT) {
 		curseurHautOld=curseurHaut;
 		one_key=EN_HAUT;
@@ -717,9 +746,9 @@ if (get_key(Key_CursorUp) || get_key(Key_Joy1Up)) {
 			}
 		}
 	}
-}
+break;
 //TOUCHE_BAS
-if (get_key(Key_CursorDown) || get_key(Key_Joy1Down)) {
+case TOUCHE_BAS:
 	if (etatZone==EN_HAUT) {
 		curseurHautOld=curseurHaut;
 		one_key=EN_HAUT;
@@ -759,9 +788,9 @@ if (get_key(Key_CursorDown) || get_key(Key_Joy1Down)) {
 			}
 		}
 	}
-}
+break;
 //TOUCHE_DROITE
-if (get_key(Key_CursorRight) || get_key(Key_Joy1Right)) {
+case TOUCHE_DROITE:
 	if (etatZone==EN_HAUT) {
 		curseurHautOld=curseurHaut;
 		one_key=EN_HAUT;
@@ -816,9 +845,9 @@ if (get_key(Key_CursorRight) || get_key(Key_Joy1Right)) {
 			}
 		}
 	}
-}
+break;
 //TOUCHE_GAUCHE
-if (get_key(Key_CursorLeft) || get_key(Key_Joy1Left)) {
+case TOUCHE_GAUCHE:
 	if (etatZone==EN_HAUT) {
 		curseurHautOld=curseurHaut;
 		one_key=EN_HAUT;
@@ -907,9 +936,9 @@ if (get_key(Key_CursorLeft) || get_key(Key_Joy1Left)) {
 			}
 		}
 	}
-}
+break;
 //TOUCHE_ESPACE
-if (get_key(Key_Space) || get_key(Key_Joy1Fire1)) {
+case TOUCHE_ESPACE:
 	one_key=EN_HAUT_ET_EN_BAS;
 	if (etatZone==EN_HAUT) {
 		etatZone=EN_BAS;
@@ -930,9 +959,9 @@ if (get_key(Key_Space) || get_key(Key_Joy1Fire1)) {
 	curseurHaut=0;
 	curseurBasOld=curseurBas;
 	curseurBas=CURSEUR_BAS_SELECT;
-}
+break;
 //TOUCHE_ENTREE
-if (get_key(Key_Return) || get_key(Key_Joy1Fire2) || get_key(Key_Joy1Fire3)) {
+case TOUCHE_ENTREE:
 	if (etatSelect==SELECT_ON) {
 		etatSelect=SELECT_OFF;
 		one_key=etatZone; // EN_HAUT ou EN_BAS
@@ -969,6 +998,7 @@ if (get_key(Key_Return) || get_key(Key_Joy1Fire2) || get_key(Key_Joy1Fire3)) {
 			}
 		}
 	}
+break;
 }
 if (one_key!=0) {
 	// reafficher
