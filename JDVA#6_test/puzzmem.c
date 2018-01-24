@@ -608,7 +608,7 @@ one_key=0;
 	check_controller();
 //} while (get_key(Key_CursorUp)+get_key(Key_CursorDown)+get_key(Key_CursorRight)+get_key(Key_CursorLeft)+get_key(Key_Space)+get_key(Key_Return)!=1);
 //TOUCHE_HAUT
-if (get_key(Key_CursorUp)) {
+if (get_key(Key_CursorUp) || get_key(Key_Joy1Up)) {
 	if (etatZone==EN_HAUT) {
 		if ((curseurHaut % 2) == 1) {
 			curseurHautOld=curseurHaut;
@@ -653,7 +653,7 @@ if (get_key(Key_CursorUp)) {
 	}
 }
 //TOUCHE_BAS
-if (get_key(Key_CursorDown)) {
+if (get_key(Key_CursorDown) || get_key(Key_Joy1Down)) {
 	if (etatZone==EN_HAUT) {
 		if ((curseurHaut % 2) == 0) {
 			curseurHautOld=curseurHaut;
@@ -693,7 +693,7 @@ if (get_key(Key_CursorDown)) {
 	}
 }
 //TOUCHE_DROITE
-if (get_key(Key_CursorRight)) {
+if (get_key(Key_CursorRight) || get_key(Key_Joy1Right)) {
 	if (etatZone==EN_HAUT) {
 		if (curseurHaut <20) {
 			curseurHautOld=curseurHaut;
@@ -748,7 +748,7 @@ if (get_key(Key_CursorRight)) {
 	}
 }
 //TOUCHE_GAUCHE
-if (get_key(Key_CursorLeft)) {
+if (get_key(Key_CursorLeft) || get_key(Key_Joy1Left)) {
 	if (etatZone==EN_HAUT) {
 		if (curseurHaut >=2) {
 			curseurHautOld=curseurHaut;
@@ -837,7 +837,7 @@ if (get_key(Key_CursorLeft)) {
 	}
 }
 //TOUCHE_ESPACE
-if (get_key(Key_Space)) {
+if (get_key(Key_Space) || get_key(Key_Joy1Fire1)) {
 	one_key=EN_HAUT_ET_EN_BAS;
 	if (etatZone==EN_HAUT) {
 		etatZone=EN_BAS;
@@ -860,7 +860,7 @@ if (get_key(Key_Space)) {
 	curseurBas=CURSEUR_BAS_SELECT;
 }
 //TOUCHE_ENTREE
-if (get_key(Key_Return)) {
+if (get_key(Key_Return) || get_key(Key_Joy1Fire2) || get_key(Key_Joy1Fire3)) {
 	if (etatSelect==SELECT_ON) {
 		etatSelect=SELECT_OFF;
 		one_key=etatZone; // EN_HAUT ou EN_BAS
