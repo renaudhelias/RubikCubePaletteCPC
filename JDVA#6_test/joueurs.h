@@ -1,8 +1,8 @@
 
 extern const unsigned char J1A1[];
-//extern const unsigned char J1A2[];
+extern const unsigned char J1A2[];
 extern const unsigned char J1A3[];
-// extern const unsigned char J1A4[];
+extern const unsigned char J1A4[];
 // extern const unsigned char J1A5[];
 // extern const unsigned char J1A6[];
 // extern const unsigned char J1A7[];

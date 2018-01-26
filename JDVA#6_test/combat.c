@@ -19,9 +19,9 @@ void main(void)
 	vram=precalc_vram();
 	
 	perso[0]=J1A1;
-	perso[1]=J1A1;
+	perso[1]=J1A2;
 	perso[2]=J1A3;
-	perso[3]=J1A1;
+	perso[3]=J1A4;
 	perso[4]=J1A1;
 	perso[5]=J1A1;
 	perso[6]=J1A1;
@@ -29,10 +29,10 @@ void main(void)
 	
 	mode(2);
 	vsync();
-	put_frame(vram(0,0),80,50,perso[0]);
-//	put_frame(vram(1,50),80,50,perso[1]);
-	put_frame(vram(2,100),80,50,perso[2]);
-//while(1){}
+	put_frame(vram(0,0),6,50,perso[0]);
+	put_frame(vram(1,50),7,50,perso[1]);
+	put_frame(vram(2,100),7,50,perso[2]);
+	put_frame(vram(3,150),7,50,perso[3]);
 	//	set_palette(combat_palette);
 
 	while(1){
@@ -47,6 +47,10 @@ void main(void)
 		xmod8=x%8;
 		vsync();
 		//put_frame(vram(x,50),80,50,perso[xmod8]);
-		put_frame((unsigned char *)(vram[50]+x),80,50,perso[xmod8]);
+		if (xmod8==1 || xmod8==2 || xmod8==3) {
+			put_frame((unsigned char *)(vram[50]+x),7,50,perso[xmod8]);
+		} else {
+			put_frame((unsigned char *)(vram[50]+x),6,50,perso[xmod8]);
+		}
 	}
 }

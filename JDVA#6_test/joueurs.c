@@ -1,8 +1,8 @@
 
 #include "J1A1.c"
-//#include "J1A2.c"
+#include "J1A2.c"
 #include "J1A3.c"
-// #include "J1A4.c"
+#include "J1A4.c"
 // #include "J1A5.c"
 // #include "J1A6.c"
 // #include "J1A7.c"
