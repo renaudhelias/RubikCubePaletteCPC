@@ -35,3 +35,5 @@ J'ai donc selon mon bmp des images de 20(*8/10)=16 en hauteur, sur 50(*8/10)=40 
 Ajout d'un Gargamel, de 120x23 pixels, via blocage de la palette azrael (save/load palette azrael, clique sur les boutons à cocher sous les couleur, calculer)
 
 Ne pas oublier que ConvImgCpc.exe est en mode overscan et pas nous, donc faire un gargamel de 240x46 pixels, ça ne tient pas sur notre écran avec border !
+
+Si on n'utilise pas le mode "overscan" de ConvImpCpc.exe ainsi que le petit "+" en dessous pour réduire la largeur/hauteur de l'image, le .asm pondu fera 110Ko, ce qui est mauvais signe pour une taille de sprite...
