@@ -637,7 +637,10 @@ void main(void)
 	mode(1);
 	set_palette(puzzmem_palette);
 	//put_frame(vram(0,0),80,200,bluegirl);
+	
+	// ici 80 c'est en fait une image pleine largeur, en fait là bluegirl fait 320x400 pixels à la place de normalement 100x400... c'est mal (oups)
 	put_frame(vram(45,0),80,200,bluegirl);
+	
 	//put_frame(vram(200,0),80,200,bluegirl);
 	//while (1) {}
 	//printf("Hello World! ");
