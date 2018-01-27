@@ -33,4 +33,4 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
 
 ![combat.dsk.png](combat.dsk.png)
 
-Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel sur deux en mode 0 (écran de 160 pixels de large), disons sur un écran de 30 cm, donc il se déplace visuellement à 0.7km/h maximum (si on ne saute pas plus de pixels)
+Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel sur deux en mode 0 (écran de 160 pixels de large), disons sur un écran de 30 cm, donc il se déplace visuellement à 0.75km/h maximum (si on ne saute pas plus de pixels)
