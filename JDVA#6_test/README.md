@@ -43,6 +43,6 @@ J'ai calculé que pour une action (marcher/taper), 50Hz pour un sprite c'est hum
 
 Mais niveau rendu, faudrait afficher ça d'un coup, on a beau se dire qu'un humain voit à 25Hz et que donc je peux poutrer les sprites durant deux vsync, c'est quand même une plus belle qualité si les pixels bougent tous en même temps.
 
-http://www.cpcwiki.eu/index.php/Retro_Game_Asset_Studio
+http://www.cpcwiki.eu/index.php/Retro_Game_Asset_Studio - avec "View sprite animation preview at any frame rate"
 
-http://github.com/lronaldo/cpctelera
+http://github.com/lronaldo/cpctelera - comprend la dernière version de Retro_Game_Asset_Studio
