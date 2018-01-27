@@ -83,29 +83,35 @@ void main(void)
 	put_frame(vram(8+8+8+8+8+8+8,50),7,50,perso2A[7]+((7*50)*1));
 
 	while(1){
-		// check_controller();
-		// layer=3;
-		// if (get_key(Key_CursorLeft)) {
-			// if (x>0) x--;
-		// }		
-		// if (get_key(Key_CursorRight)) {
-			// if (x<640/2-57) x++;
-		// }
-		// if (get_key(Key_Space)) {
-			// layer=1;
-			// if (get_key(Key_CursorUp)) {
-				// layer=0;
-			// }
-			// if (get_key(Key_CursorDown)) {
-				// layer=2;
-			// }
-		// }
-		
-		if (direction==1) {
-			if (x>0) x--; else {direction=0; layer=(layer+1)%4;}
-		} else {		
-			if (x<640/2-57) x++; else {direction=1; layer=(layer+1)%4;}
+		check_controller();
+		layer=3;
+		if (get_key(Key_CursorLeft) && direction==0) {
+			if (x>0) x--;
+			direction=1;
 		}
+		if (get_key(Key_CursorRight) && direction==0) {
+			if (x<640/2-57) x++;
+			direction=1;
+		}
+		
+		if (!get_key(Key_CursorLeft) && !get_key(Key_CursorRight)) {
+			direction=0;
+		}
+		if (get_key(Key_Space)) {
+			layer=1;
+			if (get_key(Key_CursorUp)) {
+				layer=0;
+			}
+			if (get_key(Key_CursorDown)) {
+				layer=2;
+			}
+		}
+		
+		// if (direction==1) {
+			// if (x>0) x--; else {direction=0; layer=(layer+1)%4;}
+		// } else {		
+			// if (x<640/2-57) x++; else {direction=1; layer=(layer+1)%4;}
+		// }
 		
 		xmod8=x%8;
 		x2=640-x-57;

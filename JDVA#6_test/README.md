@@ -20,7 +20,7 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
 
 - En fait un écran ici fait 640 pixels de large, et est à 50Hz, donc si je met la vitesse maximal tout en déplaçant les pixels un par un à 50Hz, en fait mon personnage prend 6 secondes à atteindre le milieu de l'écran ! et c'est normal : (640/2)/25=12 secondes à 25Hz (donc humainement)
 
-- A contrario changer de sprite à chaque fois, c'est trop rapide : mon bonhomme cours/clignote sur place !
+- A contrario changer de sprite à chaque fois, c'est trop rapide : mon bonhomme cours/clignote sur place. Voyons, il me faut 40 secondes pour atteindre le milieu de l'écran si à chaque appui on avance d'un pixel et qu'on bourrine sur la touche comme un malade (donc sans déplacement automatique). Donc au niveau du nombre d'action faites automatiquement par le déplacement du sprite à sa vitesse maxi, cette vitesse qui nous semble lente est 40/6=6 fois trop rapide. Dans quand je pensais que marcher était une action, tout comme donner un coup de poing dans mon jeu, je suis déjà 6 fois trop rapide niveau action, donc niveau sprite (je voulais un sprite par action...)
 
 - Niveau perf, SDCC semble lacher l'affaire à partir d'un certain nombre de fonctions appelées par une fonction :
  error 9: FATAL Compiler Internal Error in file '/home/sdcc-builder
