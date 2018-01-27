@@ -42,3 +42,7 @@ Ce serait bien pour "combat" de jongler avec deux zones d'affichage histoire d'a
 J'ai calculé que pour une action (marcher/taper), 50Hz pour un sprite c'est humainement 6 fois trop rapide, donc j'aurai logiquement le temps de calculer une superposition de deux calques.
 
 Mais niveau rendu, faudrait afficher ça d'un coup, on a beau se dire qu'un humain voit à 25Hz et que donc je peux poutrer les sprites durant deux vsync, c'est quand même une plus belle qualité si les pixels bougent tous en même temps.
+
+http://www.cpcwiki.eu/index.php/Retro_Game_Asset_Studio
+
+http://github.com/lronaldo/cpctelera
