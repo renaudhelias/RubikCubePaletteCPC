@@ -35,4 +35,10 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
 
 Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel sur deux en mode 0 (écran de 160 pixels de large), disons sur un écran de 30 cm, donc il se déplace visuellement à 0.75km/h maximum (si on ne saute pas plus de pixels)
 
-Et si on le compare à un vrai poisson, 8 fois plus grand donc, il ferait du 6km/h
+Et si on le compare à un vrai poisson, 8 fois plus grand donc, il ferait du 6km/h.
+
+Ce serait bien pour "combat" de jongler avec deux zones d'affichage histoire d'avoir un buffer, .
+
+J'ai calculé que pour une action (marcher/taper), 50Hz pour un sprite c'est humainement 6 fois trop rapide, donc j'aurai logiquement le temps de calculer une superposition de deux calques.
+
+Mais niveau rendu, faudrait afficher ça d'un coup, on a beau se dire qu'un humain voit à 25Hz et que donc je peux poutrer les sprites durant deux vsync, c'est quand même une plus belle qualité si les pixels bougent tous en même temps.
