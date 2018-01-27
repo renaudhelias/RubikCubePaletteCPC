@@ -27,7 +27,7 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
  /build/sdcc-build/orig/sdcc/src/z80/ralloc.c' line number '1354' : isSymbolEqual
  (sym, OP_SYMBOL (IC_RESULT (ic)))
 
-- Niveau taille, le fichier final sature à 64KB, et ne marche plus un peu après les 32KB. Du coup j'arrive à avoir 64 sprites de 56x100 noir et blanc, mes 128 sprites ne rentrent pas !
+- Niveau taille, le fichier final sature à 64KB, et ne marche plus un peu après les 32KB. Du coup j'arrive à avoir 64 sprites de 56x100 noir et blanc, mes 128 sprites ne rentrent pas ! De ce côté une solution serait de mettre les sprites dans un fichier à part, et tant qu'à faire les charger dans des bank RAM de la mémoire externe.
 
 - Niveau perf, je peux afficher 2 sprites de 56x100 pendant un vsync, au delà ça sature. Mais bon on peut mettre deux vsync vue qu'on est à 50Hz... au dela il faudrait s'organiser (utiliser deux zones écran qu'on alterne ?)
 
