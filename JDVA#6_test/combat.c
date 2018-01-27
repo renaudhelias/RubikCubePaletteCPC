@@ -14,9 +14,14 @@ unsigned char *perso2A[8];
 
 unsigned int *vram;
 
+const unsigned char combat_palette[]=
+{
+		26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
 void main(void)
 {
-	char x;char xmod8;char x2;char x2mod8;char layer=0;
+	int x;char xmod8;int x2;char x2mod8;char layer=0;char direction=0;
 	x=0;x2=640-x-57;
 	
 	vram=precalc_vram();
@@ -58,57 +63,79 @@ void main(void)
 	// perso2R[7]=J2R8;
 	
 	mode(2);
-	vsync();
+	set_palette(combat_palette);
+	//vsync();
 	put_frame(vram(0,0),6,50,perso1A[0]);
 	put_frame(vram(0+8,0),7,50,perso1A[1]);
-	put_frame(vram(2+8+8,0),7,50,perso1A[2]);
-	put_frame(vram(3+8+8+8,0),7,50,perso1A[3]);
-	put_frame(vram(3+8+8+8+8,0),7,50,perso1A[4]);
-	put_frame(vram(3+8+8+8+8+8,0),7,50,perso1A[5]);
-	put_frame(vram(3+8+8+8+8+8+8,0),7,50,perso1A[6]);
-	put_frame(vram(3+8+8+8+8+8+8+8,0),7,50,perso1A[7]);
+	put_frame(vram(8+8,0),7,50,perso1A[2]);
+	put_frame(vram(8+8+8,0),7,50,perso1A[3]);
+	put_frame(vram(8+8+8+8,0),7,50,perso1A[4]);
+	put_frame(vram(8+8+8+8+8,0),7,50,perso1A[5]);
+	put_frame(vram(8+8+8+8+8+8,0),7,50,perso1A[6]);
+	put_frame(vram(8+8+8+8+8+8+8,0),7,50,perso1A[7]);
 	put_frame(vram(0,50),6,50,perso2A[0]+((6*50)*1));
-	put_frame(vram(1+8,50),7,50,perso2A[1]+((7*50)*1));
-	put_frame(vram(2+8+8,50),7,50,perso2A[2]+((7*50)*1));
-	put_frame(vram(3+8+8+8,50),7,50,perso2A[3]+((7*50)*1));
-	put_frame(vram(3+8+8+8+8,50),7,50,perso2A[4]+((7*50)*1));
-	put_frame(vram(3+8+8+8+8+8,50),7,50,perso2A[5]+((7*50)*1));
-	put_frame(vram(3+8+8+8+8+8+8,50),7,50,perso2A[6]+((7*50)*1));
-	put_frame(vram(3+8+8+8+8+8+8+8,50),7,50,perso2A[7]+((7*50)*1));
-	//	set_palette(combat_palette);
+	put_frame(vram(8,50),7,50,perso2A[1]+((7*50)*1));
+	put_frame(vram(8+8,50),7,50,perso2A[2]+((7*50)*1));
+	put_frame(vram(8+8+8,50),7,50,perso2A[3]+((7*50)*1));
+	put_frame(vram(8+8+8+8,50),7,50,perso2A[4]+((7*50)*1));
+	put_frame(vram(8+8+8+8+8,50),7,50,perso2A[5]+((7*50)*1));
+	put_frame(vram(8+8+8+8+8+8,50),7,50,perso2A[6]+((7*50)*1));
+	put_frame(vram(8+8+8+8+8+8+8,50),7,50,perso2A[7]+((7*50)*1));
 
 	while(1){
-		check_controller();
-		layer=3;
-		if (get_key(Key_CursorLeft)) {
-			if (x>0) x--;
-		}		
-		if (get_key(Key_CursorRight)) {
-			if (x<33*2) x++;
-		}
-		if (get_key(Key_Space)) {
-			layer=1;
-			if (get_key(Key_CursorUp)) {
-				layer=0;
-			}
-			if (get_key(Key_CursorDown)) {
-				layer=2;
-			}
+		// check_controller();
+		// layer=3;
+		// if (get_key(Key_CursorLeft)) {
+			// if (x>0) x--;
+		// }		
+		// if (get_key(Key_CursorRight)) {
+			// if (x<640/2-57) x++;
+		// }
+		// if (get_key(Key_Space)) {
+			// layer=1;
+			// if (get_key(Key_CursorUp)) {
+				// layer=0;
+			// }
+			// if (get_key(Key_CursorDown)) {
+				// layer=2;
+			// }
+		// }
+		
+		if (direction==1) {
+			if (x>0) x--; else {direction=0; layer=(layer+1)%4;}
+		} else {		
+			if (x<640/2-57) x++; else {direction=1; layer=(layer+1)%4;}
 		}
 		
 		xmod8=x%8;
-		x2=x+8;//640-x-57;
+		x2=640-x-57;
 		x2mod8=x2%8;
 		vsync();
+		// 6sec
+		// (640/2)/25=12sec donc effectivement le calcul est juste (c'est pas du 25Hz l'Amstrad, c'es du 50Hz), je suis bien dans temps
 		if (xmod8==0) {
-			put_frame((unsigned char *)(vram[120]+x),6,50,perso1A[xmod8]+((6*50)*layer));
+			put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
 		} else {
-			put_frame((unsigned char *)(vram[120]+x),7,50,perso1A[xmod8]+((7*50)*layer));
+			put_frame((unsigned char *)(vram[120]+x/8),7,50,perso1A[xmod8]+((7*50)*layer));
 		}
 		if (x2mod8==0) {
-			put_frame((unsigned char *)(vram[120]+x2),6,50,perso2A[x2mod8]+((6*50)*layer));
+			put_frame((unsigned char *)(vram[120]+x2/8),6,50,perso2A[x2mod8]+((6*50)*layer));
 		} else {
-			put_frame((unsigned char *)(vram[120]+x2),7,50,perso2A[x2mod8]+((7*50)*layer));
+			put_frame((unsigned char *)(vram[120]+x2/8),7,50,perso2A[x2mod8]+((7*50)*layer));
 		}
+//		combat.c:135: error 9: FATAL Compiler Internal Error in file '/home/sdcc-builder
+//		/build/sdcc-build/orig/sdcc/src/z80/ralloc.c' line number '1354' : isSymbolEqual
+//		(sym, OP_SYMBOL (IC_RESULT (ic)))
+		// vsync();
+		// if (xmod8==0) {
+			// put_frame((unsigned char *)(vram[100]+x/8),6,50,perso1A[xmod8]+((6*50)*((layer+1)%4)));
+		// } else {
+			// put_frame((unsigned char *)(vram[100]+x/8),7,50,perso1A[xmod8]+((7*50)*((layer+1)%4)));
+		// }
+		// if (x2mod8==0) {
+			// put_frame((unsigned char *)(vram[100]+x2/8),6,50,perso2A[x2mod8]+((6*50)*((layer+1)%4)));
+		// } else {
+			// put_frame((unsigned char *)(vram[100]+x2/8),7,50,perso2A[x2mod8]+((7*50)*((layer+1)%4)));
+		// }
 	}
 }
