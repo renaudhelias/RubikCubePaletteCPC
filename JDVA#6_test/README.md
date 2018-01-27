@@ -20,6 +20,8 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
 
 - En fait un écran ici fait 640 pixels de large, et est à 50Hz, donc si je met la vitesse maximal tout en déplaçant les pixels un par un à 50Hz, en fait mon personnage prend 6 secondes à atteindre le milieu de l'écran ! et c'est normal : (640/2)/25=12 secondes à 25Hz (donc humainement)
 
+- A contrario changer de sprite à chaque fois, c'est trop rapide : mon bonhomme cours/clignote sur place !
+
 - Niveau perf, SDCC semble lacher l'affaire à partir d'un certain nombre de fonctions appelées par une fonction :
  error 9: FATAL Compiler Internal Error in file '/home/sdcc-builder
  /build/sdcc-build/orig/sdcc/src/z80/ralloc.c' line number '1354' : isSymbolEqual
