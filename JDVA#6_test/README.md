@@ -88,3 +88,13 @@ OUT &7F00,&C7
 // RAM_7 sur &4000-&7FFF
 ```
 Les autres combinaisons semblant un peu trop warrior (on perd les pieds sur la zone de programme)
+
+Scrolling via offset CRTC (byte pas byte donc en théorie 2 pixels par 2 pixels en mode 0, en pratique : 4 pixels par 4 pixels car le clock est branché sur le dernier fil d'adresse...)
+```
+mode 0
+OUT &BC00,13
+OUT &BD00,0
+OUT &BD00,1
+OUT &BD00,2
+OUT &BD00,3
+```
