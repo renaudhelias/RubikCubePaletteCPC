@@ -98,3 +98,4 @@ OUT &BD00,1
 OUT &BD00,2
 OUT &BD00,3
 ```
+Pour du vrai scroll, va falloir corriger ces 4 derniers pixels via du soft, pas du hard.
