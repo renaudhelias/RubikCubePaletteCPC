@@ -48,3 +48,26 @@ http://www.cpcwiki.eu/index.php/Retro_Game_Asset_Studio - avec "View sprite anim
 http://github.com/lronaldo/cpctelera - comprend la dernière version de Retro_Game_Asset_Studio
 
 Gimp si on tire une règle sur le dessin, ça fait des zones, et lorsqu'on utilise l'outil de sélection, en fait il est magnétisé par la règle, ce qui facilite les sélections. De plus on peut travailler sur une sélection, ce qui empèche de baver d'un sprite sur l'autre.
+
+https://cpcrulez.fr/coding_amslive10-memoire_du_cpc_2.htm de la mémoire libre par défaut en &4000-&7FFF...
+
+Réorganisation de mémoire (utile ?)
+```
+MEMORY HIMEM-233:LOAD "aa.rsx",HIMEM+1:CALL HIMEM+19
+```
+
+Utilisation de deux calques
+```
+mode 0
+poke &C000, 255
+// ho un pixel
+poke &4000, 255
+OUT &BC00,12
+OUT &BD00,48
+// je suis en C000 (normal)
+OUT &BD00,16
+// je suis en 4000 youpi
+// ho un pixel, et pas de texte...
+OUT &BD00,48
+// je suis en C000 (normal)
+```
