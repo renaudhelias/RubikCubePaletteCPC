@@ -27,7 +27,7 @@ J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougen
  /build/sdcc-build/orig/sdcc/src/z80/ralloc.c' line number '1354' : isSymbolEqual
  (sym, OP_SYMBOL (IC_RESULT (ic)))
 
-- Niveau taille, le fichier final sature à 64KB, et ne marche plus un peu après les 32KB. Du coup j'arrive à avoir 64 sprites de 56x100 noir et blanc, mes 128 sprites ne rentrent pas ! De ce côté une solution serait de mettre les sprites dans un fichier à part, et tant qu'à faire les charger dans des bank RAM de la mémoire externe.
+- Niveau taille, le fichier final sature à 64KB, et ne marche plus un peu après les 32KB. Du coup j'arrive à avoir 64 sprites de 56x100 noir et blanc, mes 128 sprites ne rentrent pas ! De ce côté une solution serait de mettre les sprites dans un fichier à part, et tant qu'à faire les charger dans des bank RAM de la mémoire externe. Et tant qu'à faire se baser sur une seule image (de sprites non tous verticalement...) que je découpe lors du passage entre le format fichier et format RAM.
 
 - Niveau perf, je peux afficher 2 sprites de 56x100 pendant un vsync, au delà ça sature. Mais bon on peut mettre deux vsync vue qu'on est à 50Hz... au dela il faudrait s'organiser (utiliser deux zones écran qu'on alterne ?)
 
@@ -46,3 +46,5 @@ Mais niveau rendu, faudrait afficher ça d'un coup, on a beau se dire qu'un huma
 http://www.cpcwiki.eu/index.php/Retro_Game_Asset_Studio - avec "View sprite animation preview at any frame rate"
 
 http://github.com/lronaldo/cpctelera - comprend la dernière version de Retro_Game_Asset_Studio
+
+Gimp si on tire une règle sur le dessin, ça fait des zones, et lorsqu'on utilise l'outil de sélection, en fait il est magnétisé par la règle, ce qui facilite les sélections. De plus on peut travailler sur une sélection, ce qui empèche de baver d'un sprite sur l'autre.
