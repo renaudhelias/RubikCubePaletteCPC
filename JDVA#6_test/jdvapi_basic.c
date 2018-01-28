@@ -156,19 +156,19 @@ void put_pixel0(unsigned char nX, unsigned char nY, unsigned char nColor)
 	set_pixel_color0((unsigned char *)nAddress, nColor, nPixel);
 }
 
-// 0..159 et 0..199
-unsigned char get_pixel0byte(unsigned char nX, unsigned char nY)
-{
-	unsigned int pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 2);
-	return *pByteAddress;
-}
+// // 0..159 et 0..199
+// unsigned char get_pixel0byte(unsigned char nX, unsigned char nY)
+// {
+	// unsigned int pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 2);
+	// return *pByteAddress;
+// }
 
-// 0..159 et 0..199
-void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte)
-{
-	unsigned int pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 2);
-	*pByteAddress = nByte;
-}
+// // 0..159 et 0..199
+// void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte)
+// {
+	// unsigned int pByteAddress = 0xC000 + ((nY / 8) * 80) + ((nY % 8) * 2048) + (nX / 2);
+	// *pByteAddress = nByte;
+// }
 
 // 0..159 et 0..199
 void copy_pixel0bytes(unsigned char nXFrom, unsigned char nYFrom,unsigned char nXTo, unsigned char nYTo, unsigned char tailleX, unsigned char tailleY)

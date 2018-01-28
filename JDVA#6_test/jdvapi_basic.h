@@ -26,16 +26,16 @@ void line(unsigned int x,unsigned int y);
 /**
  * JDVA#3 Architecture de la mémoire vidéo en mode 0
  */
- //void set_pixel_color0(unsigned char *pByteAddress, unsigned char nColor, unsigned char nPixel)
+//void set_pixel_color0(unsigned char *pByteAddress, unsigned char nColor, unsigned char nPixel)
  
- // 0..159 et 0..199
- void put_pixel0(unsigned char nX, unsigned char nY, unsigned char nColor);
- 
- // 0..159 et 0..199
-unsigned char get_pixel0byte(unsigned char nX, unsigned char nY);
-
 // 0..159 et 0..199
-void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte);
+void put_pixel0(unsigned char nX, unsigned char nY, unsigned char nColor);
+ 
+//  // 0..159 et 0..199
+// unsigned char get_pixel0byte(unsigned char nX, unsigned char nY);
+
+// // 0..159 et 0..199
+// void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte);
 
 // 0..159 et 0..199
 void copy_pixel0bytes(unsigned char nXFrom, unsigned char nYFrom,unsigned char nXTo, unsigned char nYTo, unsigned char tailleX, unsigned char tailleY)
