@@ -99,3 +99,5 @@ OUT &BD00,2
 OUT &BD00,3
 ```
 Pour du vrai scroll, va falloir corriger ces 4 derniers pixels via du soft, pas du hard.
+
+http://www.cpcmania.com/Docs/Programming/Files.htm - Loading files from disk using firmware (C & ASM with SDCC)
