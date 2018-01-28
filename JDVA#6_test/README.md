@@ -72,5 +72,5 @@ OUT &BD00,48
 // je suis en C000 (normal)
 ```
 
-http://tj.gpa.free.fr/html/coding/cpc_ram.htm - OUT &7F00,&C4 : bloc mémoire étendue e0
+http://tj.gpa.free.fr/html/coding/cpc_ram.htm - il suffit de faire un OUT &7F00,&CX où x correspond au bloc mémoire désiré. 
 
