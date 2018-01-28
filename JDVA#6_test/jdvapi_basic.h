@@ -36,6 +36,9 @@ unsigned char get_pixel0byte(unsigned char nX, unsigned char nY);
 
 // 0..159 et 0..199
 void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte);
+
+// 0..159 et 0..199
+void copy_pixel0bytes(unsigned char nXFrom, unsigned char nYFrom,unsigned char nXTo, unsigned char nYTo, unsigned char tailleX, unsigned char tailleY)
  
  // 0..319 et 0..199
  void put_pixel1(unsigned char nX, unsigned char nY, unsigned char nColor);
