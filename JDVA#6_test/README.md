@@ -72,5 +72,19 @@ OUT &BD00,48
 // je suis en C000 (normal)
 ```
 
-http://tj.gpa.free.fr/html/coding/cpc_ram.htm - il suffit de faire un OUT &7F00,&CX où x correspond au bloc mémoire désiré. 
-
+http://tj.gpa.free.fr/html/coding/cpc_ram.htm - il suffit de faire un OUT &7F00,&CX où x correspond au bloc mémoire désiré.
+```
+OUT &7F00,&C0
+// RAM rétablie
+OUT &7F00,&C1
+// RAM_7 sur &C000-&FFFF
+OUT &7F00,&C4
+// RAM_4 sur &4000-&7FFF
+OUT &7F00,&C5
+// RAM_5 sur &4000-&7FFF
+OUT &7F00,&C6
+// RAM_6 sur &4000-&7FFF
+OUT &7F00,&C7
+// RAM_7 sur &4000-&7FFF
+```
+Les autres combinaisons semblant un peu trop warrior (on perd les pieds sur la zone de programme)
