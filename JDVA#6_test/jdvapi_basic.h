@@ -31,6 +31,12 @@ void line(unsigned int x,unsigned int y);
  // 0..159 et 0..199
  void put_pixel0(unsigned char nX, unsigned char nY, unsigned char nColor);
  
+ // 0..159 et 0..199
+unsigned char get_pixel0byte(unsigned char nX, unsigned char nY);
+
+// 0..159 et 0..199
+void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte);
+ 
  // 0..319 et 0..199
  void put_pixel1(unsigned char nX, unsigned char nY, unsigned char nColor);
  
