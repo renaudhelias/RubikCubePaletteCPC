@@ -37,6 +37,8 @@ Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel
 
 Et si on le compare à un vrai poisson, 8 fois plus grand donc, il ferait du 6km/h.
 
+__Partie discussions avec MiGaNuTs (hors sujet :p)__
+
 Ce serait bien pour "combat" de jongler avec deux zones d'affichage histoire d'avoir un buffer, .
 
 J'ai calculé que pour une action (marcher/taper), 50Hz pour un sprite c'est humainement 6 fois trop rapide, donc j'aurai logiquement le temps de calculer une superposition de deux calques.
