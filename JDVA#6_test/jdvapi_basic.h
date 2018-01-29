@@ -38,6 +38,10 @@ void put_pixel0(unsigned char nX, unsigned char nY, unsigned char nColor);
 // void put_pixel0byte(unsigned char nX, unsigned char nY, unsigned char nByte);
 
 // 0..159 et 0..199
+// voir aussi :
+// #include <stdio.h>
+// memcpy((char *)0xC000, (char *)0x6000, 0x3FFF);
+// memcpy(destination,source,longueur)
 void copy_pixel0bytes(unsigned char nXFrom, unsigned char nYFrom,unsigned char nXTo, unsigned char nYTo, unsigned char tailleX, unsigned char tailleY);
  
  // 0..319 et 0..199

@@ -14,6 +14,11 @@ void SetupDOS();
 //Load filename to address :
 // SetupDOS();
 // LoadFile("01.scr", (char *)0xC000);
+//ou :
+// int nImage = 0;
+// char sFile[32];
+// sprintf(sFile, "0%d.scr", nImage);
+// LoadFile(sFile, (char *)0xC000);
 void LoadFile(char *sFileName, char *pLoadAddress);
 
 #endif
