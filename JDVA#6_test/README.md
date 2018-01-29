@@ -37,7 +37,7 @@ Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel
 
 Et si on le compare à un vrai poisson, 8 fois plus grand donc, il ferait du 6km/h.
 
-__Partie discussions avec MiGaNuTs (hors sujet :p)__
+__Partie discussions avec MiGaNuTs (mode warrior on :p)__
 
 Ce serait bien pour "combat" de jongler avec deux zones d'affichage histoire d'avoir un buffer, .
 
