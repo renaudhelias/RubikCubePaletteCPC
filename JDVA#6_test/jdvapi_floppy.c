@@ -2,8 +2,8 @@
 // Load01.c
 // Mochilote - www.cpcmania.com
 ////////////////////////////////////////////////////////////////////////
-#include <stdio.h>
-#include <string.h>
+// #include <stdio.h>
+// #include <string.h>
 
 /**
  * http://www.cpcmania.com/Docs/Programming/Files.htm

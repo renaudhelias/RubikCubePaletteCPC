@@ -1,11 +1,13 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+
 
 #include "jdvapi_basic.h"
 #include "jdvapi_frame.h"
 #include "jdvapi_keyb.h"
 #include "jdvapi_sync.h"
-#include "jdvapi_floppy.h"
+#include "jdvapi_floppy.c"
 
 // 13 sprites en largeur
 // 4 sprites en hauteur
@@ -40,32 +42,66 @@ void transfertEtDecoupe()
 	}
 }
 
+
 void main(void)
 {
-	char layer=0;
-	// charger les fichiers mais avec réorganisation (paramètre tailleX tailleY tailleXsprite tailleYsprite) en &4000 en ayant choisi la bonne zone mémoire
-	SetupDOS();
-	
+	char layer=0;char x=10;
+
 	calqueC000();
 	printf("chargement...");
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 	calque4000();
-	
+	SetupDOS();
+	calque4000(); // à cause de la publicité ParaDOS ;)
+
+	bank0123();
+	LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank4_4000();
-	LoadFile("J1A.sli", (char *)0xC000); // un scr exporté "linéaire"
-	transfertEtDecoupe();
+//	transfertEtDecoupe();
+
+// 3 seconde : un flash
+calqueC000();
+for (x=0;x<50*3;x++){
+	vsync();
+}
+calque4000();
+
+	bank0123();
+	LoadFile("J1R.scr", (char *)0xC000);
 	bank5_4000();
-	LoadFile("J1R.sli", (char *)0xC000);
-	transfertEtDecoupe();
+//	transfertEtDecoupe();
+
+// 3 seconde : un flash
+calqueC000();
+for (x=0;x<50*3;x++){
+	vsync();
+}
+calque4000();
+
+	bank0123();
+	LoadFile("J2A.scr", (char *)0xC000);
 	bank6_4000();
-	LoadFile("J2A.sli", (char *)0xC000);
-	transfertEtDecoupe();
+//	transfertEtDecoupe();
+
+// 3 seconde : un flash
+calqueC000();
+for (x=0;x<50*3;x++){
+	vsync();
+}
+calque4000();
+
+	bank0123();
+	LoadFile("J2R.scr", (char *)0xC000);
 	bank7_4000();
-	LoadFile("J2R.sli", (char *)0xC000);
-	transfertEtDecoupe();
+//	transfertEtDecoupe();
+
+// et finalement.
+calqueC000();
+	bank0123();
 
 	vram=precalc_vram();
 	
+	while(1){}
 	// faire une boucle qui :
 	while(1){
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
