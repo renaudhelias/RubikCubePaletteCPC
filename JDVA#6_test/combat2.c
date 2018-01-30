@@ -33,8 +33,8 @@ void transfertEtDecoupe()
 		for (j=0;j<TAILLE_Y/TAILLE_Y_SPRITE;j++) {
 			for (x=0;x<TAILLE_X_SPRITE;x++) {
 				for (y=0;y<TAILLE_Y_SPRITE;y++) {
-					addressFrom=0xC000+y*TAILLE_X*j*TAILLE_Y_SPRITE+x+i*TAILLE_X_SPRITE;
-					addressTo=0x4000+n*TAILLE_X_SPRITE*TAILLE_Y_SPRITE + y*TAILLE_X+x;
+					addressFrom=0xC000+y*TAILLE_X +j*TAILLE_X*TAILLE_Y_SPRITE+x+i*TAILLE_X_SPRITE;
+					addressTo=0x4000+n*TAILLE_X_SPRITE*TAILLE_Y_SPRITE + y*TAILLE_X_SPRITE+x;
 					*addressTo=*addressFrom;
 				}
 			}
