@@ -46,12 +46,15 @@ void transfertEtDecoupe()
 void main(void)
 {
 	char layer=0;char x=10;
+mode(2);
 
 	calqueC000();
 	printf("chargement...");
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 	calque4000();
+	vram=precalc_vram();
 	SetupDOS();
+	mode(2); // à cause de la publicité ParaDOS ;)
 	calque4000(); // à cause de la publicité ParaDOS ;)
 
 	bank0123();
@@ -77,6 +80,21 @@ for (x=0;x<50*3;x++){
 	vsync();
 }
 calque4000();
+memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
+calqueC000();
+put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
 
 	bank0123();
 	LoadFile("J2A.scr", (char *)0xC000);
@@ -99,7 +117,6 @@ calque4000();
 calqueC000();
 	bank0123();
 
-	vram=precalc_vram();
 	
 	while(1){}
 	// faire une boucle qui :

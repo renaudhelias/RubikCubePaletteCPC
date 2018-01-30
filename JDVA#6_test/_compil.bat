@@ -13,7 +13,7 @@ sdcc -mz80 -c --std-c99 --opt-code-speed joueurs.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel poisson.rel main.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel bluegirl.rel puzzmem.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel joueurs.rel combat.c
-sdcc -mz80 --code-loc 0x0138 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel combat2.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel combat2.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load01.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load02.c
 hex2bin main.ihx
