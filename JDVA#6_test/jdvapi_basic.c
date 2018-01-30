@@ -28,7 +28,7 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
     __endasm;
 }
 
-void set_palette(const unsigned char *pPalette)
+void set_palette(unsigned char *pPalette)
 {
   unsigned char nColor = 0;
 

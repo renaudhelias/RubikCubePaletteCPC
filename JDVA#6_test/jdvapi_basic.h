@@ -1,7 +1,7 @@
 #ifndef JDVAPI_BASIC_H
 #define JDVAPI_BASIC_H
 
-void set_palette(const unsigned char *pPalette);
+void set_palette(unsigned char *pPalette);
 
 void pen(unsigned char p);
 
