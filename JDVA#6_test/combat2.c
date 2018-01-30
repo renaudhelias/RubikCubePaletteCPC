@@ -188,8 +188,8 @@ calqueC000();
 	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
 	z++;
 	// 21 secondes avec 50*3
-	if (z>3*3) {
-		layer=(layer+1)%8;
+	if (z>3) {
+		layer=(layer+1)%(13*4);
 		z=0;
 	}
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
