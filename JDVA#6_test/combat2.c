@@ -12,8 +12,9 @@
 // 13 sprites en largeur
 // 4 sprites en hauteur
 // des sprites de 48x50
-#define TAILLE_X 640/8
-#define TAILLE_Y 400
+#define TAILLE_X 13*6
+//640/8
+#define TAILLE_Y 200
 #define TAILLE_X_SPRITE 6
 #define TAILLE_Y_SPRITE 50
 
@@ -45,7 +46,7 @@ void transfertEtDecoupe()
 
 void main(void)
 {
-	char layer=0;char x=10;
+	char layer=0;char x=10;char z=0;
 mode(2);
 
 	calqueC000();
@@ -60,7 +61,7 @@ mode(2);
 	bank0123();
 	LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank4_4000();
-//	transfertEtDecoupe();
+	transfertEtDecoupe();
 
 // 3 seconde : un flash
 calqueC000();
@@ -72,7 +73,7 @@ calque4000();
 	bank0123();
 	LoadFile("J1R.scr", (char *)0xC000);
 	bank5_4000();
-//	transfertEtDecoupe();
+	transfertEtDecoupe();
 
 // 3 seconde : un flash
 calqueC000();
@@ -99,7 +100,7 @@ for (x=0;x<50*3;x++){
 	bank0123();
 	LoadFile("J2A.scr", (char *)0xC000);
 	bank6_4000();
-//	transfertEtDecoupe();
+	transfertEtDecoupe();
 
 // 3 seconde : un flash
 calqueC000();
@@ -111,20 +112,28 @@ calque4000();
 	bank0123();
 	LoadFile("J2R.scr", (char *)0xC000);
 	bank7_4000();
-//	transfertEtDecoupe();
+	transfertEtDecoupe();
+
+	// 3 seconde : un flash
+calqueC000();
+for (x=0;x<50*3;x++){
+	vsync();
+}
+calque4000();
 
 // et finalement.
 calqueC000();
 	bank0123();
 
-	
-	while(1){}
+	mode(2);
+	//while(1){}
 	// faire une boucle qui :
 	while(1){
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	calque4000();
 	vsync();
 	bank4_4000();
+	x=10;
 	put_frame((unsigned char *)(vram[120]+x),6,50,0x4000+((6*50)*layer));
 	bank5_4000();
 	put_frame((unsigned char *)(vram[120]+x+6),6,50,0x4000+((6*50)*layer));
@@ -132,7 +141,12 @@ calqueC000();
 	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
 	bank7_4000();
 	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
-	layer=(layer+1)%8;
+	z++;
+	// 21 secondes avec 50*3
+	if (z>3*3) {
+		layer=(layer+1)%8;
+		z=0;
+	}
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	calqueC000();
 	vsync();
