@@ -68,7 +68,22 @@ calqueC000();
 for (x=0;x<50*3;x++){
 	vsync();
 }
-calque4000();
+calque4000();bank0123();
+memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
+calqueC000();
+put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
 
 	bank0123();
 	LoadFile("J1R.scr", (char *)0xC000);
@@ -80,7 +95,7 @@ calqueC000();
 for (x=0;x<50*3;x++){
 	vsync();
 }
-calque4000();
+calque4000();bank0123();
 memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
 calqueC000();
 put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
@@ -107,7 +122,22 @@ calqueC000();
 for (x=0;x<50*3;x++){
 	vsync();
 }
-calque4000();
+calque4000();bank0123();
+memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
+calqueC000();
+put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
 
 	bank0123();
 	LoadFile("J2R.scr", (char *)0xC000);
@@ -119,7 +149,22 @@ calqueC000();
 for (x=0;x<50*3;x++){
 	vsync();
 }
-calque4000();
+calque4000();bank0123();
+memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
+calqueC000();
+put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
+for (x=0;x<50*3;x++){
+	vsync();
+}
 
 // et finalement.
 calqueC000();
