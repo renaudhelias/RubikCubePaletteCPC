@@ -46,7 +46,8 @@ void transfertEtDecoupe()
 
 void main(void)
 {
-	char layer=0;char x=10;char z=0;
+	// against "so said EVELYN the modified DOG" => volatile
+	volatile char layer=0;volatile char x=10;//char z=0;
 mode(2);
 
 	calqueC000();
@@ -175,11 +176,12 @@ calqueC000();
 	// faire une boucle qui :
 	while(1){
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
-	calque4000();
 	vsync();
+	calque4000();
 	bank4_4000();
 	x=10;
 	put_frame((unsigned char *)(vram[120]+x),6,50,0x4000+((6*50)*layer));
+	put_frame((unsigned char *)(vram[120]+x+6+6+6+6),6,50,0x4000+((6*50)*layer));
 	bank5_4000();
 	erase_frame((unsigned char *)(vram[120]+x+6),3,50);
 	put_frame_transparent((unsigned char *)(vram[120]+x+3),6,50,0x4000+((6*50)*layer));
@@ -188,15 +190,15 @@ calqueC000();
 	bank7_4000();
 	erase_frame((unsigned char *)(vram[120]+x+6+6+6),3,50);
 	put_frame_transparent((unsigned char *)(vram[120]+x+6+6+3),6,50,0x4000+((6*50)*layer));
-	z++;
+	//z++;
 	// 21 secondes avec 50*3
-	if (z>3) {
+	//if (z>3) {
 		layer=(layer+1)%(13*4);
-		z=0;
-	}
+		//z=0;
+	//}
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	calqueC000();
 	vsync();
+	calqueC000();
 	bank0123();
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 	

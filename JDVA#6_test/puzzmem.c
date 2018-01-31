@@ -629,11 +629,12 @@ char select;
 void main(void)
 {
 	//char offset_x; char offset_y;
-	char curseurHaut;char curseurBas;char etatSelect;char etatZone;char touche;
-	char curseurHautOld;char curseurBasOld;
-	char niveauNb;char niveauTaille;
-	char grille_x;char grille_y;char p;char pp;
-	char one_key;
+	// against "so said EVELYN the modified DOG" => volatile
+	volatile char curseurHaut;volatile char curseurBas;volatile char etatSelect;volatile char etatZone;volatile char touche;
+	volatile char curseurHautOld;volatile char curseurBasOld;
+	volatile char niveauNb;volatile char niveauTaille;
+	volatile char grille_x;volatile char grille_y;volatile char p;volatile char pp;
+	volatile char one_key;
 	mode(1);
 	set_palette(puzzmem_palette);
 	//put_frame(vram(0,0),80,200,bluegirl);

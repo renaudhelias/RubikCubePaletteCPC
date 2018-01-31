@@ -51,6 +51,8 @@ http://github.com/lronaldo/cpctelera - comprend la dernière version de Retro_Ga
 
 Gimp si on tire une règle sur le dessin, ça fait des zones, et lorsqu'on utilise l'outil de sélection, en fait il est magnétisé par la règle, ce qui facilite les sélections. De plus on peut travailler sur une sélection, ce qui empèche de baver d'un sprite sur l'autre.
 
+Lorsqu'on copie/colle un sprite sur Gimp et que le magnétisme de la règle pose soucis, utiliser les flèches du clavier pour déplacer le sprite plus facilement (un pixel par un pixel)
+
 https://cpcrulez.fr/coding_amslive10-memoire_du_cpc_2.htm de la mémoire libre par défaut en &4000-&7FFF...
 
 Réorganisation de mémoire (utile ?)
@@ -103,3 +105,14 @@ OUT &BD00,3
 Pour du vrai scroll, va falloir corriger ces 4 derniers pixels via du soft, pas du hard.
 
 http://www.cpcmania.com/Docs/Programming/Files.htm - Loading files from disk using firmware (C & ASM with SDCC)
+
+__Retour de tests__
+J'ai réussi un découpage de sprites, j'ai du coup 13*4 sprites de 48x50 pixels noir et blanc, sur 4 RAM supérieures, du coup j'ai bien chargé mes 128 sprites !
+
+J'arrive aussi à avoir de la transparence, en mode 0 avec un 0R assembleur lors du set_frame, ce OR assembleur devrait marcher aussi en mode 1 si on est malin (en choisissant 0 noir, 1, 2, 3 une couleur mélangeant 1 et 2)
+
+J'ai des messages "so said EVELYN the modified DOG" quand je pousse l'algo principal (main) trop loin, et à partir de là c'est indéterministe la compilation en fait (le jeu marche un peu puis plouf), contre ça faut précéder la déclaration de ses variables par "volatile", ce que je fais pour toutes celles de mon main désormais.
+
+Avec ConvImgCpc, en mode 2, c'est plus facile d'avoir une image net si on force la palette (cocher dessous les deux première couleurs), avec des couleurs en bleu, car l'Amstrad a plus de dégradé en bleu, du coup il y a plus de chance d'avoir quelque chose de net, une fois OK, inverser les deux couleurs sur la couleur 0 (la première de la liste) n'est pas celle du fond du sprite et réappuyez sur recalculer.
+
+![combat2.dsk.png](combat2.dsk.png)
