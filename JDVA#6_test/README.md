@@ -51,6 +51,8 @@ http://github.com/lronaldo/cpctelera - comprend la dernière version de Retro_Ga
 
 Gimp si on tire une règle sur le dessin, ça fait des zones, et lorsqu'on utilise l'outil de sélection, en fait il est magnétisé par la règle, ce qui facilite les sélections. De plus on peut travailler sur une sélection, ce qui empèche de baver d'un sprite sur l'autre.
 
+Penser à utiliser Excel pour savoir/calculer où positionner régulièrement la règle :P
+
 Lorsqu'on copie/colle un sprite sur Gimp et que le magnétisme de la règle pose soucis, utiliser les flèches du clavier pour déplacer le sprite plus facilement (un pixel par un pixel)
 
 https://cpcrulez.fr/coding_amslive10-memoire_du_cpc_2.htm de la mémoire libre par défaut en &4000-&7FFF...
