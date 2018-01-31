@@ -118,3 +118,5 @@ J'ai des messages "so said EVELYN the modified DOG" quand je pousse l'algo princ
 Avec ConvImgCpc, en mode 2, c'est plus facile d'avoir une image net si on force la palette (cocher dessous les deux première couleurs), avec des couleurs en bleu, car l'Amstrad a plus de dégradé en bleu, du coup il y a plus de chance d'avoir quelque chose de net, une fois OK, inverser les deux couleurs sur la couleur 0 (la première de la liste) n'est pas celle du fond du sprite et réappuyez sur recalculer.
 
 ![combat2.dsk.png](combat2.dsk.png)
+
+https://www.spriters-resource.com/snes/mortalkombat2/sheet/41023/
