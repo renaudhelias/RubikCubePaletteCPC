@@ -181,11 +181,13 @@ calqueC000();
 	x=10;
 	put_frame((unsigned char *)(vram[120]+x),6,50,0x4000+((6*50)*layer));
 	bank5_4000();
-	put_frame((unsigned char *)(vram[120]+x+6),6,50,0x4000+((6*50)*layer));
+	erase_frame((unsigned char *)(vram[120]+x+6),3,50);
+	put_frame_transparent((unsigned char *)(vram[120]+x+3),6,50,0x4000+((6*50)*layer));
 	bank6_4000();
 	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
 	bank7_4000();
-	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
+	erase_frame((unsigned char *)(vram[120]+x+6+6+6),3,50);
+	put_frame_transparent((unsigned char *)(vram[120]+x+6+6+3),6,50,0x4000+((6*50)*layer));
 	z++;
 	// 21 secondes avec 50*3
 	if (z>3) {
