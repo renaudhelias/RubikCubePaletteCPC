@@ -1,6 +1,8 @@
 #ifndef JDVAPI_BASIC_H
 #define JDVAPI_BASIC_H
 
+#define POKE(addr, b) (*(unsigned char *)(addr) = (b))
+
 void set_palette(unsigned char *pPalette);
 
 void pen(unsigned char p);
