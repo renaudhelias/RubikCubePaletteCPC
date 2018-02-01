@@ -29,8 +29,8 @@ void transfertEtDecoupe()
 {
 	unsigned int x;unsigned int y;unsigned int i;unsigned int j;unsigned char * addressFrom;unsigned char * addressTo;char n;
 	n=0;
-	for (i=0;i<TAILLE_X/TAILLE_X_SPRITE;i++) {
-		for (j=0;j<TAILLE_Y/TAILLE_Y_SPRITE;j++) {
+	for (j=0;j<TAILLE_Y/TAILLE_Y_SPRITE;j++) {
+		for (i=0;i<TAILLE_X/TAILLE_X_SPRITE;i++) {
 			for (x=0;x<TAILLE_X_SPRITE;x++) {
 				for (y=0;y<TAILLE_Y_SPRITE;y++) {
 					addressFrom=0xC000+y*TAILLE_X +j*TAILLE_X*TAILLE_Y_SPRITE+x+i*TAILLE_X_SPRITE;
@@ -181,15 +181,15 @@ calqueC000();
 	bank4_4000();
 	x=10;
 	put_frame((unsigned char *)(vram[120]+x),6,50,0x4000+((6*50)*layer));
-	put_frame((unsigned char *)(vram[120]+x+6+6+6+6),6,50,0x4000+((6*50)*layer));
+	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
+	put_frame((unsigned char *)(vram[50]+x+6+6),6,50,0x4000+((6*50)*layer));
 	bank5_4000();
 	erase_frame((unsigned char *)(vram[120]+x+6),3,50);
 	put_frame_transparent((unsigned char *)(vram[120]+x+3),6,50,0x4000+((6*50)*layer));
 	bank6_4000();
-	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
+	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
 	bank7_4000();
-	erase_frame((unsigned char *)(vram[120]+x+6+6+6),3,50);
-	put_frame_transparent((unsigned char *)(vram[120]+x+6+6+3),6,50,0x4000+((6*50)*layer));
+	put_frame((unsigned char *)(vram[50]+x+6+6+6),6,50,0x4000+((6*50)*layer));
 	//z++;
 	// 21 secondes avec 50*3
 	//if (z>3) {
