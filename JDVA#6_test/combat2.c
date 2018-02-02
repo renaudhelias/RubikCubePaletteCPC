@@ -175,7 +175,18 @@ calqueC000();
 	
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
-	
+//	x=10;
+	// fond
+	erase_frame((unsigned char *)(vram[120]+3),6*7+3,50);
+//	//debut
+//	erase_frame((unsigned char *)(vram[120]+5),6,50);
+//	// avant droite 1
+//	erase_frame((unsigned char *)(vram[120]+x+6+6+6+6),3,50);
+//	// avant milieu 1
+//	erase_frame((unsigned char *)(vram[120]+x+6+3+1),2,50);
+//	//fin
+//	erase_frame((unsigned char *)(vram[120]+x+6+6+6+6+6+3+6),6,50);
+
 	//while(1){}
 	// faire une boucle qui :
 	while(1){
@@ -183,17 +194,23 @@ calqueC000();
 	vsync();
 	calque4000();
 	bank4_4000();
-	x=10;
+	x=7;
+	// gauche 1
 	put_frame((unsigned char *)(vram[120]+x),6,50,0x4000+((6*50)*layer));
-	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
-	put_frame((unsigned char *)(vram[50]+x+6+6),6,50,0x4000+((6*50)*layer));
-	bank5_4000();
-	erase_frame((unsigned char *)(vram[120]+x+6),3,50);
-	put_frame_transparent((unsigned char *)(vram[120]+x+3),6,50,0x4000+((6*50)*layer));
+	// droite 1
+	put_frame((unsigned char *)(vram[120]+x+6+6+6+6+3),6,50,0x4000+((6*50)*layer));
 	bank6_4000();
-	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
+	// gauche 2
+	erase_frame((unsigned char *)(vram[120]+x+6),4,50);
+	put_frame_transparent((unsigned char *)(vram[120]+x+3+1),6,50,0x4000+((6*50)*layer));
+	// droite 2
+	put_frame((unsigned char *)(vram[120]+x+6+6+6+6+6+3),6,50,0x4000+((6*50)*layer));
+	bank5_4000();
+	// milieu 1
+	put_frame((unsigned char *)(vram[120]+x+6+6),6,50,0x4000+((6*50)*layer));
 	bank7_4000();
-	put_frame((unsigned char *)(vram[50]+x+6+6+6),6,50,0x4000+((6*50)*layer));
+	// milieu 2
+	put_frame((unsigned char *)(vram[120]+x+6+6+6),6,50,0x4000+((6*50)*layer));
 	//z++;
 	// 21 secondes avec 50*3
 	//if (z>3) {
