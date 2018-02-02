@@ -172,6 +172,10 @@ calqueC000();
 	bank0123();
 
 	mode(2);
+	
+	bank0123();
+	LoadFile("fond2.scr", (char *)0xC000);
+	
 	//while(1){}
 	// faire une boucle qui :
 	while(1){
