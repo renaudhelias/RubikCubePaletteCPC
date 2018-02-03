@@ -28,6 +28,15 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
     __endasm;
 }
 
+void border(unsigned char nColorIndex)
+{
+  __asm
+    ld b, 4 (ix)
+    ld c, b
+    call #0xBC38 ;SCR SET INK
+    __endasm;
+}
+
 void set_palette(unsigned char *pPalette)
 {
   unsigned char nColor = 0;

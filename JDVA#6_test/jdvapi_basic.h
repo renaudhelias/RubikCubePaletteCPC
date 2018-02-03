@@ -5,6 +5,8 @@
 
 void set_palette(unsigned char *pPalette);
 
+void border(unsigned char nColorIndex);
+
 void pen(unsigned char p);
 
 void locate(unsigned char x,unsigned char y);

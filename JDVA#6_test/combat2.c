@@ -20,10 +20,7 @@
 
 unsigned int *vram;
 
-const unsigned char combat_palette[]=
-{
-		26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
+
 
 void transfertEtDecoupe()
 {
@@ -43,151 +40,65 @@ void transfertEtDecoupe()
 	}
 }
 
+const unsigned char combat2_palette[]=
+{
+		//0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+const unsigned char intro_palette[]=
+{
+		0,1,4,11,5,3,16,25,15,12,26,14,23,2,6,0
+};
+
 
 void main(void)
 {
 	// against "so said EVELYN the modified DOG" => volatile
 	volatile char layer=0;volatile char x=10;//char z=0;
-mode(2);
 
-	calqueC000();
-	printf("chargement...");
-	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
-	calque4000();
-	vram=precalc_vram();
+	//intro en &4000
 	SetupDOS();
-	mode(2); // à cause de la publicité ParaDOS ;)
-	calque4000(); // à cause de la publicité ParaDOS ;)
-
+	calque4000();
+	mode(0); // à cause de la publicité ParaDOS ;)
+	border(0);
+	set_palette(intro_palette);
+	calque4000();
+	bank0123();
+	LoadFile("intro.scr", (char *)0x4000); // un scr exporté "linéaire"
+	vram=precalc_vram();
+	
 	bank0123();
 	LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank4_4000();
 	transfertEtDecoupe();
-
-// 3 seconde : un flash
-calqueC000();
-for (x=0;x<50*3;x++){
-	vsync();
-}
-calque4000();bank0123();
-memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
-calqueC000();
-put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
 
 	bank0123();
 	LoadFile("J1R.scr", (char *)0xC000);
 	bank5_4000();
 	transfertEtDecoupe();
 
-// 3 seconde : un flash
-calqueC000();
-for (x=0;x<50*3;x++){
-	vsync();
-}
-calque4000();bank0123();
-memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
-calqueC000();
-put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-
 	bank0123();
 	LoadFile("J2A.scr", (char *)0xC000);
 	bank6_4000();
 	transfertEtDecoupe();
-
-// 3 seconde : un flash
-calqueC000();
-for (x=0;x<50*3;x++){
-	vsync();
-}
-calque4000();bank0123();
-memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
-calqueC000();
-put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
 
 	bank0123();
 	LoadFile("J2R.scr", (char *)0xC000);
 	bank7_4000();
 	transfertEtDecoupe();
 
-	// 3 seconde : un flash
-calqueC000();
-for (x=0;x<50*3;x++){
-	vsync();
-}
-calque4000();bank0123();
-memcpy((char *)0x4000, (char *)0xC000, 0x3FFF);
-calqueC000();
-put_frame((unsigned char *)(vram[0]+0),6*13,200,0x4000);
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-for (x=0;x<50*3;x++){
-	vsync();
-}
-
 // et finalement.
 calqueC000();
 	bank0123();
-
 	mode(2);
-	
+	border(0);
+	set_palette(combat2_palette);
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
-//	x=10;
 	// fond
 	erase_frame((unsigned char *)(vram[120]+3),6*7+3,50);
-//	//debut
-//	erase_frame((unsigned char *)(vram[120]+5),6,50);
-//	// avant droite 1
-//	erase_frame((unsigned char *)(vram[120]+x+6+6+6+6),3,50);
-//	// avant milieu 1
-//	erase_frame((unsigned char *)(vram[120]+x+6+3+1),2,50);
-//	//fin
-//	erase_frame((unsigned char *)(vram[120]+x+6+6+6+6+6+3+6),6,50);
 
-	//while(1){}
 	// faire une boucle qui :
 	while(1){
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
