@@ -126,7 +126,7 @@ void overscan()
 
 void overscanH()
 {
-	// 160 lignes...
+	// 168 lignes...
   __asm
     ld bc,#0xBC00+1 ; On met la valeur 48 dans
     out (c),c      ; le registre 1 du CRTC -- RHdisp
@@ -138,7 +138,7 @@ void overscanH()
     out (c),c
     ld bc,#0xBC00+6 ; On remet la valeur 25 dans
     out (c),c      ; le registre 6 du CRTC -- RVdisp
-    ld bc,#0xBD00+20
+    ld bc,#0xBD00+21
     out (c),c
     ld bc,#0xBC00+7 ; On remet la valeur 43 dans
     out (c),c      ; le registre 7 du CRTC -- RVsyncpos
