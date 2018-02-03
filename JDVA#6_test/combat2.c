@@ -63,9 +63,12 @@ void main(void)
 	mode(0); // à cause de la publicité ParaDOS ;)
 	border(0);
 	set_palette(intro_palette);
+	//overscan();
+	scan();
 	calque4000();
 	bank0123();
-	LoadFile("intro.scr", (char *)0x4000); // un scr exporté "linéaire"
+	//LoadFile("intro-oc.scr", (char *)0x4000);
+	LoadFile("intro.scr", (char *)0x4000);
 	vram=precalc_vram();
 	
 	bank0123();
@@ -74,17 +77,17 @@ void main(void)
 	transfertEtDecoupe();
 
 	bank0123();
-	LoadFile("J1R.scr", (char *)0xC000);
+	LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank5_4000();
 	transfertEtDecoupe();
 
 	bank0123();
-	LoadFile("J2A.scr", (char *)0xC000);
+	LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank6_4000();
 	transfertEtDecoupe();
 
 	bank0123();
-	LoadFile("J2R.scr", (char *)0xC000);
+	LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank7_4000();
 	transfertEtDecoupe();
 
@@ -94,6 +97,7 @@ calqueC000();
 	mode(2);
 	border(0);
 	set_palette(combat2_palette);
+	scan();
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
 	// fond
@@ -101,6 +105,14 @@ calqueC000();
 
 	// faire une boucle qui :
 	while(1){
+		
+	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
+	vsync();
+	calqueC000();
+	bank0123();
+	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
+
+		
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	vsync();
 	calque4000();
@@ -128,11 +140,6 @@ calqueC000();
 		layer=(layer+1)%(13*4);
 		//z=0;
 	//}
-	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	vsync();
-	calqueC000();
-	bank0123();
-	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 	
 	}
 	

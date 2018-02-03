@@ -91,3 +91,47 @@ void scroll(unsigned char h)
 		out (c),c
 	__endasm;
 }
+
+void overscan()
+{
+  __asm
+    ld bc,#0xBC00+1 ; On met la valeur 50 dans
+    out (c),c      ; le registre 1 du CRTC -- RHdisp
+    ld bc,#0xBD00+50
+    out (c),c
+    ld bc,#0xBC00+2 ; On met la valeur 51 dans
+    out (c),c      ; le registre 2 du CRTC -- RHsyncpos
+    ld bc,#0xBD00+51
+    out (c),c
+    ld bc,#0xBC00+6 ; On met la valeur 34 dans
+    out (c),c      ; le registre 6 du CRTC -- RVdisp
+    ld bc,#0xBD00+34
+    out (c),c
+    ld bc,#0xBC00+7 ; On met la valeur 35 dans
+    out (c),c      ; le registre 7 du CRTC -- RVsyncpos
+    ld bc,#0xBD00+35
+    out (c),c
+ __endasm;
+}
+
+void scan()
+{
+  __asm
+    ld bc,#0xBC00+1 ; On remet la valeur 40 dans
+    out (c),c      ; le registre 1 du CRTC -- RHdisp
+    ld bc,#0xBD00+40
+    out (c),c
+    ld bc,#0xBC00+2 ; On remet la valeur 46 dans
+    out (c),c      ; le registre 2 du CRTC -- RHsyncpos
+    ld bc,#0xBD00+46
+    out (c),c
+    ld bc,#0xBC00+6 ; On remet la valeur 25 dans
+    out (c),c      ; le registre 6 du CRTC -- RVdisp
+    ld bc,#0xBD00+25
+    out (c),c
+    ld bc,#0xBC00+7 ; On remet la valeur 30 dans
+    out (c),c      ; le registre 7 du CRTC -- RVsyncpos
+    ld bc,#0xBD00+30
+    out (c),c
+ __endasm;
+}
