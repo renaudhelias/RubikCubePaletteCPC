@@ -104,7 +104,7 @@ calqueC000();
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
 	// fond
-	erase_frame((unsigned char *)(vram[120]+3),6*7+3,50);
+	erase_frame((unsigned char *)(vram[120]+3),6*8+3,50);
 
 	// faire une boucle qui :
 	while(1){
