@@ -124,6 +124,28 @@ void overscan()
  __endasm;
 }
 
+void overscan24K()
+{
+  __asm
+    ld bc,#0xBC00+1 ; On met la valeur 46 dans
+    out (c),c      ; le registre 1 du CRTC -- RHdisp
+    ld bc,#0xBD00+46
+    out (c),c
+    ld bc,#0xBC00+2 ; On met la valeur 49 dans
+    out (c),c      ; le registre 2 du CRTC -- RHsyncpos
+    ld bc,#0xBD00+49
+    out (c),c
+    ld bc,#0xBC00+6 ; On met la valeur 33 dans
+    out (c),c      ; le registre 6 du CRTC -- RVdisp
+    ld bc,#0xBD00+33
+    out (c),c
+    ld bc,#0xBC00+7 ; On met la valeur 35 dans
+    out (c),c      ; le registre 7 du CRTC -- RVsyncpos
+    ld bc,#0xBD00+35
+    out (c),c
+ __endasm;
+}
+
 void scan()
 {
   __asm

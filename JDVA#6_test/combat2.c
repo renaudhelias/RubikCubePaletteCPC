@@ -63,11 +63,13 @@ void main(void)
 	mode(0); // à cause de la publicité ParaDOS ;)
 	border(0);
 	set_palette(intro_palette);
-	overscan();
+	overscan24K();
+	//overscan();
 	//scan();
 	calque4C00();
 	bank0123();
-	LoadFile("intro-oc.scr", (char *)0x4000);
+	LoadFile("intro-o2.scr", (char *)0x4000);
+	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
 	vram=precalc_vram();
 	

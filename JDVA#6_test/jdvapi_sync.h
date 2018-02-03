@@ -27,6 +27,7 @@ void bank7_4000();
 void scroll(unsigned char h);
 
 void overscan();
+void overscan24K();
 void scan();
 void calque4C00();
 
