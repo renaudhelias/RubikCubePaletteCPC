@@ -1,0 +1,166 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           poisson
+     00000000  l__BSS                          
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__GSINIT                       
+     00000000  l__HEADER                       
+     00000000  l__HEAP                         
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00000000  s__HEADER                       
+     00000000  s__HEADER0                      
+     00000000  s__HEADER1                      
+     00000001  l__GSFINAL                      
+     00000003  l__HEADER0                      
+     00000009  l__HEADER1                      
+     00000138  s__CODE                         
+     000001B4  l__DATA                         
+     00000B94  l__CODE                         
+     00000CCC  s__DATA                         
+     00000E80  s__GSFINAL                      
+     00000E80  s__GSINIT                       
+     00000E80  s__HOME                         
+     00000E80  s__INITIALIZED                  
+     00000E81  s__BSS                          
+     00000E81  s__HEAP                         
+     00000E81  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000138    00000B94 =        2964. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000138  _main                              main
+     00000247  __clock                            crt0
+     00000248  _exit                              crt0
+     00000249  _putchar                           
+     00000249  _putchar_rr_s                      
+     00000252  _putchar_rr_dbs                    
+     00000257  _pen                               jdvapi_basic
+     00000268  _locate                            jdvapi_basic
+     0000027F  _set_color                         jdvapi_basic
+     00000294  _border                            jdvapi_basic
+     000002A6  _set_palette                       jdvapi_basic
+     000002D2  _mode                              jdvapi_basic
+     000002E3  _plot                              jdvapi_basic
+     000002FD  _move                              jdvapi_basic
+     00000317  _line                              jdvapi_basic
+     00000331  _set_pixel_color0                  jdvapi_basic
+     000003AC  _put_pixel0                        jdvapi_basic
+     00000408  _copy_pixel0bytes                  jdvapi_basic
+     000004B6  _set_pixel_color1                  jdvapi_basic
+     0000052E  _put_pixel1                        jdvapi_basic
+     0000058C  _put_pixel_byte1                   jdvapi_basic
+     00000601  _put_frame                         jdvapi_frame
+     00000638  _put_frame_transparent             jdvapi_frame
+     00000670  _erase_frame                       jdvapi_frame
+     000006A0  _precalc_vram                      jdvapi_frame
+     0000070E  _get_key                           jdvapi_keyb
+     00000751  _check_controller                  jdvapi_keyb
+     00000784  _vsync                             jdvapi_sync
+     0000078D  _calqueC000                        jdvapi_sync
+     00000798  _calque4000                        jdvapi_sync
+     000007A3  _calque4C00                        jdvapi_sync
+     000007AE  _bank0123                          jdvapi_sync
+     000007B4  _bank7_C000                        jdvapi_sync
+     000007BA  _bank4_4000                        jdvapi_sync
+     000007C0  _bank5_4000                        jdvapi_sync
+     000007C6  _bank6_4000                        jdvapi_sync
+     000007CC  _bank7_4000                        jdvapi_sync
+     000007D2  _scroll                            jdvapi_sync
+     000007EA  _overscan                          jdvapi_sync
+     00000813  _scan                              jdvapi_sync
+     0000083C  _poisson_palette                   poisson
+     0000084C  _poisson1                          poisson
+     000008AC  _poisson2                          poisson
+     0000090C  _poisson_groupe                    poisson
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               00000CCC    000001B4 =         436. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000CCC  _fish                              main
+     00000CE4  _vram                              main
+     00000CE6  _private_precalc_vram              jdvapi_frame
+     00000E76  _aKeyboard                         jdvapi_keyb
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSINIT                             00000E80    00000000 =           0. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000E80  gsinit                             crt0
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSFINAL                            00000E80    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER0                            00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER1                            00000000    00000009 =           9. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+
+Files Linked                              [ module(s) ]
+
+main.rel                                  [ main ]
+crt0_cpc.rel                              [ crt0 ]
+putchar_cpc.rel                           [  ]
+jdvapi_basic.rel                          [ jdvapi_basic ]
+jdvapi_frame.rel                          [ jdvapi_frame ]
+jdvapi_keyb.rel                           [ jdvapi_keyb ]
+jdvapi_sync.rel                           [ jdvapi_sync ]
+poisson.rel                               [ poisson ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+
+User Base Address Definitions
+
+_CODE = 0x0138
+_DATA = 0x0000
+
+

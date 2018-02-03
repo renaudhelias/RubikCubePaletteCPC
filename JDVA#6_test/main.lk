@@ -1,0 +1,16 @@
+-mjwx
+-i main.ihx
+-b _CODE = 0x0138
+-b _DATA = 0x0000
+-k C:\Program Files (x86)\SDCC\bin\..\lib\z80
+-l z80
+main.rel
+crt0_cpc.rel
+putchar_cpc.rel
+jdvapi_basic.rel
+jdvapi_frame.rel
+jdvapi_keyb.rel
+jdvapi_sync.rel
+poisson.rel
+
+-e

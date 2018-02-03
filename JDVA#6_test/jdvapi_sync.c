@@ -32,6 +32,16 @@ void calque4000()
   __endasm;
 }
 
+void calque4C00()
+{
+  __asm
+    ld bc,#0xBC00+12 ; On met la valeur 28 dans
+    out (c),c      ; le registre 12 du CRTC
+    ld bc,#0xBD00+28
+    out (c),c
+  __endasm;
+}
+
 void bank0123()
 {
   __asm

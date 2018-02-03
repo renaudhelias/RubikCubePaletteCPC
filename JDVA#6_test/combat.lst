@@ -1,0 +1,806 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW32)
+                              4 ;--------------------------------------------------------
+                              5 	.module combat
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _vsync
+                             13 	.globl _get_key
+                             14 	.globl _check_controller
+                             15 	.globl _precalc_vram
+                             16 	.globl _put_frame
+                             17 	.globl _mode
+                             18 	.globl _set_palette
+                             19 	.globl _vram
+                             20 	.globl _perso2A
+                             21 	.globl _perso1A
+                             22 	.globl _combat_palette
+                             23 ;--------------------------------------------------------
+                             24 ; special function registers
+                             25 ;--------------------------------------------------------
+                             26 ;--------------------------------------------------------
+                             27 ; ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _DATA
+   0000                      30 _perso1A::
+   0000                      31 	.ds 16
+   0010                      32 _perso2A::
+   0010                      33 	.ds 16
+   0020                      34 _vram::
+   0020                      35 	.ds 2
+                             36 ;--------------------------------------------------------
+                             37 ; ram data
+                             38 ;--------------------------------------------------------
+                             39 	.area _INITIALIZED
+                             40 ;--------------------------------------------------------
+                             41 ; absolute external ram data
+                             42 ;--------------------------------------------------------
+                             43 	.area _DABS (ABS)
+                             44 ;--------------------------------------------------------
+                             45 ; global & static initialisations
+                             46 ;--------------------------------------------------------
+                             47 	.area _HOME
+                             48 	.area _GSINIT
+                             49 	.area _GSFINAL
+                             50 	.area _GSINIT
+                             51 ;--------------------------------------------------------
+                             52 ; Home
+                             53 ;--------------------------------------------------------
+                             54 	.area _HOME
+                             55 	.area _HOME
+                             56 ;--------------------------------------------------------
+                             57 ; code
+                             58 ;--------------------------------------------------------
+                             59 	.area _CODE
+                             60 ;combat.c:22: void main(void)
+                             61 ;	---------------------------------
+                             62 ; Function main
+                             63 ; ---------------------------------
+   0000                      64 _main::
+   0000 DD E5         [15]   65 	push	ix
+   0002 DD 21 00 00   [14]   66 	ld	ix,#0
+   0006 DD 39         [15]   67 	add	ix,sp
+   0008 21 EA FF      [10]   68 	ld	hl,#-22
+   000B 39            [11]   69 	add	hl,sp
+   000C F9            [ 6]   70 	ld	sp,hl
+                             71 ;combat.c:24: int x;char xmod8;int x2;char x2mod8;char layer=0;char direction=0;
+   000D DD 36 EA 00   [19]   72 	ld	-22 (ix),#0x00
+                             73 ;combat.c:25: x=0;x2=640-x-57;
+   0011 DD 36 EF 00   [19]   74 	ld	-17 (ix),#0x00
+   0015 DD 36 F0 00   [19]   75 	ld	-16 (ix),#0x00
+                             76 ;combat.c:27: vram=precalc_vram();
+   0019 CDr00r00      [17]   77 	call	_precalc_vram
+   001C 4D            [ 4]   78 	ld	c,l
+   001D 44            [ 4]   79 	ld	b,h
+   001E ED 43r20r00   [20]   80 	ld	(_vram),bc
+                             81 ;combat.c:29: perso1A[0]=J1A1;
+   0022 21r00r00      [10]   82 	ld	hl,#_J1A1
+   0025 22r00r00      [16]   83 	ld	(_perso1A), hl
+                             84 ;combat.c:30: perso1A[1]=J1A2;
+   0028 21r00r00      [10]   85 	ld	hl,#_J1A2
+   002B 22r02r00      [16]   86 	ld	((_perso1A + 0x0002)), hl
+                             87 ;combat.c:31: perso1A[2]=J1A3;
+   002E 21r00r00      [10]   88 	ld	hl,#_J1A3
+   0031 22r04r00      [16]   89 	ld	((_perso1A + 0x0004)), hl
+                             90 ;combat.c:32: perso1A[3]=J1A4;
+   0034 21r00r00      [10]   91 	ld	hl,#_J1A4
+   0037 22r06r00      [16]   92 	ld	((_perso1A + 0x0006)), hl
+                             93 ;combat.c:33: perso1A[4]=J1A5;
+   003A 21r00r00      [10]   94 	ld	hl,#_J1A5
+   003D 22r08r00      [16]   95 	ld	((_perso1A + 0x0008)), hl
+                             96 ;combat.c:34: perso1A[5]=J1A6;
+   0040 21r00r00      [10]   97 	ld	hl,#_J1A6
+   0043 22r0Ar00      [16]   98 	ld	((_perso1A + 0x000a)), hl
+                             99 ;combat.c:35: perso1A[6]=J1A7;
+   0046 21r00r00      [10]  100 	ld	hl,#_J1A7
+   0049 22r0Cr00      [16]  101 	ld	((_perso1A + 0x000c)), hl
+                            102 ;combat.c:36: perso1A[7]=J1A8;
+   004C 21r00r00      [10]  103 	ld	hl,#_J1A8
+   004F 22r0Er00      [16]  104 	ld	((_perso1A + 0x000e)), hl
+                            105 ;combat.c:47: perso2A[0]=J2A1;
+   0052 21r00r00      [10]  106 	ld	hl,#_J2A1
+   0055 22r10r00      [16]  107 	ld	(_perso2A), hl
+                            108 ;combat.c:48: perso2A[1]=J2A2;
+   0058 21r00r00      [10]  109 	ld	hl,#_J2A2
+   005B 22r12r00      [16]  110 	ld	((_perso2A + 0x0002)), hl
+                            111 ;combat.c:49: perso2A[2]=J2A3;
+   005E 21r00r00      [10]  112 	ld	hl,#_J2A3
+   0061 22r14r00      [16]  113 	ld	((_perso2A + 0x0004)), hl
+                            114 ;combat.c:50: perso2A[3]=J2A4;
+   0064 21r00r00      [10]  115 	ld	hl,#_J2A4
+   0067 22r16r00      [16]  116 	ld	((_perso2A + 0x0006)), hl
+                            117 ;combat.c:51: perso2A[4]=J2A5;
+   006A 21r00r00      [10]  118 	ld	hl,#_J2A5
+   006D 22r18r00      [16]  119 	ld	((_perso2A + 0x0008)), hl
+                            120 ;combat.c:52: perso2A[5]=J2A6;
+   0070 21r00r00      [10]  121 	ld	hl,#_J2A6
+   0073 22r1Ar00      [16]  122 	ld	((_perso2A + 0x000a)), hl
+                            123 ;combat.c:53: perso2A[6]=J2A7;
+   0076 21r00r00      [10]  124 	ld	hl,#_J2A7
+   0079 22r1Cr00      [16]  125 	ld	((_perso2A + 0x000c)), hl
+                            126 ;combat.c:54: perso2A[7]=J2A8;
+   007C 21r00r00      [10]  127 	ld	hl,#_J2A8
+   007F 22r1Er00      [16]  128 	ld	((_perso2A + 0x000e)), hl
+                            129 ;combat.c:65: mode(2);
+   0082 3E 02         [ 7]  130 	ld	a,#0x02
+   0084 F5            [11]  131 	push	af
+   0085 33            [ 6]  132 	inc	sp
+   0086 CDr00r00      [17]  133 	call	_mode
+   0089 33            [ 6]  134 	inc	sp
+                            135 ;combat.c:66: set_palette(combat_palette);
+   008A 21rDEr04      [10]  136 	ld	hl,#_combat_palette
+   008D E5            [11]  137 	push	hl
+   008E CDr00r00      [17]  138 	call	_set_palette
+   0091 F1            [10]  139 	pop	af
+                            140 ;combat.c:68: put_frame(vram(0,0),6,50,perso1A[0]);
+   0092 2Ar00r00      [16]  141 	ld	hl, (#_perso1A + 0)
+   0095 E5            [11]  142 	push	hl
+   0096 21 06 32      [10]  143 	ld	hl,#0x3206
+   0099 E5            [11]  144 	push	hl
+   009A 21 00 C0      [10]  145 	ld	hl,#0xc000
+   009D E5            [11]  146 	push	hl
+   009E CDr00r00      [17]  147 	call	_put_frame
+   00A1 21 06 00      [10]  148 	ld	hl,#6
+   00A4 39            [11]  149 	add	hl,sp
+   00A5 F9            [ 6]  150 	ld	sp,hl
+                            151 ;combat.c:69: put_frame(vram(0+8,0),7,50,perso1A[1]);
+   00A6 2Ar02r00      [16]  152 	ld	hl, (#(_perso1A + 0x0002) + 0)
+   00A9 E5            [11]  153 	push	hl
+   00AA 21 07 32      [10]  154 	ld	hl,#0x3207
+   00AD E5            [11]  155 	push	hl
+   00AE 21 08 C0      [10]  156 	ld	hl,#0xc008
+   00B1 E5            [11]  157 	push	hl
+   00B2 CDr00r00      [17]  158 	call	_put_frame
+   00B5 21 06 00      [10]  159 	ld	hl,#6
+   00B8 39            [11]  160 	add	hl,sp
+   00B9 F9            [ 6]  161 	ld	sp,hl
+                            162 ;combat.c:70: put_frame(vram(8+8,0),7,50,perso1A[2]);
+   00BA 2Ar04r00      [16]  163 	ld	hl, (#(_perso1A + 0x0004) + 0)
+   00BD E5            [11]  164 	push	hl
+   00BE 21 07 32      [10]  165 	ld	hl,#0x3207
+   00C1 E5            [11]  166 	push	hl
+   00C2 21 10 C0      [10]  167 	ld	hl,#0xc010
+   00C5 E5            [11]  168 	push	hl
+   00C6 CDr00r00      [17]  169 	call	_put_frame
+   00C9 21 06 00      [10]  170 	ld	hl,#6
+   00CC 39            [11]  171 	add	hl,sp
+   00CD F9            [ 6]  172 	ld	sp,hl
+                            173 ;combat.c:71: put_frame(vram(8+8+8,0),7,50,perso1A[3]);
+   00CE 2Ar06r00      [16]  174 	ld	hl, (#(_perso1A + 0x0006) + 0)
+   00D1 E5            [11]  175 	push	hl
+   00D2 21 07 32      [10]  176 	ld	hl,#0x3207
+   00D5 E5            [11]  177 	push	hl
+   00D6 21 18 C0      [10]  178 	ld	hl,#0xc018
+   00D9 E5            [11]  179 	push	hl
+   00DA CDr00r00      [17]  180 	call	_put_frame
+   00DD 21 06 00      [10]  181 	ld	hl,#6
+   00E0 39            [11]  182 	add	hl,sp
+   00E1 F9            [ 6]  183 	ld	sp,hl
+                            184 ;combat.c:72: put_frame(vram(8+8+8+8,0),7,50,perso1A[4]);
+   00E2 2Ar08r00      [16]  185 	ld	hl, (#(_perso1A + 0x0008) + 0)
+   00E5 E5            [11]  186 	push	hl
+   00E6 21 07 32      [10]  187 	ld	hl,#0x3207
+   00E9 E5            [11]  188 	push	hl
+   00EA 21 20 C0      [10]  189 	ld	hl,#0xc020
+   00ED E5            [11]  190 	push	hl
+   00EE CDr00r00      [17]  191 	call	_put_frame
+   00F1 21 06 00      [10]  192 	ld	hl,#6
+   00F4 39            [11]  193 	add	hl,sp
+   00F5 F9            [ 6]  194 	ld	sp,hl
+                            195 ;combat.c:73: put_frame(vram(8+8+8+8+8,0),7,50,perso1A[5]);
+   00F6 2Ar0Ar00      [16]  196 	ld	hl, (#(_perso1A + 0x000a) + 0)
+   00F9 E5            [11]  197 	push	hl
+   00FA 21 07 32      [10]  198 	ld	hl,#0x3207
+   00FD E5            [11]  199 	push	hl
+   00FE 21 28 C0      [10]  200 	ld	hl,#0xc028
+   0101 E5            [11]  201 	push	hl
+   0102 CDr00r00      [17]  202 	call	_put_frame
+   0105 21 06 00      [10]  203 	ld	hl,#6
+   0108 39            [11]  204 	add	hl,sp
+   0109 F9            [ 6]  205 	ld	sp,hl
+                            206 ;combat.c:74: put_frame(vram(8+8+8+8+8+8,0),7,50,perso1A[6]);
+   010A 2Ar0Cr00      [16]  207 	ld	hl, (#(_perso1A + 0x000c) + 0)
+   010D E5            [11]  208 	push	hl
+   010E 21 07 32      [10]  209 	ld	hl,#0x3207
+   0111 E5            [11]  210 	push	hl
+   0112 21 30 C0      [10]  211 	ld	hl,#0xc030
+   0115 E5            [11]  212 	push	hl
+   0116 CDr00r00      [17]  213 	call	_put_frame
+   0119 21 06 00      [10]  214 	ld	hl,#6
+   011C 39            [11]  215 	add	hl,sp
+   011D F9            [ 6]  216 	ld	sp,hl
+                            217 ;combat.c:75: put_frame(vram(8+8+8+8+8+8+8,0),7,50,perso1A[7]);
+   011E 2Ar0Er00      [16]  218 	ld	hl, (#(_perso1A + 0x000e) + 0)
+   0121 E5            [11]  219 	push	hl
+   0122 21 07 32      [10]  220 	ld	hl,#0x3207
+   0125 E5            [11]  221 	push	hl
+   0126 21 38 C0      [10]  222 	ld	hl,#0xc038
+   0129 E5            [11]  223 	push	hl
+   012A CDr00r00      [17]  224 	call	_put_frame
+   012D 21 06 00      [10]  225 	ld	hl,#6
+   0130 39            [11]  226 	add	hl,sp
+   0131 F9            [ 6]  227 	ld	sp,hl
+                            228 ;combat.c:76: put_frame(vram(0,50),6,50,perso2A[0]+((6*50)*1));
+   0132 2Ar10r00      [16]  229 	ld	hl, (#_perso2A + 0)
+   0135 01 2C 01      [10]  230 	ld	bc, #0x012c
+   0138 09            [11]  231 	add	hl,bc
+   0139 E5            [11]  232 	push	hl
+   013A 21 06 32      [10]  233 	ld	hl,#0x3206
+   013D E5            [11]  234 	push	hl
+   013E 21 E0 D1      [10]  235 	ld	hl,#0xd1e0
+   0141 E5            [11]  236 	push	hl
+   0142 CDr00r00      [17]  237 	call	_put_frame
+   0145 21 06 00      [10]  238 	ld	hl,#6
+   0148 39            [11]  239 	add	hl,sp
+   0149 F9            [ 6]  240 	ld	sp,hl
+                            241 ;combat.c:77: put_frame(vram(8,50),7,50,perso2A[1]+((7*50)*1));
+   014A 2Ar12r00      [16]  242 	ld	hl, (#(_perso2A + 0x0002) + 0)
+   014D 01 5E 01      [10]  243 	ld	bc, #0x015e
+   0150 09            [11]  244 	add	hl,bc
+   0151 E5            [11]  245 	push	hl
+   0152 21 07 32      [10]  246 	ld	hl,#0x3207
+   0155 E5            [11]  247 	push	hl
+   0156 21 E8 D1      [10]  248 	ld	hl,#0xd1e8
+   0159 E5            [11]  249 	push	hl
+   015A CDr00r00      [17]  250 	call	_put_frame
+   015D 21 06 00      [10]  251 	ld	hl,#6
+   0160 39            [11]  252 	add	hl,sp
+   0161 F9            [ 6]  253 	ld	sp,hl
+                            254 ;combat.c:78: put_frame(vram(8+8,50),7,50,perso2A[2]+((7*50)*1));
+   0162 2Ar14r00      [16]  255 	ld	hl, (#(_perso2A + 0x0004) + 0)
+   0165 01 5E 01      [10]  256 	ld	bc, #0x015e
+   0168 09            [11]  257 	add	hl,bc
+   0169 E5            [11]  258 	push	hl
+   016A 21 07 32      [10]  259 	ld	hl,#0x3207
+   016D E5            [11]  260 	push	hl
+   016E 21 F0 D1      [10]  261 	ld	hl,#0xd1f0
+   0171 E5            [11]  262 	push	hl
+   0172 CDr00r00      [17]  263 	call	_put_frame
+   0175 21 06 00      [10]  264 	ld	hl,#6
+   0178 39            [11]  265 	add	hl,sp
+   0179 F9            [ 6]  266 	ld	sp,hl
+                            267 ;combat.c:79: put_frame(vram(8+8+8,50),7,50,perso2A[3]+((7*50)*1));
+   017A 2Ar16r00      [16]  268 	ld	hl, (#(_perso2A + 0x0006) + 0)
+   017D 01 5E 01      [10]  269 	ld	bc, #0x015e
+   0180 09            [11]  270 	add	hl,bc
+   0181 E5            [11]  271 	push	hl
+   0182 21 07 32      [10]  272 	ld	hl,#0x3207
+   0185 E5            [11]  273 	push	hl
+   0186 21 F8 D1      [10]  274 	ld	hl,#0xd1f8
+   0189 E5            [11]  275 	push	hl
+   018A CDr00r00      [17]  276 	call	_put_frame
+   018D 21 06 00      [10]  277 	ld	hl,#6
+   0190 39            [11]  278 	add	hl,sp
+   0191 F9            [ 6]  279 	ld	sp,hl
+                            280 ;combat.c:80: put_frame(vram(8+8+8+8,50),7,50,perso2A[4]+((7*50)*1));
+   0192 2Ar18r00      [16]  281 	ld	hl, (#(_perso2A + 0x0008) + 0)
+   0195 01 5E 01      [10]  282 	ld	bc, #0x015e
+   0198 09            [11]  283 	add	hl,bc
+   0199 4D            [ 4]  284 	ld	c, l
+   019A 7C            [ 4]  285 	ld	a,h
+   019B 47            [ 4]  286 	ld	b,a
+   019C C5            [11]  287 	push	bc
+   019D 21 07 32      [10]  288 	ld	hl,#0x3207
+   01A0 E5            [11]  289 	push	hl
+   01A1 21 00 D2      [10]  290 	ld	hl,#0xd200
+   01A4 E5            [11]  291 	push	hl
+   01A5 CDr00r00      [17]  292 	call	_put_frame
+   01A8 21 06 00      [10]  293 	ld	hl,#6
+   01AB 39            [11]  294 	add	hl,sp
+   01AC F9            [ 6]  295 	ld	sp,hl
+                            296 ;combat.c:81: put_frame(vram(8+8+8+8+8,50),7,50,perso2A[5]+((7*50)*1));
+   01AD 2Ar1Ar00      [16]  297 	ld	hl, (#(_perso2A + 0x000a) + 0)
+   01B0 01 5E 01      [10]  298 	ld	bc, #0x015e
+   01B3 09            [11]  299 	add	hl,bc
+   01B4 E5            [11]  300 	push	hl
+   01B5 21 07 32      [10]  301 	ld	hl,#0x3207
+   01B8 E5            [11]  302 	push	hl
+   01B9 21 08 D2      [10]  303 	ld	hl,#0xd208
+   01BC E5            [11]  304 	push	hl
+   01BD CDr00r00      [17]  305 	call	_put_frame
+   01C0 21 06 00      [10]  306 	ld	hl,#6
+   01C3 39            [11]  307 	add	hl,sp
+   01C4 F9            [ 6]  308 	ld	sp,hl
+                            309 ;combat.c:82: put_frame(vram(8+8+8+8+8+8,50),7,50,perso2A[6]+((7*50)*1));
+   01C5 2Ar1Cr00      [16]  310 	ld	hl, (#(_perso2A + 0x000c) + 0)
+   01C8 01 5E 01      [10]  311 	ld	bc, #0x015e
+   01CB 09            [11]  312 	add	hl,bc
+   01CC E5            [11]  313 	push	hl
+   01CD 21 07 32      [10]  314 	ld	hl,#0x3207
+   01D0 E5            [11]  315 	push	hl
+   01D1 21 10 D2      [10]  316 	ld	hl,#0xd210
+   01D4 E5            [11]  317 	push	hl
+   01D5 CDr00r00      [17]  318 	call	_put_frame
+   01D8 21 06 00      [10]  319 	ld	hl,#6
+   01DB 39            [11]  320 	add	hl,sp
+   01DC F9            [ 6]  321 	ld	sp,hl
+                            322 ;combat.c:83: put_frame(vram(8+8+8+8+8+8+8,50),7,50,perso2A[7]+((7*50)*1));
+   01DD 2Ar1Er00      [16]  323 	ld	hl, (#(_perso2A + 0x000e) + 0)
+   01E0 01 5E 01      [10]  324 	ld	bc, #0x015e
+   01E3 09            [11]  325 	add	hl,bc
+   01E4 E5            [11]  326 	push	hl
+   01E5 21 07 32      [10]  327 	ld	hl,#0x3207
+   01E8 E5            [11]  328 	push	hl
+   01E9 21 18 D2      [10]  329 	ld	hl,#0xd218
+   01EC E5            [11]  330 	push	hl
+   01ED CDr00r00      [17]  331 	call	_put_frame
+   01F0 21 06 00      [10]  332 	ld	hl,#6
+   01F3 39            [11]  333 	add	hl,sp
+   01F4 F9            [ 6]  334 	ld	sp,hl
+                            335 ;combat.c:85: while(1){
+   01F5                     336 00127$:
+                            337 ;combat.c:86: check_controller();
+   01F5 CDr00r00      [17]  338 	call	_check_controller
+                            339 ;combat.c:87: layer=3;
+   01F8 0E 03         [ 7]  340 	ld	c,#0x03
+                            341 ;combat.c:88: if (get_key(Key_CursorLeft) && direction==0) {
+   01FA C5            [11]  342 	push	bc
+   01FB 3E 08         [ 7]  343 	ld	a,#0x08
+   01FD F5            [11]  344 	push	af
+   01FE 33            [ 6]  345 	inc	sp
+   01FF CDr00r00      [17]  346 	call	_get_key
+   0202 33            [ 6]  347 	inc	sp
+   0203 C1            [10]  348 	pop	bc
+   0204 7D            [ 4]  349 	ld	a,l
+   0205 B7            [ 4]  350 	or	a, a
+   0206 28 26         [12]  351 	jr	Z,00104$
+   0208 DD 7E EA      [19]  352 	ld	a,-22 (ix)
+   020B B7            [ 4]  353 	or	a, a
+   020C 20 20         [12]  354 	jr	NZ,00104$
+                            355 ;combat.c:89: if (x>0) x--;
+   020E AF            [ 4]  356 	xor	a, a
+   020F DD BE EF      [19]  357 	cp	a, -17 (ix)
+   0212 DD 9E F0      [19]  358 	sbc	a, -16 (ix)
+   0215 E2r1Ar02      [10]  359 	jp	PO, 00207$
+   0218 EE 80         [ 7]  360 	xor	a, #0x80
+   021A                     361 00207$:
+   021A F2r2Ar02      [10]  362 	jp	P,00102$
+   021D DD 6E EF      [19]  363 	ld	l,-17 (ix)
+   0220 DD 66 F0      [19]  364 	ld	h,-16 (ix)
+   0223 2B            [ 6]  365 	dec	hl
+   0224 DD 75 EF      [19]  366 	ld	-17 (ix),l
+   0227 DD 74 F0      [19]  367 	ld	-16 (ix),h
+   022A                     368 00102$:
+                            369 ;combat.c:90: direction=1;
+   022A DD 36 EA 01   [19]  370 	ld	-22 (ix),#0x01
+   022E                     371 00104$:
+                            372 ;combat.c:92: if (get_key(Key_CursorRight) && direction==0) {
+   022E C5            [11]  373 	push	bc
+   022F 3E 01         [ 7]  374 	ld	a,#0x01
+   0231 F5            [11]  375 	push	af
+   0232 33            [ 6]  376 	inc	sp
+   0233 CDr00r00      [17]  377 	call	_get_key
+   0236 33            [ 6]  378 	inc	sp
+   0237 C1            [10]  379 	pop	bc
+   0238 7D            [ 4]  380 	ld	a,l
+   0239 B7            [ 4]  381 	or	a, a
+   023A 28 21         [12]  382 	jr	Z,00109$
+   023C DD 7E EA      [19]  383 	ld	a,-22 (ix)
+   023F B7            [ 4]  384 	or	a, a
+   0240 20 1B         [12]  385 	jr	NZ,00109$
+                            386 ;combat.c:93: if (x<640/2-57) x++;
+   0242 DD 7E EF      [19]  387 	ld	a,-17 (ix)
+   0245 D6 07         [ 7]  388 	sub	a, #0x07
+   0247 DD 7E F0      [19]  389 	ld	a,-16 (ix)
+   024A 17            [ 4]  390 	rla
+   024B 3F            [ 4]  391 	ccf
+   024C 1F            [ 4]  392 	rra
+   024D DE 81         [ 7]  393 	sbc	a, #0x81
+   024F 30 08         [12]  394 	jr	NC,00107$
+   0251 DD 34 EF      [23]  395 	inc	-17 (ix)
+   0254 20 03         [12]  396 	jr	NZ,00208$
+   0256 DD 34 F0      [23]  397 	inc	-16 (ix)
+   0259                     398 00208$:
+   0259                     399 00107$:
+                            400 ;combat.c:94: direction=1;
+   0259 DD 36 EA 01   [19]  401 	ld	-22 (ix),#0x01
+   025D                     402 00109$:
+                            403 ;combat.c:97: if (!get_key(Key_CursorLeft) && !get_key(Key_CursorRight)) {
+   025D C5            [11]  404 	push	bc
+   025E 3E 08         [ 7]  405 	ld	a,#0x08
+   0260 F5            [11]  406 	push	af
+   0261 33            [ 6]  407 	inc	sp
+   0262 CDr00r00      [17]  408 	call	_get_key
+   0265 33            [ 6]  409 	inc	sp
+   0266 C1            [10]  410 	pop	bc
+   0267 7D            [ 4]  411 	ld	a,l
+   0268 B7            [ 4]  412 	or	a, a
+   0269 20 12         [12]  413 	jr	NZ,00112$
+   026B C5            [11]  414 	push	bc
+   026C 3E 01         [ 7]  415 	ld	a,#0x01
+   026E F5            [11]  416 	push	af
+   026F 33            [ 6]  417 	inc	sp
+   0270 CDr00r00      [17]  418 	call	_get_key
+   0273 33            [ 6]  419 	inc	sp
+   0274 C1            [10]  420 	pop	bc
+   0275 7D            [ 4]  421 	ld	a,l
+   0276 B7            [ 4]  422 	or	a, a
+   0277 20 04         [12]  423 	jr	NZ,00112$
+                            424 ;combat.c:98: direction=0;
+   0279 DD 36 EA 00   [19]  425 	ld	-22 (ix),#0x00
+   027D                     426 00112$:
+                            427 ;combat.c:100: if (get_key(Key_Space)) {
+   027D C5            [11]  428 	push	bc
+   027E 3E 2F         [ 7]  429 	ld	a,#0x2f
+   0280 F5            [11]  430 	push	af
+   0281 33            [ 6]  431 	inc	sp
+   0282 CDr00r00      [17]  432 	call	_get_key
+   0285 33            [ 6]  433 	inc	sp
+   0286 C1            [10]  434 	pop	bc
+   0287 7D            [ 4]  435 	ld	a,l
+   0288 B7            [ 4]  436 	or	a, a
+   0289 28 21         [12]  437 	jr	Z,00119$
+                            438 ;combat.c:101: layer=1;
+   028B 0E 01         [ 7]  439 	ld	c,#0x01
+                            440 ;combat.c:102: if (get_key(Key_CursorUp)) {
+   028D C5            [11]  441 	push	bc
+   028E AF            [ 4]  442 	xor	a, a
+   028F F5            [11]  443 	push	af
+   0290 33            [ 6]  444 	inc	sp
+   0291 CDr00r00      [17]  445 	call	_get_key
+   0294 33            [ 6]  446 	inc	sp
+   0295 C1            [10]  447 	pop	bc
+   0296 7D            [ 4]  448 	ld	a,l
+   0297 B7            [ 4]  449 	or	a, a
+   0298 28 02         [12]  450 	jr	Z,00115$
+                            451 ;combat.c:103: layer=0;
+   029A 0E 00         [ 7]  452 	ld	c,#0x00
+   029C                     453 00115$:
+                            454 ;combat.c:105: if (get_key(Key_CursorDown)) {
+   029C C5            [11]  455 	push	bc
+   029D 3E 02         [ 7]  456 	ld	a,#0x02
+   029F F5            [11]  457 	push	af
+   02A0 33            [ 6]  458 	inc	sp
+   02A1 CDr00r00      [17]  459 	call	_get_key
+   02A4 33            [ 6]  460 	inc	sp
+   02A5 C1            [10]  461 	pop	bc
+   02A6 7D            [ 4]  462 	ld	a,l
+   02A7 B7            [ 4]  463 	or	a, a
+   02A8 28 02         [12]  464 	jr	Z,00119$
+                            465 ;combat.c:106: layer=2;
+   02AA 0E 02         [ 7]  466 	ld	c,#0x02
+   02AC                     467 00119$:
+                            468 ;combat.c:116: xmod8=x%8;
+   02AC C5            [11]  469 	push	bc
+   02AD 21 08 00      [10]  470 	ld	hl,#0x0008
+   02B0 E5            [11]  471 	push	hl
+   02B1 DD 6E EF      [19]  472 	ld	l,-17 (ix)
+   02B4 DD 66 F0      [19]  473 	ld	h,-16 (ix)
+   02B7 E5            [11]  474 	push	hl
+   02B8 CDr00r00      [17]  475 	call	__modsint
+   02BB F1            [10]  476 	pop	af
+   02BC F1            [10]  477 	pop	af
+   02BD C1            [10]  478 	pop	bc
+   02BE DD 75 EE      [19]  479 	ld	-18 (ix),l
+                            480 ;combat.c:117: x2=640-x-57;
+   02C1 3E 47         [ 7]  481 	ld	a,#0x47
+   02C3 DD 96 EF      [19]  482 	sub	a, -17 (ix)
+   02C6 DD 77 EC      [19]  483 	ld	-20 (ix),a
+   02C9 3E 02         [ 7]  484 	ld	a,#0x02
+   02CB DD 9E F0      [19]  485 	sbc	a, -16 (ix)
+   02CE DD 77 ED      [19]  486 	ld	-19 (ix),a
+                            487 ;combat.c:118: x2mod8=x2%8;
+   02D1 C5            [11]  488 	push	bc
+   02D2 21 08 00      [10]  489 	ld	hl,#0x0008
+   02D5 E5            [11]  490 	push	hl
+   02D6 DD 6E EC      [19]  491 	ld	l,-20 (ix)
+   02D9 DD 66 ED      [19]  492 	ld	h,-19 (ix)
+   02DC E5            [11]  493 	push	hl
+   02DD CDr00r00      [17]  494 	call	__modsint
+   02E0 F1            [10]  495 	pop	af
+   02E1 F1            [10]  496 	pop	af
+   02E2 C1            [10]  497 	pop	bc
+   02E3 DD 75 EB      [19]  498 	ld	-21 (ix),l
+                            499 ;combat.c:119: vsync();
+   02E6 C5            [11]  500 	push	bc
+   02E7 CDr00r00      [17]  501 	call	_vsync
+   02EA C1            [10]  502 	pop	bc
+                            503 ;combat.c:123: put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
+   02EB DD 7E EE      [19]  504 	ld	a,-18 (ix)
+   02EE DD 77 FE      [19]  505 	ld	-2 (ix),a
+   02F1 DD 36 FF 00   [19]  506 	ld	-1 (ix),#0x00
+   02F5 59            [ 4]  507 	ld	e,c
+   02F6 16 00         [ 7]  508 	ld	d,#0x00
+   02F8 2Ar20r00      [16]  509 	ld	hl,(_vram)
+   02FB DD 75 F9      [19]  510 	ld	-7 (ix),l
+   02FE DD 74 FA      [19]  511 	ld	-6 (ix),h
+   0301 DD 7E F0      [19]  512 	ld	a,-16 (ix)
+   0304 07            [ 4]  513 	rlca
+   0305 E6 01         [ 7]  514 	and	a,#0x01
+   0307 DD 77 FD      [19]  515 	ld	-3 (ix),a
+   030A DD 7E EF      [19]  516 	ld	a,-17 (ix)
+   030D C6 07         [ 7]  517 	add	a, #0x07
+   030F DD 77 FB      [19]  518 	ld	-5 (ix),a
+   0312 DD 7E F0      [19]  519 	ld	a,-16 (ix)
+   0315 CE 00         [ 7]  520 	adc	a, #0x00
+   0317 DD 77 FC      [19]  521 	ld	-4 (ix),a
+   031A DD 4E FE      [19]  522 	ld	c,-2 (ix)
+   031D DD 46 FF      [19]  523 	ld	b,-1 (ix)
+   0320 CB 21         [ 8]  524 	sla	c
+   0322 CB 10         [ 8]  525 	rl	b
+   0324 D5            [11]  526 	push	de
+   0325 6B            [ 4]  527 	ld	l, e
+   0326 62            [ 4]  528 	ld	h, d
+   0327 29            [11]  529 	add	hl, hl
+   0328 29            [11]  530 	add	hl, hl
+   0329 29            [11]  531 	add	hl, hl
+   032A 19            [11]  532 	add	hl, de
+   032B 29            [11]  533 	add	hl, hl
+   032C 29            [11]  534 	add	hl, hl
+   032D 19            [11]  535 	add	hl, de
+   032E 29            [11]  536 	add	hl, hl
+   032F 19            [11]  537 	add	hl, de
+   0330 29            [11]  538 	add	hl, hl
+   0331 29            [11]  539 	add	hl, hl
+   0332 D1            [10]  540 	pop	de
+   0333 DD 75 FE      [19]  541 	ld	-2 (ix),l
+   0336 DD 74 FF      [19]  542 	ld	-1 (ix),h
+   0339 DD 6E F9      [19]  543 	ld	l,-7 (ix)
+   033C DD 66 FA      [19]  544 	ld	h,-6 (ix)
+   033F C5            [11]  545 	push	bc
+   0340 01 F0 00      [10]  546 	ld	bc, #0x00f0
+   0343 09            [11]  547 	add	hl, bc
+   0344 C1            [10]  548 	pop	bc
+   0345 7E            [ 7]  549 	ld	a,(hl)
+   0346 DD 77 F9      [19]  550 	ld	-7 (ix),a
+   0349 23            [ 6]  551 	inc	hl
+   034A 7E            [ 7]  552 	ld	a,(hl)
+   034B DD 77 FA      [19]  553 	ld	-6 (ix),a
+                            554 ;combat.c:125: put_frame((unsigned char *)(vram[120]+x/8),7,50,perso1A[xmod8]+((7*50)*layer));
+   034E D5            [11]  555 	push	de
+   034F 6B            [ 4]  556 	ld	l, e
+   0350 62            [ 4]  557 	ld	h, d
+   0351 29            [11]  558 	add	hl, hl
+   0352 29            [11]  559 	add	hl, hl
+   0353 19            [11]  560 	add	hl, de
+   0354 29            [11]  561 	add	hl, hl
+   0355 29            [11]  562 	add	hl, hl
+   0356 19            [11]  563 	add	hl, de
+   0357 29            [11]  564 	add	hl, hl
+   0358 19            [11]  565 	add	hl, de
+   0359 29            [11]  566 	add	hl, hl
+   035A 19            [11]  567 	add	hl, de
+   035B 29            [11]  568 	add	hl, hl
+   035C 19            [11]  569 	add	hl, de
+   035D 29            [11]  570 	add	hl, hl
+   035E D1            [10]  571 	pop	de
+   035F DD 75 F3      [19]  572 	ld	-13 (ix),l
+   0362 DD 74 F4      [19]  573 	ld	-12 (ix),h
+                            574 ;combat.c:123: put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
+   0365 21r00r00      [10]  575 	ld	hl,#_perso1A
+   0368 09            [11]  576 	add	hl,bc
+   0369 4E            [ 7]  577 	ld	c,(hl)
+   036A 23            [ 6]  578 	inc	hl
+   036B 46            [ 7]  579 	ld	b,(hl)
+                            580 ;combat.c:122: if (xmod8==0) {
+   036C DD 7E EE      [19]  581 	ld	a,-18 (ix)
+   036F B7            [ 4]  582 	or	a, a
+   0370 20 4E         [12]  583 	jr	NZ,00121$
+                            584 ;combat.c:123: put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
+   0372 79            [ 4]  585 	ld	a,c
+   0373 DD 86 FE      [19]  586 	add	a, -2 (ix)
+   0376 DD 77 F7      [19]  587 	ld	-9 (ix),a
+   0379 78            [ 4]  588 	ld	a,b
+   037A DD 8E FF      [19]  589 	adc	a, -1 (ix)
+   037D DD 77 F8      [19]  590 	ld	-8 (ix),a
+   0380 DD 4E EF      [19]  591 	ld	c,-17 (ix)
+   0383 DD 46 F0      [19]  592 	ld	b,-16 (ix)
+   0386 DD 7E FD      [19]  593 	ld	a,-3 (ix)
+   0389 B7            [ 4]  594 	or	a, a
+   038A 28 06         [12]  595 	jr	Z,00131$
+   038C DD 4E FB      [19]  596 	ld	c,-5 (ix)
+   038F DD 46 FC      [19]  597 	ld	b,-4 (ix)
+   0392                     598 00131$:
+   0392 69            [ 4]  599 	ld	l, c
+   0393 60            [ 4]  600 	ld	h, b
+   0394 CB 2C         [ 8]  601 	sra	h
+   0396 CB 1D         [ 8]  602 	rr	l
+   0398 CB 2C         [ 8]  603 	sra	h
+   039A CB 1D         [ 8]  604 	rr	l
+   039C CB 2C         [ 8]  605 	sra	h
+   039E CB 1D         [ 8]  606 	rr	l
+   03A0 DD 7E F9      [19]  607 	ld	a,-7 (ix)
+   03A3 85            [ 4]  608 	add	a, l
+   03A4 5F            [ 4]  609 	ld	e,a
+   03A5 DD 7E FA      [19]  610 	ld	a,-6 (ix)
+   03A8 8C            [ 4]  611 	adc	a, h
+   03A9 57            [ 4]  612 	ld	d,a
+   03AA DD 6E F7      [19]  613 	ld	l,-9 (ix)
+   03AD DD 66 F8      [19]  614 	ld	h,-8 (ix)
+   03B0 E5            [11]  615 	push	hl
+   03B1 21 06 32      [10]  616 	ld	hl,#0x3206
+   03B4 E5            [11]  617 	push	hl
+   03B5 D5            [11]  618 	push	de
+   03B6 CDr00r00      [17]  619 	call	_put_frame
+   03B9 21 06 00      [10]  620 	ld	hl,#6
+   03BC 39            [11]  621 	add	hl,sp
+   03BD F9            [ 6]  622 	ld	sp,hl
+   03BE 18 41         [12]  623 	jr	00122$
+   03C0                     624 00121$:
+                            625 ;combat.c:125: put_frame((unsigned char *)(vram[120]+x/8),7,50,perso1A[xmod8]+((7*50)*layer));
+   03C0 79            [ 4]  626 	ld	a,c
+   03C1 DD 86 F3      [19]  627 	add	a, -13 (ix)
+   03C4 4F            [ 4]  628 	ld	c,a
+   03C5 78            [ 4]  629 	ld	a,b
+   03C6 DD 8E F4      [19]  630 	adc	a, -12 (ix)
+   03C9 47            [ 4]  631 	ld	b,a
+   03CA DD 5E EF      [19]  632 	ld	e,-17 (ix)
+   03CD DD 56 F0      [19]  633 	ld	d,-16 (ix)
+   03D0 DD 7E FD      [19]  634 	ld	a,-3 (ix)
+   03D3 B7            [ 4]  635 	or	a, a
+   03D4 28 06         [12]  636 	jr	Z,00132$
+   03D6 DD 5E FB      [19]  637 	ld	e,-5 (ix)
+   03D9 DD 56 FC      [19]  638 	ld	d,-4 (ix)
+   03DC                     639 00132$:
+   03DC EB            [ 4]  640 	ex	de,hl
+   03DD CB 2C         [ 8]  641 	sra	h
+   03DF CB 1D         [ 8]  642 	rr	l
+   03E1 CB 2C         [ 8]  643 	sra	h
+   03E3 CB 1D         [ 8]  644 	rr	l
+   03E5 CB 2C         [ 8]  645 	sra	h
+   03E7 CB 1D         [ 8]  646 	rr	l
+   03E9 DD 7E F9      [19]  647 	ld	a,-7 (ix)
+   03EC 85            [ 4]  648 	add	a, l
+   03ED 5F            [ 4]  649 	ld	e,a
+   03EE DD 7E FA      [19]  650 	ld	a,-6 (ix)
+   03F1 8C            [ 4]  651 	adc	a, h
+   03F2 57            [ 4]  652 	ld	d,a
+   03F3 C5            [11]  653 	push	bc
+   03F4 21 07 32      [10]  654 	ld	hl,#0x3207
+   03F7 E5            [11]  655 	push	hl
+   03F8 D5            [11]  656 	push	de
+   03F9 CDr00r00      [17]  657 	call	_put_frame
+   03FC 21 06 00      [10]  658 	ld	hl,#6
+   03FF 39            [11]  659 	add	hl,sp
+   0400 F9            [ 6]  660 	ld	sp,hl
+   0401                     661 00122$:
+                            662 ;combat.c:123: put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
+   0401 FD 21r20r00   [14]  663 	ld	iy,#_vram
+   0405 FD 7E 00      [19]  664 	ld	a,0 (iy)
+   0408 C6 F0         [ 7]  665 	add	a, #0xf0
+   040A 4F            [ 4]  666 	ld	c,a
+   040B FD 7E 01      [19]  667 	ld	a,1 (iy)
+   040E CE 00         [ 7]  668 	adc	a, #0x00
+   0410 47            [ 4]  669 	ld	b,a
+                            670 ;combat.c:128: put_frame((unsigned char *)(vram[120]+x2/8),6,50,perso2A[x2mod8]+((6*50)*layer));
+   0411 DD 5E EB      [19]  671 	ld	e,-21 (ix)
+   0414 16 00         [ 7]  672 	ld	d,#0x00
+   0416 DD 7E ED      [19]  673 	ld	a,-19 (ix)
+   0419 07            [ 4]  674 	rlca
+   041A E6 01         [ 7]  675 	and	a,#0x01
+   041C DD 77 F5      [19]  676 	ld	-11 (ix),a
+   041F DD 7E EC      [19]  677 	ld	a,-20 (ix)
+   0422 C6 07         [ 7]  678 	add	a, #0x07
+   0424 DD 77 F7      [19]  679 	ld	-9 (ix),a
+   0427 DD 7E ED      [19]  680 	ld	a,-19 (ix)
+   042A CE 00         [ 7]  681 	adc	a, #0x00
+   042C DD 77 F8      [19]  682 	ld	-8 (ix),a
+                            683 ;combat.c:123: put_frame((unsigned char *)(vram[120]+x/8),6,50,perso1A[xmod8]+((6*50)*layer));
+   042F 0A            [ 7]  684 	ld	a,(bc)
+   0430 DD 77 F1      [19]  685 	ld	-15 (ix),a
+   0433 03            [ 6]  686 	inc	bc
+   0434 0A            [ 7]  687 	ld	a,(bc)
+   0435 DD 77 F2      [19]  688 	ld	-14 (ix),a
+   0438 0B            [ 6]  689 	dec	bc
+                            690 ;combat.c:128: put_frame((unsigned char *)(vram[120]+x2/8),6,50,perso2A[x2mod8]+((6*50)*layer));
+   0439 EB            [ 4]  691 	ex	de,hl
+   043A 29            [11]  692 	add	hl, hl
+   043B 3Er10         [ 7]  693 	ld	a,#<(_perso2A)
+   043D 85            [ 4]  694 	add	a, l
+   043E 5F            [ 4]  695 	ld	e,a
+   043F 3Es00         [ 7]  696 	ld	a,#>(_perso2A)
+   0441 8C            [ 4]  697 	adc	a, h
+   0442 57            [ 4]  698 	ld	d,a
+   0443 EB            [ 4]  699 	ex	de,hl
+   0444 5E            [ 7]  700 	ld	e,(hl)
+   0445 23            [ 6]  701 	inc	hl
+   0446 56            [ 7]  702 	ld	d,(hl)
+                            703 ;combat.c:127: if (x2mod8==0) {
+   0447 DD 7E EB      [19]  704 	ld	a,-21 (ix)
+   044A B7            [ 4]  705 	or	a, a
+   044B 20 4D         [12]  706 	jr	NZ,00124$
+                            707 ;combat.c:128: put_frame((unsigned char *)(vram[120]+x2/8),6,50,perso2A[x2mod8]+((6*50)*layer));
+   044D 7B            [ 4]  708 	ld	a,e
+   044E DD 86 FE      [19]  709 	add	a, -2 (ix)
+   0451 DD 77 F9      [19]  710 	ld	-7 (ix),a
+   0454 7A            [ 4]  711 	ld	a,d
+   0455 DD 8E FF      [19]  712 	adc	a, -1 (ix)
+   0458 DD 77 FA      [19]  713 	ld	-6 (ix),a
+   045B D1            [10]  714 	pop	de
+   045C C1            [10]  715 	pop	bc
+   045D C5            [11]  716 	push	bc
+   045E D5            [11]  717 	push	de
+   045F DD 7E F5      [19]  718 	ld	a,-11 (ix)
+   0462 B7            [ 4]  719 	or	a, a
+   0463 28 06         [12]  720 	jr	Z,00133$
+   0465 DD 4E F7      [19]  721 	ld	c,-9 (ix)
+   0468 DD 46 F8      [19]  722 	ld	b,-8 (ix)
+   046B                     723 00133$:
+   046B 69            [ 4]  724 	ld	l, c
+   046C 60            [ 4]  725 	ld	h, b
+   046D CB 2C         [ 8]  726 	sra	h
+   046F CB 1D         [ 8]  727 	rr	l
+   0471 CB 2C         [ 8]  728 	sra	h
+   0473 CB 1D         [ 8]  729 	rr	l
+   0475 CB 2C         [ 8]  730 	sra	h
+   0477 CB 1D         [ 8]  731 	rr	l
+   0479 DD 7E F1      [19]  732 	ld	a,-15 (ix)
+   047C 85            [ 4]  733 	add	a, l
+   047D 4F            [ 4]  734 	ld	c,a
+   047E DD 7E F2      [19]  735 	ld	a,-14 (ix)
+   0481 8C            [ 4]  736 	adc	a, h
+   0482 47            [ 4]  737 	ld	b,a
+   0483 DD 6E F9      [19]  738 	ld	l,-7 (ix)
+   0486 DD 66 FA      [19]  739 	ld	h,-6 (ix)
+   0489 E5            [11]  740 	push	hl
+   048A 21 06 32      [10]  741 	ld	hl,#0x3206
+   048D E5            [11]  742 	push	hl
+   048E C5            [11]  743 	push	bc
+   048F CDr00r00      [17]  744 	call	_put_frame
+   0492 21 06 00      [10]  745 	ld	hl,#6
+   0495 39            [11]  746 	add	hl,sp
+   0496 F9            [ 6]  747 	ld	sp,hl
+   0497 C3rF5r01      [10]  748 	jp	00127$
+   049A                     749 00124$:
+                            750 ;combat.c:130: put_frame((unsigned char *)(vram[120]+x2/8),7,50,perso2A[x2mod8]+((7*50)*layer));
+   049A 7B            [ 4]  751 	ld	a,e
+   049B DD 86 F3      [19]  752 	add	a, -13 (ix)
+   049E 4F            [ 4]  753 	ld	c,a
+   049F 7A            [ 4]  754 	ld	a,d
+   04A0 DD 8E F4      [19]  755 	adc	a, -12 (ix)
+   04A3 47            [ 4]  756 	ld	b,a
+   04A4 DD 5E EC      [19]  757 	ld	e,-20 (ix)
+   04A7 DD 56 ED      [19]  758 	ld	d,-19 (ix)
+   04AA DD 7E F5      [19]  759 	ld	a,-11 (ix)
+   04AD B7            [ 4]  760 	or	a, a
+   04AE 28 06         [12]  761 	jr	Z,00134$
+   04B0 DD 5E F7      [19]  762 	ld	e,-9 (ix)
+   04B3 DD 56 F8      [19]  763 	ld	d,-8 (ix)
+   04B6                     764 00134$:
+   04B6 EB            [ 4]  765 	ex	de,hl
+   04B7 CB 2C         [ 8]  766 	sra	h
+   04B9 CB 1D         [ 8]  767 	rr	l
+   04BB CB 2C         [ 8]  768 	sra	h
+   04BD CB 1D         [ 8]  769 	rr	l
+   04BF CB 2C         [ 8]  770 	sra	h
+   04C1 CB 1D         [ 8]  771 	rr	l
+   04C3 DD 7E F1      [19]  772 	ld	a,-15 (ix)
+   04C6 85            [ 4]  773 	add	a, l
+   04C7 5F            [ 4]  774 	ld	e,a
+   04C8 DD 7E F2      [19]  775 	ld	a,-14 (ix)
+   04CB 8C            [ 4]  776 	adc	a, h
+   04CC 57            [ 4]  777 	ld	d,a
+   04CD C5            [11]  778 	push	bc
+   04CE 21 07 32      [10]  779 	ld	hl,#0x3207
+   04D1 E5            [11]  780 	push	hl
+   04D2 D5            [11]  781 	push	de
+   04D3 CDr00r00      [17]  782 	call	_put_frame
+   04D6 21 06 00      [10]  783 	ld	hl,#6
+   04D9 39            [11]  784 	add	hl,sp
+   04DA F9            [ 6]  785 	ld	sp,hl
+   04DB C3rF5r01      [10]  786 	jp	00127$
+   04DE                     787 _combat_palette:
+   04DE 1A                  788 	.db #0x1a	; 26
+   04DF 00                  789 	.db #0x00	; 0
+   04E0 00                  790 	.db #0x00	; 0
+   04E1 00                  791 	.db #0x00	; 0
+   04E2 00                  792 	.db #0x00	; 0
+   04E3 00                  793 	.db #0x00	; 0
+   04E4 00                  794 	.db #0x00	; 0
+   04E5 00                  795 	.db #0x00	; 0
+   04E6 00                  796 	.db #0x00	; 0
+   04E7 00                  797 	.db #0x00	; 0
+   04E8 00                  798 	.db #0x00	; 0
+   04E9 00                  799 	.db #0x00	; 0
+   04EA 00                  800 	.db #0x00	; 0
+   04EB 00                  801 	.db #0x00	; 0
+   04EC 00                  802 	.db #0x00	; 0
+   04ED 00                  803 	.db #0x00	; 0
+                            804 	.area _CODE
+                            805 	.area _INITIALIZER
+                            806 	.area _CABS (ABS)

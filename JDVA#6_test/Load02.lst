@@ -1,0 +1,405 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW32)
+                              4 ;--------------------------------------------------------
+                              5 	.module Load02
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _LoadLoop
+                             13 	.globl _SetMode
+                             14 	.globl _SetPalette
+                             15 	.globl _SetColor
+                             16 	.globl _LoadFile
+                             17 	.globl _SetupDOS
+                             18 	.globl _strlen
+                             19 	.globl _sprintf
+                             20 	.globl _nFileNameLen
+                             21 ;--------------------------------------------------------
+                             22 ; special function registers
+                             23 ;--------------------------------------------------------
+                             24 ;--------------------------------------------------------
+                             25 ; ram data
+                             26 ;--------------------------------------------------------
+                             27 	.area _DATA
+                             28 ;--------------------------------------------------------
+                             29 ; ram data
+                             30 ;--------------------------------------------------------
+                             31 	.area _INITIALIZED
+   0000                      32 _nFileNameLen::
+   0000                      33 	.ds 1
+                             34 ;--------------------------------------------------------
+                             35 ; absolute external ram data
+                             36 ;--------------------------------------------------------
+                             37 	.area _DABS (ABS)
+                             38 ;--------------------------------------------------------
+                             39 ; global & static initialisations
+                             40 ;--------------------------------------------------------
+                             41 	.area _HOME
+                             42 	.area _GSINIT
+                             43 	.area _GSFINAL
+                             44 	.area _GSINIT
+                             45 ;--------------------------------------------------------
+                             46 ; Home
+                             47 ;--------------------------------------------------------
+                             48 	.area _HOME
+                             49 	.area _HOME
+                             50 ;--------------------------------------------------------
+                             51 ; code
+                             52 ;--------------------------------------------------------
+                             53 	.area _CODE
+                             54 ;Load02.c:12: void SetupDOS()
+                             55 ;	---------------------------------
+                             56 ; Function SetupDOS
+                             57 ; ---------------------------------
+   0000                      58 _SetupDOS::
+   0000 DD E5         [15]   59 	push	ix
+   0002 DD 21 00 00   [14]   60 	ld	ix,#0
+   0006 DD 39         [15]   61 	add	ix,sp
+                             62 ;Load02.c:45: __endasm;
+   0008 DD 6E 02      [19]   63 	ld	l, 2 (ix) ;stack return address
+   000B DD 66 03      [19]   64 	ld	h, 3 (ix) ;stack return address
+   000E 22r2Br00      [16]   65 	ld	(_stack+1), hl
+                             66 ;;------------------------------------------------------------------------
+                             67 ;;	store the drive number the loader was run from
+   0011 2A 7D BE      [16]   68 	ld	hl,(#0xbe7d)
+   0014 7E            [ 7]   69 	ld	a,(hl)
+   0015 32r25r00      [13]   70 	ld	(_drive+1),a
+                             71 ;;------------------------------------------------------------------------
+   0018 0E FF         [ 7]   72 	ld	c,#0xff ;; disable all roms
+   001A 21r20r00      [10]   73 	ld	hl, #_start222 ;; execution address for program
+   001D CD 16 BD      [17]   74 	call	#0xbd16 ;;mc_start_program ;; start it
+   0020                      75 	  _start222::
+   0020 00            [ 4]   76 	nop
+   0021 CD CB BC      [17]   77 	call	#0xbccb ;;kl_rom_walk ;; enable all roms
+                             78 ;;------------------------------------------------------------------------
+                             79 ;;	when AMSDOS is enabled, the drive reverts back to drive 0!
+                             80 ;;	This will restore the drive number to the drive the loader was run from
+   0024                      81 	  _drive:
+   0024 3E 00         [ 7]   82 	ld a, #0x00
+   0026 2A 7D BE      [16]   83 	ld	hl,(#0xbe7d)
+   0029 77            [ 7]   84 	ld	(hl),a
+   002A                      85 	  _stack:
+   002A 21 00 00      [10]   86 	ld hl, #0x0000
+   002D E5            [11]   87 	push	hl
+   002E E5            [11]   88 	push	hl
+   002F DD E1         [14]   89 	pop	ix
+   0031 C9            [10]   90 	ret
+                             91 ;Load02.c:54: void LoadFile(char *sFileName, char *pLoadAddress)
+                             92 ;	---------------------------------
+                             93 ; Function LoadFile
+                             94 ; ---------------------------------
+   0032                      95 _LoadFile::
+   0032 DD E5         [15]   96 	push	ix
+   0034 DD 21 00 00   [14]   97 	ld	ix,#0
+   0038 DD 39         [15]   98 	add	ix,sp
+                             99 ;Load02.c:56: nFileNameLen = strlen(sFileName);
+   003A DD 6E 04      [19]  100 	ld	l,4 (ix)
+   003D DD 66 05      [19]  101 	ld	h,5 (ix)
+   0040 E5            [11]  102 	push	hl
+   0041 CDr00r00      [17]  103 	call	_strlen
+   0044 F1            [10]  104 	pop	af
+   0045 4D            [ 4]  105 	ld	c,l
+   0046 44            [ 4]  106 	ld	b,h
+   0047 FD 21r00r00   [14]  107 	ld	iy,#_nFileNameLen
+   004B FD 71 00      [19]  108 	ld	0 (iy),c
+                            109 ;Load02.c:88: __endasm;
+                            110 ;;	B = length of the filename in characters
+   004E 21r00r00      [10]  111 	ld	hl, #_nFileNameLen;
+   0051 46            [ 7]  112 	ld	b, (hl)
+                            113 ;;	HL = address of the start of the filename
+   0052 DD 6E 04      [19]  114 	LD	L, 4 (IX) ;sFileName
+   0055 DD 66 05      [19]  115 	LD	H, 5 (IX) ;sFileName
+                            116 ;;	DE = address of a 2k buffer
+                            117 ;;	in disc mode: this buffer is not used when CAS IN DIRECT
+                            118 ;;	firmware function is used, so it is safe to put it anywhere
+                            119 ;;	you want.
+   0058 11 00 00      [10]  120 	ld	de, #0x0
+                            121 ;;	firmware function to open a file for reading
+   005B CD 77 BC      [17]  122 	call	#0xbc77 ;;cas_in_open
+                            123 ;;	firmware function to load the entire file
+                            124 ;;	this will work with files that have a AMSDOS header (ASCII
+                            125 ;;	files do not have a header)
+                            126 ;;	HL = load address
+   005E DD 6E 06      [19]  127 	LD	L, 6 (IX) ;sFileName
+   0061 DD 66 07      [19]  128 	LD	H, 7 (IX) ;sFileName
+                            129 ;;	read file
+   0064 CD 83 BC      [17]  130 	call	#0xbc83 ;;cas_in_direct
+                            131 ;;	firmware function to close a file opened for reading
+   0067 CD 7A BC      [17]  132 	call	#0xbc7a ;;cas_in_close
+   006A DD E1         [14]  133 	pop	ix
+   006C C9            [10]  134 	ret
+                            135 ;Load02.c:96: void SetColor(unsigned char nColorIndex, unsigned char nPaletteIndex)
+                            136 ;	---------------------------------
+                            137 ; Function SetColor
+                            138 ; ---------------------------------
+   006D                     139 _SetColor::
+   006D DD E5         [15]  140 	push	ix
+   006F DD 21 00 00   [14]  141 	ld	ix,#0
+   0073 DD 39         [15]  142 	add	ix,sp
+                            143 ;Load02.c:103: __endasm;
+   0075 DD 7E 04      [19]  144 	ld	a, 4 (ix)
+   0078 DD 46 05      [19]  145 	ld	b, 5 (ix)
+   007B 48            [ 4]  146 	ld	c, b
+   007C CD 32 BC      [17]  147 	call	#0xBC32 ;SCR SET INK
+   007F DD E1         [14]  148 	pop	ix
+   0081 C9            [10]  149 	ret
+                            150 ;Load02.c:111: void SetPalette(const unsigned char *pPalette, unsigned char nNumColors)
+                            151 ;	---------------------------------
+                            152 ; Function SetPalette
+                            153 ; ---------------------------------
+   0082                     154 _SetPalette::
+   0082 DD E5         [15]  155 	push	ix
+   0084 DD 21 00 00   [14]  156 	ld	ix,#0
+   0088 DD 39         [15]  157 	add	ix,sp
+                            158 ;Load02.c:115: for(nColor = 0; nColor < nNumColors; nColor++)
+   008A 0E 00         [ 7]  159 	ld	c,#0x00
+   008C                     160 00103$:
+   008C 79            [ 4]  161 	ld	a,c
+   008D DD 96 06      [19]  162 	sub	a, 6 (ix)
+   0090 30 1C         [12]  163 	jr	NC,00105$
+                            164 ;Load02.c:116: SetColor(nColor, pPalette[nColor]);
+   0092 DD 7E 04      [19]  165 	ld	a,4 (ix)
+   0095 81            [ 4]  166 	add	a, c
+   0096 5F            [ 4]  167 	ld	e,a
+   0097 DD 7E 05      [19]  168 	ld	a,5 (ix)
+   009A CE 00         [ 7]  169 	adc	a, #0x00
+   009C 57            [ 4]  170 	ld	d,a
+   009D 1A            [ 7]  171 	ld	a,(de)
+   009E 6F            [ 4]  172 	ld	l,a
+   009F C5            [11]  173 	push	bc
+   00A0 7D            [ 4]  174 	ld	a,l
+   00A1 F5            [11]  175 	push	af
+   00A2 33            [ 6]  176 	inc	sp
+   00A3 79            [ 4]  177 	ld	a,c
+   00A4 F5            [11]  178 	push	af
+   00A5 33            [ 6]  179 	inc	sp
+   00A6 CDr6Dr00      [17]  180 	call	_SetColor
+   00A9 F1            [10]  181 	pop	af
+   00AA C1            [10]  182 	pop	bc
+                            183 ;Load02.c:115: for(nColor = 0; nColor < nNumColors; nColor++)
+   00AB 0C            [ 4]  184 	inc	c
+   00AC 18 DE         [12]  185 	jr	00103$
+   00AE                     186 00105$:
+   00AE DD E1         [14]  187 	pop	ix
+   00B0 C9            [10]  188 	ret
+                            189 ;Load02.c:124: void SetMode(unsigned char nMode)
+                            190 ;	---------------------------------
+                            191 ; Function SetMode
+                            192 ; ---------------------------------
+   00B1                     193 _SetMode::
+   00B1 DD E5         [15]  194 	push	ix
+   00B3 DD 21 00 00   [14]  195 	ld	ix,#0
+   00B7 DD 39         [15]  196 	add	ix,sp
+                            197 ;Load02.c:129: __endasm;
+   00B9 DD 7E 04      [19]  198 	ld	a, 4 (ix)
+   00BC CD 0E BC      [17]  199 	call	#0xBC0E ;SCR_SET_MODE
+   00BF DD E1         [14]  200 	pop	ix
+   00C1 C9            [10]  201 	ret
+                            202 ;Load02.c:137: void LoadLoop()
+                            203 ;	---------------------------------
+                            204 ; Function LoadLoop
+                            205 ; ---------------------------------
+   00C2                     206 _LoadLoop::
+   00C2 DD E5         [15]  207 	push	ix
+   00C4 DD 21 00 00   [14]  208 	ld	ix,#0
+   00C8 DD 39         [15]  209 	add	ix,sp
+   00CA 21 C8 FF      [10]  210 	ld	hl,#-56
+   00CD 39            [11]  211 	add	hl,sp
+   00CE F9            [ 6]  212 	ld	sp,hl
+                            213 ;Load02.c:139: unsigned char BlackPalette[] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+   00CF 21 22 00      [10]  214 	ld	hl,#0x0022
+   00D2 39            [11]  215 	add	hl,sp
+   00D3 4D            [ 4]  216 	ld	c,l
+   00D4 44            [ 4]  217 	ld	b,h
+   00D5 AF            [ 4]  218 	xor	a, a
+   00D6 02            [ 7]  219 	ld	(bc),a
+   00D7 59            [ 4]  220 	ld	e, c
+   00D8 50            [ 4]  221 	ld	d, b
+   00D9 13            [ 6]  222 	inc	de
+   00DA AF            [ 4]  223 	xor	a, a
+   00DB 12            [ 7]  224 	ld	(de),a
+   00DC 59            [ 4]  225 	ld	e, c
+   00DD 50            [ 4]  226 	ld	d, b
+   00DE 13            [ 6]  227 	inc	de
+   00DF 13            [ 6]  228 	inc	de
+   00E0 AF            [ 4]  229 	xor	a, a
+   00E1 12            [ 7]  230 	ld	(de),a
+   00E2 59            [ 4]  231 	ld	e, c
+   00E3 50            [ 4]  232 	ld	d, b
+   00E4 13            [ 6]  233 	inc	de
+   00E5 13            [ 6]  234 	inc	de
+   00E6 13            [ 6]  235 	inc	de
+   00E7 AF            [ 4]  236 	xor	a, a
+   00E8 12            [ 7]  237 	ld	(de),a
+   00E9 21 04 00      [10]  238 	ld	hl,#0x0004
+   00EC 09            [11]  239 	add	hl,bc
+   00ED EB            [ 4]  240 	ex	de,hl
+   00EE AF            [ 4]  241 	xor	a, a
+   00EF 12            [ 7]  242 	ld	(de),a
+   00F0 21 05 00      [10]  243 	ld	hl,#0x0005
+   00F3 09            [11]  244 	add	hl,bc
+   00F4 EB            [ 4]  245 	ex	de,hl
+   00F5 AF            [ 4]  246 	xor	a, a
+   00F6 12            [ 7]  247 	ld	(de),a
+   00F7 21 06 00      [10]  248 	ld	hl,#0x0006
+   00FA 09            [11]  249 	add	hl,bc
+   00FB EB            [ 4]  250 	ex	de,hl
+   00FC AF            [ 4]  251 	xor	a, a
+   00FD 12            [ 7]  252 	ld	(de),a
+   00FE 21 07 00      [10]  253 	ld	hl,#0x0007
+   0101 09            [11]  254 	add	hl,bc
+   0102 EB            [ 4]  255 	ex	de,hl
+   0103 AF            [ 4]  256 	xor	a, a
+   0104 12            [ 7]  257 	ld	(de),a
+   0105 21 08 00      [10]  258 	ld	hl,#0x0008
+   0108 09            [11]  259 	add	hl,bc
+   0109 EB            [ 4]  260 	ex	de,hl
+   010A AF            [ 4]  261 	xor	a, a
+   010B 12            [ 7]  262 	ld	(de),a
+   010C 21 09 00      [10]  263 	ld	hl,#0x0009
+   010F 09            [11]  264 	add	hl,bc
+   0110 EB            [ 4]  265 	ex	de,hl
+   0111 AF            [ 4]  266 	xor	a, a
+   0112 12            [ 7]  267 	ld	(de),a
+   0113 21 0A 00      [10]  268 	ld	hl,#0x000a
+   0116 09            [11]  269 	add	hl,bc
+   0117 EB            [ 4]  270 	ex	de,hl
+   0118 AF            [ 4]  271 	xor	a, a
+   0119 12            [ 7]  272 	ld	(de),a
+   011A 21 0B 00      [10]  273 	ld	hl,#0x000b
+   011D 09            [11]  274 	add	hl,bc
+   011E EB            [ 4]  275 	ex	de,hl
+   011F AF            [ 4]  276 	xor	a, a
+   0120 12            [ 7]  277 	ld	(de),a
+   0121 21 0C 00      [10]  278 	ld	hl,#0x000c
+   0124 09            [11]  279 	add	hl,bc
+   0125 EB            [ 4]  280 	ex	de,hl
+   0126 AF            [ 4]  281 	xor	a, a
+   0127 12            [ 7]  282 	ld	(de),a
+   0128 21 0D 00      [10]  283 	ld	hl,#0x000d
+   012B 09            [11]  284 	add	hl,bc
+   012C EB            [ 4]  285 	ex	de,hl
+   012D AF            [ 4]  286 	xor	a, a
+   012E 12            [ 7]  287 	ld	(de),a
+   012F 21 0E 00      [10]  288 	ld	hl,#0x000e
+   0132 09            [11]  289 	add	hl,bc
+   0133 EB            [ 4]  290 	ex	de,hl
+   0134 AF            [ 4]  291 	xor	a, a
+   0135 12            [ 7]  292 	ld	(de),a
+   0136 21 0F 00      [10]  293 	ld	hl,#0x000f
+   0139 09            [11]  294 	add	hl,bc
+   013A EB            [ 4]  295 	ex	de,hl
+   013B AF            [ 4]  296 	xor	a, a
+   013C 12            [ 7]  297 	ld	(de),a
+                            298 ;Load02.c:145: for(nImage = 1; nImage < 10; nImage++)
+   013D                     299 00109$:
+   013D 21 00 00      [10]  300 	ld	hl,#0x0000
+   0140 39            [11]  301 	add	hl,sp
+   0141 DD 75 FA      [19]  302 	ld	-6 (ix),l
+   0144 DD 74 FB      [19]  303 	ld	-5 (ix),h
+   0147 DD 7E FA      [19]  304 	ld	a,-6 (ix)
+   014A DD 77 FE      [19]  305 	ld	-2 (ix),a
+   014D DD 7E FB      [19]  306 	ld	a,-5 (ix)
+   0150 DD 77 FF      [19]  307 	ld	-1 (ix),a
+   0153 DD 71 FC      [19]  308 	ld	-4 (ix),c
+   0156 DD 70 FD      [19]  309 	ld	-3 (ix),b
+   0159 DD 36 E8 01   [19]  310 	ld	-24 (ix),#0x01
+   015D DD 36 E9 00   [19]  311 	ld	-23 (ix),#0x00
+   0161                     312 00105$:
+                            313 ;Load02.c:147: sprintf(sFile, "0%d.scr", nImage);
+   0161 DD 5E FA      [19]  314 	ld	e,-6 (ix)
+   0164 DD 56 FB      [19]  315 	ld	d,-5 (ix)
+   0167 C5            [11]  316 	push	bc
+   0168 DD 6E E8      [19]  317 	ld	l,-24 (ix)
+   016B DD 66 E9      [19]  318 	ld	h,-23 (ix)
+   016E E5            [11]  319 	push	hl
+   016F 21rD1r01      [10]  320 	ld	hl,#___str_0
+   0172 E5            [11]  321 	push	hl
+   0173 D5            [11]  322 	push	de
+   0174 CDr00r00      [17]  323 	call	_sprintf
+   0177 F1            [10]  324 	pop	af
+   0178 F1            [10]  325 	pop	af
+   0179 F1            [10]  326 	pop	af
+   017A C1            [10]  327 	pop	bc
+                            328 ;Load02.c:148: LoadFile(sFile, (char *)0x6000);
+   017B DD 5E FE      [19]  329 	ld	e,-2 (ix)
+   017E DD 56 FF      [19]  330 	ld	d,-1 (ix)
+   0181 C5            [11]  331 	push	bc
+   0182 21 00 60      [10]  332 	ld	hl,#0x6000
+   0185 E5            [11]  333 	push	hl
+   0186 D5            [11]  334 	push	de
+   0187 CDr32r00      [17]  335 	call	_LoadFile
+   018A F1            [10]  336 	pop	af
+   018B F1            [10]  337 	pop	af
+   018C C1            [10]  338 	pop	bc
+                            339 ;Load02.c:149: SetPalette((char *)BlackPalette, 16);
+   018D DD 5E FC      [19]  340 	ld	e,-4 (ix)
+   0190 DD 56 FD      [19]  341 	ld	d,-3 (ix)
+   0193 C5            [11]  342 	push	bc
+   0194 3E 10         [ 7]  343 	ld	a,#0x10
+   0196 F5            [11]  344 	push	af
+   0197 33            [ 6]  345 	inc	sp
+   0198 D5            [11]  346 	push	de
+   0199 CDr82r00      [17]  347 	call	_SetPalette
+   019C F1            [10]  348 	pop	af
+   019D 33            [ 6]  349 	inc	sp
+   019E 11 00 C0      [10]  350 	ld	de,#0xc000
+   01A1 21 00 60      [10]  351 	ld	hl,#0x6000
+   01A4 01 FF 3F      [10]  352 	ld	bc,#0x3fff
+   01A7 ED B0         [21]  353 	ldir
+   01A9 3E 10         [ 7]  354 	ld	a,#0x10
+   01AB F5            [11]  355 	push	af
+   01AC 33            [ 6]  356 	inc	sp
+   01AD 21 D1 D7      [10]  357 	ld	hl,#0xd7d1
+   01B0 E5            [11]  358 	push	hl
+   01B1 CDr82r00      [17]  359 	call	_SetPalette
+   01B4 F1            [10]  360 	pop	af
+   01B5 33            [ 6]  361 	inc	sp
+   01B6 C1            [10]  362 	pop	bc
+                            363 ;Load02.c:145: for(nImage = 1; nImage < 10; nImage++)
+   01B7 DD 34 E8      [23]  364 	inc	-24 (ix)
+   01BA 20 03         [12]  365 	jr	NZ,00122$
+   01BC DD 34 E9      [23]  366 	inc	-23 (ix)
+   01BF                     367 00122$:
+   01BF DD 7E E8      [19]  368 	ld	a,-24 (ix)
+   01C2 D6 0A         [ 7]  369 	sub	a, #0x0a
+   01C4 DD 7E E9      [19]  370 	ld	a,-23 (ix)
+   01C7 17            [ 4]  371 	rla
+   01C8 3F            [ 4]  372 	ccf
+   01C9 1F            [ 4]  373 	rra
+   01CA DE 80         [ 7]  374 	sbc	a, #0x80
+   01CC 38 93         [12]  375 	jr	C,00105$
+   01CE C3r3Dr01      [10]  376 	jp	00109$
+   01D1                     377 ___str_0:
+   01D1 30 25 64 2E 73 63   378 	.ascii "0%d.scr"
+        72
+   01D8 00                  379 	.db 0x00
+                            380 ;Load02.c:161: main()
+                            381 ;	---------------------------------
+                            382 ; Function main
+                            383 ; ---------------------------------
+   01D9                     384 _main::
+   01D9 DD E5         [15]  385 	push	ix
+                            386 ;Load02.c:163: SetupDOS();
+   01DB CDr00r00      [17]  387 	call	_SetupDOS
+                            388 ;Load02.c:165: SetMode(0);
+   01DE AF            [ 4]  389 	xor	a, a
+   01DF F5            [11]  390 	push	af
+   01E0 33            [ 6]  391 	inc	sp
+   01E1 CDrB1r00      [17]  392 	call	_SetMode
+   01E4 33            [ 6]  393 	inc	sp
+                            394 ;Load02.c:167: LoadLoop();
+   01E5 CDrC2r00      [17]  395 	call	_LoadLoop
+                            396 ;Load02.c:169: return 0;
+   01E8 21 00 00      [10]  397 	ld	hl,#0x0000
+   01EB DD E1         [14]  398 	pop	ix
+   01ED C9            [10]  399 	ret
+                            400 	.area _CODE
+                            401 	.area _INITIALIZER
+   0000                     402 __xinit__nFileNameLen:
+   0000 00                  403 	.db #0x00	; 0
+                            404 	.area _CABS (ABS)

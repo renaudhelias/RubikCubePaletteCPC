@@ -1,0 +1,243 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW32)
+                              4 ;--------------------------------------------------------
+                              5 	.module Load01
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _SetMode
+                             13 	.globl _SetPalette
+                             14 	.globl _SetColor
+                             15 	.globl _LoadFile
+                             16 	.globl _SetupDOS
+                             17 	.globl _strlen
+                             18 	.globl _nFileNameLen
+                             19 ;--------------------------------------------------------
+                             20 ; special function registers
+                             21 ;--------------------------------------------------------
+                             22 ;--------------------------------------------------------
+                             23 ; ram data
+                             24 ;--------------------------------------------------------
+                             25 	.area _DATA
+                             26 ;--------------------------------------------------------
+                             27 ; ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _INITIALIZED
+   0000                      30 _nFileNameLen::
+   0000                      31 	.ds 1
+                             32 ;--------------------------------------------------------
+                             33 ; absolute external ram data
+                             34 ;--------------------------------------------------------
+                             35 	.area _DABS (ABS)
+                             36 ;--------------------------------------------------------
+                             37 ; global & static initialisations
+                             38 ;--------------------------------------------------------
+                             39 	.area _HOME
+                             40 	.area _GSINIT
+                             41 	.area _GSFINAL
+                             42 	.area _GSINIT
+                             43 ;--------------------------------------------------------
+                             44 ; Home
+                             45 ;--------------------------------------------------------
+                             46 	.area _HOME
+                             47 	.area _HOME
+                             48 ;--------------------------------------------------------
+                             49 ; code
+                             50 ;--------------------------------------------------------
+                             51 	.area _CODE
+                             52 ;Load01.c:12: void SetupDOS()
+                             53 ;	---------------------------------
+                             54 ; Function SetupDOS
+                             55 ; ---------------------------------
+   0000                      56 _SetupDOS::
+   0000 DD E5         [15]   57 	push	ix
+   0002 DD 21 00 00   [14]   58 	ld	ix,#0
+   0006 DD 39         [15]   59 	add	ix,sp
+                             60 ;Load01.c:45: __endasm;
+   0008 DD 6E 02      [19]   61 	ld	l, 2 (ix) ;stack return address
+   000B DD 66 03      [19]   62 	ld	h, 3 (ix) ;stack return address
+   000E 22r2Br00      [16]   63 	ld	(_stack+1), hl
+                             64 ;;------------------------------------------------------------------------
+                             65 ;;	store the drive number the loader was run from
+   0011 2A 7D BE      [16]   66 	ld	hl,(#0xbe7d)
+   0014 7E            [ 7]   67 	ld	a,(hl)
+   0015 32r25r00      [13]   68 	ld	(_drive+1),a
+                             69 ;;------------------------------------------------------------------------
+   0018 0E FF         [ 7]   70 	ld	c,#0xff ;; disable all roms
+   001A 21r20r00      [10]   71 	ld	hl, #_start222 ;; execution address for program
+   001D CD 16 BD      [17]   72 	call	#0xbd16 ;;mc_start_program ;; start it
+   0020                      73 	  _start222::
+   0020 00            [ 4]   74 	nop
+   0021 CD CB BC      [17]   75 	call	#0xbccb ;;kl_rom_walk ;; enable all roms
+                             76 ;;------------------------------------------------------------------------
+                             77 ;;	when AMSDOS is enabled, the drive reverts back to drive 0!
+                             78 ;;	This will restore the drive number to the drive the loader was run from
+   0024                      79 	  _drive:
+   0024 3E 00         [ 7]   80 	ld a, #0x00
+   0026 2A 7D BE      [16]   81 	ld	hl,(#0xbe7d)
+   0029 77            [ 7]   82 	ld	(hl),a
+   002A                      83 	  _stack:
+   002A 21 00 00      [10]   84 	ld hl, #0x0000
+   002D E5            [11]   85 	push	hl
+   002E E5            [11]   86 	push	hl
+   002F DD E1         [14]   87 	pop	ix
+   0031 C9            [10]   88 	ret
+                             89 ;Load01.c:54: void LoadFile(char *sFileName, char *pLoadAddress)
+                             90 ;	---------------------------------
+                             91 ; Function LoadFile
+                             92 ; ---------------------------------
+   0032                      93 _LoadFile::
+   0032 DD E5         [15]   94 	push	ix
+   0034 DD 21 00 00   [14]   95 	ld	ix,#0
+   0038 DD 39         [15]   96 	add	ix,sp
+                             97 ;Load01.c:56: nFileNameLen = strlen(sFileName);
+   003A DD 6E 04      [19]   98 	ld	l,4 (ix)
+   003D DD 66 05      [19]   99 	ld	h,5 (ix)
+   0040 E5            [11]  100 	push	hl
+   0041 CDr00r00      [17]  101 	call	_strlen
+   0044 F1            [10]  102 	pop	af
+   0045 4D            [ 4]  103 	ld	c,l
+   0046 44            [ 4]  104 	ld	b,h
+   0047 FD 21r00r00   [14]  105 	ld	iy,#_nFileNameLen
+   004B FD 71 00      [19]  106 	ld	0 (iy),c
+                            107 ;Load01.c:88: __endasm;
+                            108 ;;	B = length of the filename in characters
+   004E 21r00r00      [10]  109 	ld	hl, #_nFileNameLen;
+   0051 46            [ 7]  110 	ld	b, (hl)
+                            111 ;;	HL = address of the start of the filename
+   0052 DD 6E 04      [19]  112 	LD	L, 4 (IX) ;sFileName
+   0055 DD 66 05      [19]  113 	LD	H, 5 (IX) ;sFileName
+                            114 ;;	DE = address of a 2k buffer
+                            115 ;;	in disc mode: this buffer is not used when CAS IN DIRECT
+                            116 ;;	firmware function is used, so it is safe to put it anywhere
+                            117 ;;	you want.
+   0058 11 00 00      [10]  118 	ld	de, #0x0
+                            119 ;;	firmware function to open a file for reading
+   005B CD 77 BC      [17]  120 	call	#0xbc77 ;;cas_in_open
+                            121 ;;	firmware function to load the entire file
+                            122 ;;	this will work with files that have a AMSDOS header (ASCII
+                            123 ;;	files do not have a header)
+                            124 ;;	HL = load address
+   005E DD 6E 06      [19]  125 	LD	L, 6 (IX) ;pLoadAddress
+   0061 DD 66 07      [19]  126 	LD	H, 7 (IX) ;pLoadAddress
+                            127 ;;	read file
+   0064 CD 83 BC      [17]  128 	call	#0xbc83 ;;cas_in_direct
+                            129 ;;	firmware function to close a file opened for reading
+   0067 CD 7A BC      [17]  130 	call	#0xbc7a ;;cas_in_close
+   006A DD E1         [14]  131 	pop	ix
+   006C C9            [10]  132 	ret
+                            133 ;Load01.c:96: void SetColor(unsigned char nColorIndex, unsigned char nPaletteIndex)
+                            134 ;	---------------------------------
+                            135 ; Function SetColor
+                            136 ; ---------------------------------
+   006D                     137 _SetColor::
+   006D DD E5         [15]  138 	push	ix
+   006F DD 21 00 00   [14]  139 	ld	ix,#0
+   0073 DD 39         [15]  140 	add	ix,sp
+                            141 ;Load01.c:103: __endasm;
+   0075 DD 7E 04      [19]  142 	ld	a, 4 (ix)
+   0078 DD 46 05      [19]  143 	ld	b, 5 (ix)
+   007B 48            [ 4]  144 	ld	c, b
+   007C CD 32 BC      [17]  145 	call	#0xBC32 ;SCR SET INK
+   007F DD E1         [14]  146 	pop	ix
+   0081 C9            [10]  147 	ret
+                            148 ;Load01.c:111: void SetPalette(const unsigned char *pPalette, unsigned char nNumColors)
+                            149 ;	---------------------------------
+                            150 ; Function SetPalette
+                            151 ; ---------------------------------
+   0082                     152 _SetPalette::
+   0082 DD E5         [15]  153 	push	ix
+   0084 DD 21 00 00   [14]  154 	ld	ix,#0
+   0088 DD 39         [15]  155 	add	ix,sp
+                            156 ;Load01.c:115: for(nColor = 0; nColor < nNumColors; nColor++)
+   008A 0E 00         [ 7]  157 	ld	c,#0x00
+   008C                     158 00103$:
+   008C 79            [ 4]  159 	ld	a,c
+   008D DD 96 06      [19]  160 	sub	a, 6 (ix)
+   0090 30 1C         [12]  161 	jr	NC,00105$
+                            162 ;Load01.c:116: SetColor(nColor, pPalette[nColor]);
+   0092 DD 7E 04      [19]  163 	ld	a,4 (ix)
+   0095 81            [ 4]  164 	add	a, c
+   0096 5F            [ 4]  165 	ld	e,a
+   0097 DD 7E 05      [19]  166 	ld	a,5 (ix)
+   009A CE 00         [ 7]  167 	adc	a, #0x00
+   009C 57            [ 4]  168 	ld	d,a
+   009D 1A            [ 7]  169 	ld	a,(de)
+   009E 6F            [ 4]  170 	ld	l,a
+   009F C5            [11]  171 	push	bc
+   00A0 7D            [ 4]  172 	ld	a,l
+   00A1 F5            [11]  173 	push	af
+   00A2 33            [ 6]  174 	inc	sp
+   00A3 79            [ 4]  175 	ld	a,c
+   00A4 F5            [11]  176 	push	af
+   00A5 33            [ 6]  177 	inc	sp
+   00A6 CDr6Dr00      [17]  178 	call	_SetColor
+   00A9 F1            [10]  179 	pop	af
+   00AA C1            [10]  180 	pop	bc
+                            181 ;Load01.c:115: for(nColor = 0; nColor < nNumColors; nColor++)
+   00AB 0C            [ 4]  182 	inc	c
+   00AC 18 DE         [12]  183 	jr	00103$
+   00AE                     184 00105$:
+   00AE DD E1         [14]  185 	pop	ix
+   00B0 C9            [10]  186 	ret
+                            187 ;Load01.c:124: void SetMode(unsigned char nMode)
+                            188 ;	---------------------------------
+                            189 ; Function SetMode
+                            190 ; ---------------------------------
+   00B1                     191 _SetMode::
+   00B1 DD E5         [15]  192 	push	ix
+   00B3 DD 21 00 00   [14]  193 	ld	ix,#0
+   00B7 DD 39         [15]  194 	add	ix,sp
+                            195 ;Load01.c:129: __endasm;
+   00B9 DD 7E 04      [19]  196 	ld	a, 4 (ix)
+   00BC CD 0E BC      [17]  197 	call	#0xBC0E ;SCR_SET_MODE
+   00BF DD E1         [14]  198 	pop	ix
+   00C1 C9            [10]  199 	ret
+                            200 ;Load01.c:138: main()
+                            201 ;	---------------------------------
+                            202 ; Function main
+                            203 ; ---------------------------------
+   00C2                     204 _main::
+   00C2 DD E5         [15]  205 	push	ix
+                            206 ;Load01.c:140: SetupDOS();
+   00C4 CDr00r00      [17]  207 	call	_SetupDOS
+                            208 ;Load01.c:142: SetMode(0);
+   00C7 AF            [ 4]  209 	xor	a, a
+   00C8 F5            [11]  210 	push	af
+   00C9 33            [ 6]  211 	inc	sp
+   00CA CDrB1r00      [17]  212 	call	_SetMode
+   00CD 33            [ 6]  213 	inc	sp
+                            214 ;Load01.c:144: LoadFile("01.scr", (char *)0xC000);
+   00CE 21 00 C0      [10]  215 	ld	hl,#0xc000
+   00D1 E5            [11]  216 	push	hl
+   00D2 21rECr00      [10]  217 	ld	hl,#___str_0
+   00D5 E5            [11]  218 	push	hl
+   00D6 CDr32r00      [17]  219 	call	_LoadFile
+   00D9 F1            [10]  220 	pop	af
+                            221 ;Load01.c:145: SetPalette((char *)0xD7D1, 16);
+   00DA 26 10         [ 7]  222 	ld	h,#0x10
+   00DC E3            [19]  223 	ex	(sp),hl
+   00DD 33            [ 6]  224 	inc	sp
+   00DE 21 D1 D7      [10]  225 	ld	hl,#0xd7d1
+   00E1 E5            [11]  226 	push	hl
+   00E2 CDr82r00      [17]  227 	call	_SetPalette
+   00E5 F1            [10]  228 	pop	af
+   00E6 33            [ 6]  229 	inc	sp
+                            230 ;Load01.c:147: while(1);
+   00E7                     231 00102$:
+   00E7 18 FE         [12]  232 	jr	00102$
+                            233 ;Load01.c:149: return 0;
+   00E9 DD E1         [14]  234 	pop	ix
+   00EB C9            [10]  235 	ret
+   00EC                     236 ___str_0:
+   00EC 30 31 2E 73 63 72   237 	.ascii "01.scr"
+   00F2 00                  238 	.db 0x00
+                            239 	.area _CODE
+                            240 	.area _INITIALIZER
+   0000                     241 __xinit__nFileNameLen:
+   0000 00                  242 	.db #0x00	; 0
+                            243 	.area _CABS (ABS)

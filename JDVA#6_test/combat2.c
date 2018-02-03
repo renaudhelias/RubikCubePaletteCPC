@@ -65,7 +65,7 @@ void main(void)
 	set_palette(intro_palette);
 	overscan();
 	//scan();
-	calque4000();
+	calque4C00();
 	bank0123();
 	LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);

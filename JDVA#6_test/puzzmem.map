@@ -1,0 +1,231 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           
+     00000000  l__BSS                          
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__GSINIT                       
+     00000000  l__HEADER                       
+     00000000  l__HEAP                         
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00000000  s__HEADER                       
+     00000000  s__HEADER0                      
+     00000000  s__HEADER1                      
+     00000001  l__GSFINAL                      
+     00000003  l__HEADER0                      
+     00000009  l__HEADER1                      
+     00000138  s__CODE                         
+     00000215  l__DATA                         
+     000076C0  l__CODE                         
+     000077F8  s__DATA                         
+     00007A0D  s__GSFINAL                      
+     00007A0D  s__GSINIT                       
+     00007A0D  s__HOME                         
+     00007A0D  s__INITIALIZED                  
+     00007A0E  s__BSS                          
+     00007A0E  s__HEAP                         
+     00007A0E  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000138    000076C0 =       30400. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000138  _piece                             puzzmem
+     000015E0  _fillListe1Piece                   puzzmem
+     000016CA  _fillListePieces                   puzzmem
+     00001701  _fillPreview                       puzzmem
+     000017A9  _fill1Grille                       puzzmem
+     00001868  _fillSelect                        puzzmem
+     000018A3  _fillGrilleEtSelect                puzzmem
+     0000193C  _makePreview                       puzzmem
+     000019C1  _newEmptyGrille                    puzzmem
+     00001A11  _computeNbPiece                    puzzmem
+     00001A83  _main                              puzzmem
+     00002715  _puzzmem_palette                   puzzmem
+     00002725  __clock                            crt0
+     00002726  _exit                              crt0
+     00002727  _putchar                           
+     00002727  _putchar_rr_s                      
+     00002730  _putchar_rr_dbs                    
+     00002735  _pen                               jdvapi_basic
+     00002746  _locate                            jdvapi_basic
+     0000275D  _set_color                         jdvapi_basic
+     00002772  _border                            jdvapi_basic
+     00002784  _set_palette                       jdvapi_basic
+     000027B0  _mode                              jdvapi_basic
+     000027C1  _plot                              jdvapi_basic
+     000027DB  _move                              jdvapi_basic
+     000027F5  _line                              jdvapi_basic
+     0000280F  _set_pixel_color0                  jdvapi_basic
+     0000288A  _put_pixel0                        jdvapi_basic
+     000028E6  _copy_pixel0bytes                  jdvapi_basic
+     00002994  _set_pixel_color1                  jdvapi_basic
+     00002A0C  _put_pixel1                        jdvapi_basic
+     00002A6A  _put_pixel_byte1                   jdvapi_basic
+     00002ADF  _put_frame                         jdvapi_frame
+     00002B16  _put_frame_transparent             jdvapi_frame
+     00002B4E  _erase_frame                       jdvapi_frame
+     00002B7E  _precalc_vram                      jdvapi_frame
+     00002BEC  _get_key                           jdvapi_keyb
+     00002C2F  _check_controller                  jdvapi_keyb
+     00002C62  _vsync                             jdvapi_sync
+     00002C6B  _calqueC000                        jdvapi_sync
+     00002C76  _calque4000                        jdvapi_sync
+     00002C81  _calque4C00                        jdvapi_sync
+     00002C8C  _bank0123                          jdvapi_sync
+     00002C92  _bank7_C000                        jdvapi_sync
+     00002C98  _bank4_4000                        jdvapi_sync
+     00002C9E  _bank5_4000                        jdvapi_sync
+     00002CA4  _bank6_4000                        jdvapi_sync
+     00002CAA  _bank7_4000                        jdvapi_sync
+     00002CB0  _scroll                            jdvapi_sync
+     00002CC8  _overscan                          jdvapi_sync
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000138    000076C0 =       30400. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00002CF1  _scan                              jdvapi_sync
+     00002D1A  _bluegirl                          bluegirl
+     00006B9A  _bluegirl_palette                  bluegirl
+     00006BAA  __moduchar                         
+     00006BB6  __moduint                          
+     00006BC1  __divuint                          
+     00006BC9  __divuchar                         
+     00006BD0  __divu8                            
+     00006BD3  __divu16                           
+     00006C02  __mulint                           
+     00006C08  __mul16                            
+     00006C28  _vprintf                           vprintf
+     00006C48  _printf                            vprintf
+     00006C65  __modschar                         
+     00006C72  __modsint                          
+     00006D81  __print_format                     printf_large
+     000077A0  __divsint                          
+     000077A9  __divschar                         
+     000077B0  __div8                             
+     000077B4  __div_signexte                     
+     000077B8  __div16                            
+     000077DE  __get_remainder                    
+     000077E8  ___sdcc_call_hl                    
+     000077E9  _strlen                            
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               000077F8    00000215 =         533. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000077F8  _private_preview                   puzzmem
+     00007829  _private_grille                    puzzmem
+     0000785A  _private_nbPieces                  puzzmem
+     0000786C  _nbPieces                          puzzmem
+     0000786E  _preview                           puzzmem
+     00007870  _grille                            puzzmem
+     00007872  _select                            puzzmem
+     00007873  _private_precalc_vram              jdvapi_frame
+     00007A03  _aKeyboard                         jdvapi_keyb
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSINIT                             00007A0D    00000000 =           0. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00007A0D  gsinit                             crt0
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSFINAL                            00007A0D    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER0                            00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER1                            00000000    00000009 =           9. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+
+Files Linked                              [ module(s) ]
+
+puzzmem.rel                               [ puzzmem ]
+crt0_cpc.rel                              [ crt0 ]
+putchar_cpc.rel                           [  ]
+jdvapi_basic.rel                          [ jdvapi_basic ]
+jdvapi_frame.rel                          [ jdvapi_frame ]
+jdvapi_keyb.rel                           [ jdvapi_keyb ]
+jdvapi_sync.rel                           [ jdvapi_sync ]
+bluegirl.rel                              [ bluegirl ]
+
+
+Libraries Linked                          [ object file ]
+
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ modunsigned.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ divunsigned.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ mul.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ vprintf.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ modsigned.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ printf_large.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ divsigned.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ __sdcc_call_hl.rel ]
+C:\Program Files (x86)\SDCC\bin\..\lib\z80/z80.lib
+                                          [ strlen.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
+
+User Base Address Definitions
+
+_CODE = 0x0138
+_DATA = 0x0000
+
+
