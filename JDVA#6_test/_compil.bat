@@ -33,6 +33,7 @@ CPCDiskXP -File J2R.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File fond2.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File intro.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File intro-oc.scr -AddToExistingDsk jdva6_combat2.dsk
+rem CPCDiskXP -File intro-ov.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load01.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File 01.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load02.bin -AddAmsdosHeader 100 -AddToNewDsk jdva6_Load02.dsk
