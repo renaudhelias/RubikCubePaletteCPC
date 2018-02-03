@@ -28,6 +28,7 @@ void scroll(unsigned char h);
 
 void overscan();
 void overscan24K();
+void overscanH();
 void scan();
 void calque4C00();
 

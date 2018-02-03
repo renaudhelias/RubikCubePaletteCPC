@@ -48,7 +48,8 @@ const unsigned char combat2_palette[]=
 
 const unsigned char intro_palette[]=
 {
-		0,1,4,11,5,3,16,25,15,12,26,14,23,2,6,0
+		//0,1,4,11,5,3,16,25,15,12,26,14,23,2,6,0
+		0,4,1,11,5,16,25,26,15,3,12,14,23,2,6,0
 };
 
 
@@ -63,12 +64,12 @@ void main(void)
 	mode(0); // à cause de la publicité ParaDOS ;)
 	border(0);
 	set_palette(intro_palette);
-	overscan24K();
+	overscanH();
 	//overscan();
 	//scan();
 	calque4C00();
 	bank0123();
-	LoadFile("intro-o2.scr", (char *)0x4000);
+	LoadFile("intro-oh.scr", (char *)0x4000);
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
 	vram=precalc_vram();
