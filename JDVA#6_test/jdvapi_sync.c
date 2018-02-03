@@ -95,13 +95,13 @@ void scroll(unsigned char h)
 void overscan()
 {
   __asm
-    ld bc,#0xBC00+1 ; On met la valeur 50 dans
+    ld bc,#0xBC00+1 ; On met la valeur 48 dans
     out (c),c      ; le registre 1 du CRTC -- RHdisp
-    ld bc,#0xBD00+50
+    ld bc,#0xBD00+48
     out (c),c
-    ld bc,#0xBC00+2 ; On met la valeur 51 dans
+    ld bc,#0xBC00+2 ; On met la valeur 50 dans
     out (c),c      ; le registre 2 du CRTC -- RHsyncpos
-    ld bc,#0xBD00+51
+    ld bc,#0xBD00+50
     out (c),c
     ld bc,#0xBC00+6 ; On met la valeur 34 dans
     out (c),c      ; le registre 6 du CRTC -- RVdisp
