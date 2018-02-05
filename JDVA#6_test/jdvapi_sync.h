@@ -5,6 +5,8 @@
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
 void vsync();
+void raster();
+void halt();
 
 // VRAM en &C000-&FFFF
 void calqueC000();

@@ -12,6 +12,24 @@ void vsync()
   __endasm;
 }
 
+void raster()
+{
+  // does kill the system
+  __asm
+    di
+    LD HL,#0xC9FB ;; deux instructions : EI RET
+    LD (#0x38),HL
+    ei
+  __endasm;
+}
+
+void halt()
+{
+  __asm
+    halt
+  __endasm;
+}
+
 void calqueC000()
 {
   __asm
