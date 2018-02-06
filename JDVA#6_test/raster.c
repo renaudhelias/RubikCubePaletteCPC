@@ -34,10 +34,8 @@ const unsigned char palette5[]=
 };
 
 
-char roulette=0;
-void callback_roulette()
+void callback_roulette(unsigned char roulette)
 {
-	roulette=(roulette+1)%6;
 	switch(roulette) {
 		case 0 :
 			set_firmcolor(FIRM_COLOR_0);

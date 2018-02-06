@@ -6,7 +6,7 @@
  */
 void vsync();
 
-typedef  void (*MyFunctionReturningVoid)();
+typedef  void (*MyFunctionReturningVoid)(unsigned char);
 
 // does kill the system
 void raster_halt();

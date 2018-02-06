@@ -1,5 +1,8 @@
+unsigned char callback_counter=0;
+
 void vsync()
 {
+  callback_counter=0;
   __asm
     ld b,#0xf5          ;; PPI port B input
     _wait_vsync:
@@ -37,9 +40,9 @@ void firmware()
 
 
 
-typedef  void (*MyFunctionReturningVoid)();
+typedef  void (*MyFunctionReturningVoid)(unsigned char);
 
-void callback(){
+void callback(unsigned char counter){
   //do nothing
   __asm
   call 0
@@ -69,7 +72,8 @@ void raster_handler()
   ;; here we do custom code..
   __endasm;
  
-  aFunction();
+  aFunction(callback_counter);
+  callback_counter=(callback_counter+1)%6;
   
   __asm
   ;; restore Z80 state
