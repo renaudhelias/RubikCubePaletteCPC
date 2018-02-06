@@ -71,6 +71,31 @@ void mode(unsigned char m)
 	__endasm;
 }
 
+
+void firmmode(unsigned char m)
+{
+	switch(m) {
+case 0 :
+	__asm
+		ld bc, #0x7f8C
+		out (c), c
+	__endasm;
+return;
+case 1 :
+	__asm
+		ld bc, #0x7f8C+1
+		out (c), c
+	__endasm;
+return;
+case 2 :
+	__asm
+		ld bc, #0x7f8C+2
+		out (c), c
+	__endasm;
+return;
+	}
+}
+
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent
  */

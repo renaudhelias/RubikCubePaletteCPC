@@ -32,6 +32,7 @@ void locate(unsigned char x,unsigned char y);
 // char --> -128 +128
 // unsigned --> char 0..255
 void mode(unsigned char m);
+void firmmode(unsigned char m);
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent
  */
