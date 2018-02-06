@@ -1,4 +1,3 @@
-
 void vsync()
 {
   __asm
@@ -12,7 +11,7 @@ void vsync()
   __endasm;
 }
 
-void raster()
+void raster_halt()
 {
   // does kill the system
   __asm
@@ -21,6 +20,125 @@ void raster()
     LD (#0x38),HL
     ei
   __endasm;
+}
+
+void firmware()
+{
+  // does restore the system (firmware instruction vector)
+  __asm
+    di
+    LD A,#0xC3 ;; une instructions : JP
+    LD (#0x38),A
+    LD HL,#0xB941 ;; &B941 adress is part of Amstrad CPC firmware code, that will do internal management of the CPC.
+    LD (#0x39),HL
+    ei
+  __endasm;
+}
+
+
+
+typedef  void (*MyFunctionReturningVoid)();
+
+void callback(){
+  //do nothing
+  __asm
+  call 0
+  __endasm;
+}
+
+MyFunctionReturningVoid aFunction=callback;
+
+void raster_handler()
+{
+  __asm
+  
+  ;; backup Z80 state
+  push af
+  push bc
+  push de
+  push hl
+  push ix
+  push iy
+  exx
+  ;; ex af, af'
+  push af
+  push bc
+  push de
+  push hl
+  
+  ;; here we do custom code..
+  __endasm;
+ 
+  aFunction();
+  
+  __asm
+  ;; restore Z80 state
+  pop hl
+  pop de
+  pop bc
+  pop af
+  ;; ex af, af'
+  exx
+  pop iy
+  pop ix
+  pop hl
+  pop de
+  pop bc
+  pop af
+  
+  ei
+  ret
+  __endasm;
+}
+
+
+void raster()
+{
+  // does replace the system by a callback
+  __asm
+  di
+  ld iy,#0x39
+  ld 0 (iy),#<(_raster_handler)
+  ld 1 (iy),#>(_raster_handler)
+  ei
+  __endasm;
+}
+
+
+/*
+https://en.wikibooks.org/wiki/C_Programming/Pointers_and_arrays#Pointers_to_Functions
+typedef  int (*MyFunctionType)( int, void *);
+
+ int DoSomethingNice( int aVariable, MyFunctionType aFunction, void *dataPointer )
+ {
+     int rv = 0;
+     if (aVariable < 100) {
+        rv = (*aFunction)(aVariable, dataPointer );
+      } else {
+        rv = aFunction(aVariable, dataPointer );
+     };
+     return rv;
+ }
+
+ typedef struct {
+     int    colorSpec;
+     char   *phrase;
+ } DataINeed;
+ 
+ int TalkJive( int myNumber, void *someStuff )
+ {
+     DataINeed *myData = someStuff;
+     return 5;
+ }
+ 
+ static DataINeed  sillyStuff = { BLUE, "Whatcha talkin 'bout Willis?" };
+  
+ DoSomethingNice( 41, &TalkJive,  &sillyStuff );
+*/
+
+void handle_raster(MyFunctionReturningVoid callback) {
+	// does install a new system
+	aFunction=callback;
 }
 
 void halt()

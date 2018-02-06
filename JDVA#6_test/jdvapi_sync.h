@@ -5,7 +5,17 @@
  * JDVA#6 ON FAIT BOUGER UN POULPE
  */
 void vsync();
+
+typedef  void (*MyFunctionReturningVoid)();
+
+// does kill the system
+void raster_halt();
+// does restore the system
+void firmware();
+// does replace the system by a callback
 void raster();
+// does install a new system
+void handle_raster(MyFunctionReturningVoid callback);
 void halt();
 
 // VRAM en &C000-&FFFF

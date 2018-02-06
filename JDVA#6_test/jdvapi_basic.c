@@ -25,7 +25,20 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
     ld b, 5 (ix)
     ld c, b
     call #0xBC32 ;SCR SET INK
-    __endasm;
+  __endasm;
+}
+
+void set_firmcolor(unsigned char firmColor)
+{
+  __asm
+    ld a, 4 (ix)
+    ld bc, #0x7f00
+    out (c), c
+    out (c), a
+    ld bc, #0x7f10
+    out (c), c
+    out (c), a
+  __endasm;
 }
 
 void border(unsigned char nColorIndex)

@@ -14,12 +14,14 @@ sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel bluegirl.rel puzzmem.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel joueurs.rel combat.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel combat2.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_sync.rel raster.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load01.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load02.c
 hex2bin main.ihx
 hex2bin puzzmem.ihx
 hex2bin combat.ihx
 hex2bin combat2.ihx
+hex2bin raster.ihx
 hex2bin Load01.ihx
 hex2bin Load02.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdva6.dsk
@@ -38,6 +40,7 @@ rem CPCDiskXP -File intro-oc.scr -AddToExistingDsk jdva6_combat2.dsk
 rem CPCDiskXP -File intro-ov.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load01.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File 01.scr -AddToExistingDsk jdva6_combat2.dsk
+CPCDiskXP -File raster.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load02.bin -AddAmsdosHeader 100 -AddToNewDsk jdva6_Load02.dsk
 CPCDiskXP -File 01.scr -AddToExistingDsk jdva6_Load02.dsk
 CPCDiskXP -File 02.scr -AddToExistingDsk jdva6_Load02.dsk

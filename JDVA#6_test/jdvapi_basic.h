@@ -5,6 +5,21 @@
 
 void set_palette(unsigned char *pPalette);
 
+// color BASIC 0
+#define FIRM_COLOR_0 84
+// color BASIC 1
+#define FIRM_COLOR_1 68
+// color BASIC 2
+#define FIRM_COLOR_2 85
+// color BASIC 3
+#define FIRM_COLOR_3 92
+// color BASIC 4
+#define FIRM_COLOR_4 88 
+// color BASIC 5
+#define FIRM_COLOR_5 93
+
+void set_firmcolor(unsigned char firmColor);
+
 void border(unsigned char nColorIndex);
 
 void pen(unsigned char p);
