@@ -38,6 +38,7 @@ void callback_roulette(unsigned char roulette)
 {
 	switch(roulette) {
 		case 0 :
+			firmmode(2);
 			set_firmcolor(FIRM_COLOR_0);
 		return;
 		case 1 :
