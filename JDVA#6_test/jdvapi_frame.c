@@ -103,6 +103,7 @@ void erase_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nH
 
 void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *backup)
 {
+	// chie un peu dans la colle mais fait des trucs, utiliser save_frame() de MiGaNuts plutôt :P
   __asm
     LD L, 4(IX) 		; HL --> Adr source
     LD H, 5(IX) 
@@ -134,6 +135,40 @@ void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHei
        POP BC				; Récupère BC --> pour récupérer la hauteur
        DJNZ _loop_alto003		; Enlève 1 à la hauteur, si on à pas tout traité, on reboucle au début _loop_alto
   __endasm;
+}
+
+unsigned char* scr_next_line( unsigned char* adresse)
+{
+	/*
+	   &BC26 - SCR NEXT LINE
+	   Calculates the screen address of the byte below the specified
+	   screen address.
+	   ENTRY
+	   • L HL contains the screen address.
+	   EXIT
+	   • L HL contains the screen address of the byte below the original
+	   screen address.
+	   • F AF is corrupt, and all the other registers are preserved.
+	*/
+  __asm
+	LD L, 4(IX) ; HL --> Adr destination
+	LD H, 5(IX)
+	call #0xbc26
+  __endasm;
+}
+
+// idem que get_frame mais qui marche
+void save_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, unsigned char *image)
+{
+	//*pAddress : adresse ou on va "sauver" les données
+	//*image : adresse de la zone a découper
+	//nWidth et nHeight : largeur et hauteur de la zone
+	unsigned char i;
+	for (i=0; i<nHeight; i++){
+		memcpy(pAddress,image,(unsigned int) nWidth);
+		image=scr_next_line(image);
+		pAddress=pAddress+nWidth;
+	}
 }
 
 /**

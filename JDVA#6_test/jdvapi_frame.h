@@ -10,6 +10,9 @@ extern void put_frame_transparent(unsigned char *pAddress, unsigned char nWidth,
 extern void erase_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight);
 
 void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *backup);
+// idem que get_frame mais qui marche (par MiGaNuTs)
+void save_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, unsigned char *image);
+
 
 /**
  * JDVA#6 ON FAIT BOUGER UN POULPE
