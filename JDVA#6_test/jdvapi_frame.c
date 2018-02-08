@@ -1,3 +1,7 @@
+// pour memcpy
+#include <stdio.h>
+// pour memcpy
+#include <string.h>
 
 void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image)
 {
