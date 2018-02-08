@@ -3,9 +3,10 @@
 
 Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=88MaOZglJQA
 
-
+__main.c jdva6.dsk__
 ![JDVA6.dsk.png](JDVA6.dsk.png)
 
+__puzzmem.c jdva6.dsk__
 Un vieux jeu que je jouais quand j'étais tout petit, je ne sais plus son nom, je l'ai recréé de mémoire. Un jeu de puzzle et de mémoire :
 
 ![puzzmem.dsk.png](puzzmem.dsk.png)
@@ -14,8 +15,7 @@ Un vieux jeu que je jouais quand j'étais tout petit, je ne sais plus son nom, j
 
 keys : ENTER, SPACE, arrows.
 
-combat
-
+__combat.c jdva6.dsk__
 J'utilise ici la technique du "décalage d'un pixel" afin que mes sprites bougent un pixel par un pixel en mode 2, changeant donc de sprite pixel par pixel sur un écran de 640 pixels de large. Et j'ai eu pas mal de surprises :
 
 - En fait un écran ici fait 640 pixels de large, et est à 50Hz, donc si je met la vitesse maximal tout en déplaçant les pixels un par un à 50Hz, en fait mon personnage prend 6 secondes à atteindre le milieu de l'écran ! et c'est normal : (640/2)/25=12 secondes à 25Hz (donc humainement)
@@ -37,7 +37,9 @@ Donc le poisson... il prend 1.5 secondes à traverser l'écran, sautant un pixel
 
 Et si on le compare à un vrai poisson, 8 fois plus grand donc, il ferait du 6km/h.
 
-__Partie discussions avec MiGaNuTs (mode warrior on :p)__
+__combat2.c jdva6_combat2.dsk__
+
+Petite discussion avec MiGaNuTs (mode warrior on :p)
 
 Ce serait bien pour "combat" de jongler avec deux zones d'affichage histoire d'avoir un buffer, .
 
@@ -108,17 +110,30 @@ Pour du vrai scroll, va falloir corriger ces 4 derniers pixels via du soft, pas 
 
 http://www.cpcmania.com/Docs/Programming/Files.htm - Loading files from disk using firmware (C & ASM with SDCC)
 
-__Retour de tests__
-J'ai réussi un découpage de sprites, j'ai du coup 13*4 sprites de 48x50 pixels noir et blanc, sur 4 RAM supérieures, du coup j'ai bien chargé mes 128 sprites !
+Retour de tests :
 
-J'arrive aussi à avoir de la transparence, en mode 0 avec un 0R assembleur lors du set_frame, ce OR assembleur devrait marcher aussi en mode 1 si on est malin (en choisissant 0 noir, 1, 2, 3 une couleur mélangeant 1 et 2)
+* J'ai réussi un découpage de sprites, j'ai du coup 13*4 sprites de 48x50 pixels noir et blanc, sur 4 RAM supérieures, du coup j'ai bien chargé mes 128 sprites !
 
-J'ai des messages "so said EVELYN the modified DOG" quand je pousse l'algo principal (main) trop loin, et à partir de là c'est indéterministe la compilation en fait (le jeu marche un peu puis plouf), contre ça faut précéder la déclaration de ses variables par "volatile", ce que je fais pour toutes celles de mon main désormais.
+* J'arrive aussi à avoir de la transparence, en mode 0 avec un 0R assembleur lors du set_frame, ce OR assembleur devrait marcher aussi en mode 1 si on est malin (en choisissant 0 noir, 1, 2, 3 une couleur mélangeant 1 et 2)
 
-Avec ConvImgCpc, en mode 2, c'est plus facile d'avoir une image net si on force la palette (cocher dessous les deux première couleurs), avec des couleurs en bleu, car l'Amstrad a plus de dégradé en bleu, du coup il y a plus de chance d'avoir quelque chose de net, une fois OK, inverser les deux couleurs sur la couleur 0 (la première de la liste) n'est pas celle du fond du sprite et réappuyez sur recalculer.
+* J'ai des messages "so said EVELYN the modified DOG" quand je pousse l'algo principal (main) trop loin, et à partir de là c'est indéterministe la compilation en fait (le jeu marche un peu puis plouf), contre ça faut précéder la déclaration de ses variables par "volatile", ce que je fais pour toutes celles de mon main désormais.
+
+* Avec ConvImgCpc, en mode 2, c'est plus facile d'avoir une image net si on force la palette (cocher dessous les deux première couleurs), avec des couleurs en bleu, car l'Amstrad a plus de dégradé en bleu, du coup il y a plus de chance d'avoir quelque chose de net, une fois OK, inverser les deux couleurs sur la couleur 0 (la première de la liste) n'est pas celle du fond du sprite et réappuyez sur recalculer.
 
 ![combat2.dsk.png](combat2.dsk.png)
 
-combat2
-
 https://www.spriters-resource.com/snes/mortalkombat2/sheet/41023/
+
+__raster.c jdva6_combat2.dsk__
+J'ai trois tests ici :
+* en utilisant le set_palette (via le firmware) : bah ça raster pas, on a une seule couleur affichée.
+* en utilisant des interrupts avec des halt : ça marche, mais on remarque au passage que vsync() il semble halt aussi.
+* en utilisant une fonction C en callback : ça marche très très bien.
+
+__musique.c musique.dsk__
+Bon là j'ai tenté de mixer l'exemple de grimware (Arkos !) avec l'exemple de CPCTelera. A savoir sur grimware il y a une version qui se compile très bien via WinAPE, avec une bonne musique, du raster border mesurant au passage la taille occupé pendant un écran par la routine musique (très bon ça), et ça tourne en boucle la musique.
+
+Via CPCTelera, avec 5Go bouffé par un cygwin de fond, je fais juste "cd exemple", puis make et zou, dans exemples/medium/audio j'ai un bon exemble de disquette prète avec une musique qui se joue lors du lancement d'un programme.
+
+Du coup je me suis dit, je vais faire une soupe en mixant les deux exemples, et ça résulte en ce musique.c : finalement du raster border de grimware, avec du son de CPCTelera mais compilant le tout avec juste le minimum : on passe donc de 5Go nécessaires à  quelques kilo-octets.
+On remarque le molusk.h qui est une version binaire mis à plat dans un tableau en C, provenant d'une routine de compilation CPCTelera traduisant du .aks en .h, alors que STarKos sous windows permet de sortir du format binaire. C'est assez dommage car j'aurai bien aimé avoir la partie son en dehors de mon programme, genre dans un fichier à côté, et en plus le faire sans devoir installer CPCTelera entièrement. Donc faudrait faire une analyse comparative entre ce .h et le .bin sortie du sound tracker STarKos sous Windows, et voir si on peut le sortir de programme et le charger simplement en RAM à un certain endroit.
