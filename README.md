@@ -70,6 +70,9 @@ Et pour Miganuts :
 save"thsf2017.bas
 ```
 
+La version avec la palette hard, pour faire un peu de raster (PS : le gris, au milieu c'est 40h)
+![hard_RubikCubePaletteCPC.png](hard_RubikCubePaletteCPC.png)
+
 D'autres trucs :
 
 [![[JDVA#1] Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
