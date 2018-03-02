@@ -67,6 +67,7 @@ void main(void)
 	
 	
 	mode(0);
+	border(0);
 	set_palette(game_palette);
 	printf("Hello World !");
 		
