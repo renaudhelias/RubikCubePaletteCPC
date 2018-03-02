@@ -12,3 +12,10 @@ while (my $ligne = <$fh>) {
 	chomp $ligne;
 	print "$ligne\n";
 }
+open(my $cfh,">","outch.".$fichier_c) or die "pouitch $fichier_c $!";
+open(my $hfh,">","outch.".$fichier_h) or die "pouitch $fichier_h $!";
+print $cfh "du C !\n";
+print $hfh "du H !\n";
+close($hfh);
+close($ch);
+close($fh);
