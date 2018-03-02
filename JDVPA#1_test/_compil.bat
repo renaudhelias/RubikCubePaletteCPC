@@ -11,5 +11,5 @@ sdcc -mz80 -c --std-c99 --opt-code-speed player.c
 sdcc -mz80 -c --std-c99 --opt-code-speed ghost.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --no-std-crt0 jdvapi_basic.rel jdvapi_frame.rel crt0_cpc.rel putchar_cpc.rel pacman_sprites.rel ghost_sprites.rel blank_sprites.rel player.rel ghost.rel main.c
 hex2bin main.ihx
-CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk result.dsk
+CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa1.dsk
 pause
