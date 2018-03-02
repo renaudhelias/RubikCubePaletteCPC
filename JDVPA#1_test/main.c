@@ -1,22 +1,22 @@
-#include "lib.h"
-#include "player.h"
-#include "ghost.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "jdvapi_basic.h"
+#include "jdvapi_frame.h"
+
+#include "pacman_sprites.h"
+#include "blank_sprites.h"
+#include "ghost_sprites.h"
+
+#include "player.h"
+#include "ghost.h"
 
 #define IMG_BLANK 0
 
-#define screen(x,y) ((unsigned char*)precalc_vram[y]+(x>>1))
-
-extern const unsigned char pacman_sprites[];
-extern const unsigned char blank_sprites[];
-extern const unsigned char ghost_sprites[];
-extern unsigned int precalc_vram[200];
+unsigned int *vram;
 
 unsigned char *spr_img[25];
-
 
 const unsigned char game_palette[]=
 {
@@ -26,6 +26,9 @@ const unsigned char game_palette[]=
 void main(void)
 {
 	char i;
+
+	vram=precalc_vram();
+	
 	// Image vide
 	spr_img[IMG_BLANK] = (unsigned char *)blank_sprites;
 	// Pacman rond
@@ -63,7 +66,7 @@ void main(void)
 	spr_img[23] = (unsigned char *)ghost_sprites + ((GHOST_SPRITE_HAUTEUR*GHOST_SPRITE_LARGEUR_O)*9);
 	
 	
-	screen_mode0();
+	mode(0);
 	set_palette(game_palette);
 	printf("Hello World !");
 		
