@@ -2,7 +2,6 @@
 rem set path=%path%;\sdcc\bin
 sdasz80 -o crt0_cpc.s
 sdasz80 -o putchar_cpc.s
-rem sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc lib.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_frame.c
 sdcc -mz80 -c --std-c99 --opt-code-speed pacman_sprites.c
