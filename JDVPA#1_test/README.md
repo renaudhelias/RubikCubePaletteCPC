@@ -6,3 +6,12 @@ Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch
 __main.c jdvpa.dsk__
 
 ![JDVPA1.dsk.png](JDVPA1.dsk.png)
+
+Bon ici on affiche des sprites, comme déjà présenté lors de précédents épisodes. Pour mon grain de sel, je vais simplement écrire un script qui transforme automatiquement ces fichu fichier image .asm de ConvImgCpc vers des .c/.h adéquats.
+
+Le meilleur langage pour transformer du texte en texte, c'est perl.
+
+http://www.activestate.com/activeperl
+
+Je prend la version 5.22.4.2205 en 64bit windows.
+

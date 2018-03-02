@@ -4,6 +4,7 @@ sdasz80 -o crt0_cpc.s
 sdasz80 -o putchar_cpc.s
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_frame.c
+perl ConvImgCpc_asm2c.pl pacman_sprites.asm
 sdcc -mz80 -c --std-c99 --opt-code-speed pacman_sprites.c
 sdcc -mz80 -c --std-c99 --opt-code-speed ghost_sprites.c
 sdcc -mz80 -c --std-c99 --opt-code-speed blank_sprites.c
