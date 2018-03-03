@@ -4,18 +4,25 @@ my $fichier_asm = $ARGV[0];
 $fichier_asm =~ m/^(.+)\.asm$/;
 $fichier_c = "$1.c";
 $fichier_h = "$1.h";
-
+my $majuscules=uc($1);
 print "Cibles : $fichier_c et $fichier_h\n\n";
 
 open(my $fh, "<", $fichier_asm) or die "plouf $!";
+open(my $cfh,">","outch.".$fichier_c) or die "pouitch $fichier_c $!";
+open(my $hfh,">","outch.".$fichier_h) or die "pouitch $fichier_h $!";
+
+print $hfh "#ifndef ${majuscules}_H\n";
+print $hfh "#define ${majuscules}_H\n\n";
+print $hfh "extern const unsigned char ${1}[];\n\n";
+print $hfh "#endif\n";
+close($hfh);
+
 while (my $ligne = <$fh>) {
 	chomp $ligne;
 	print "$ligne\n";
 }
-open(my $cfh,">","outch.".$fichier_c) or die "pouitch $fichier_c $!";
-open(my $hfh,">","outch.".$fichier_h) or die "pouitch $fichier_h $!";
+
 print $cfh "du C !\n";
-print $hfh "du H !\n";
-close($hfh);
+
 close($ch);
 close($fh);
