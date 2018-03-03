@@ -7,7 +7,7 @@ __main.c jdvpa.dsk__
 
 ![JDVPA1.dsk.png](JDVPA1.dsk.png)
 
-Bon ici on affiche des sprites, comme déjà présenté lors de précédents épisodes. Pour mon grain de sel, je vais simplement écrire un script qui transforme automatiquement ces fichu fichiers image .asm de ConvImgCpc vers des .c/.h adéquats.
+Bon ici on affiche des sprites, comme déjà présenté lors de précédents épisodes. Pour mon grain de sel, je vais simplement écrire un script qui transforme automatiquement ces fichus fichiers image .asm de ConvImgCpc vers des .c/.h adéquats.
 
 Le meilleur langage pour transformer du texte en texte, c'est perl.
 
