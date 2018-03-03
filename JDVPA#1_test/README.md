@@ -15,3 +15,9 @@ http://www.activestate.com/activeperl
 
 Je prend la version 5.22.4.2205 en 64bit windows.
 
+__ConvImgCpc_asm2c.pl__
+Dans _compil.bat je lance :
+
+ perl ConvImgCpc_asm2c.pl Pacman_reduce.asm
+
+qui génère automatiquement pacman_reduce_sprites.c et pacman_reduce_sprites.h, plus besoin de faire ça à la main :)
