@@ -8,7 +8,7 @@
 // CPCTelera/src/audio/audio.h
 #include "arkostracker.h"
 
-#include "jdvapi_floppy.c"
+#include "jdvapi_floppy.h"
 
 void border_raster_begin()
 {

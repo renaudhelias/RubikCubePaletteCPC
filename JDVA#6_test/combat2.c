@@ -7,7 +7,7 @@
 #include "jdvapi_frame.h"
 #include "jdvapi_keyb.h"
 #include "jdvapi_sync.h"
-#include "jdvapi_floppy.c"
+#include "jdvapi_floppy.h"
 
 // 13 sprites en largeur
 // 4 sprites en hauteur
