@@ -3,7 +3,11 @@
 
 #define	vram(nX,nY) (unsigned char *)(0xC000 + ((nY / 8u) * 80u) + ((nY % 8u) * 2048u) + nX)
 
-//#define screen(x,y) ((unsigned char *)(vram[y]+x))
+// x : 0..79
+// y : 0..199
+#define pvram(x,y) ((unsigned char *)(vram[y]+x))
+// x : 0..159 (on simule un screen 160x200, mais un x sur deux est ignoré)
+// y : 0..199
 #define screen(x,y) ((unsigned char*)vram[y]+(x>>1))
 
 extern void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image);

@@ -182,8 +182,7 @@ unsigned int private_precalc_vram[200];
 
 unsigned int * precalc_vram()
 {
-	//char i; //#define screen(x,y) ((unsigned char *)(vram[y]+x))
-	unsigned char i; //#define screen(x,y) ((unsigned char*)vram[y]+(x>>1))
+	unsigned char i;
 	
 	for (i=0;i<200;i++)
 	{
