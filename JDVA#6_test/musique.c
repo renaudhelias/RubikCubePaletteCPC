@@ -6,8 +6,6 @@
 #include "jdvapi_keyb.h"
 // CPCTelera/src/audio/audio.h
 #include "arkostracker.h"
-// cpctelera-1.4.2/examples/medium/arkosAudio
-#include "molusk.h" // This file is geneated on compilation from music/molusk.aks
 
 
 void border_raster_begin()
@@ -50,8 +48,9 @@ void main(void)
 	unsigned char touche_O=0;
 	unsigned char touche_P=0;
 	raster_halt();
-	cpct_akp_musicInit(molusk_song);
-	cpct_akp_SFXInit(molusk_song);
+	// cpctelera-1.4.2/examples/medium/arkosAudio
+	cpct_akp_musicInit((void *)0x1D4D);
+	cpct_akp_SFXInit((void *)0x1D4D);
 	
 	while (1) {
 		check_controller();
@@ -67,7 +66,7 @@ void main(void)
 			
 			if (cpct_akp_songLoopTimes > 0) {
 				// Song has ended, start it again and set loop to 0
-				cpct_akp_musicInit(molusk_song);
+				cpct_akp_musicInit((void *)0x1D4D);
 			}
 		}
 		
