@@ -6,7 +6,7 @@
 // x : 0..79
 // y : 0..199
 #define pvram(x,y) ((unsigned char *)(vram[y]+x))
-// x : 0..159 (on simule un screen 160x200, mais un x sur deux est ignoré)
+// x : 0..159 (on simule un screen 160x200, mais un x sur deux est ignoré en fait)
 // y : 0..199
 #define screen(x,y) ((unsigned char*)vram[y]+(x>>1))
 
