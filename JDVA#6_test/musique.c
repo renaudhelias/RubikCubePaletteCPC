@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "jdvapi_basic.h"
@@ -7,6 +8,7 @@
 // CPCTelera/src/audio/audio.h
 #include "arkostracker.h"
 
+#include "jdvapi_floppy.c"
 
 void border_raster_begin()
 {
@@ -43,14 +45,21 @@ void border_raster_end2()
 
 void main(void)
 {
-	unsigned char playing=1;
-	unsigned char touche_Space=0;
-	unsigned char touche_O=0;
-	unsigned char touche_P=0;
+	volatile unsigned char playing=1;
+	volatile unsigned char touche_Space=0;
+	volatile unsigned char touche_O=0;
+	volatile unsigned char touche_P=0;
+	
+	//musique en &C000
+	SetupDOS();
+	calque4000();
+	bank0123();
+	LoadFile("molu4000.bin", (char *)0x4000);
+
 	raster_halt();
 	// cpctelera-1.4.2/examples/medium/arkosAudio
-	cpct_akp_musicInit((void *)0x1D4D);
-	cpct_akp_SFXInit((void *)0x1D4D);
+	cpct_akp_musicInit((void *)0x4000);
+	cpct_akp_SFXInit((void *)0x4000);
 	
 	while (1) {
 		check_controller();
@@ -66,7 +75,7 @@ void main(void)
 			
 			if (cpct_akp_songLoopTimes > 0) {
 				// Song has ended, start it again and set loop to 0
-				cpct_akp_musicInit((void *)0x1D4D);
+				cpct_akp_musicInit((void *)0xC000);
 			}
 		}
 		
