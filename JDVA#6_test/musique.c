@@ -75,7 +75,7 @@ void main(void)
 			
 			if (cpct_akp_songLoopTimes > 0) {
 				// Song has ended, start it again and set loop to 0
-				cpct_akp_musicInit((void *)0xC000);
+				cpct_akp_musicInit((void *)0x4000);
 			}
 		}
 		
