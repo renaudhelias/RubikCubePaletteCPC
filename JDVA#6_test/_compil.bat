@@ -3,6 +3,7 @@ rem set path=%path%;\sdcc\bin
 sdasz80 -o crt0_cpc.s
 sdasz80 -o putchar_cpc.s
 sdasz80 -o arkostracker.s
+sdasz80 -o sks.player.s > sks.player.s.log 2<&1
 rem sdasz80 -o molusk.s
 copy molusk.bin molu4000.bin
 copy WBAR.BIN wbar4000.bin
