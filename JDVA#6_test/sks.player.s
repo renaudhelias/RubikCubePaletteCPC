@@ -306,12 +306,16 @@ NOTE1:
 	;;registre d'instruction DD, instruction ld l,0
 	;; dans CPCTelera, c du genre : .dw #0x0x68DD  ; ld ixl, b
 	.db #0xdd
-		ld l,#0
+		;;.db #0x00
+		;;.db #0x2E
+		ld l,#0 ;; 2E n LD L,n
 
 ;
 	call READTRACK
 ;
 	.db #0xdd
+		;;.dw #0x0100
+		;;.db #0x3A
 		ld a,l	;Chope note modifiee ou non.
 	ld (NOTE1+2),a
 ;
@@ -327,7 +331,8 @@ NOTE1:
 	;;registre d'instruction FD, instruction or h
 	;; dans CPCTelera, c du genre : .dw #0x0x60DD  ; ld ixh, b
 	.db #0xfd
-		or h		;Recalcule instr ? 0=oui. Si 1, l'instr continue.
+		;;.db #0xB4 ;;.db #0b10110100
+		or h ;; B4 OR H	;Recalcule instr ? 0=oui. Si 1, l'instr continue.
 	jr nz,TR1FI0
 ;
 TR1NEW:
@@ -375,6 +380,8 @@ TR1FI0:
 	;;registre d'instruction DD, instruction ld a,l
 	;; dans CPCTelera, c du genre : .dw #0x0x68DD  ; ld ixl, b
 	.db #0xfd
+		;;.dw #0x0100
+		;;.db #0x3A
 		ld a,l		;Recupere TRWAIT depuis lix
 TR1FIN:
 	ld (TR1WAIT+1),a
@@ -399,6 +406,8 @@ NOTE2:
 	;;registre d'instruction DD, instruction ld l,0
 	;; dans CPCTelera, c du genre : .dw #0x0x68DD  ; ld ixl, b
 	.db #0xdd
+		;;.db #0x00
+		;;.db #0b00101110
 		ld l,#0
 
 	call READTRACK
