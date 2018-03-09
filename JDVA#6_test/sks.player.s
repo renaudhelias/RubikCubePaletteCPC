@@ -380,9 +380,8 @@ TR1FI0:
 	;;registre d'instruction DD, instruction ld a,l
 	;; dans CPCTelera, c du genre : .dw #0x0x68DD  ; ld ixl, b
 	.db #0xfd
-		;;.dw #0x0100
-		;;.db #0x3A
-		ld a,l		;Recupere TRWAIT depuis lix
+		.db #0x7D
+		;;ld a,l ;;7D LD A,L		;Recupere TRWAIT depuis lix
 TR1FIN:
 	ld (TR1WAIT+1),a
 
@@ -406,9 +405,9 @@ NOTE2:
 	;;registre d'instruction DD, instruction ld l,0
 	;; dans CPCTelera, c du genre : .dw #0x0x68DD  ; ld ixl, b
 	.db #0xdd
-		;;.db #0x00
-		;;.db #0b00101110
-		ld l,#0
+		.db #0x2E
+		.db #0x00
+		;;ld l,#0 ;;2E n LD L,n
 
 	call READTRACK
 ;
