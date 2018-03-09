@@ -331,8 +331,8 @@ NOTE1:
 	;;registre d'instruction FD, instruction or h
 	;; dans CPCTelera, c du genre : .dw #0x0x60DD  ; ld ixh, b
 	.db #0xfd
-		;;.db #0xB4 ;;.db #0b10110100
-		or h ;; B4 OR H	;Recalcule instr ? 0=oui. Si 1, l'instr continue.
+		.db #0xB4 ;;.db #0b10110100
+		;;or h ;; B4 OR H	;Recalcule instr ? 0=oui. Si 1, l'instr continue.
 	jr nz,TR1FI0
 ;
 TR1NEW:
