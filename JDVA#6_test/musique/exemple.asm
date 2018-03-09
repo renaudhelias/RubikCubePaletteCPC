@@ -2,7 +2,7 @@
 		; Written with WinAPE, load this file in the assembler and hit
 		; F9 (Compile and Run).
 
-		org &4000
+		org &3000
 		run $
 
 		; disable the firmware interrupt service routine
@@ -54,5 +54,5 @@ player		read "sks.player.asm"
 
 		; Include the compiled song data
 		; the song was compiled at &5000
-		ORG &5000
-songdata	incbin "WBAR.BIN"
+		ORG &4000
+songdata	incbin "wbar4sks.BIN"
