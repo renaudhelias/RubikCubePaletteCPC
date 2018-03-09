@@ -6,7 +6,7 @@
 #include "jdvapi_sync.h"
 #include "jdvapi_keyb.h"
 // CPCTelera/src/audio/audio.h
-#include "arkostracker.h"
+#include "sks.player.h"
 
 #include "jdvapi_floppy.h"
 
@@ -59,7 +59,7 @@ void main(void)
 
 	raster_halt();
 	// cpctelera-1.4.2/examples/medium/arkosAudio
-	cpct_akp_musicInit((void *)0x4000);
+	cpct_akp_musicInit(); //(void *)0x4000);
 	
 	while (1) {
 		check_controller();
@@ -73,10 +73,10 @@ void main(void)
 			// Play the STarKos song
 			cpct_akp_musicPlay();
 			
-			if (cpct_akp_songLoopTimes > 0) {
-				// Song has ended, start it again and set loop to 0
-				cpct_akp_musicInit((void *)0x4000);
-			}
+			//if (cpct_akp_songLoopTimes > 0) {
+			//	// Song has ended, start it again and set loop to 0
+			//	cpct_akp_musicInit((void *)0x4000);
+			//}
 		}
 		border_raster_end();
 	}

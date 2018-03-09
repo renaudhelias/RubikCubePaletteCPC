@@ -34,8 +34,8 @@ SPLCHAN:: .db 0				;Chanel du digidrum (1,2,3)
 
 ;Joue la musique
 _cpct_akp_musicPlay::
-	push ix
-	push iy
+;;	push ix
+;;	push iy
 PLAY:
 	xor a			;0=pas de digidrum
 	ld (DIGI),a
@@ -1704,6 +1704,9 @@ REG12OLD:
 	ld (REG12OLD+1),a
 	exx
 
+;;PLY_PSGREG13_RecoverSystemRegisters:
+;;	pop iy
+;;	pop ix
 
 REG13::
 	ld a,#0
@@ -1743,8 +1746,8 @@ ENDSENDPSG:
 ;Resette les VALEURS du psg.
 	;list
 _cpct_akp_stop::
-   push ix
-   push iy
+;;   push ix
+;;   push iy
 STOPSNDS::
 	;nolist
 
@@ -1768,15 +1771,25 @@ STOPSNDS::
 ;DE=zic
 	;list
 _cpct_akp_musicInit::
-   ld   hl, #0x2    ;; [10] Retrieve parameters from stack
-   add  hl, sp    ;; [11]
-   ld    e, (hl)  ;; [ 7] DE = Pointer to the start of music
-   inc  hl        ;; [ 6]
-   ld    d, (hl)  ;; [ 7]
+;;   ld   hl, #0x2    ;; [10] Retrieve parameters from stack
+;;   add  hl, sp    ;; [11]
+;;   ld    e, (hl)  ;; [ 7] DE = Pointer to the start of music
+;;   inc  hl        ;; [ 6]
+;;   ld    d, (hl)  ;; [ 7]
+;;
+;;cpct_akp_musicInit_asm::   ;; Entry point for assembly calls using registers for parameter passing
+;;   ;; First, set song loop times to 0 when we start
+;;   xor   a                          ;; A = 0
+;;   ld (SPLCHAN), a  ;; _cpct_akp_songLoopTimes = 0
 
 INITZIC::
 	;nolist
 
+	;; by freemac
+	ld de,#0x4000
+	
+	
+	
 	ld hl,#6
 	add hl,de
 	ld a,(hl)
