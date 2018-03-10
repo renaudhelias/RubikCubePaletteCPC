@@ -21,7 +21,8 @@
 ;}
  
 		; Initialize the STarKos player
-		ld de,songdata
+;by freemac
+;ld de,songdata
 		call player
  
 		; Synchronisation with the frame flyback
