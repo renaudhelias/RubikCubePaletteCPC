@@ -1,5 +1,3 @@
-save "winapmus.bin",&3000,&5000
-
 		; Exemple how to play a 50Hz STarKos song with the ASM Player.
 		; Written with WinAPE, load this file in the assembler and hit
 		; F9 (Compile and Run).
@@ -69,3 +67,5 @@ player		read "sks.player.asm"
 		; the song was compiled at &5000
 		ORG &4000
 songdata	incbin "wbar4sks.BIN"
+
+save "winapmus.bin",&3000,&5000
