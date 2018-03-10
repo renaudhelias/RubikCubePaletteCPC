@@ -67,6 +67,7 @@ void cpct_akp_musicInit()
   push hl
   
 	; sks3000.bin/exemple.asm
+	ld de,#0x4000
 	call #0x3000
 	
 	;; restore Z80 state
@@ -135,7 +136,7 @@ void main(void)
 
 	//sks3000.bin : la routine SKS de WinAPE qui joue en &4000 placé en &3000
 	LoadFile("sks3000.bin", (char *)0x3000);
-	// wbar4sks.bin : du wbar.sks en .bin STarKos 1.2 tool run"ds" à l'adresse &4000
+	// wbar4sks.bin : du wbar.sks en .bin STarKos 1.2 tool run"gs" à l'adresse &4000
 	LoadFile("wbar4sks.bin", (char *)0x4000);
 
 	raster_halt();

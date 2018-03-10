@@ -1667,10 +1667,6 @@ ENDSENDPSG
 	;list
 .INITZIC
 	;nolist
-
-	;; by freemac
-	ld de,#4000
-
 	ld hl,6
 	add hl,de
 	ld a,(hl)

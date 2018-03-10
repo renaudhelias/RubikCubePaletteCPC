@@ -72,6 +72,8 @@ void main(void)
 	LoadFile("intro-oh.scr", (char *)0x4000);
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
+	LoadFile("sks2000.bin", (char *)0x2000);
+	LoadFile("sudo3000.bin", (char *)0x3000);
 	vram=precalc_vram();
 	
 	bank0123();

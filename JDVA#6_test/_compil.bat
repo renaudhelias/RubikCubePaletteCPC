@@ -9,6 +9,8 @@ copy molusk.bin molu4000.bin
 copy WBAR.BIN wbar4000.bin
 copy wbar4sks.bin.vo wbar4sks.bin
 copy sks3000.bin.vo sks3000.bin
+copy sks2000.bin.vo sks2000.bin
+copy sudo3000.bin.vo sudo3000.bin
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_frame.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -56,6 +58,8 @@ rem CPCDiskXP -File intro-ov.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load01.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File 01.scr -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File raster.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
+CPCDiskXP -File sudo3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
+CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6_combat2.dsk
 CPCDiskXP -File Load02.bin -AddAmsdosHeader 100 -AddToNewDsk jdva6_Load02.dsk
 CPCDiskXP -File 01.scr -AddToExistingDsk jdva6_Load02.dsk
 CPCDiskXP -File 02.scr -AddToExistingDsk jdva6_Load02.dsk

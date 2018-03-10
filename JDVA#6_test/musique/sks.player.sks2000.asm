@@ -1,5 +1,5 @@
 nolist
-;	org #2000
+	org #2000
 ;	run $
 
 ;	STarKos Player V1.2 - Official Release.
@@ -1815,3 +1815,6 @@ SETTOFFLIST defb 17,#ff
 	list
 	;Fin Player Starkos 1.2
 	nolist
+
+	
+	save "sks2000.bin",&2000,&1000

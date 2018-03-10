@@ -2,7 +2,7 @@
 		; Written with WinAPE, load this file in the assembler and hit
 		; F9 (Compile and Run).
 
-		org &3000
+		org &2000
 		run $
 
 		; disable the firmware interrupt service routine
@@ -21,8 +21,7 @@
 ;}
  
 		; Initialize the STarKos player
-;by freemac
-;ld de,songdata
+		ld de,songdata
 		call player
  
 		; Synchronisation with the frame flyback
@@ -65,7 +64,7 @@ player		read "sks.player.asm"
 
 		; Include the compiled song data
 		; the song was compiled at &5000
-		ORG &4000
-songdata	incbin "wbar4sks.BIN"
+		ORG &3000
+songdata	incbin "sudo3000.bin"
 
-save "winapmus.bin",&3000,&5000
+save "winapmus.bin",&2000,&5000
