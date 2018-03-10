@@ -12,6 +12,8 @@
 
 /**
  * musique4 : tentative de création d'un sks3000.bin à partir de WinAPE
+ * les routines sont protégés par ce qu'elles arrivent bizarrement à toucher ma variable
+ * volatile unsigned char playing=1;
  */
 
 void border_raster_begin()
@@ -47,6 +49,78 @@ void border_raster_end2()
   __endasm;
 }
 
+void cpct_akp_musicInit()
+{
+	__asm
+	;; backup Z80 state
+  push af
+  push bc
+  push de
+  push hl
+  push ix
+  push iy
+  exx
+  ex af, af'
+  push af
+  push bc
+  push de
+  push hl
+  
+	; sks3000.bin/exemple.asm
+	call #0x3000
+	
+	;; restore Z80 state
+  pop hl
+  pop de
+  pop bc
+  pop af
+  ex af, af'
+  exx
+  pop iy
+  pop ix
+  pop hl
+  pop de
+  pop bc
+  pop af
+	__endasm;
+}
+
+void cpct_akp_musicPlay()
+{
+	__asm
+	;; backup Z80 state
+  push af
+  push bc
+  push de
+  push hl
+  push ix
+  push iy
+  exx
+  ex af, af'
+  push af
+  push bc
+  push de
+  push hl
+	
+	; sks3000.bin/exemple.asm
+	call #0x3003
+	
+	;; restore Z80 state
+  pop hl
+  pop de
+  pop bc
+  pop af
+  ex af, af'
+  exx
+  pop iy
+  pop ix
+  pop hl
+  pop de
+  pop bc
+  pop af
+	__endasm;
+}
+
 void main(void)
 {
 	volatile unsigned char playing=1;
@@ -61,22 +135,13 @@ void main(void)
 
 	//sks3000.bin : la routine SKS de WinAPE qui joue en &4000 placé en &3000
 	LoadFile("sks3000.bin", (char *)0x3000);
-	// wbar4sks.bin : du wbar.sks en .bin STarKos 1.2 à l'adresse &4000
+	// wbar4sks.bin : du wbar.sks en .bin STarKos 1.2 tool run"ds" à l'adresse &4000
 	LoadFile("wbar4sks.bin", (char *)0x4000);
-	//LoadFile("sks3000.bin", (char *)0x3000);
 
 	raster_halt();
-	__asm
-	; sks3000.bin/exemple.asm
-	im 1		; select IM1 just in case
-	__endasm;
 
 	// cpctelera-1.4.2/examples/medium/arkosAudio
-	//cpct_akp_musicInit(); //(void *)0x4000);
-	__asm
-	; sks3000.bin/exemple.asm
-	call #0x3000
-	__endasm;
+	cpct_akp_musicInit(); //(void *)0x4000);
 
 
 	while (1) {
@@ -89,11 +154,7 @@ void main(void)
 		border_raster_begin();
 		if (playing) {
 			// Play the STarKos song
-			//cpct_akp_musicPlay();
-	__asm
-	; sks3000.bin/exemple.asm
-	call #0x3003
-	__endasm;
+			cpct_akp_musicPlay();
 			
 			//if (cpct_akp_songLoopTimes > 0) {
 			//	// Song has ended, start it again and set loop to 0
