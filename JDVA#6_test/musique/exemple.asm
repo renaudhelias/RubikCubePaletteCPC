@@ -10,6 +10,16 @@
 		ld (&38),hl
 		im 1		; select IM1 just in case
  
+; void calque4000()
+;{
+;  __asm
+    ld bc,&BC00+12 ; On met la valeur 16 dans
+    out (c),c      ; le registre 12 du CRTC
+    ld bc,&BD00+16
+    out (c),c
+;  __endasm;
+;}
+ 
 		; Initialize the STarKos player
 		ld de,songdata
 		call player
