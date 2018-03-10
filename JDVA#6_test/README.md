@@ -134,11 +134,30 @@ J'ai trois tests ici :
 * en utilisant des interrupts avec des halt : ça marche, mais on remarque au passage que vsync() il semble halt aussi.
 * en utilisant une fonction C en callback : ça marche très très bien.
 
+C'est inspiré grandement du travail de norecess : http://norecess.cpcscene.net/using-interrupts.html
+
 __musique.c musique.dsk__
 
-Bon là j'ai tenté de mixer l'exemple de grimware (Arkos !) avec l'exemple de CPCTelera. A savoir sur grimware il y a une version qui se compile très bien via WinAPE, avec une bonne musique, du raster border mesurant au passage la taille occupé pendant un écran par la routine musique (très bon ça), et ça tourne en boucle la musique.
+C'est un mixage entre la version original de grimware (STarKos !) et l'exemple de CPCTelera
 
-Via CPCTelera, avec 5Go bouffé par un cygwin de fond, je fais juste "cd exemple", puis make et zou, dans exemples/medium/audio j'ai un bon exemble de disquette prète avec une musique qui se joue lors du lancement d'un programme.
+J'ai installé CPCTelera, avec ses 5Go bouffé par un cygwin de fond, je fais juste "cd exemple", puis make et zou, dans exemples/medium/audio j'ai un bon exemble de disquette prète avec une musique qui se joue lors du lancement d'un programme. Une fois l'exemple extrait, j'ai désintallé CPCTelera...
 
-Du coup je me suis dit, je vais faire une soupe en mixant les deux exemples, et ça résulte en ce musique.c : finalement du raster border de grimware, avec du son de CPCTelera mais compilant le tout avec juste le minimum : on passe donc de 5Go nécessaires à  quelques kilo-octets.
-On remarque le molusk.h qui est une version binaire mis à plat dans un tableau en C, provenant d'une routine de compilation CPCTelera traduisant du .aks en .h, alors que STarKos sous windows permet de sortir du format binaire. C'est assez dommage car j'aurai bien aimé avoir la partie son en dehors de mon programme, genre dans un fichier à côté, et en plus le faire sans devoir installer CPCTelera entièrement. Donc faudrait faire une analyse comparative entre ce .h et le .bin sortie du sound tracker STarKos sous Windows, et voir si on peut le sortir de programme et le charger simplement en RAM à un certain endroit.
+Donc ici ça fait la même chose que l'exemple de CPCTelera (clavier, SFX, musique molusk.aks) avec comme originalité le border-raster (provenant du code côté Grimware) afin de chronométrer le programme, et le fichier son binaire dans un fichier à part (routine disquette provenant de CPCMania)
+
+__musique2.c musique.dsk__
+
+Alors là je fais pareil que musique.c sans les SFX, mais avec une autre musique. Le tout ici est de trouver et savoir convertir une musique SKS.
+
+Alors pour ça j'ai récupéré "arkosTracker-1.0" de CPCTelera/tools, ce qui me permet de créer me fichier son voulu (en .bin), remarquez le "4000" dans le nom du fichier que j'ai employé, en fait je charge ce fichier en &4000 (via la routine disquette), et lorsque je crée mon .bin via "arkosTracker-1.0" en fait il me pose cette question, d'emplacement mémoire, je met donc 4000 à ce moment.
+
+__musique3.c musique.dsk__
+Alors là en mode furieux, j'ai tenté de traduire le player sks de Grimware en assembleur digeste pour du SDCC : donc de sks.player.asm (assembleur WinAPE) vers sks.player.s (assembleur SDCC), et bien ça compile, et bin ça a même été lancé une fois par chance avec des krrr krrr mélodique ma fois, mais j'ai pas réussi à geler la version. Donc ce musique3.c il ne marche pas (mais compile pourtant), traduire 1900 lignes de code assembleur en 4 heures c'était peut-être trop court :D
+
+__musique4.c musique.dsk__
+Non mais ho, le sks.player.asm (présent au passage dans /musique) il me plait, il marche bien sur WinAPE pourquoi je n'arriverai pas à l'utiliser moi dans mes projets ?
+
+J'ai compilé (bouton assembler) le code de sks.player.asm en zone &3000, et j'ai dump un boque de &1000 (suffisant pour comprendre tout le code de sks.player.asm, pour cette manipe j'invite à merger les fichiers sks.player.asm et sks.player.sks3000.asm
+
+Ensuite sous SDCC, j'ai inséré ce sks3000.bin en &3000, puis le son (.SKS compilé vers .BIN cette fois ci via le tool "GS" de la disquette STarKos 1.2) en &4000.
+
+J'ai remarqué que la routine me change des variables (sans ma permission) de type volatile en début de mon main(), du coup je déclanche des fonctions avec les mêmes protections que j'avais utilisé en fait pour la fonction callback de raster.c
