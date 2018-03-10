@@ -10,6 +10,10 @@
 
 #include "jdvapi_floppy.h"
 
+/**
+ * musique4 : tentative de création d'un sks3000.bin à partir de WinAPE
+ */
+
 void border_raster_begin()
 {
   //grimware/official.sks.player.1.2.zip/exemple.asm
@@ -50,8 +54,6 @@ void main(void)
 	volatile unsigned char touche_O=0;
 	volatile unsigned char touche_P=0;
 	
-	
-	
 	//musique en &4000
 	SetupDOS();
 	calque4000();
@@ -61,12 +63,14 @@ void main(void)
 	LoadFile("sks3000.bin", (char *)0x3000);
 	// wbar4sks.bin : du wbar.sks en .bin STarKos 1.2 à l'adresse &4000
 	LoadFile("wbar4sks.bin", (char *)0x4000);
-	
+	//LoadFile("sks3000.bin", (char *)0x3000);
 
-
-	//justdoit();
 	raster_halt();
-	
+	__asm
+	; sks3000.bin/exemple.asm
+	im 1		; select IM1 just in case
+	__endasm;
+
 	// cpctelera-1.4.2/examples/medium/arkosAudio
 	//cpct_akp_musicInit(); //(void *)0x4000);
 	__asm

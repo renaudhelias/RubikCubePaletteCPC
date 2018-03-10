@@ -10,6 +10,10 @@
 
 #include "jdvapi_floppy.h"
 
+/**
+ * musique3 : tentative de création d'un sks.player.rel => échec total
+ */
+
 void border_raster_begin()
 {
   //grimware/official.sks.player.1.2.zip/exemple.asm
@@ -50,7 +54,7 @@ void main(void)
 	volatile unsigned char touche_O=0;
 	volatile unsigned char touche_P=0;
 	
-	//musique en &C000
+	//musique en &4000
 	SetupDOS();
 	calque4000();
 	bank0123();
@@ -58,9 +62,14 @@ void main(void)
 	LoadFile("wbar4sks.bin", (char *)0x4000);
 
 	raster_halt();
+
 	// cpctelera-1.4.2/examples/medium/arkosAudio
-	cpct_akp_musicInit(); //(void *)0x4000);
-	
+	//cpct_akp_musicInit(); //(void *)0x4000);
+	__asm
+	call INITZIC
+	__endasm;
+
+
 	while (1) {
 		check_controller();
 		
@@ -71,7 +80,10 @@ void main(void)
 		border_raster_begin();
 		if (playing) {
 			// Play the STarKos song
-			cpct_akp_musicPlay();
+			//cpct_akp_musicPlay();
+	__asm
+	call PLAY
+	__endasm;
 			
 			//if (cpct_akp_songLoopTimes > 0) {
 			//	// Song has ended, start it again and set loop to 0
