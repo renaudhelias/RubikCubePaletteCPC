@@ -158,7 +158,7 @@ Alors là en mode furieux, j'ai tenté de traduire le player sks de Grimware en 
 __musique4.c musique.dsk__
 Non mais ho, le sks.player.asm (présent au passage dans /musique) il me plait, il marche bien sur WinAPE pourquoi je n'arriverai pas à l'utiliser moi dans mes projets ?
 
-J'ai compilé (bouton assembler) le code de sks.player.asm en zone &3000, et j'ai dump un boque de &1000 (suffisant pour comprendre tout le code de sks.player.asm, pour cette manipe j'invite à merger les fichiers sks.player.asm et sks.player.sks3000.asm
+J'ai compilé (bouton assembler) le code de sks.player.asm en zone &3000, et j'ai dump un boque de &1000 (suffisant pour comprendre tout le code de sks.player.asm, pour cette manipe j'invite à merger (winmerge) les fichiers sks.player.asm et sks.player.sks3000.asm
 
 Ensuite sous SDCC, j'ai inséré ce sks3000.bin en &3000, puis le son (.SKS compilé vers .BIN cette fois ci via le tool "GS" de la disquette STarKos 1.2) en &4000.
 
