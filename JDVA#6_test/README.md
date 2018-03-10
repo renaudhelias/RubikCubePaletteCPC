@@ -150,6 +150,8 @@ Alors là je fais pareil que musique.c sans les SFX, mais avec une autre musique
 
 Alors pour ça j'ai récupéré "arkosTracker-1.0" de CPCTelera/tools, ce qui me permet de créer me fichier son voulu (en .bin), remarquez le "4000" dans le nom du fichier que j'ai employé, en fait je charge ce fichier en &4000 (via la routine disquette), et lorsque je crée mon .bin via "arkosTracker-1.0" en fait il me pose cette question, d'emplacement mémoire, je met donc 4000 à ce moment.
 
+Pour récupérer une musique .SKS, j'ai pris "Arkos Tracker 2" http://www.julien-nevo.com/arkos/arkos-tracker-2-0-alpha/ et j'ai visité son dossier song/STarKos.
+
 __musique3.c musique.dsk__
 Alors là en mode furieux, j'ai tenté de traduire le player sks de Grimware en assembleur digeste pour du SDCC : donc de sks.player.asm (assembleur WinAPE) vers sks.player.s (assembleur SDCC), et bien ça compile, et bin ça a même été lancé une fois par chance avec des krrr krrr mélodique ma fois, mais j'ai pas réussi à geler la version. Donc ce musique3.c il ne marche pas (mais compile pourtant), traduire 1900 lignes de code assembleur en 4 heures c'était peut-être trop court :D
 
