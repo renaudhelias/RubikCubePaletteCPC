@@ -8,6 +8,7 @@ rem sdasz80 -o molusk.s
 copy molusk.bin molu4000.bin
 copy WBAR.BIN wbar4000.bin
 copy wbar4sks.bin.vo wbar4sks.bin
+copy sks3000.bin.vo sks3000.bin
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_frame.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -24,6 +25,7 @@ sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel arkostracker.rel musique.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel arkostracker.rel musique2.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel sks.player.rel musique3.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel musique4.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load01.c
 sdcc -mz80 --code-loc 0x04038 --data-loc 0 --fno-omit-frame-pointer --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel Load02.c
 hex2bin main.ihx
@@ -36,6 +38,7 @@ hex2bin Load02.ihx
 hex2bin musique.ihx
 hex2bin musique2.ihx
 hex2bin musique3.ihx
+hex2bin musique4.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdva6.dsk
 CPCDiskXP -File puzzmem.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6.dsk
 CPCDiskXP -File combat.bin -AddAmsdosHeader 100 -AddToExistingDsk jdva6.dsk
@@ -66,7 +69,9 @@ CPCDiskXP -File 09.scr -AddToExistingDsk jdva6_Load02.dsk
 CPCDiskXP -File musique.bin -AddAmsdosHeader 100 -AddToNewDsk musique.dsk
 CPCDiskXP -File musique2.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
 CPCDiskXP -File musique3.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
+CPCDiskXP -File musique4.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
 CPCDiskXP -File molu4000.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
 CPCDiskXP -File wbar4000.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
 CPCDiskXP -File wbar4sks.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
+CPCDiskXP -File sks3000.bin -AddAmsdosHeader 100 -AddToExistingDsk musique.dsk
 pause

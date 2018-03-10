@@ -1,7 +1,8 @@
 .module cpct_audio
 ;nolist
-;	org #0x2000
-;	run $
+
+;  .area _HEADER (ABS)
+;  .org 0x3000
 
 ;	STarKos Player V1.2 - Official Release.
 
