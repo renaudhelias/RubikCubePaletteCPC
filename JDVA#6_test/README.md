@@ -237,3 +237,5 @@ Finish him, SUB-ZERO WINS, flawless victory, Fatality/Excellent/Perfect/Brutalit
 Time bonus, Strength. Tu as fini avant et t'es encore en vie, ça donne des points en conséquence.
 
 Système de points permanent, qui reste entre deux matchs, et qui augmente lors des coups portés.
+
+Descendre le son à la conclusion.
