@@ -225,3 +225,5 @@ Une attaque portée, fait reculer l'autre personnage (et avancer l'attaquant)
 Déplacement : avancer deux fois plus vite que reculer, le déplacement est continu, il est imédiat lors du premier appuis sur la flèche puis continue, et stop net (ne fais pas le pas si pas fini de tictac entre deux positions)
 
 Lorsqu'un combat fini, ça charge un autre fond, selon qui a gagné, ça progresse vers les fonds de l'un ou de l'autre.
+
+Ne pas figer le personnage à l'arrêt, le mettre simplement entre deux pas.
