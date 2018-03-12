@@ -163,3 +163,61 @@ J'ai compilé (bouton assembler) le code de sks.player.asm en zone &3000, et j'a
 Ensuite sous SDCC, j'ai inséré ce sks3000.bin en &3000, puis le son (.SKS compilé vers .BIN cette fois ci via le tool "GS" de la disquette STarKos 1.2) en &4000.
 
 J'ai remarqué que la routine me change des variables (sans ma permission) de type volatile en début de mon main(), du coup je déclanche des fonctions avec les mêmes protections que j'avais utilisé en fait pour la fonction callback de raster.c
+
+__combat2.c analyse gameplay__
+
+32 sprites par joueurs
+
+Collés sur la droite pour le joueur 1 de gauche : Liu Kang
+
+Collés sur la gauche pour le joueur 2 de droite : Sub-Zero
+
+couleur bleu si Sub-Zero mène, sinon rouge. Rouge au début du jeu.
+
+border qui se met à la couleur du dernière qui a appuyé sur une touche, noir dès que relâché
+
+Coups : haut, bas, milieu, porté si lancé dans zone de contact (superposition de quelques pixels des calques)
+
+Ne peux pas sortir de la zone de jeux purement horizontal (pas de sauts), "mur aux deux extrêmes".
+
+Paliers énergétique :
+
+* F : Furie, attaque avec un maximum de coups en un minimum de temps avec tout les coups qui gagnent, ++ lors attaque (voir règle en bas) et rebaisse selon le temps
+* A : Aura, zen altitude, contre un maximum de coups avec une aisance avec tout les coups qui contrent, ++ lors defense (voir règle en bas) et rebaisse selon le temps
+* E : Expert, diversifie ses attaques/défenses gagnantes, ++ lors différentes attaque/défenses (voir règle en bas) et rebaisse selon le temps
+
+* TA : techniques attaques Gagnante/Perdante (parmis haut, bas, milieu) portant ou pas (additif : on a un graphique qui part du milieu et ++ vers le bas pour Perdant, et ++ vers le haut pour Gagnant)
+* U : techniques utilisées (parmis haut, bas, milieu)
+
+Arme (jet de dès au début du jeu) :
+* haut : 4
+* bas : 1
+* milieu : 2
+
+Barre de vie (classique !)
+
+La Furie augmente la valeur des armes (par jet de dès additif)
+
+L'Aura débloque l'animation "super pouvoir", qui multiplie par 3 la prochaine attaque utilisée, cette attaque est alors forcément gagnante (animation)
+
+L'Expert augmente la valeur des armes (par jet de dès additif)
+
+Bref Expert est plus dur à remplir, c'est un bonus à Furie mais qui demande plus de réflexion et rend plus difficile le déblocage de Furie (contrairement à une méthode de bourins)
+
+Un joueur peux être KO, s'il n'y a eu aucune attaque ou contre porté parmis les 10 dernières actions globales du jeu.
+
+Le mieux serait d'avoir plusieurs attaques : à animation courte ou longue, les courtes permettant de contrer. Les courtes au milieu (vers l'avant les longues, et en reculant les ???)
+
+Une attaque est une action, donc une animation de sprites. Si une attaque est contrée, l'animation contrée est stoppée net.
+
+Si une attaque est portée, la defense en court est stoppée net.
+
+Si les attaques sont simultanées (à 2 actions près), les deux coups sont portées.
+
+Une attaque contrée pique les points d'attaque de l'adversaire et les déversent dans Aura.
+
+Une attaque portée déverse ses points dans Furie si c'est la 5ème attaque portée parmis les 10 dernières actions globales du jeu.
+
+Une attaque portée déverse ses points dans Expert si les 3ème attaques portée sont tous différentes.
+
+Une attaqie portée, fait reculer l'autre personnage (et avancer l'attaquant)
