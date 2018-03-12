@@ -200,7 +200,7 @@ La Furie augmente la valeur des armes (par jet de dès additif), si la barre de 
 
 L'Aura débloque l'animation "super pouvoir", qui multiplie par (TA gagnant + TA perdant + F + E) la prochaine attaque utilisée, cette attaque est alors forcément gagnante (animation)
 
-L'Expert augmente la valeur des armes (par jet de dès additif), il n'y a pas a choisir l'attaque afin de déclencher Expert, la moyenne de TA et étant utilisé ici (et consommée) et appliqué à l'arme utilisé.
+L'Expert augmente la valeur des armes (par jet de dès additif), il n'y a pas a choisir l'attaque afin de déclencher Expert, la moyenne de TA étant utilisé ici (et consommée) et appliqué à l'arme utilisé.
 
 Bref Expert est plus dur à remplir, c'est un bonus à Furie mais qui demande plus de réflexion et rend plus difficile le déblocage de Furie (contrairement à une méthode de bourins)
 
