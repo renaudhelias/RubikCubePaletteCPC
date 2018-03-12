@@ -220,4 +220,4 @@ Une attaque portée déverse ses points dans Furie si c'est la 5ème attaque por
 
 Une attaque portée déverse ses points dans Expert si les 3ème attaques portée sont tous différentes.
 
-Une attaqie portée, fait reculer l'autre personnage (et avancer l'attaquant)
+Une attaque portée, fait reculer l'autre personnage (et avancer l'attaquant)
