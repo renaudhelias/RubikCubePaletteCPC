@@ -229,3 +229,5 @@ Lorsqu'un combat fini, ça charge un autre fond, selon qui a gagné, ça progres
 Ne pas figer le personnage à l'arrêt, le mettre simplement entre deux pas.
 
 Un peu de sang ?
+
+Le "time-out" de 90 secondes
