@@ -249,3 +249,5 @@ Round 1, fight (selon les 3 wins)
 Finish him, l'attaque ne fait pas reculer l'adversaire du coup.
 
 Le mur scroll, seulement lorsque tu fuis, donc si le personnage ne peut pas aller plus loin en arrière à cause de la bordure de l'écran, alors l'ennemis fixe s'éloigne. Jusqu'au mur relatif.
+
+Le selfie du gars en bas à droite.
