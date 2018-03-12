@@ -251,3 +251,6 @@ Finish him, l'attaque ne fait pas reculer l'adversaire du coup.
 Le mur scroll, seulement lorsque tu fuis, donc si le personnage ne peut pas aller plus loin en arrière à cause de la bordure de l'écran, alors l'ennemis fixe s'éloigne. Jusqu'au mur relatif.
 
 Le selfie du gars en bas à droite.
+
+Les clans : Si les six combats sont gagnés par un clan, l'univers appartient au vainqueur.
+
