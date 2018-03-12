@@ -227,3 +227,5 @@ Déplacement : avancer deux fois plus vite que reculer, le déplacement est cont
 Lorsqu'un combat fini, ça charge un autre fond, selon qui a gagné, ça progresse vers les fonds de l'un ou de l'autre.
 
 Ne pas figer le personnage à l'arrêt, le mettre simplement entre deux pas.
+
+Un peu de sang ?
