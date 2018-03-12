@@ -232,10 +232,20 @@ Un peu de sang ?
 
 Le "time-out" de 90 secondes
 
-Finish him, SUB-ZERO WINS, flawless victory, Fatality/Excellent/Perfect/Brutality/Animality.
+Finish him, SUB-ZERO WINS, flawless victory, Fatality/Excellent/Perfect/Brutality/Animality/Outstanding.
 
 Time bonus, Strength. Tu as fini avant et t'es encore en vie, ça donne des points en conséquence.
 
 Système de points permanent, qui reste entre deux matchs, et qui augmente lors des coups portés.
 
 Descendre le son à la conclusion.
+
+3 wins pour passage au niveau suivant, le nombre de wins étant affiché (ça dépend du mode de jeux ???)
+
+Position de départ, 1/4 P1 2/4 P2 1/4
+
+Round 1, fight (selon les 3 wins)
+
+Finish him, l'attaque ne fait pas reculer l'adversaire du coup.
+
+Le mur scroll, seulement lorsque tu fuis, donc si le personnage ne peut pas aller plus loin en arrière à cause de la bordure de l'écran, alors l'ennemis fixe s'éloigne. Jusqu'au mur relatif.
