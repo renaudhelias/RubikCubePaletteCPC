@@ -178,7 +178,7 @@ border qui se met à la couleur du dernière qui a appuyé sur une touche, noir 
 
 Coups : haut, bas, milieu, porté si lancé dans zone de contact (superposition de quelques pixels des calques)
 
-Ne peux pas sortir de la zone de jeux purement horizontal (pas de sauts), "mur aux deux extrêmes".
+Ne peux pas sortir de la zone de jeux. Jeux purement horizontal (pas de sauts), "mur aux deux extrêmes".
 
 Paliers énergétique :
 
@@ -196,11 +196,11 @@ Arme (jet de dès au début du jeu) :
 
 Barre de vie (classique !)
 
-La Furie augmente la valeur des armes (par jet de dès additif)
+La Furie augmente la valeur des armes (par jet de dès additif), si la barre de Furie est pleine, il faut utiliser l'attaque la plus chargée (dans TA gagnant, TA est alors consommé) afin de déclancher la Furie sur une arme, sinon elle ne se déclanche pauvrement. En gros une TA progresse en même temps que F lorsqu'on bourine.
 
-L'Aura débloque l'animation "super pouvoir", qui multiplie par 3 la prochaine attaque utilisée, cette attaque est alors forcément gagnante (animation)
+L'Aura débloque l'animation "super pouvoir", qui multiplie par (TA gagnant + TA perdant + F + E) la prochaine attaque utilisée, cette attaque est alors forcément gagnante (animation)
 
-L'Expert augmente la valeur des armes (par jet de dès additif)
+L'Expert augmente la valeur des armes (par jet de dès additif), il n'y a pas a choisir l'attaque afin de déclencher Expert, la moyenne de TA et étant utilisé ici (et consommée) et appliqué à l'arme utilisé.
 
 Bref Expert est plus dur à remplir, c'est un bonus à Furie mais qui demande plus de réflexion et rend plus difficile le déblocage de Furie (contrairement à une méthode de bourins)
 
