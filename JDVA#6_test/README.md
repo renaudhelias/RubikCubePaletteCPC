@@ -231,3 +231,9 @@ Ne pas figer le personnage à l'arrêt, le mettre simplement entre deux pas.
 Un peu de sang ?
 
 Le "time-out" de 90 secondes
+
+Finish him, SUB-ZERO WINS, flawless victory, Fatality/Excellent/Perfect/Brutality/Animality.
+
+Time bonus, Strength. Tu as fini avant et t'es encore en vie, ça donne des points en conséquence.
+
+Système de points permanent, qui reste entre deux matchs, et qui augmente lors des coups portés.
