@@ -254,3 +254,4 @@ Le selfie du gars en bas à droite.
 
 Les clans : Si les six combats sont gagnés par un clan, l'univers appartient au vainqueur.
 
+A la toute fin, l'ennemis explose respectivement sur chacun des terrains (animation)
