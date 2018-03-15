@@ -247,7 +247,7 @@ static const struct CALQUE_J1R J1R= {
 	.dragon_big={47,2},
 	.contre_haut2={49,2}
 };
-/*
+
 struct CALQUE_J2A {
 	CALQUE pied_haut; // cyclique, porté en 4/8
 	CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
@@ -308,13 +308,13 @@ static const struct CALQUE_J2R J2R= {
 	.hypercut={38,5},
 	.coup_bas={43,2},
 	.flaque={45,7}
-};*/
+};
 
 void main(void)
 {
 	// against "so said EVELYN the modified DOG" => volatile
 	volatile char layer=0;volatile char x=10;//char z=0;
-	volatile char aaah=5;
+	volatile char aaah=3;
 
 	//intro en &4000
 	SetupDOS();
@@ -344,7 +344,8 @@ void main(void)
 	bank5_4000();
 	transfertEtDecoupe();
 
-	if (J1R.contre_haut2.o == 49) {
+	//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
+	if (J2R.hadouken2_personnage_patch.l == 3) {
 		bank0123();
 		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
 		bank6_4000();
