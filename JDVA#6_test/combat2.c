@@ -216,7 +216,7 @@ static const struct CALQUE_J1A J1A= {
 	.balayette2={40,3},
 	.pied_rotatif={43,9}
 };
-/*
+
 struct CALQUE_J1R {
 	CALQUE victory; // cyclique
 	CALQUE fatality; // statique (stoppé au 3)
@@ -247,7 +247,7 @@ static const struct CALQUE_J1R J1R= {
 	.dragon_big={47,2},
 	.contre_haut2={49,2}
 };
-
+/*
 struct CALQUE_J2A {
 	CALQUE pied_haut; // cyclique, porté en 4/8
 	CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
@@ -344,7 +344,7 @@ void main(void)
 	bank5_4000();
 	transfertEtDecoupe();
 
-	if (J1A.genoux_milieu.o == 20) {
+	if (J1R.contre_haut2.o == 49) {
 		bank0123();
 		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
 		bank6_4000();
