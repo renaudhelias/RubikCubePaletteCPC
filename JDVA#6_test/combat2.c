@@ -200,7 +200,7 @@ struct CALQUE_J1A {
 } ;
 
 // J1A.adresse : bank4_4000();
-static const struct CALQUE_J1A J1A= {
+const struct CALQUE_J1A J1A= {
 	.marcher={0,9},
 	.haut={9,1},
 	.bas={10,1},
@@ -233,7 +233,7 @@ struct CALQUE_J1R {
 };
 
 // J1R.adresse : bank5_4000();
-static const struct CALQUE_J1R J1R= {
+const struct CALQUE_J1R J1R= {
 	.victory={0,6},
 	.fatality={6,3},
 	.hypercut2={9,4},
@@ -265,7 +265,7 @@ struct CALQUE_J2A {
 };
 
 // J2A.adresse : bank6_4000();
-static const struct CALQUE_J2A J2A= {
+const struct CALQUE_J2A J2A= {
 	.pied_haut={0,8},
 	.pied_haut2={8,3},
 	.genoux_haut={11,2},
@@ -296,7 +296,7 @@ struct CALQUE_J2R{
 };
 
 // J2R.adresse : bank7_4000();
-static const struct CALQUE_J2R J2R= {
+const struct CALQUE_J2R J2R= {
 	.poing_droit={0,2},
 	.ko={2,5},
 	.fatality={7,5},
