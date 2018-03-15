@@ -314,7 +314,7 @@ void main(void)
 {
 	// against "so said EVELYN the modified DOG" => volatile
 	volatile char layer=0;volatile char x=10;//char z=0;
-	volatile char aaah=3;
+	char aaah=3;
 
 	//intro en &4000
 	SetupDOS();
@@ -345,7 +345,7 @@ void main(void)
 	transfertEtDecoupe();
 
 	//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
-	if (J2R.hadouken2_personnage_patch.l == 3) {
+	if (J2R.hadouken2_personnage_patch.l == aaah) {
 		bank0123();
 		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
 		bank6_4000();
