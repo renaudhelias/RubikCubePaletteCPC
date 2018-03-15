@@ -177,11 +177,144 @@ const unsigned char intro_palette[]=
 		0,4,1,11,5,16,25,26,15,3,12,14,23,2,6,0
 };
 
+typedef struct {
+	char o; // offset
+	char l; // longueur
+} CALQUE;
+
+struct CALQUE_J1A {
+	CALQUE marcher; // cyclique, avance, recule
+	CALQUE haut;
+	CALQUE bas;
+	CALQUE tres_haut;
+	CALQUE pied_haut; // allez-retour
+	CALQUE pied_milieu; // allez-retour
+	CALQUE genoux_milieu; // allez-retour
+	CALQUE pied_haut2; // cyclique, porté en 3/5
+	CALQUE balayette; // cyclique, porté en 3/4 + avance
+	CALQUE hypercut; // cyclique (sinon ridicule...)
+	CALQUE poing_milieu; // allez-retour
+	CALQUE pied_milieu2; // allez-retour
+	CALQUE balayette2; // cyclique + avance
+	CALQUE pied_rotatif; // cyclique + avance !
+} ;
+
+// J1A.adresse : bank4_4000();
+static const struct CALQUE_J1A J1A= {
+	.marcher={0,9},
+	.haut={9,1},
+	.bas={10,1},
+	.tres_haut={11,1},
+	.pied_haut={12,4},
+	.pied_milieu={16,4},
+	.genoux_milieu={20,2},
+	.pied_haut2={22,5},
+	.balayette={27,4},
+	.hypercut={31,5},
+	.poing_milieu={36,2},
+	.pied_milieu2={38,2},
+	.balayette2={40,3},
+	.pied_rotatif={43,9}
+};
+/*
+struct CALQUE_J1R {
+	CALQUE victory; // cyclique
+	CALQUE fatality; // statique (stoppé au 3)
+	CALQUE hypercut2; // cyclique (sinon ridicule...)
+	CALQUE hadouken_personnage; // statique (stoppé au 4), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	CALQUE hadouken_fire; // cyclique
+	CALQUE ko; // cyclique
+	CALQUE poing_double_jab; // cyclique, porté en 2/5 et 5/5
+	CALQUE contre_haut; // allez-retour
+	CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
+	CALQUE dragon; // statique, enchaine avec dragon_big
+	CALQUE dragon_big; // une seule image mais deux sprites !
+	CALQUE contre_haut2; // allez-retour
+};
+
+// J1R.adresse : bank5_4000();
+static const struct CALQUE_J1R J1R= {
+	.victory={0,6},
+	.fatality={6,3},
+	.hypercut2={9,4},
+	.hadouken_personnage={13,4},
+	.hadouken_fire={17,9},
+	.ko={26,6},
+	.poing_double_jab={32,5},
+	.contre_haut={37,2},
+	.macarena_milieu={39,5},
+	.dragon={44,3},
+	.dragon_big={47,2},
+	.contre_haut2={49,2}
+};
+
+struct CALQUE_J2A {
+	CALQUE pied_haut; // cyclique, porté en 4/8
+	CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
+	CALQUE genoux_haut; // allez-retour
+	CALQUE pied_retourne; // cyclique, porté en 4/7
+	CALQUE balayette; // cyclique, porté en 3/4
+	CALQUE marcher; // cyclique, avance, recule
+	CALQUE haut;
+	CALQUE bas;
+	CALQUE zombi;
+	CALQUE victory; // allez-retour ;)
+	CALQUE poing_double_jab; // cyclique porté en 3/8 et 6/8
+	CALQUE aie;
+	CALQUE poing_gauche; // allez-retour
+};
+
+// J2A.adresse : bank6_4000();
+static const struct CALQUE_J2A J2A= {
+	.pied_haut={0,8},
+	.pied_haut2={8,3},
+	.genoux_haut={11,2},
+	.pied_retourne={13,7},
+	.balayette={20,4},
+	.marcher={24,10},
+	.haut={34,1},
+	.bas={35,1},
+	.zombi={36,1},
+	.victory={27,2},
+	.poing_double_jab={28,8},
+	.aie={36,1},
+	.poing_gauche={37,3}
+};
+
+struct CALQUE_J2R{
+	CALQUE poing_droit; // allez-retour
+	CALQUE ko; // cyclique
+	CALQUE fatality; // statique (stoppé au 5)
+	CALQUE hadouken1_personnage; // statique (stoppé au 10), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	CALQUE hadouken1_fire; // boule de neige
+	CALQUE hadouken2_personnage; // 1 2 3
+	CALQUE hadouken2_fire; // mega fire
+	CALQUE hadouken2_personnage_patch; // p3 p1 p2 1 2 3
+	CALQUE hypercut; // cyclique porté en 3/5
+	CALQUE coup_bas; // allez-retour
+	CALQUE flaque; //cyclique
+};
+
+// J2R.adresse : bank7_4000();
+static const struct CALQUE_J2R J2R= {
+	.poing_droit={0,2},
+	.ko={2,5},
+	.fatality={7,5},
+	.hadouken1_personnage={12,10},
+	.hadouken1_fire={22,1},
+	.hadouken2_personnage={23,3},
+	.hadouken2_fire={26,9},
+	.hadouken2_personnage_patch={35,3},
+	.hypercut={38,5},
+	.coup_bas={43,2},
+	.flaque={45,7}
+};*/
 
 void main(void)
 {
 	// against "so said EVELYN the modified DOG" => volatile
 	volatile char layer=0;volatile char x=10;//char z=0;
+	volatile char aaah=5;
 
 	//intro en &4000
 	SetupDOS();
@@ -211,15 +344,17 @@ void main(void)
 	bank5_4000();
 	transfertEtDecoupe();
 
-	bank0123();
-	LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank6_4000();
-	transfertEtDecoupe();
-
-	bank0123();
-	LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank7_4000();
-	transfertEtDecoupe();
+	if (J1A.genoux_milieu.o == 20) {
+		bank0123();
+		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank6_4000();
+		transfertEtDecoupe();
+		
+		bank0123();
+		LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank7_4000();
+		transfertEtDecoupe();
+	}
 
 // et finalement.
 calqueC000();
