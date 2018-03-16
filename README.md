@@ -76,3 +76,7 @@ La version avec la palette hard, pour faire un peu de raster (PS : le gris, au m
 D'autres trucs :
 
 [![[JDVA#1] Hello World en C sur Amstrad CPC !](http://img.youtube.com/vi/hSEadYkiBrc/0.jpg)](http://www.youtube.com/watch?v=hSEadYkiBrc)
+
+[![Amstrad Chiant Pour Chiant #01 - J'apprends à programmer en ASM !](http://img.youtube.com/vi/i1xGuxWvT_k/0.jpg)](http://www.youtube.com/watch?v=i1xGuxWvT_k)
+
+
