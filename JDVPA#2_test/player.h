@@ -28,4 +28,6 @@ s_player;
 void player_init();
 void player_move_rel(char x,char y);
 
+extern s_player player;
+
 #endif

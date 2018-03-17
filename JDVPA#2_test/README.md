@@ -7,3 +7,4 @@ __main.c jdvpa2.dsk__
 
 ![JDVPA2.dsk.png](JDVPA2.dsk.png)
 
+Le pacman bouge bien, via les touches A,Q,O,P.

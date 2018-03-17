@@ -3,7 +3,9 @@
 #include <string.h>
 
 #include "jdvapi_basic.h"
+#include "jdvapi_keyb.h"
 #include "jdvapi_frame.h"
+#include "jdvapi_sync.h"
 
 #include "pacman_reduce_sprites.h"
 #include "blank_reduce_sprites.h"
