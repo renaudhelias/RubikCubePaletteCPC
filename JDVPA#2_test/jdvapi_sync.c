@@ -72,8 +72,8 @@ void raster_handler()
   ;; here we do custom code..
   __endasm;
  
-  aFunction(callback_counter);
   callback_counter=(callback_counter+1)%6;
+  aFunction(callback_counter);
   
   __asm
   ;; restore Z80 state

@@ -94,7 +94,7 @@ void cpct_akp_musicPlay()
 	__endasm;
 }
 
-/*
+
 void border_raster_begin()
 {
   //grimware/official.sks.player.1.2.zip/exemple.asm
@@ -127,21 +127,22 @@ void border_raster_end()
 	out (c),c
   __endasm;
 }
-*/
+
 
 unsigned int is_vsync;
 
 void callback_roulette(unsigned char roulette)
 {
-	if (roulette==0) {
-		//border_raster_begin();
+	if (roulette==1) {
+		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
+		is_vsync=1;
+	} else if (roulette==5) {
+		border_raster_begin();
 		
 		// Play the STarKos song
 		cpct_akp_musicPlay();
 		
-		//border_raster_begin2();
-		
-		is_vsync=1;
+		border_raster_begin2();
 	}
 	return;
 }
@@ -330,7 +331,7 @@ typedef struct {
 	char anim_restant; // decompte un CALQUE.l
 	char allez_retour; // si ALLEZ ou RETOUR, decompte aussi un allez-retour de l'anim (ALLEZ, puis RETOUR, puis 0)
 	char bank; // la bank mémoire de l'animation en cours
-	char x;
+	char x;char old_x;
 } ANIMATION;
 
 #define DIRECTION_DROITE 1
@@ -348,25 +349,27 @@ ANIMATION sub_zero;
 
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0;
+
+	joueur->old_x=joueur->x;
+	
 	// FIXME : si je MARCHE, alors je peux lancer une nouvelle action.
 	// en fait quand tu attend, tu MARCHE sur place entre deux états (d'un air menaçant)
-	
 	if (joueur->allez_retour == ALLEZ || (joueur->allez_retour!=RETOUR && joueur->anim_restant > 0)) {
 		// une animation ALLEZ est en cours
 		if (joueur->allez_retour == MARCHE_AVANT || joueur->allez_retour == MARCHE_ARRIERE) {
 			// déplacement
-			if (joueur->direction & DIRECTION_DROITE != 0) {
+			if ((joueur->direction & DIRECTION_DROITE) != 0) {
 				// le joueur va a droite
 				joueur->x = joueur->x + 1;
-				if (joueur->x > 100) {
-					joueur->x=0;
+				if (joueur->x > 48) {
+					joueur->x=3;
 				}
 			}
-			if (joueur->direction & DIRECTION_GAUCHE != 0) {
+			if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
 				// le joueur va a gauche
 				joueur->x = joueur->x - 1;
-				if (joueur->x < 1) {
-					joueur->x=100;
+				if (joueur->x < 3) {
+					joueur->x=48;
 				}
 			}
 		}
@@ -389,16 +392,16 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
-		if ((joueur->direction & DIRECTION_DROITE != 0) && (joueur->direction & DIRECTION_GAUCHE != 0)) {
+		if (((joueur->direction & DIRECTION_DROITE) != 0) && ((joueur->direction & DIRECTION_GAUCHE) != 0)) {
 			// un idiot
 			deplacement = DEPLACEMENT_AUCUNE;
-		} else if (joueur->direction & DIRECTION_DROITE != 0) {
+		} else if ((joueur->direction & DIRECTION_DROITE) != 0) {
 			if (joueur->perso==PERSO_LIU_KANG) {
 				deplacement = DEPLACEMENT_AVANCE;
 			} else {
 				deplacement = DEPLACEMENT_RECULE;
 			}
-		} else if (joueur->direction & DIRECTION_GAUCHE != 0) {
+		} else if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
 			if (joueur->perso==PERSO_SUB_ZERO) {
 				deplacement = DEPLACEMENT_AVANCE;
 			} else {
@@ -473,11 +476,13 @@ void main(void)
 {
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
+	liu_kang.old_x=liu_kang.x;
 	liu_kang.perso=PERSO_LIU_KANG;
 	liu_kang.anim_restant=0;
 	liu_kang.allez_retour=0;
 	
-	sub_zero.x=60;
+	sub_zero.x=30;
+	sub_zero.old_x=sub_zero.x;
 	sub_zero.perso=PERSO_SUB_ZERO;
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=0;
@@ -538,6 +543,7 @@ calqueC000();
 	// fond
 	erase_frame((unsigned char *)(vram[120]+3),6*8+3,50);
 
+	// calibration
 	vsync();
 	handle_raster(callback_roulette);
 	raster();
@@ -551,28 +557,65 @@ calqueC000();
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	if (is_vsync==0) {}
 	is_vsync=0;
-
 	calqueC000();
+
 	bank0123();
-	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
-	
-	//border_raster_end();
+
+	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
+	memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x4800, (char *)0xC800, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x5000, (char *)0xD000, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x5800, (char *)0xD800, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x6000, (char *)0xE000, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x6800, (char *)0xE800, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x7000, (char *)0xF000, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
+	memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
+	border_raster_end();
+	if (is_vsync==0) {}
+	is_vsync=0;
 		
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	if (is_vsync==0) {}
 	is_vsync=0;
-
 	calque4000();
 	
 	action(&liu_kang,DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE);
 	action(&sub_zero,DIRECTION_GAUCHE | DIRECTION_FIRE);
+
+	erase_frame((unsigned char *)(vram[120]+liu_kang.old_x),6,50);
+	erase_frame((unsigned char *)(vram[120]+sub_zero.old_x),6,50);
+	border_raster_end();
+
+	if (is_vsync==0) {}
+	is_vsync=0;
 	
 	switch_bank(&liu_kang);
 	put_frame((unsigned char *)(vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
 	switch_bank(&sub_zero);
-	put_frame((unsigned char *)(vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
+	put_frame_transparent((unsigned char *)(vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
-	//border_raster_end();
+	border_raster_end();
 	}
 	
 }
