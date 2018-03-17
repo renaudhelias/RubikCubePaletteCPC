@@ -375,6 +375,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		}
 		if (joueur->anim_restant > 0) {
 			joueur->anim_restant = joueur->anim_restant -1;
+			// FIXME patch pour zapper un calque sur deux lors de l'animation marcher.
+			if (joueur->anim_restant > 0) joueur->anim_restant = joueur->anim_restant -1;
 			if (joueur->anim_restant == 0 && joueur->allez_retour==ALLEZ) {
 				joueur->anim_restant = joueur->animation.l;
 				joueur->allez_retour = RETOUR;
@@ -384,6 +386,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		// une animation RETOUR est en cours
 		if (joueur->anim_restant > 0) {
 			joueur->anim_restant = joueur->anim_restant -1;
+			// FIXME patch pour zapper un calque sur deux lors de l'animation marcher.
+			if (joueur->anim_restant > 0) joueur->anim_restant = joueur->anim_restant -1;
 			if (joueur->anim_restant == 0) {
 				joueur->allez_retour = 0;
 			}
@@ -600,8 +604,8 @@ calqueC000();
 	is_vsync=0;
 	calque4000();
 	
-	action(&liu_kang,DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE);
-	action(&sub_zero,DIRECTION_GAUCHE | DIRECTION_FIRE);
+	action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE);
+	action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 
 	erase_frame((unsigned char *)(vram[120]+liu_kang.old_x),6,50);
 	erase_frame((unsigned char *)(vram[120]+sub_zero.old_x),6,50);
