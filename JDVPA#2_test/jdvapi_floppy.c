@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 ////////////////////////////////////////////////////////////////////////
 // Load01.c
 // Mochilote - www.cpcmania.com

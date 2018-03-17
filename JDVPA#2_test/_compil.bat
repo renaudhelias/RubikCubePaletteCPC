@@ -6,6 +6,7 @@ sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_frame.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_sync.c
+sdcc -mz80 -c --std-c99 --opt-code-speed --fno-omit-frame-pointer --oldralloc jdvapi_floppy.c
 copy sks2000.bin.vo sks2000.bin
 copy sudo3000.bin.vo sudo3000.bin
 perl ConvImgCpc_asm2c.pl Pacman_reduce.asm
