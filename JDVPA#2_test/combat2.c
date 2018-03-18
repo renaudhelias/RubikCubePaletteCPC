@@ -178,10 +178,14 @@ const unsigned char intro_palette[]=
 		0,4,1,11,5,16,25,26,15,3,12,14,23,2,6,0
 };
 
+
+
 typedef struct {
 	char o; // offset
 	char l; // longueur
 	char p; // porte le coup
+	char b; // bank
+	char ar; // allez_retour
 } CALQUE;
 
 struct CALQUE_J1A {
@@ -210,22 +214,34 @@ struct CALQUE_J1A {
 #define PORTE_EN_7 64
 #define PORTE_EN_8 128
 
+
+#define BANK_4 4
+#define BANK_5 5
+#define BANK_6 6
+#define BANK_7 7
+
+#define ALLEZ 1
+#define RETOUR 2
+#define MARCHE 4
+#define VERS_L_AVANT 8
+#define VERS_L_ARRIERE 16
+
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
-	.marcher={0,9,0},
-	.haut={9,1,0},
-	.bas={10,1,0},
-	.tres_haut={11,1,0},
-	.pied_haut={12,4,PORTE_EN_4},
-	.pied_milieu={16,4,PORTE_EN_4},
-	.genoux_milieu={20,2,PORTE_EN_2},
-	.pied_haut2={22,5,PORTE_EN_3},
-	.balayette={27,4,PORTE_EN_3},
-	.hypercut={31,5,PORTE_EN_5},
-	.poing_milieu={36,2,PORTE_EN_2},
-	.pied_milieu2={38,2,PORTE_EN_2},
-	.balayette2={40,3,PORTE_EN_3},
-	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8}
+	.marcher={0,9,0,BANK_4,MARCHE},
+	.haut={9,1,0,BANK_4,0},
+	.bas={10,1,0,BANK_4,0},
+	.tres_haut={11,1,0,BANK_4,0},
+	.pied_haut={12,4,PORTE_EN_4,BANK_4,0},
+	.pied_milieu={16,4,PORTE_EN_4,BANK_4,0},
+	.genoux_milieu={20,2,PORTE_EN_2,BANK_4,0},
+	.pied_haut2={22,5,PORTE_EN_3,BANK_4,0},
+	.balayette={27,4,PORTE_EN_3,BANK_4,0},
+	.hypercut={31,5,PORTE_EN_5,BANK_4,0},
+	.poing_milieu={36,2,PORTE_EN_2,BANK_4,0},
+	.pied_milieu2={38,2,PORTE_EN_2,BANK_4,0},
+	.balayette2={40,3,PORTE_EN_3,BANK_4,0},
+	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,0}
 };
 
 struct CALQUE_J1R {
@@ -245,18 +261,18 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,6,0},
-	.fatality={6,3,0},
-	.hypercut2={9,4,PORTE_EN_4},
-	.hadouken_personnage={13,4,0},
-	.hadouken_fire={17,9,0},
-	.ko={26,6,0},
-	.poing_double_jab={32,5,PORTE_EN_2 | PORTE_EN_5},
-	.contre_haut={37,2,PORTE_EN_2},
-	.macarena_milieu={39,5,PORTE_EN_2 | PORTE_EN_5},
-	.dragon={44,3,0},
-	.dragon_big={47,2,0},
-	.contre_haut2={49,2,PORTE_EN_2}
+	.victory={0,6,0,BANK_5,0},
+	.fatality={6,3,0,BANK_5,0},
+	.hypercut2={9,4,PORTE_EN_4,BANK_5,0},
+	.hadouken_personnage={13,4,0,BANK_5,0},
+	.hadouken_fire={17,9,0,BANK_5,0},
+	.ko={26,6,0,BANK_5,0},
+	.poing_double_jab={32,5,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
+	.contre_haut={37,2,PORTE_EN_2,BANK_5,0},
+	.macarena_milieu={39,5,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
+	.dragon={44,3,0,BANK_5,0},
+	.dragon_big={47,2,0,BANK_5,0},
+	.contre_haut2={49,2,PORTE_EN_2,BANK_5,0}
 };
 
 struct CALQUE_J2A {
@@ -277,19 +293,19 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	.pied_haut={0,8,PORTE_EN_4},
-	.pied_haut2={8,3,PORTE_EN_1},
-	.genoux_haut={11,2,PORTE_EN_2},
-	.pied_retourne={13,7,PORTE_EN_4},
-	.balayette={20,4,PORTE_EN_3},
-	.marcher={24,10,0},
-	.haut={34,1,0},
-	.bas={35,1,0},
-	.zombi={36,1,0},
-	.victory={27,2,0},
-	.poing_double_jab={28,8,PORTE_EN_3 | PORTE_EN_6},
-	.aie={36,1,0},
-	.poing_gauche={37,3,PORTE_EN_3}
+	.pied_haut={0,8,PORTE_EN_4,BANK_6,0},
+	.pied_haut2={8,3,PORTE_EN_1,BANK_6,0},
+	.genoux_haut={11,2,PORTE_EN_2,BANK_6,0},
+	.pied_retourne={13,7,PORTE_EN_4,BANK_6,0},
+	.balayette={20,4,PORTE_EN_3,BANK_6,0},
+	.marcher={24,10,0,BANK_6,MARCHE},
+	.haut={34,1,0,BANK_6,0},
+	.bas={35,1,0,BANK_6,0},
+	.zombi={36,1,0,BANK_6,0},
+	.victory={27,2,0,BANK_6,0},
+	.poing_double_jab={28,8,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
+	.aie={36,1,0,BANK_6,0},
+	.poing_gauche={37,3,PORTE_EN_3,BANK_6,0}
 };
 
 struct CALQUE_J2R{
@@ -308,28 +324,18 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,2,PORTE_EN_2},
-	.ko={2,5,0},
-	.fatality={7,5,0},
-	.hadouken1_personnage={12,10,0},
-	.hadouken1_fire={22,1,0},
-	.hadouken2_personnage={23,3,0},
-	.hadouken2_fire={26,9,0},
-	.hadouken2_personnage_patch={35,3,0},
-	.hypercut={38,5,PORTE_EN_3},
-	.coup_bas={43,2,PORTE_EN_2},
-	.flaque={45,7,0}
+	.poing_droit={0,2,PORTE_EN_2,BANK_7,0},
+	.ko={2,5,0,BANK_7,0},
+	.fatality={7,5,0,BANK_7,0},
+	.hadouken1_personnage={12,10,0,BANK_7,0},
+	.hadouken1_fire={22,1,0,BANK_7,0},
+	.hadouken2_personnage={23,3,0,BANK_7,0},
+	.hadouken2_fire={26,9,0,BANK_7,0},
+	.hadouken2_personnage_patch={35,3,0,BANK_7,0},
+	.hypercut={38,5,PORTE_EN_3,BANK_7,0},
+	.coup_bas={43,2,PORTE_EN_2,BANK_7,0},
+	.flaque={45,7,0,BANK_7,0}
 };
-
-#define BANK_4 4
-#define BANK_5 5
-#define BANK_6 6
-#define BANK_7 7
-
-#define ALLEZ 1
-#define RETOUR 2
-#define MARCHE_AVANT 3
-#define MARCHE_ARRIERE 4
 
 #define PERSO_LIU_KANG 0
 #define PERSO_SUB_ZERO 1
@@ -357,13 +363,7 @@ ANIMATION sub_zero;
 #define DEPLACEMENT_RECULE 2
 #define DEPLACEMENT_AUCUNE 3
 
-struct CALQUE_AVEC_BANK {
-	CALQUE c; // calque
-	char b; // bank
-	char ar; // allez_retour
-};
-
-struct CALQUE_AVEC_BANK mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
+CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0;
@@ -374,7 +374,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	// en fait quand tu attend, tu MARCHE sur place entre deux états (d'un air menaçant)
 	if (joueur->allez_retour == ALLEZ || (joueur->allez_retour!=RETOUR && joueur->anim_restant > 0)) {
 		// une animation ALLEZ est en cours
-		if (joueur->allez_retour == MARCHE_AVANT || joueur->allez_retour == MARCHE_ARRIERE) {
+		if ((joueur->allez_retour | VERS_L_AVANT) != 0 || (joueur->allez_retour | VERS_L_AVANT) != 0 ) {
 			// déplacement
 			if ((joueur->direction & DIRECTION_DROITE) != 0) {
 				// le joueur va a droite
@@ -438,31 +438,31 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				//joueur->animation.o=J1A.marcher.o;
 				//joueur->animation.l=J1A.marcher.l;
 				//joueur->bank=BANK_4;
-				//joueur->allez_retour=MARCHE_AVANT;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
+				//joueur->allez_retour=MARCHE;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_AVANT;
 				joueur->anim_restant=joueur->animation.l;
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				//joueur->animation.o=J1A.marcher.o;
 				//joueur->animation.l=J1A.marcher.l;
 				//joueur->bank=BANK_4;
-				//joueur->allez_retour=MARCHE_ARRIERE;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
+				//joueur->allez_retour=MARCHE;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_ARRIERE;
 				joueur->anim_restant=joueur->animation.l;
 			} else {
 				//joueur->animation.o=J1A.marcher.o;
 				//joueur->animation.l=J1A.marcher.l;
 				//joueur->bank=BANK_4;
 				//joueur->allez_retour=0;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
 			}
 		} else {
@@ -471,16 +471,16 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->animation.l=J2A.marcher.l;
 				joueur->bank=BANK_6;
 				joueur->anim_restant=joueur->animation.l;
-				joueur->allez_retour=MARCHE_AVANT;
+				joueur->allez_retour=MARCHE | VERS_L_AVANT;
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				//joueur->animation.o=J2A.marcher.o;
 				//joueur->animation.l=J2A.marcher.l;
 				//joueur->bank=BANK_6;
 				//joueur->allez_retour=MARCHE_ARRIERE;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_ARRIERE;
 				joueur->anim_restant=joueur->animation.l;
 			} else {
 				joueur->animation.o=J2A.marcher.o;
@@ -526,25 +526,14 @@ void main(void)
 	sub_zero.allez_retour=0;
 	
 	// init mapping
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].ar=MARCHE_ARRIERE;
 	
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].ar=MARCHE_AVANT;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
+	
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
 
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].ar=0;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
 	
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.o=J2A.marcher.o;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.l=J2A.marcher.l;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].b=BANK_6;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].ar=MARCHE_ARRIERE;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.marcher;
 	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
