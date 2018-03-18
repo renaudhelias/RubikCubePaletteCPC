@@ -181,6 +181,7 @@ const unsigned char intro_palette[]=
 typedef struct {
 	char o; // offset
 	char l; // longueur
+	char p; // porte le coup
 } CALQUE;
 
 struct CALQUE_J1A {
@@ -200,22 +201,31 @@ struct CALQUE_J1A {
 	CALQUE pied_rotatif; // cyclique + avance !
 } ;
 
+#define PORTE_EN_1 1
+#define PORTE_EN_2 2
+#define PORTE_EN_3 4
+#define PORTE_EN_4 8
+#define PORTE_EN_5 16
+#define PORTE_EN_6 32
+#define PORTE_EN_7 64
+#define PORTE_EN_8 128
+
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
-	.marcher={0,9},
-	.haut={9,1},
-	.bas={10,1},
-	.tres_haut={11,1},
-	.pied_haut={12,4},
-	.pied_milieu={16,4},
-	.genoux_milieu={20,2},
-	.pied_haut2={22,5},
-	.balayette={27,4},
-	.hypercut={31,5},
-	.poing_milieu={36,2},
-	.pied_milieu2={38,2},
-	.balayette2={40,3},
-	.pied_rotatif={43,9}
+	.marcher={0,9,0},
+	.haut={9,1,0},
+	.bas={10,1,0},
+	.tres_haut={11,1,0},
+	.pied_haut={12,4,PORTE_EN_4},
+	.pied_milieu={16,4,PORTE_EN_4},
+	.genoux_milieu={20,2,PORTE_EN_2},
+	.pied_haut2={22,5,PORTE_EN_3},
+	.balayette={27,4,PORTE_EN_3},
+	.hypercut={31,5,PORTE_EN_5},
+	.poing_milieu={36,2,PORTE_EN_2},
+	.pied_milieu2={38,2,PORTE_EN_2},
+	.balayette2={40,3,PORTE_EN_3},
+	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8}
 };
 
 struct CALQUE_J1R {
@@ -235,18 +245,18 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,6},
-	.fatality={6,3},
-	.hypercut2={9,4},
-	.hadouken_personnage={13,4},
-	.hadouken_fire={17,9},
-	.ko={26,6},
-	.poing_double_jab={32,5},
-	.contre_haut={37,2},
-	.macarena_milieu={39,5},
-	.dragon={44,3},
-	.dragon_big={47,2},
-	.contre_haut2={49,2}
+	.victory={0,6,0},
+	.fatality={6,3,0},
+	.hypercut2={9,4,PORTE_EN_4},
+	.hadouken_personnage={13,4,0},
+	.hadouken_fire={17,9,0},
+	.ko={26,6,0},
+	.poing_double_jab={32,5,PORTE_EN_2 | PORTE_EN_5},
+	.contre_haut={37,2,PORTE_EN_2},
+	.macarena_milieu={39,5,PORTE_EN_2 | PORTE_EN_5},
+	.dragon={44,3,0},
+	.dragon_big={47,2,0},
+	.contre_haut2={49,2,PORTE_EN_2}
 };
 
 struct CALQUE_J2A {
@@ -267,19 +277,19 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	.pied_haut={0,8},
-	.pied_haut2={8,3},
-	.genoux_haut={11,2},
-	.pied_retourne={13,7},
-	.balayette={20,4},
-	.marcher={24,10},
-	.haut={34,1},
-	.bas={35,1},
-	.zombi={36,1},
-	.victory={27,2},
-	.poing_double_jab={28,8},
-	.aie={36,1},
-	.poing_gauche={37,3}
+	.pied_haut={0,8,PORTE_EN_4},
+	.pied_haut2={8,3,PORTE_EN_1},
+	.genoux_haut={11,2,PORTE_EN_2},
+	.pied_retourne={13,7,PORTE_EN_4},
+	.balayette={20,4,PORTE_EN_3},
+	.marcher={24,10,0},
+	.haut={34,1,0},
+	.bas={35,1,0},
+	.zombi={36,1,0},
+	.victory={27,2,0},
+	.poing_double_jab={28,8,PORTE_EN_3 | PORTE_EN_6},
+	.aie={36,1,0},
+	.poing_gauche={37,3,PORTE_EN_3}
 };
 
 struct CALQUE_J2R{
@@ -298,17 +308,17 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,2},
-	.ko={2,5},
-	.fatality={7,5},
-	.hadouken1_personnage={12,10},
-	.hadouken1_fire={22,1},
-	.hadouken2_personnage={23,3},
-	.hadouken2_fire={26,9},
-	.hadouken2_personnage_patch={35,3},
-	.hypercut={38,5},
-	.coup_bas={43,2},
-	.flaque={45,7}
+	.poing_droit={0,2,PORTE_EN_2},
+	.ko={2,5,0},
+	.fatality={7,5,0},
+	.hadouken1_personnage={12,10,0},
+	.hadouken1_fire={22,1,0},
+	.hadouken2_personnage={23,3,0},
+	.hadouken2_fire={26,9,0},
+	.hadouken2_personnage_patch={35,3,0},
+	.hypercut={38,5,PORTE_EN_3},
+	.coup_bas={43,2,PORTE_EN_2},
+	.flaque={45,7,0}
 };
 
 #define BANK_4 4
