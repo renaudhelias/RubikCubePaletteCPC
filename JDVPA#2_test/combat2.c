@@ -425,10 +425,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
-				joueur->animation.o=J1A.marcher.o;
-				joueur->animation.l=J1A.marcher.l;
-				joueur->bank=BANK_4;
-				joueur->allez_retour=MARCHE_AVANT;
+				//joueur->animation.o=J1A.marcher.o;
+				//joueur->animation.l=J1A.marcher.l;
+				//joueur->bank=BANK_4;
+				//joueur->allez_retour=MARCHE_AVANT;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
 				joueur->anim_restant=joueur->animation.l;
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				//joueur->animation.o=J1A.marcher.o;
@@ -441,10 +445,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
 				joueur->anim_restant=joueur->animation.l;
 			} else {
-				joueur->animation.o=J1A.marcher.o;
-				joueur->animation.l=J1A.marcher.l;
-				joueur->bank=BANK_4;
-				joueur->allez_retour=0;
+				//joueur->animation.o=J1A.marcher.o;
+				//joueur->animation.l=J1A.marcher.l;
+				//joueur->bank=BANK_4;
+				//joueur->allez_retour=0;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
 				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
 			}
 		} else {
@@ -512,6 +520,16 @@ void main(void)
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].ar=MARCHE_ARRIERE;
+	
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE].ar=MARCHE_AVANT;
+
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE].ar=0;
 	
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.o=J2A.marcher.o;
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.l=J2A.marcher.l;
@@ -629,8 +647,19 @@ calqueC000();
 	if (is_vsync==0) {}
 	is_vsync=0;
 	calque4000();
+
+	// touche o pour faire reculer liu_kang
+	check_controller();
+	if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) 
+	{
+		action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE);
+	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) 
+	{
+		action(&liu_kang,DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE);
+	} else {
+		action(&liu_kang,DIRECTION_HAUT | DIRECTION_FIRE);
+	}
 	
-	action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE);
 	action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 
 	erase_frame((unsigned char *)(vram[120]+liu_kang.old_x),6,50);
