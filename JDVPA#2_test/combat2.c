@@ -321,8 +321,8 @@ const struct CALQUE_J2R J2R= {
 #define MARCHE_AVANT 3
 #define MARCHE_ARRIERE 4
 
-#define PERSO_LIU_KANG 1
-#define PERSO_SUB_ZERO 2
+#define PERSO_LIU_KANG 0
+#define PERSO_SUB_ZERO 1
 
 typedef struct {
 	char perso; // identifiant du jouer
@@ -346,6 +346,14 @@ ANIMATION sub_zero;
 #define DEPLACEMENT_AVANCE 1
 #define DEPLACEMENT_RECULE 2
 #define DEPLACEMENT_AUCUNE 3
+
+struct CALQUE_AVEC_BANK {
+	CALQUE c; // calque
+	char b; // bank
+	char ar; // allez_retour
+};
+
+struct CALQUE_AVEC_BANK mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0;
@@ -420,20 +428,24 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->animation.o=J1A.marcher.o;
 				joueur->animation.l=J1A.marcher.l;
 				joueur->bank=BANK_4;
-				joueur->anim_restant=joueur->animation.l;
 				joueur->allez_retour=MARCHE_AVANT;
-			} else if (deplacement == DEPLACEMENT_RECULE) {
-				joueur->animation.o=J1A.marcher.o;
-				joueur->animation.l=J1A.marcher.l;
-				joueur->bank=BANK_4;
 				joueur->anim_restant=joueur->animation.l;
-				joueur->allez_retour=MARCHE_ARRIERE;
+			} else if (deplacement == DEPLACEMENT_RECULE) {
+				//joueur->animation.o=J1A.marcher.o;
+				//joueur->animation.l=J1A.marcher.l;
+				//joueur->bank=BANK_4;
+				//joueur->allez_retour=MARCHE_ARRIERE;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
+				joueur->anim_restant=joueur->animation.l;
 			} else {
 				joueur->animation.o=J1A.marcher.o;
 				joueur->animation.l=J1A.marcher.l;
 				joueur->bank=BANK_4;
-				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
 				joueur->allez_retour=0;
+				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
 			}
 		} else {
 			if (deplacement == DEPLACEMENT_AVANCE) {
@@ -443,11 +455,15 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->anim_restant=joueur->animation.l;
 				joueur->allez_retour=MARCHE_AVANT;
 			} else if (deplacement == DEPLACEMENT_RECULE) {
-				joueur->animation.o=J2A.marcher.o;
-				joueur->animation.l=J2A.marcher.l;
-				joueur->bank=BANK_6;
+				//joueur->animation.o=J2A.marcher.o;
+				//joueur->animation.l=J2A.marcher.l;
+				//joueur->bank=BANK_6;
+				//joueur->allez_retour=MARCHE_ARRIERE;
+				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction].c.o;
+				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction].c.l;
+				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction].b;
+				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction].ar;
 				joueur->anim_restant=joueur->animation.l;
-				joueur->allez_retour=MARCHE_ARRIERE;
 			} else {
 				joueur->animation.o=J2A.marcher.o;
 				joueur->animation.l=J2A.marcher.l;
@@ -491,6 +507,16 @@ void main(void)
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=0;
 	
+	// init mapping
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].c.o=J1A.marcher.o;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].c.l=J1A.marcher.l;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].b=BANK_4;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE].ar=MARCHE_ARRIERE;
+	
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.o=J2A.marcher.o;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].c.l=J2A.marcher.l;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].b=BANK_6;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE].ar=MARCHE_ARRIERE;
 	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
