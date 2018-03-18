@@ -241,7 +241,7 @@ const struct CALQUE_J1A J1A= {
 	.poing_milieu={36,2,PORTE_EN_2,BANK_4,0},
 	.pied_milieu2={38,2,PORTE_EN_2,BANK_4,0},
 	.balayette2={40,3,PORTE_EN_3,BANK_4,0},
-	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,0}
+	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,MARCHE}
 };
 
 struct CALQUE_J1R {
@@ -518,7 +518,7 @@ const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE};
 
 void main(void)
 {
-	char i;
+	char i;char direction;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
@@ -543,10 +543,9 @@ void main(void)
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
 		}
 	}
-	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-	//mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.marcher;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_FIRE]=&J1A.pied_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut2;
 	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
@@ -662,15 +661,22 @@ calqueC000();
 
 	// touche o pour faire reculer liu_kang
 	check_controller();
-	if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) 
-	{
-		action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE);
-	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) 
-	{
-		action(&liu_kang,DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE);
-	} else {
-		action(&liu_kang,DIRECTION_HAUT | DIRECTION_FIRE);
+	direction=0;
+	if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) {
+		direction=direction | DIRECTION_GAUCHE;
+	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) {
+		direction=direction | DIRECTION_DROITE;
 	}
+	if ((get_key(Key_Joy1Up)) || (get_key(Key_Q))) {
+		direction=direction | DIRECTION_HAUT;
+	} else if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) {
+		direction=direction | DIRECTION_BAS;
+	}
+	if (get_key(Key_Space) || get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
+		direction=direction | DIRECTION_FIRE;
+	}
+	
+	action(&liu_kang,direction);
 	
 	action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 
