@@ -374,7 +374,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	// en fait quand tu attend, tu MARCHE sur place entre deux états (d'un air menaçant)
 	if (joueur->allez_retour == ALLEZ || (joueur->allez_retour!=RETOUR && joueur->anim_restant > 0)) {
 		// une animation ALLEZ est en cours
-		if ((joueur->allez_retour | VERS_L_AVANT) != 0 || (joueur->allez_retour | VERS_L_AVANT) != 0 ) {
+		if (((joueur->allez_retour & MARCHE) != 0) && ((joueur->allez_retour & VERS_L_AVANT) != 0 || (joueur->allez_retour & VERS_L_ARRIERE) != 0 )) {
 			// déplacement
 			if ((joueur->direction & DIRECTION_DROITE) != 0) {
 				// le joueur va a droite
