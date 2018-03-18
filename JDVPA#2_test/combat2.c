@@ -459,11 +459,12 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				//joueur->animation.l=J1A.marcher.l;
 				//joueur->bank=BANK_4;
 				//joueur->allez_retour=0;
+				//joueur->anim_restant=2;
 				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
 				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
 				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
 				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
-				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
+				joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
 			}
 		} else {
 			if (deplacement == DEPLACEMENT_AVANCE) {
@@ -510,8 +511,15 @@ void switch_bank(ANIMATION * joueur) {
 	}
 }
 
+// J1A.marcher avec l=2
+const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE};
+// J2A.marcher avec l=2
+const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE};
+
 void main(void)
 {
+	char i;
+	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
 	liu_kang.old_x=liu_kang.x;
@@ -526,14 +534,19 @@ void main(void)
 	sub_zero.allez_retour=0;
 	
 	// init mapping
-	
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-	
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
-	
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.marcher;
+	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
+		if ((i & DIRECTION_DROITE) == 0 && (i & DIRECTION_GAUCHE) == 0) {
+			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A_repos;
+			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A_repos;
+		} else {
+			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A.marcher;
+			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
+		}
+	}
+	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
+	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
+	//mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.marcher;
+	//mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.marcher;
 	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
