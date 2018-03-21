@@ -367,7 +367,7 @@ ANIMATION sub_zero;
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void action(ANIMATION * joueur, char direction_pressed) {
-	char deplacement=0; char is_anim_fini;char is_arrete_marcher;//char is_continue_marcher;
+	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
 
 	joueur->old_x=joueur->x;
 
@@ -390,12 +390,12 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	// si le joueur marchait et ne marche plus
 	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
 	// sinon si le joueur marchait mais change de direction => à prendre compte
-	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
+	is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
-	//is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
+	is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
 	
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
-	if (/*is_continue_marcher || */ is_arrete_marcher || is_anim_fini) {
+	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
 		if (((joueur->direction & DIRECTION_DROITE) != 0) && ((joueur->direction & DIRECTION_GAUCHE) != 0)) {
@@ -424,34 +424,34 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-				// if (is_continue_marcher) {
-					// if (joueur->anim_restant==joueur->animation.l) {
-						// joueur->anim_restant=0; // cyclique
-					// } else {
-						// joueur->anim_restant=joueur->anim_restant+1;
-					// }
-				// } else {
+				 if (is_continue_marcher) {
+					if (joueur->anim_restant==joueur->animation.l) {
+						joueur->anim_restant=0; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant+1;
+					}
+				} else {
 					// pas de simple "RETOUR" ici.
 					joueur->anim_restant=0;
-				//}
+				}
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 				if ((joueur->allez_retour & MARCHER) != 0) {
 					joueur->allez_retour = joueur->allez_retour | RETOUR;
 				}
-				// if (is_continue_marcher) {
-					// if (joueur->anim_restant==0) {
-						// joueur->anim_restant=joueur->animation.l; // cyclique
-					// } else {
-						// joueur->anim_restant=joueur->anim_restant-1;
-					// }
-				// } else {
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==0) {
+						joueur->anim_restant=joueur->animation.l; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant-1;
+					}
+				} else {
 					if ((joueur->allez_retour & MARCHER) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
 						joueur->anim_restant=0;
 					}
-				//}
+				}
 			} else {
 				if ((joueur->allez_retour & RETOUR) != 0) {
 					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
@@ -528,9 +528,9 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant -1;
 				}
-				if (joueur->anim_restant == 0) {
-					joueur->allez_retour = (joueur->allez_retour & (!RETOUR));
-				}
+				//if (joueur->anim_restant == 0) {
+				//	joueur->allez_retour = (joueur->allez_retour & (!RETOUR));
+				//}
 			}
 		} else {
 			// animation de type normale ! incrémente
