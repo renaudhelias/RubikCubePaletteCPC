@@ -348,7 +348,6 @@ typedef struct {
 	CALQUE animation;
 	char anim_restant; // decompte un CALQUE.l
 	char allez_retour; // si ALLEZ ou RETOUR, decompte aussi un allez-retour de l'anim (ALLEZ, puis RETOUR, puis 0)
-	char bank; // la bank mémoire de l'animation en cours
 	char x;char old_x;
 } ANIMATION;
 
@@ -368,7 +367,7 @@ ANIMATION sub_zero;
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void action(ANIMATION * joueur, char direction_pressed) {
-	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
+	char deplacement=0; char is_anim_fini;//char is_arrete_marcher;//char is_continue_marcher;
 
 	joueur->old_x=joueur->x;
 
@@ -389,14 +388,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	}
 	
 	// si le joueur marchait et ne marche plus
-	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
+	//is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
 	// sinon si le joueur marchait mais change de direction => à prendre compte
-	is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
+	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
-	is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
+	//is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
 	
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
-	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
+	if (/*is_continue_marcher ||  is_arrete_marcher ||*/ is_anim_fini) {
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
 		if (((joueur->direction & DIRECTION_DROITE) != 0) && ((joueur->direction & DIRECTION_GAUCHE) != 0)) {
@@ -420,39 +419,39 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		
 		joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
 		joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-		joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+		joueur->animation.b=mapping_direction_calque[joueur->perso][joueur->direction]->b;
 		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation.l) {
-						joueur->anim_restant=0; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant+1;
-					}
-				} else {
+				// if (is_continue_marcher) {
+					// if (joueur->anim_restant==joueur->animation.l) {
+						// joueur->anim_restant=0; // cyclique
+					// } else {
+						// joueur->anim_restant=joueur->anim_restant+1;
+					// }
+				// } else {
 					// pas de simple "RETOUR" ici.
 					joueur->anim_restant=0;
-				}
+				//}
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 				if ((joueur->allez_retour & MARCHER) != 0) {
 					joueur->allez_retour = joueur->allez_retour | RETOUR;
 				}
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation.l; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant-1;
-					}
-				} else {
+				// if (is_continue_marcher) {
+					// if (joueur->anim_restant==0) {
+						// joueur->anim_restant=joueur->animation.l; // cyclique
+					// } else {
+						// joueur->anim_restant=joueur->anim_restant-1;
+					// }
+				// } else {
 					if ((joueur->allez_retour & MARCHER) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
 						joueur->anim_restant=0;
 					}
-				}
+				//}
 			} else {
 				if ((joueur->allez_retour & RETOUR) != 0) {
 					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
@@ -466,34 +465,34 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				if ((joueur->allez_retour & MARCHER) != 0) {
 					joueur->allez_retour = joueur->allez_retour | RETOUR;
 				}
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation.l; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant-1;
-					}
-				} else {
+				// if (is_continue_marcher) {
+					// if (joueur->anim_restant==0) {
+						// joueur->anim_restant=joueur->animation.l; // cyclique
+					// } else {
+						// joueur->anim_restant=joueur->anim_restant-1;
+					// }
+				// } else {
 					if ((joueur->allez_retour & MARCHER) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
 						joueur->anim_restant=0;
 					}
-				}
+				//}
 			} else if (deplacement == DEPLACEMENT_RECULE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation.l) {
-						joueur->anim_restant=0; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant+1;
-					}
-				} else {
+				// if (is_continue_marcher) {
+					// if (joueur->anim_restant==joueur->animation.l) {
+						// joueur->anim_restant=0; // cyclique
+					// } else {
+						// joueur->anim_restant=joueur->anim_restant+1;
+					// }
+				// } else {
 					if ((joueur->allez_retour & RETOUR) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
 						joueur->anim_restant=0;
 					}
-				}
+				//}
 			} else {
 				if ((joueur->allez_retour & RETOUR) != 0) {
 					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
@@ -569,7 +568,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 }
 
 void switch_bank(ANIMATION * joueur) {
-	switch (joueur->bank) {
+	switch (joueur->animation.b) {
 		case BANK_4 :
 			bank4_4000();
 		return;
@@ -598,14 +597,24 @@ void main(void)
 	liu_kang.x=10;
 	liu_kang.old_x=liu_kang.x;
 	liu_kang.perso=PERSO_LIU_KANG;
+	liu_kang.direction=0;
 	liu_kang.anim_restant=0;
 	liu_kang.allez_retour=0;
+
+	liu_kang.animation.o=J1A_repos.o;
+	liu_kang.animation.l=J1A_repos.l;
+	liu_kang.animation.b=J1A_repos.b;
 	
 	sub_zero.x=30;
 	sub_zero.old_x=sub_zero.x;
 	sub_zero.perso=PERSO_SUB_ZERO;
+	sub_zero.direction=0;
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=0;
+
+	sub_zero.animation.o=J1A_repos.o;
+	sub_zero.animation.l=J1A_repos.l;
+	sub_zero.animation.b=J1A_repos.b;
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
