@@ -220,26 +220,28 @@ struct CALQUE_J1A {
 #define BANK_6 6
 #define BANK_7 7
 
-#define ALLEZ 1
+#define ALLEZ_RETOUR 1
 #define RETOUR 2
 #define MARCHE 4
-#define VERS_L_AVANT 8
-#define VERS_L_ARRIERE 16
+#define MARCHER 8
+#define VERS_L_AVANT 16
+#define VERS_L_ARRIERE 32
+#define RAPIDEMENT 64
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
-	.marcher={0,9,0,BANK_4,MARCHE},
+	.marcher={0,9,0,BANK_4,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={9,1,0,BANK_4,0},
 	.bas={10,1,0,BANK_4,0},
 	.tres_haut={11,1,0,BANK_4,0},
-	.pied_haut={12,4,PORTE_EN_4,BANK_4,0},
-	.pied_milieu={16,4,PORTE_EN_4,BANK_4,0},
-	.genoux_milieu={20,2,PORTE_EN_2,BANK_4,0},
+	.pied_haut={12,4,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
+	.pied_milieu={16,4,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
+	.genoux_milieu={20,2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_haut2={22,5,PORTE_EN_3,BANK_4,0},
 	.balayette={27,4,PORTE_EN_3,BANK_4,0},
 	.hypercut={31,5,PORTE_EN_5,BANK_4,0},
-	.poing_milieu={36,2,PORTE_EN_2,BANK_4,0},
-	.pied_milieu2={38,2,PORTE_EN_2,BANK_4,0},
+	.poing_milieu={36,2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	.pied_milieu2={38,2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.balayette2={40,3,PORTE_EN_3,BANK_4,0},
 	.pied_rotatif={43,9,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,MARCHE}
 };
@@ -268,11 +270,11 @@ const struct CALQUE_J1R J1R= {
 	.hadouken_fire={17,9,0,BANK_5,0},
 	.ko={26,6,0,BANK_5,0},
 	.poing_double_jab={32,5,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
-	.contre_haut={37,2,PORTE_EN_2,BANK_5,0},
+	.contre_haut={37,2,PORTE_EN_2,BANK_5,ALLEZ_RETOUR},
 	.macarena_milieu={39,5,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
 	.dragon={44,3,0,BANK_5,0},
 	.dragon_big={47,2,0,BANK_5,0},
-	.contre_haut2={49,2,PORTE_EN_2,BANK_5,0}
+	.contre_haut2={49,2,PORTE_EN_2,BANK_5,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2A {
@@ -294,18 +296,18 @@ struct CALQUE_J2A {
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
 	.pied_haut={0,8,PORTE_EN_4,BANK_6,0},
-	.pied_haut2={8,3,PORTE_EN_1,BANK_6,0},
-	.genoux_haut={11,2,PORTE_EN_2,BANK_6,0},
+	.pied_haut2={8,3,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
+	.genoux_haut={11,2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
 	.pied_retourne={13,7,PORTE_EN_4,BANK_6,0},
 	.balayette={20,4,PORTE_EN_3,BANK_6,0},
-	.marcher={24,10,0,BANK_6,MARCHE},
+	.marcher={24,10,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={34,1,0,BANK_6,0},
 	.bas={35,1,0,BANK_6,0},
 	.zombi={36,1,0,BANK_6,0},
-	.victory={27,2,0,BANK_6,0},
+	.victory={27,2,0,BANK_6,ALLEZ_RETOUR},
 	.poing_double_jab={28,8,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
 	.aie={36,1,0,BANK_6,0},
-	.poing_gauche={37,3,PORTE_EN_3,BANK_6,0}
+	.poing_gauche={37,3,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2R{
@@ -324,7 +326,7 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,2,PORTE_EN_2,BANK_7,0},
+	.poing_droit={0,2,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.ko={2,5,0,BANK_7,0},
 	.fatality={7,5,0,BANK_7,0},
 	.hadouken1_personnage={12,10,0,BANK_7,0},
@@ -333,7 +335,7 @@ const struct CALQUE_J2R J2R= {
 	.hadouken2_fire={26,9,0,BANK_7,0},
 	.hadouken2_personnage_patch={35,3,0,BANK_7,0},
 	.hypercut={38,5,PORTE_EN_3,BANK_7,0},
-	.coup_bas={43,2,PORTE_EN_2,BANK_7,0},
+	.coup_bas={43,2,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.flaque={45,7,0,BANK_7,0}
 };
 
@@ -366,52 +368,35 @@ ANIMATION sub_zero;
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void action(ANIMATION * joueur, char direction_pressed) {
-	char deplacement=0;
+	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
 
 	joueur->old_x=joueur->x;
-	
-	// FIXME : si je MARCHE, alors je peux lancer une nouvelle action.
-	// en fait quand tu attend, tu MARCHE sur place entre deux états (d'un air menaçant)
-	if (joueur->allez_retour == ALLEZ || (joueur->allez_retour!=RETOUR && joueur->anim_restant > 0)) {
-		// une animation ALLEZ est en cours
-		if (((joueur->allez_retour & MARCHE) != 0) && ((joueur->allez_retour & VERS_L_AVANT) != 0 || (joueur->allez_retour & VERS_L_ARRIERE) != 0 )) {
-			// déplacement
-			if ((joueur->direction & DIRECTION_DROITE) != 0) {
-				// le joueur va a droite
-				joueur->x = joueur->x + 1;
-				if (joueur->x > 48) {
-					joueur->x=3;
-				}
-			}
-			if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
-				// le joueur va a gauche
-				joueur->x = joueur->x - 1;
-				if (joueur->x < 3) {
-					joueur->x=48;
-				}
-			}
-		}
-		if (joueur->anim_restant > 0) {
-			joueur->anim_restant = joueur->anim_restant -1;
-			// FIXME patch pour zapper un calque sur deux lors de l'animation marcher.
-			if (joueur->anim_restant > 0) joueur->anim_restant = joueur->anim_restant -1;
-			if (joueur->anim_restant == 0 && joueur->allez_retour==ALLEZ) {
-				joueur->anim_restant = joueur->animation.l;
-				joueur->allez_retour = RETOUR;
-			}
-		}
-	} else if (joueur->allez_retour == RETOUR) {
-		// une animation RETOUR est en cours
-		if (joueur->anim_restant > 0) {
-			joueur->anim_restant = joueur->anim_restant -1;
-			// FIXME patch pour zapper un calque sur deux lors de l'animation marcher.
-			if (joueur->anim_restant > 0) joueur->anim_restant = joueur->anim_restant -1;
-			if (joueur->anim_restant == 0) {
-				joueur->allez_retour = 0;
-			}
+
+	if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
+		is_anim_fini=0;
+	} else if ((joueur->allez_retour & RETOUR) != 0) {
+		if (joueur->anim_restant == 0) {
+			is_anim_fini=1;
+		} else {
+			is_anim_fini=0;
 		}
 	} else {
-		
+		if (joueur->anim_restant == joueur->animation.l) {
+			is_anim_fini=1;
+		} else {
+			is_anim_fini=0;
+		}
+	}
+	
+	// si le joueur marchait et ne marche plus
+	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
+	// sinon si le joueur marchait mais change de direction => à prendre compte
+	is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
+	
+	is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
+	
+	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
+	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
 		if (((joueur->direction & DIRECTION_DROITE) != 0) && ((joueur->direction & DIRECTION_GAUCHE) != 0)) {
@@ -433,65 +418,154 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			deplacement = DEPLACEMENT_AUCUNE;
 		}
 		
+		joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
+		joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
+		joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
-				//joueur->animation.o=J1A.marcher.o;
-				//joueur->animation.l=J1A.marcher.l;
-				//joueur->bank=BANK_4;
-				//joueur->allez_retour=MARCHE;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_AVANT;
-				joueur->anim_restant=joueur->animation.l;
+				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==joueur->animation.l) {
+						joueur->anim_restant=0; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant+1;
+					}
+				} else {
+					// pas de simple "RETOUR" ici.
+					joueur->anim_restant=0;
+				}
 			} else if (deplacement == DEPLACEMENT_RECULE) {
-				//joueur->animation.o=J1A.marcher.o;
-				//joueur->animation.l=J1A.marcher.l;
-				//joueur->bank=BANK_4;
-				//joueur->allez_retour=MARCHE;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_ARRIERE;
-				joueur->anim_restant=joueur->animation.l;
+				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
+				if ((joueur->allez_retour & MARCHER) != 0) {
+					joueur->allez_retour = joueur->allez_retour | RETOUR;
+				}
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==0) {
+						joueur->anim_restant=joueur->animation.l; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant-1;
+					}
+				} else {
+					if ((joueur->allez_retour & MARCHER) != 0) {
+						joueur->anim_restant=joueur->animation.l;
+					} else {
+						joueur->anim_restant=0;
+					}
+				}
 			} else {
-				//joueur->animation.o=J1A.marcher.o;
-				//joueur->animation.l=J1A.marcher.l;
-				//joueur->bank=BANK_4;
-				//joueur->allez_retour=0;
-				//joueur->anim_restant=2;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
-				joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
+				if ((joueur->allez_retour & RETOUR) != 0) {
+					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
+				} else {
+					joueur->anim_restant=0;
+				}
 			}
 		} else {
 			if (deplacement == DEPLACEMENT_AVANCE) {
-				joueur->animation.o=J2A.marcher.o;
-				joueur->animation.l=J2A.marcher.l;
-				joueur->bank=BANK_6;
-				joueur->anim_restant=joueur->animation.l;
-				joueur->allez_retour=MARCHE | VERS_L_AVANT;
+				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
+				if ((joueur->allez_retour & MARCHER) != 0) {
+					joueur->allez_retour = joueur->allez_retour | RETOUR;
+				}
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==0) {
+						joueur->anim_restant=joueur->animation.l; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant-1;
+					}
+				} else {
+					if ((joueur->allez_retour & MARCHER) != 0) {
+						joueur->anim_restant=joueur->animation.l;
+					} else {
+						joueur->anim_restant=0;
+					}
+				}
 			} else if (deplacement == DEPLACEMENT_RECULE) {
-				//joueur->animation.o=J2A.marcher.o;
-				//joueur->animation.l=J2A.marcher.l;
-				//joueur->bank=BANK_6;
-				//joueur->allez_retour=MARCHE_ARRIERE;
-				joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
-				joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-				joueur->bank=mapping_direction_calque[joueur->perso][joueur->direction]->b;
-				joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar | VERS_L_ARRIERE;
-				joueur->anim_restant=joueur->animation.l;
+				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==joueur->animation.l) {
+						joueur->anim_restant=0; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant+1;
+					}
+				} else {
+					if ((joueur->allez_retour & RETOUR) != 0) {
+						joueur->anim_restant=joueur->animation.l;
+					} else {
+						joueur->anim_restant=0;
+					}
+				}
 			} else {
-				joueur->animation.o=J2A.marcher.o;
-				joueur->animation.l=J2A.marcher.l;
-				joueur->bank=BANK_6;
-				joueur->anim_restant=2; // sur place, mais pas totalement fixe : mode faché.
-				joueur->allez_retour=0;
+				if ((joueur->allez_retour & RETOUR) != 0) {
+					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
+				} else {
+					joueur->anim_restant=0;
+				}
+			}
+		}
+	} else {
+		// jouer l'animation
+		// ALLEZ_RETOUR : coup qui se joue de 0 à l-1, et passe à RETOUR (exemple : )
+		// RETOUR : coup qui se joue de l-1 à 0
+		// ALLEZ_RETOUR : coup qui se joue de 0 à l-1
+		
+		if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
+			// animation de type ALLEZ_RETOUR : incremente, puis RETOUR
+			if (joueur->anim_restant < joueur->animation.l) {
+				joueur->anim_restant = joueur->anim_restant +1;
+				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation.l) {
+					// patch pour zapper un calque sur deux lors de l'animation marcher.
+					joueur->anim_restant = joueur->anim_restant +1;
+				}
+				if (joueur->anim_restant == joueur->animation.l ) {
+					joueur->anim_restant = joueur->animation.l;
+					joueur->allez_retour = ((joueur->allez_retour & (!ALLEZ_RETOUR)) | RETOUR);
+				}
+			}
+		} else if ((joueur->allez_retour & RETOUR) != 0) {
+			// animation de type RETOUR : décrémente
+			if (joueur->anim_restant > 0) {
+				joueur->anim_restant = joueur->anim_restant -1;
+				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant > 0) {
+					// patch pour zapper un calque sur deux lors de l'animation marcher.
+					joueur->anim_restant = joueur->anim_restant -1;
+				}
+				if (joueur->anim_restant == 0) {
+					joueur->allez_retour = (joueur->allez_retour & (!RETOUR));
+				}
+			}
+		} else {
+			// animation de type normale ! incrémente
+			if (joueur->anim_restant < joueur->animation.l) {
+				joueur->anim_restant = joueur->anim_restant +1;
+				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation.l) {
+					// patch pour zapper un calque sur deux lors de l'animation marcher.
+					joueur->anim_restant = joueur->anim_restant +1;
+				}
 			}
 		}
 	}
+	
+	// dans tout les cas, le personnage subit éventuellement un VERS_L_AVANT ou VERS_L_ARRIERE
+	
+	// une animation MARCHE est en cours
+	if (((joueur->allez_retour & MARCHE) != 0) && ((joueur->allez_retour & VERS_L_AVANT) != 0 || (joueur->allez_retour & VERS_L_ARRIERE) != 0 )) {
+		// déplacement
+		if ((joueur->direction & DIRECTION_DROITE) != 0) {
+			// le joueur va a droite
+			joueur->x = joueur->x + 1;
+			if (joueur->x > 48) {
+				joueur->x=3;
+			}
+		}
+		if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
+			// le joueur va a gauche
+			joueur->x = joueur->x - 1;
+			if (joueur->x < 3) {
+				joueur->x=48;
+			}
+		}
+	}
+
 }
 
 void switch_bank(ANIMATION * joueur) {
