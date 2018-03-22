@@ -214,11 +214,12 @@ struct CALQUE_J1A {
 #define PORTE_EN_7 64
 #define PORTE_EN_8 128
 
-
-#define BANK_4 4
-#define BANK_5 5
-#define BANK_6 6
-#define BANK_7 7
+// sur les deux derniers bit : BANK
+#define BANK_4 0
+#define BANK_5 1
+#define BANK_6 2
+#define BANK_7 3
+#define HADOUKEN 4
 
 #define ALLEZ_RETOUR 1
 #define RETOUR 2
@@ -227,6 +228,7 @@ struct CALQUE_J1A {
 #define VERS_L_AVANT 16
 #define VERS_L_ARRIERE 32
 #define RAPIDEMENT 64
+#define NON_CYCLIQUE 128
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
@@ -239,7 +241,7 @@ const struct CALQUE_J1A J1A= {
 	.genoux_milieu={20,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_haut2={22,4,PORTE_EN_3,BANK_4,0},
 	.balayette={27,3,PORTE_EN_3,BANK_4,0},
-	.hypercut={31,4,PORTE_EN_5,BANK_4,0},
+	.hypercut={31,4,PORTE_EN_5,BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_milieu2={38,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.balayette2={40,2,PORTE_EN_3,BANK_4,0},
@@ -257,7 +259,7 @@ struct CALQUE_J1R {
 	CALQUE contre_haut; // allez-retour
 	CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
 	CALQUE dragon; // statique, enchaine avec dragon_big
-	CALQUE dragon_big; // une seule image mais deux sprites !
+	CALQUE dragon_big; // une seule image mais deux sprites ! => un dragon c un hadouken avec un seul calque secondaire (NON_CYCLIQUE, et sans MARCHE)
 	CALQUE contre_haut2; // allez-retour
 };
 
@@ -265,14 +267,14 @@ struct CALQUE_J1R {
 const struct CALQUE_J1R J1R= {
 	.victory={0,5,0,BANK_5,0},
 	.fatality={6,2,0,BANK_5,0},
-	.hypercut2={9,3,PORTE_EN_4,BANK_5,0},
-	.hadouken_personnage={13,3,0,BANK_5,0},
+	.hypercut2={9,3,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
+	.hadouken_personnage={13,3,0,BANK_5 | HADOUKEN,0},
 	.hadouken_fire={17,8,0,BANK_5,0},
 	.ko={26,5,0,BANK_5,0},
 	.poing_double_jab={32,4,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
 	.contre_haut={37,1,PORTE_EN_2,BANK_5,ALLEZ_RETOUR},
 	.macarena_milieu={39,4,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
-	.dragon={44,2,0,BANK_5,0},
+	.dragon={44,2,0,BANK_5 | HADOUKEN,0},
 	.dragon_big={47,1,0,BANK_5,0},
 	.contre_haut2={49,1,PORTE_EN_2,BANK_5,ALLEZ_RETOUR}
 };
@@ -329,12 +331,12 @@ const struct CALQUE_J2R J2R= {
 	.poing_droit={0,1,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.ko={2,4,0,BANK_7,0},
 	.fatality={7,4,0,BANK_7,0},
-	.hadouken1_personnage={12,9,0,BANK_7,0},
+	.hadouken1_personnage={12,9,0,BANK_7 | HADOUKEN,0},
 	.hadouken1_fire={22,0,0,BANK_7,0},
-	.hadouken2_personnage={23,2,0,BANK_7,0},
+	.hadouken2_personnage={23,2,0,BANK_7 | HADOUKEN,0},
 	.hadouken2_fire={26,8,0,BANK_7,0},
 	.hadouken2_personnage_patch={35,2,0,BANK_7,0},
-	.hypercut={38,4,PORTE_EN_3,BANK_7,0},
+	.hypercut={38,4,PORTE_EN_3,BANK_7,NON_CYCLIQUE},
 	.coup_bas={43,1,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.flaque={45,6,0,BANK_7,0}
 };
@@ -446,22 +448,30 @@ void action(ANIMATION * joueur, char direction_pressed) {
 						joueur->anim_restant=joueur->anim_restant-1;
 					}
 				} else {
-					if ((joueur->allez_retour & MARCHER) != 0) {
+					if ((joueur->allez_retour & RETOUR) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
 						joueur->anim_restant=0;
 					}
 				}
 			} else {
-				if ((joueur->allez_retour & RETOUR) != 0) {
-					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
-				} else {
-					joueur->anim_restant=0;
-				}
+				// pas de simple "RETOUR" ici.
+				joueur->anim_restant=0;
 			}
 		} else {
 			if (deplacement == DEPLACEMENT_AVANCE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
+				if (is_continue_marcher) {
+					if (joueur->anim_restant==joueur->animation.l) {
+						joueur->anim_restant=0; // cyclique
+					} else {
+						joueur->anim_restant=joueur->anim_restant+1;
+					}
+				} else {
+					joueur->anim_restant=0;
+				}
+			} else if (deplacement == DEPLACEMENT_RECULE) {
+				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 				if ((joueur->allez_retour & MARCHER) != 0) {
 					joueur->allez_retour = joueur->allez_retour | RETOUR;
 				}
@@ -472,21 +482,6 @@ void action(ANIMATION * joueur, char direction_pressed) {
 						joueur->anim_restant=joueur->anim_restant-1;
 					}
 				} else {
-					if ((joueur->allez_retour & MARCHER) != 0) {
-						joueur->anim_restant=joueur->animation.l;
-					} else {
-						joueur->anim_restant=0;
-					}
-				}
-			} else if (deplacement == DEPLACEMENT_RECULE) {
-				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation.l) {
-						joueur->anim_restant=0; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant+1;
-					}
-				} else {
 					if ((joueur->allez_retour & RETOUR) != 0) {
 						joueur->anim_restant=joueur->animation.l;
 					} else {
@@ -494,11 +489,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					}
 				}
 			} else {
-				if ((joueur->allez_retour & RETOUR) != 0) {
-					joueur->anim_restant=joueur->animation.l; // sur place, mais pas totalement fixe : mode faché.
-				} else {
-					joueur->anim_restant=0;
-				}
+				// pas de simple "RETOUR" ici.
+				joueur->anim_restant=0;
 			}
 		}
 	} else {
@@ -568,7 +560,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 }
 
 void switch_bank(ANIMATION * joueur) {
-	switch (joueur->animation.b) {
+	// sur les deux derniers bit : BANK
+	switch (joueur->animation.b & 3) {
 		case BANK_4 :
 			bank4_4000();
 		return;
@@ -630,6 +623,11 @@ void main(void)
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif;
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut2;
 	
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2A.pied_haut;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J2A.poing_double_jab;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.balayette;
+	
+	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
@@ -683,8 +681,11 @@ calqueC000();
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
 	// fond
-	erase_frame((unsigned char *)(vram[120]+3),6*8+3,50);
+	erase_frame((unsigned char *)(0xC000 + vram[120]+3),6*8+3,50);
 
+	// copie complète sur le calque 4000
+	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
+	
 	// calibration
 	vsync();
 	handle_raster(callback_roulette);
@@ -704,38 +705,48 @@ calqueC000();
 	bank0123();
 
 	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
-	memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
+	// memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x4800, (char *)0xC800, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x5000, (char *)0xD000, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x5800, (char *)0xD800, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x6000, (char *)0xE000, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x6800, (char *)0xE800, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x7000, (char *)0xF000, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	// if (is_vsync==0) {}
+	// is_vsync=0;
+	// memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
+	// border_raster_end();
+	
+	// optimisation
+	for (i=0;i<50;i++) {
+		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3);
+		if (i%20==0) {
+			border_raster_end();
+			if (is_vsync==0) {}
+			is_vsync=0;
+		}
+	}
 	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x4800, (char *)0xC800, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x5000, (char *)0xD000, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x5800, (char *)0xD800, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x6000, (char *)0xE000, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x6800, (char *)0xE800, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x7000, (char *)0xF000, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
-	memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
-	border_raster_end();
-	if (is_vsync==0) {}
-	is_vsync=0;
+	
 		
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	if (is_vsync==0) {}
@@ -759,21 +770,23 @@ calqueC000();
 		direction=direction | DIRECTION_FIRE;
 	}
 	
-	action(&liu_kang,direction);
+	//action(&liu_kang,direction);
+	action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
 	
-	action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
+	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
+	action(&sub_zero,direction);
 
-	erase_frame((unsigned char *)(vram[120]+liu_kang.old_x),6,50);
-	erase_frame((unsigned char *)(vram[120]+sub_zero.old_x),6,50);
+	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
+	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 	border_raster_end();
 
 	if (is_vsync==0) {}
 	is_vsync=0;
 	
 	switch_bank(&liu_kang);
-	put_frame((unsigned char *)(vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
+	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
 	switch_bank(&sub_zero);
-	put_frame_transparent((unsigned char *)(vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
+	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
 	border_raster_end();
 	}

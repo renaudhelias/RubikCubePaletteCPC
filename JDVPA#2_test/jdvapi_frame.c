@@ -186,8 +186,8 @@ unsigned int * precalc_vram()
 	
 	for (i=0;i<200;i++)
 	{
-		private_precalc_vram[i]=(0xC000 + ((i / 8u) * 80u) + ((i % 8u) * 2048u));		
-		
+		//private_precalc_vram[i]=(0xC000 + ((i / 8u) * 80u) + ((i % 8u) * 2048u));
+		private_precalc_vram[i]=(((i / 8u) * 80u) + ((i % 8u) * 2048u));
 	}
 	
 	return (unsigned int *)private_precalc_vram;
