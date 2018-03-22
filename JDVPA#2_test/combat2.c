@@ -129,7 +129,7 @@ void border_raster_end()
 }
 
 
-unsigned int is_vsync;
+unsigned char is_vsync;
 
 void callback_roulette(unsigned char roulette)
 {
@@ -577,6 +577,8 @@ void switch_bank(ANIMATION * joueur) {
 	}
 }
 
+#define FREIN 4
+
 // J1A.marcher avec l=2
 const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE};
 // J2A.marcher avec l=2
@@ -698,12 +700,13 @@ calqueC000();
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	if (is_vsync==0) {}
+	while (is_vsync==0) {}
 	is_vsync=0;
 	calqueC000();
 
 	bank0123();
 
+	border_raster_end();
 	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
 	// memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
 	// border_raster_end();
@@ -735,21 +738,28 @@ calqueC000();
 	// is_vsync=0;
 	// memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
 	// border_raster_end();
+
+	for (i=0;i<FREIN;i++) {
+		border_raster_end();
+		while (is_vsync==0) {}
+		is_vsync=0;
+	}
+	
 	
 	// optimisation
 	for (i=0;i<50;i++) {
 		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3);
-		if (i%20==0) {
-			border_raster_end();
-			if (is_vsync==0) {}
-			is_vsync=0;
-		}
+//		if (i%20==0) {
+//			border_raster_end();
+//			while (is_vsync==0) {}
+//			is_vsync=0;
+//		}
 	}
 	border_raster_end();
 	
 		
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
-	if (is_vsync==0) {}
+	while (is_vsync==0) {}
 	is_vsync=0;
 	calque4000();
 
@@ -780,7 +790,7 @@ calqueC000();
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 	border_raster_end();
 
-	if (is_vsync==0) {}
+	while (is_vsync==0) {}
 	is_vsync=0;
 	
 	switch_bank(&liu_kang);
