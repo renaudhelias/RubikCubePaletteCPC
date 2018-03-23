@@ -734,7 +734,7 @@ calqueC000();
 	calqueC000();
 	bank0123();
 
-	border_raster_end();
+	border_raster_end(); // fuck you, I'm determinist : memcpy !
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 
 	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
@@ -776,13 +776,13 @@ calqueC000();
 //	}
 //	border_raster_end();	
 	
-/*	border_raster_end(); // fuck you, I'm determinist : memcpy !
+	//border_raster_end();
 	// optimisation
-	for (i=0;i<50;i++) {
-		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
-	}
-	border_raster_end();
-	*/
+	//for (i=0;i<50;i++) {
+	//	memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
+	//}
+	//border_raster_end();
+	
 	
 	while (is_vsync==0) {}
 	is_vsync=0;
@@ -791,7 +791,7 @@ calqueC000();
 	border_raster_end();
 	while (is_vsync==0) {}
 	is_vsync=0;
-	calque4000();
+	//calque4000();
 
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
