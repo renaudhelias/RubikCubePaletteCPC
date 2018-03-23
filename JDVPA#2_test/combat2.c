@@ -302,14 +302,14 @@ const struct CALQUE_J2A J2A= {
 	.genoux_haut={11,1,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
 	.pied_retourne={13,6,PORTE_EN_4,BANK_6,0},
 	.balayette={20,3,PORTE_EN_3,BANK_6,MARCHE},
-	.marcher={24,9,0,BANK_6,MARCHE | MARCHER},
+	.marcher={24,9,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={34,0,0,BANK_6,0},
 	.bas={35,0,0,BANK_6,0},
 	.zombi={36,0,0,BANK_6,0},
-	.victory={27,1,0,BANK_6,ALLEZ_RETOUR},
-	.poing_double_jab={28,7,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
-	.aie={36,0,0,BANK_6,0},
-	.poing_gauche={37,2,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
+	.victory={37,1,0,BANK_6,ALLEZ_RETOUR},
+	.poing_double_jab={39,7,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
+	.aie={48,0,0,BANK_6,0},
+	.poing_gauche={49,2,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2R{
@@ -586,7 +586,7 @@ const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE};
 
 void main(void)
 {
-	char i;char direction;
+	char i;char direction;char direction2;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
@@ -621,15 +621,34 @@ void main(void)
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
 		}
 	}
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_FIRE]=&J1A.pied_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut2;
-	
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2A.pied_haut;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J2A.poing_double_jab;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.balayette;
-	
-	
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut2; // attaque haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=&J1R.poing_double_jab; //attaque centre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_FIRE]=&J1A.pied_milieu; // attaque milieu
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif; // attaque bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE]=&J1A.balayette; // defense bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.hypercut; // defense haut
+
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut2; // contre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.macarena_milieu; // humiliation
+
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
+
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2A.pied_haut; // attaque haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=&J2A.poing_double_jab; //attaque centre
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J2R.flaque; // attaque bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE]=&J2A.balayette; // defense bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hypercut; // defense haut
+
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.poing_droit; // contre
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.poing_gauche; // revers
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.zombi; // humiliation
+
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT]=&J2A.haut; // haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS]=&J2A.bas; // bas
+
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
@@ -763,12 +782,12 @@ calqueC000();
 	is_vsync=0;
 	calque4000();
 
-	// touche o pour faire reculer liu_kang
+	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
 	direction=0;
-	if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) {
+	if ((get_key(Key_Joy1Left)) || (get_key(Key_W))) {
 		direction=direction | DIRECTION_GAUCHE;
-	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) {
+	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_E))) {
 		direction=direction | DIRECTION_DROITE;
 	}
 	if ((get_key(Key_Joy1Up)) || (get_key(Key_Q))) {
@@ -779,12 +798,27 @@ calqueC000();
 	if (get_key(Key_Space) || get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
 		direction=direction | DIRECTION_FIRE;
 	}
+	direction2=0;
+	if ((get_key(Key_R_Joy2Left)) || (get_key(Key_O))) {
+		direction2=direction2 | DIRECTION_GAUCHE;
+	} else if ((get_key(Key_T_Joy2Right)) || (get_key(Key_P))) {
+		direction2=direction2 | DIRECTION_DROITE;
+	}
+	if ((get_key(Key_6_Joy2Up)) || (get_key(Key_I))) {
+		direction2=direction2 | DIRECTION_HAUT;
+	} else if ((get_key(Key_5_Joy2Down)) || (get_key(Key_K))) {
+		direction2=direction2 | DIRECTION_BAS;
+	}
+	if (get_key(Key_L) || get_key(Key_G_Joy2Fire)) {
+		direction2=direction2 | DIRECTION_FIRE;
+	}
 	
 	//action(&liu_kang,direction);
-	action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
+	//action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
+	action(&liu_kang,direction);
 	
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
-	action(&sub_zero,direction);
+	action(&sub_zero,direction2);
 
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);

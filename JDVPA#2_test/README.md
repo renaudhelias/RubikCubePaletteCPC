@@ -17,6 +17,10 @@ L'objectif va être de rajouter le clavier et faire bouger 2 personnages.
 
 ![JDVPA2_COMBAT2.dsk.png](JDVPA2_COMBAT2.dsk.png)
 
+Liu Kang : QAWE (querty) + space
+
+Sub Zero : IKOP + L
+
 Le border raster permet de chronométrer les routines exécutées lors de l'affiche d'une image, en blanc le temps dédié au son (moins d'une interruption), et le violet le reste des calculs (affichage des bonhommes, transfert mémoire)
 
 L'algo de déplacement et d'animation de sprite commence à faire des trucs, pas tout bien, mais bon faut de toute façon que je le refasse car j'ai oublié quelques conceptes.
