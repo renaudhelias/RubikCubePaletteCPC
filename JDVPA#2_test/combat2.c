@@ -730,12 +730,9 @@ calqueC000();
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	while (is_vsync==0) {}
 	is_vsync=0;
-	border_raster_end();
 	calqueC000();
-
 	bank0123();
 
-	border_raster_end();
 	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
 	// memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
 	// border_raster_end();
@@ -775,18 +772,14 @@ calqueC000();
 //	}
 //	border_raster_end();	
 	
-	
+	border_raster_end(); // fuck you, I'm determinist : memcpy !
 	// optimisation
 	for (i=0;i<50;i++) {
 		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3);
-		if (i%15==0) {
-			border_raster_end();
-			while (is_vsync==0) {}
-			is_vsync=0;
-		}
 	}
+	while (is_vsync==0) {}
+	is_vsync=0;
 	border_raster_end();
-	
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	while (is_vsync==0) {}
