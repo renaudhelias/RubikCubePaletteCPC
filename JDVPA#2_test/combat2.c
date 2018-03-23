@@ -728,10 +728,14 @@ calqueC000();
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
+	border_raster_end();
 	while (is_vsync==0) {}
 	is_vsync=0;
 	calqueC000();
 	bank0123();
+
+	border_raster_end();
+	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 
 	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
 	// memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
@@ -772,16 +776,19 @@ calqueC000();
 //	}
 //	border_raster_end();	
 	
-	border_raster_end(); // fuck you, I'm determinist : memcpy !
+/*	border_raster_end(); // fuck you, I'm determinist : memcpy !
 	// optimisation
 	for (i=0;i<50;i++) {
-		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3);
+		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
 	}
+	border_raster_end();
+	*/
+	
 	while (is_vsync==0) {}
 	is_vsync=0;
-	border_raster_end();
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
+	border_raster_end();
 	while (is_vsync==0) {}
 	is_vsync=0;
 	calque4000();
@@ -826,20 +833,33 @@ calqueC000();
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	action(&sub_zero,direction2);
 
-	
-	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
-	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 	border_raster_end();
-
+	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
+	
+	border_raster_end();
 	while (is_vsync==0) {}
 	is_vsync=0;
 	
+	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
+
+	border_raster_end();
+	while (is_vsync==0) {}
+	is_vsync=0;
+
+	border_raster_end();
+	while (is_vsync==0) {}
+	is_vsync=0;
+
 	switch_bank(&liu_kang);
 	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
+
+	border_raster_end();
+	while (is_vsync==0) {}
+	is_vsync=0;
+
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
-	border_raster_end();
 	
 	
 	
