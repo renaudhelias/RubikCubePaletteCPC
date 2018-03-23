@@ -101,10 +101,12 @@ void border_raster_begin()
   __asm
 	; Set a white raster in the BORDER to "see" how much
 	; CPU time the player takes.
-	ld bc,#0x7F10
-	out (c),c
-	ld c,#0x4B
-	out (c),c
+	
+ ;red border
+ ld BC,#0x7F10
+ ld A,#0x4C
+ out (C),C
+ out (C),A
   __endasm;
 }
 
@@ -113,8 +115,11 @@ void border_raster_begin2()
   //grimware/official.sks.player.1.2.zip/exemple.asm
   __asm
 	; Set the BORDER to un peu de violet...
-	ld bc,#0x7F5D
-	out (c),c
+;red border
+ ld BC,#0x7F10
+ ld A,#0x5D
+ out (C),C
+ out (C),A
   __endasm;
 }
 
@@ -123,8 +128,10 @@ void border_raster_end()
   //grimware/official.sks.player.1.2.zip/exemple.asm
   __asm
 	; Set the BORDER to black
-	ld bc,#0x7F54
-	out (c),c
+ ld BC,#0x7F10
+ ld A,#0x54
+ out (C),C
+ out (C),A
   __endasm;
 }
 
@@ -133,8 +140,10 @@ unsigned char is_vsync;
 
 void callback_roulette(unsigned char roulette)
 {
-	if (roulette==1) {
+	if (roulette==0) {
 		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
+		border_raster_begin2();
+
 		is_vsync=1;
 	} else if (roulette==5) {
 		border_raster_begin();
@@ -142,7 +151,7 @@ void callback_roulette(unsigned char roulette)
 		// Play the STarKos song
 		cpct_akp_musicPlay();
 		
-		border_raster_begin2();
+		border_raster_end();
 	}
 	return;
 }
@@ -577,7 +586,7 @@ void switch_bank(ANIMATION * joueur) {
 	}
 }
 
-#define FREIN 4
+#define FREIN 1
 
 // J1A.marcher avec l=2
 const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE};
@@ -721,6 +730,7 @@ calqueC000();
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	while (is_vsync==0) {}
 	is_vsync=0;
+	border_raster_end();
 	calqueC000();
 
 	bank0123();
@@ -758,25 +768,26 @@ calqueC000();
 	// memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
 	// border_raster_end();
 
-	for (i=0;i<FREIN;i++) {
-		border_raster_end();
-		while (is_vsync==0) {}
-		is_vsync=0;
-	}
+//	for (i=0;i<FREIN;i++) {
+//		border_raster_end();
+//		while (is_vsync==0) {}
+//		is_vsync=0;
+//	}
+//	border_raster_end();	
 	
 	
 	// optimisation
 	for (i=0;i<50;i++) {
 		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3);
-//		if (i%20==0) {
-//			border_raster_end();
-//			while (is_vsync==0) {}
-//			is_vsync=0;
-//		}
+		if (i%15==0) {
+			border_raster_end();
+			while (is_vsync==0) {}
+			is_vsync=0;
+		}
 	}
 	border_raster_end();
 	
-		
+	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	while (is_vsync==0) {}
 	is_vsync=0;
@@ -813,6 +824,8 @@ calqueC000();
 		direction2=direction2 | DIRECTION_FIRE;
 	}
 	
+	
+		
 	//action(&liu_kang,direction);
 	//action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
 	action(&liu_kang,direction);
@@ -820,6 +833,7 @@ calqueC000();
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	action(&sub_zero,direction2);
 
+	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 	border_raster_end();
@@ -833,6 +847,9 @@ calqueC000();
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
 	border_raster_end();
+	
+	
+	
 	}
 	
 }
