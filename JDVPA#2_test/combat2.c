@@ -247,7 +247,7 @@ const struct CALQUE_J1A J1A= {
 	.pied_milieu={16,3,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
 	.genoux_milieu={20,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_haut2={22,4,PORTE_EN_3,BANK_4,0},
-	.balayette={27,3,PORTE_EN_3,BANK_4,0},
+	.balayette={27,3,PORTE_EN_3,BANK_4,MARCHE},
 	.hypercut={31,4,PORTE_EN_5,BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_milieu2={38,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
@@ -343,7 +343,7 @@ const struct CALQUE_J2R J2R= {
 	.hadouken2_personnage={23,2,0,BANK_7 | HADOUKEN,0},
 	.hadouken2_fire={26,8,0,BANK_7,0},
 	.hadouken2_personnage_patch={35,2,0,BANK_7,0},
-	.hypercut={38,4,PORTE_EN_3,BANK_7,NON_CYCLIQUE},
+	.hypercut={38,2,PORTE_EN_2,BANK_7,NON_CYCLIQUE},
 	.coup_bas={43,1,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.flaque={45,6,0,BANK_7,0}
 };
@@ -380,7 +380,12 @@ void action(ANIMATION * joueur, char direction_pressed) {
 
 	joueur->old_x=joueur->x;
 
-	if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
+	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
+		&& mapping_direction_calque[joueur->perso][direction_pressed]->o == joueur->animation.o
+		&& mapping_direction_calque[joueur->perso][direction_pressed]->b == joueur->animation.b) {
+		// hypercut : un coup un seul !
+		is_anim_fini=0;
+	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
 		is_anim_fini=0;
 	} else if ((joueur->allez_retour & RETOUR) != 0) {
 		if (joueur->anim_restant == 0) {
