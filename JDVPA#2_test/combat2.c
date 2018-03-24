@@ -546,7 +546,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	// dans tout les cas, le personnage subit éventuellement un VERS_L_AVANT ou VERS_L_ARRIERE
 	
 	// une animation MARCHE est en cours
-	if (((joueur->allez_retour & MARCHE) != 0) && ((joueur->allez_retour & VERS_L_AVANT) != 0 || (joueur->allez_retour & VERS_L_ARRIERE) != 0 )) {
+	if ((joueur->allez_retour & MARCHER) != 0) {
 		// déplacement
 		if ((joueur->direction & DIRECTION_DROITE) != 0) {
 			// le joueur va a droite
@@ -562,8 +562,21 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->x=48;
 			}
 		}
+	} else if ((joueur->allez_retour & MARCHE) != 0) {
+		if (joueur->perso==PERSO_LIU_KANG) {
+			// le joueur va a droite
+			joueur->x = joueur->x + 1;
+			if (joueur->x > 48) {
+				joueur->x=3;
+			}
+		} else {
+			// le joueur va a gauche
+			joueur->x = joueur->x - 1;
+			if (joueur->x < 3) {
+				joueur->x=48;
+			}
+		}
 	}
-
 }
 
 void switch_bank(ANIMATION * joueur) {
@@ -587,9 +600,9 @@ void switch_bank(ANIMATION * joueur) {
 #define FREIN 1
 
 // J1A.marcher avec l=2
-const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE};
+const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE | MARCHER};
 // J2A.marcher avec l=2
-const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE};
+const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE | MARCHER};
 
 void main(void)
 {
