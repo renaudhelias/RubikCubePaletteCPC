@@ -142,9 +142,7 @@ void callback_roulette(unsigned char roulette)
 {
 	if (roulette==0) {
 		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
-		border_raster_begin2();
-
-		is_vsync=1;
+		is_vsync=is_vsync+1;
 	} else if (roulette==5) {
 		border_raster_begin();
 		
@@ -724,12 +722,18 @@ calqueC000();
 	// cpctelera-1.4.2/examples/medium/arkosAudio
 	cpct_akp_musicInit(); //(void *)0x4000);
 
+	is_vsync=0;
+	
 	// faire une boucle qui :
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	border_raster_end();
-	while (is_vsync==0) {}
+	while (is_vsync!=1) {
+		if (is_vsync>1) {
+			// saturation !
+			border_raster_begin2();
+		}
+	}
 	is_vsync=0;
 	calqueC000();
 	bank0123();
@@ -737,31 +741,24 @@ calqueC000();
 	//border_raster_end(); // fuck you, I'm determinist : memcpy !
 	//memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 
-
-	
 	// optimisation
 	for (i=120;i<120+50;i++) {
 		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
-		if (i%20==19) {
-			border_raster_end();
-			while (is_vsync==0) {}
-			is_vsync=0;
-		}
 	}
-	border_raster_end();
 
-//	for (i=0;i<FREIN;i++) {
-//		while (is_vsync==0) {}
-//		is_vsync=0;
-//		border_raster_end();
-//	}
-	
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
-	while (is_vsync==0) {}
+	while (is_vsync!=2) {
+		if (is_vsync>2) {
+			// saturation !
+			border_raster_begin2();
+		}
+	}
 	is_vsync=0;
 	calque4000();
 
+
+	
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
 	direction=0;
@@ -802,36 +799,16 @@ calqueC000();
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	action(&sub_zero,direction2);
 
-	border_raster_end();
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	
-	border_raster_end();
-	while (is_vsync==0) {}
-	is_vsync=0;
-	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
-
-	border_raster_end();
-	while (is_vsync==0) {}
-	is_vsync=0;
-
-	border_raster_end();
-	while (is_vsync==0) {}
-	is_vsync=0;
 
 	switch_bank(&liu_kang);
 	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
 
-	border_raster_end();
-	while (is_vsync==0) {}
-	is_vsync=0;
-
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
-	
-	
-	
 	}
 	
 }
