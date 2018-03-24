@@ -734,64 +734,33 @@ calqueC000();
 	calqueC000();
 	bank0123();
 
-	border_raster_end(); // fuck you, I'm determinist : memcpy !
-	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
+	//border_raster_end(); // fuck you, I'm determinist : memcpy !
+	//memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 
-	// pas très utile de le faire bloc par bloc mais permet de voir le raster et calculer le temps réel.
-	// memcpy((char *)0x4000, (char *)0xC000, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x4800, (char *)0xC800, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x5000, (char *)0xD000, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x5800, (char *)0xD800, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x6000, (char *)0xE000, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x6800, (char *)0xE800, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x7000, (char *)0xF000, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
-	// if (is_vsync==0) {}
-	// is_vsync=0;
-	// memcpy((char *)0x7800, (char *)0xF800, 0x0800); // memcpy(destination,source,longueur)
-	// border_raster_end();
+
+	
+	// optimisation
+	for (i=120;i<120+50;i++) {
+		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
+		if (i%20==19) {
+			border_raster_end();
+			while (is_vsync==0) {}
+			is_vsync=0;
+		}
+	}
+	border_raster_end();
 
 //	for (i=0;i<FREIN;i++) {
-//		border_raster_end();
 //		while (is_vsync==0) {}
 //		is_vsync=0;
+//		border_raster_end();
 //	}
-//	border_raster_end();	
 	
-	//border_raster_end();
-	// optimisation
-	//for (i=0;i<50;i++) {
-	//	memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
-	//}
-	//border_raster_end();
-	
-	
-	while (is_vsync==0) {}
-	is_vsync=0;
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
-	border_raster_end();
 	while (is_vsync==0) {}
 	is_vsync=0;
-	//calque4000();
+	calque4000();
 
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
