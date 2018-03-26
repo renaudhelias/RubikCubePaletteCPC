@@ -824,7 +824,7 @@ calqueC000();
 	progressbar(300-3,60,100,200);
 	
 	progressbar(300-3,75,92,100);
-	progressbar(400-3,75,90,200);
+	progressbar(310-3,75,90,100);
 	
 	progressbar(300-3,90,191,200);
 	progressbar(300-3,105,290,300-6);
