@@ -611,6 +611,7 @@ const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE | MARCHER};
 
 
 void put_byte(char nX, char nY, unsigned char nByte) {
+	// if (xo==1) {pByteAddress = 0xC0FF + vram[nY] + nX;} else {
 	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
 	*pByteAddress = nByte;
 }
@@ -808,19 +809,19 @@ calqueC000();
 	//locate(5,1);printf("00");
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
-	progressbar(3,10,100,200);
-	progressbar(3,20,196,200);
 	progressbar(3,30,100,200);
-	progressbar(3,40,195,200);
-	progressbar(3,50,194,200);
-	progressbar(3,60,100,300-6);
+	progressbar(3,45,196,200);
+	progressbar(3,60,100,200);
+	progressbar(3,75,195,200);
+	progressbar(3,90,194,200);
+	progressbar(3,105,100,300-6);
 	
-	progressbar(300-3,10,100,200);
-	progressbar(300-3,20,193,200);
 	progressbar(300-3,30,100,200);
-	progressbar(300-3,40,192,200);
-	progressbar(300-3,50,191,200);
-	progressbar(300-3,60,290,300-6);
+	progressbar(300-3,45,193,200);
+	progressbar(300-3,60,100,200);
+	progressbar(300-3,75,192,200);
+	progressbar(300-3,90,191,200);
+	progressbar(300-3,105,290,300-6);
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
