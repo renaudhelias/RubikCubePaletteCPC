@@ -609,6 +609,81 @@ const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE | MARCHER};
 // J2A.marcher avec l=2
 const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE | MARCHER};
 
+
+void put_byte(char nX, char nY, unsigned char nByte) {
+	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
+	*pByteAddress = nByte;
+}
+
+void progressbar(char x, char y, int value, int max) {
+	int i;char j;char b;
+	char mod8=(value+2) %8;
+	char div8=(value+2) /8;
+	for (i=0;i<max/8;i++){
+		put_byte(x+i,y,0xFF);
+		if (i==0) {
+			put_byte(x+i,y+1,0x80);
+		} else if (i==max/8 -1) {
+			put_byte(x+i,y+1,0x01);
+		} else {
+			put_byte(x+i,y+1,0x00);
+		}
+		for (j=2;j<8;j++){
+			if (i<div8) {
+				b=0xFF;
+			} else if (i>div8) {
+				b=0x00;
+			} else {
+				switch(mod8) {
+					case 0:
+						b=0x00;
+						break;
+					case 1:
+						b=0x80;
+						break;
+					case 2:
+						b=0xC0;
+						break;
+					case 3:
+						b=0xE0;
+						break;
+					case 4:
+						b=0xF0;
+						break;
+					case 5:
+						b=0xF8;
+						break;
+					case 6:
+						b=0xFC;
+						break;
+					case 7:
+						b=0xFE;
+						break;
+				}
+			}
+			if (i==0) {
+				b=(b & 0xBF) | 0x80;
+			}
+			if (i==max/8 -1) {
+				b=(b & 0xFD) | 0x01;
+			}
+			put_byte(x+i,y+j,b);
+		}
+		if (i==0) {
+			put_byte(x+i,y+8,0x80);
+		} else if (i==max/8 -1) {
+			put_byte(x+i,y+8,0x01);
+		} else {
+			put_byte(x+i,y+8,0x00);
+		}
+		
+		put_byte(x+i,y+9,0xFF);
+	}
+	
+
+	
+}
+
 void main(void)
 {
 	char i;char direction;char direction2;
@@ -728,6 +803,24 @@ calqueC000();
 	LoadFile("fond2.scr", (char *)0xC000);
 	// fond
 	erase_frame((unsigned char *)(0xC000 + vram[120]+3),6*8+3,50);
+	// score
+	//locate(4,1);printf("THSF 2018");
+	//locate(5,1);printf("00");
+	//locate(6,1);printf("00");
+	//locate(7,1);printf("99");
+	progressbar(3,10,100,200);
+	progressbar(3,20,196,200);
+	progressbar(3,30,100,200);
+	progressbar(3,40,195,200);
+	progressbar(3,50,194,200);
+	progressbar(3,60,100,300-6);
+	
+	progressbar(300-3,10,100,200);
+	progressbar(300-3,20,193,200);
+	progressbar(300-3,30,100,200);
+	progressbar(300-3,40,192,200);
+	progressbar(300-3,50,191,200);
+	progressbar(300-3,60,290,300-6);
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
