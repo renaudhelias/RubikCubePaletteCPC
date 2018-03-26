@@ -812,14 +812,20 @@ calqueC000();
 	progressbar(3,30,100,200);
 	progressbar(3,45,196,200);
 	progressbar(3,60,100,200);
-	progressbar(3,75,195,200);
+	
+	progressbar(3,75,30,100);
+	progressbar(13+3,75,50,100);
+	
 	progressbar(3,90,194,200);
 	progressbar(3,105,100,300-6);
 	
 	progressbar(300-3,30,100,200);
 	progressbar(300-3,45,193,200);
 	progressbar(300-3,60,100,200);
-	progressbar(300-3,75,192,200);
+	
+	progressbar(300-3,75,92,100);
+	progressbar(400-3,75,90,200);
+	
 	progressbar(300-3,90,191,200);
 	progressbar(300-3,105,290,300-6);
 
