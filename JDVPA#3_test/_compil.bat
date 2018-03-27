@@ -21,14 +21,14 @@ sdcc -mz80 --code-loc 0x0138 --data-loc 0 --no-std-crt0 jdvapi_basic.rel jdvapi_
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2.c
 hex2bin main.ihx
 hex2bin combat2.ihx
-CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa2.dsk
-CPCDiskXP -File combat2.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa2_combat2.dsk
-CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File sudo3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa2_combat2.dsk
-CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa2_combat2.dsk
+CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa3.dsk
+CPCDiskXP -File combat2.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa3_combat2.dsk
+CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File sudo3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa3_combat2.dsk
+CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa3_combat2.dsk
 pause

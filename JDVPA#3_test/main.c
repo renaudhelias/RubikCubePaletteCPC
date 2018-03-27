@@ -71,6 +71,7 @@ void main(void)
 	set_palette(game_palette);
 	
 	player_init();
+	ghost_init();
 	
 	while(1)
 	{
@@ -99,15 +100,37 @@ void main(void)
 		
 		if ((player.dc==PLAYER_LEFT) && (player.x>0)) {player_move_rel(-2,0);}
 		else
-		if ((player.dc==PLAYER_RIGHT) && (player.x<(159-PLAYER_SPRITE_LARGEUR_P))) {player_move_rel(2,0);}
+		if ((player.dc==PLAYER_RIGHT) && (player.x<(160-PLAYER_SPRITE_LARGEUR_P))) {player_move_rel(2,0);}
 		else
 		if ((player.dc==PLAYER_UP) && (player.y>0)) {player_move_rel(0,-2);}
 		else
-		if ((player.dc==PLAYER_DOWN) && (player.y<(199-PLAYER_SPRITE_HAUTEUR))) {player_move_rel(0,2);}
+		if ((player.dc==PLAYER_DOWN) && (player.y<(200-PLAYER_SPRITE_HAUTEUR))) {player_move_rel(0,2);}
+
+		if (ghost[0].x==0) ghost[0].sensx = 2; else if (ghost[0].x==160-GHOST_SPRITE_LARGEUR_P) ghost[0].sensx = -2;
+		ghost_move_rel(0, ghost[0].sensx, ghost[0].sensy);
+		
+		if (ghost[1].y==0) ghost[1].sensy = 2; else if (ghost[1].y==200-GHOST_SPRITE_HAUTEUR) ghost[1].sensy = -2;
+		ghost_move_rel(1, ghost[1].sensx, ghost[1].sensy);
+
+		if (ghost[2].x==0) ghost[2].sensx = 2; else if (ghost[2].x==160-GHOST_SPRITE_LARGEUR_P) ghost[2].sensx = -2;
+		if (ghost[2].y==0) ghost[2].sensy = 2; else if (ghost[2].y==200-GHOST_SPRITE_HAUTEUR) ghost[2].sensy = -2;		
+		ghost_move_rel(2, ghost[2].sensx, ghost[2].sensy);
+
+		if (ghost[3].x==0) ghost[3].sensx = 1; else if (ghost[3].x==160-GHOST_SPRITE_LARGEUR_P) ghost[3].sensx = -1;
+		if (ghost[3].y==0) ghost[3].sensy = 1; else if (ghost[3].y==200-GHOST_SPRITE_HAUTEUR) ghost[3].sensy = -1;		
+		ghost_move_rel(3, ghost[3].sensx, ghost[3].sensy);
+
 		
 		/* Rendu graphique */		
 		vsync();
 		put_frame(screen(player.oldx,player.oldy), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[IMG_BLANK]);		
 		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);		
+
+		for (i=0;i<4;i++)
+		{
+			put_frame(screen(ghost[i].oldx,ghost[i].oldy), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[IMG_BLANK]);		
+			put_frame(screen(ghost[i].x,ghost[i].y), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[14+(i<<1)+ghost[i].anim]);				
+		}
+
 	}
 }
