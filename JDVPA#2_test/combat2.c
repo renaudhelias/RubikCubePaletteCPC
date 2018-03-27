@@ -819,15 +819,15 @@ calqueC000();
 	progressbar(3,90,194,200);
 	progressbar(3,105,100,300-6);
 	
-	progressbar(300-3,30,100,200);
-	progressbar(300-3,45,193,200);
-	progressbar(300-3,60,100,200);
+	progressbar(52,30,100,200);
+	progressbar(52,45,193,200);
+	progressbar(52,60,100,200);
 	
-	progressbar(300-3,75,92,100);
-	progressbar(313-3,75,90,100);
+	progressbar(52,75,92,100);
+	progressbar(13+52,75,90,100);
 	
-	progressbar(300-3,90,191,200);
-	progressbar(300-3,105,290,300-6);
+	progressbar(52,90,191,200);
+	progressbar(41,105,290,300-6);
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
