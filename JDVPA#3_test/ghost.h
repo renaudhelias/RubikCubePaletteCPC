@@ -1,0 +1,8 @@
+#ifndef GHOST_H
+#define GHOST_H
+
+#define GHOST_SPRITE_LARGEUR_O	2
+#define GHOST_SPRITE_LARGEUR_P	4
+#define	GHOST_SPRITE_HAUTEUR	8
+
+#endif
