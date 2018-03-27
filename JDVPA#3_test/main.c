@@ -27,8 +27,10 @@ const unsigned char game_palette[]=
 
 void main(void)
 {
+	char i;
+
 	vram=precalc_vram();
-	
+
 	// Image vide
 	spr_img[IMG_BLANK] = (unsigned char *)blank_reduce_sprites;
 	// Pacman rond
