@@ -33,3 +33,7 @@ Un dog est quelque chose qui hara-kiri un programme lorsqu'il a été détecté 
 Si mon algo rame trop ici et mange trop de vsync, alors mon programme commence à baver du violet au bord et rame grave.
 
 J'utilise un sémaphore (c'est le nom scientifique), en fait l'interruption fait "is_vsync++", et dans le code je fais "while (is_vsync!=TEMPS_DE_MON_ALGO_EN_NB_DE_VSYNC) { if (is_vsync>TEMPS_DE_MON_ALGO_EN_NB_DE_VSYNC) {ouaf ouaf BOUM} } is_vsync=0;".
+
+![JDVPA2_COMBAT2-progressbar.dsk.png](JDVPA2_COMBAT2-progressbar.dsk.png)
+
+Ajout de la fonction progressbar()
