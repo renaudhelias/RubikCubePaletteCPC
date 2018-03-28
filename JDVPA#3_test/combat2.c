@@ -375,6 +375,32 @@ ANIMATION sub_zero;
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
+void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
+	if (liu_kang->x+4 > sub_zero->x) {
+		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
+			// les deux poussent à la fois
+			liu_kang->x=liu_kang->old_x;
+			sub_zero->x=sub_zero->old_x;
+		} else if (liu_kang->x > liu_kang->old_x) {
+			// liu_kang pousse sub_zero
+			if (sub_zero->x < 48) {
+				sub_zero->x=sub_zero->x+1;
+			} else {
+				liu_kang->x=liu_kang->old_x;
+			}
+			sub_zero->old_x=sub_zero->x;
+		} else if (sub_zero->x < sub_zero->old_x) {
+			// sub_zero pousse liu_kang
+			if (liu_kang->x > 3) {
+				liu_kang->x=liu_kang->x-1;
+			} else {
+				sub_zero->x=sub_zero->old_x;
+			}
+			liu_kang->old_x=liu_kang->x;
+		}
+	}
+}
+
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
 
@@ -557,14 +583,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			// le joueur va a droite
 			joueur->x = joueur->x + 1;
 			if (joueur->x > 48) {
-				joueur->x=3;
+				joueur->x=48; //3;
 			}
 		}
 		if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
 			// le joueur va a gauche
 			joueur->x = joueur->x - 1;
 			if (joueur->x < 3) {
-				joueur->x=48;
+				joueur->x=3; //48;
 			}
 		}
 	} else if ((joueur->allez_retour & MARCHE) != 0) {
@@ -572,13 +598,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			// le joueur va a droite
 			joueur->x = joueur->x + 1;
 			if (joueur->x > 48) {
-				joueur->x=3;
+				joueur->x=48; //3;
 			}
 		} else {
 			// le joueur va a gauche
 			joueur->x = joueur->x - 1;
 			if (joueur->x < 3) {
-				joueur->x=48;
+				joueur->x=3; //48;
 			}
 		}
 	}
@@ -916,6 +942,8 @@ calqueC000();
 	
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	action(&sub_zero,direction2);
+	
+	check_mur(&liu_kang,&sub_zero);
 
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	

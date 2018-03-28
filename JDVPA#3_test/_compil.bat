@@ -18,7 +18,7 @@ sdcc -mz80 -c --std-c99 --opt-code-speed blank_reduce_sprites.c
 sdcc -mz80 -c --std-c99 --opt-code-speed player.c
 sdcc -mz80 -c --std-c99 --opt-code-speed ghost.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --no-std-crt0 jdvapi_basic.rel jdvapi_keyb.rel jdvapi_frame.rel jdvapi_sync.rel crt0_cpc.rel putchar_cpc.rel pacman_reduce_sprites.rel ghost_reduce_sprites.rel blank_reduce_sprites.rel player.rel ghost.rel main.c
-sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel putchar_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2.c
 hex2bin main.ihx
 hex2bin combat2.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa3.dsk

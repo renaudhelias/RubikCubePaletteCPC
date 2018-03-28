@@ -1,7 +1,7 @@
 // pour memcpy
-#include <stdio.h>
+// #include <stdio.h>
 // pour memcpy
-#include <string.h>
+// #include <string.h>
 
 void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image)
 {
@@ -105,7 +105,7 @@ void erase_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nH
   __endasm;
 }
 
-void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *backup)
+/*void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *backup)
 {
 	// chie un peu dans la colle mais fait des trucs, utiliser save_frame() de MiGaNuts plutôt :P
   __asm
@@ -143,17 +143,16 @@ void get_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHei
 
 unsigned char* scr_next_line( unsigned char* adresse)
 {
-	/*
-	   &BC26 - SCR NEXT LINE
-	   Calculates the screen address of the byte below the specified
-	   screen address.
-	   ENTRY
-	   • L HL contains the screen address.
-	   EXIT
-	   • L HL contains the screen address of the byte below the original
-	   screen address.
-	   • F AF is corrupt, and all the other registers are preserved.
-	*/
+	
+	//   &BC26 - SCR NEXT LINE
+	//   Calculates the screen address of the byte below the specified
+	//   screen address.
+	//   ENTRY
+	//   • L HL contains the screen address.
+	//   EXIT
+	//   • L HL contains the screen address of the byte below the original
+	//   screen address.
+	//   • F AF is corrupt, and all the other registers are preserved.
   __asm
 	LD L, 4(IX) ; HL --> Adr destination
 	LD H, 5(IX)
@@ -164,8 +163,8 @@ unsigned char* scr_next_line( unsigned char* adresse)
 // idem que get_frame mais qui marche
 void save_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, unsigned char *image)
 {
-	//*pAddress : adresse ou on va "sauver" les données
-	//*image : adresse de la zone a découper
+	// *pAddress : adresse ou on va "sauver" les données
+	// *image : adresse de la zone a découper
 	//nWidth et nHeight : largeur et hauteur de la zone
 	unsigned char i;
 	for (i=0; i<nHeight; i++){
@@ -173,7 +172,7 @@ void save_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHe
 		image=scr_next_line(image);
 		pAddress=pAddress+nWidth;
 	}
-}
+}*/
 
 /**
  * JDVA#6 ON FAIT BOUGER UN POULPE
