@@ -9,9 +9,9 @@ void vsync();
 typedef  void (*MyFunctionReturningVoid)(unsigned char);
 
 // does kill the system
-void raster_halt();
+//void raster_halt();
 // does restore the system
-void firmware();
+//void firmware();
 // does replace the system by a callback
 void raster();
 // does install a new system
@@ -36,10 +36,10 @@ void bank6_4000();
 void bank7_4000();
 
 // 0-255 h
-void scroll(unsigned char h);
+//void scroll(unsigned char h);
 
 void overscan();
-void overscan24K();
+//void overscan24K();
 void overscanH();
 void scan();
 void calque4C00();

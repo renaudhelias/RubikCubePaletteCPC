@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "jdvapi_basic.h"
+#include "jdvapi_basic1.h"
 #include "jdvapi_keyb.h"
 #include "jdvapi_frame.h"
 #include "jdvapi_sync.h"

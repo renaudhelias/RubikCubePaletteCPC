@@ -14,7 +14,7 @@ void vsync()
   __endasm;
 }
 
-void raster_halt()
+/* void raster_halt()
 {
   // does kill the system
   __asm
@@ -23,9 +23,9 @@ void raster_halt()
     LD (#0x38),HL
     ei
   __endasm;
-}
+} */
 
-void firmware()
+/* void firmware()
 {
   // does restore the system (firmware instruction vector)
   __asm
@@ -36,7 +36,7 @@ void firmware()
     LD (#0x39),HL
     ei
   __endasm;
-}
+} */
 
 
 
@@ -230,7 +230,7 @@ void bank7_4000()
   __endasm;
 }
 
-void scroll(unsigned char h)
+/* void scroll(unsigned char h)
 {
 	__asm
 		ld A,4 (IX)
@@ -240,7 +240,7 @@ void scroll(unsigned char h)
 		ld c,A
 		out (c),c
 	__endasm;
-}
+} */
 
 void overscan()
 {
@@ -287,7 +287,7 @@ void overscanH()
  __endasm;
 }
 
-void overscan24K()
+/*void overscan24K()
 {
 	// CPCRulez overscan de 24Ko ( 92*264)
   __asm
@@ -308,7 +308,7 @@ void overscan24K()
     ld bc,#0xBD00+35
     out (c),c
  __endasm;
-}
+}*/
 
 void scan()
 {

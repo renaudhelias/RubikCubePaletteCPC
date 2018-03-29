@@ -1,9 +1,7 @@
-#ifndef JDVAPI_BASIC_H
-#define JDVAPI_BASIC_H
+#ifndef JDVAPI_BASIC2_H
+#define JDVAPI_BASIC2_H
 
 #define POKE(addr, b) (*(unsigned char *)(addr) = (b))
-
-void set_palette(unsigned char *pPalette);
 
 // color BASIC 0
 #define FIRM_COLOR_0 84
@@ -20,18 +18,10 @@ void set_palette(unsigned char *pPalette);
 
 void set_firmcolor(unsigned char firmColor);
 
-void border(unsigned char nColorIndex);
-
 void pen(unsigned char p);
 
 void locate(unsigned char x,unsigned char y);
 
-/**
- * JDVA#2 Passage en mode 0 et tracé de point lent
- */
-// char --> -128 +128
-// unsigned --> char 0..255
-void mode(unsigned char m);
 void firmmode(unsigned char m);
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent

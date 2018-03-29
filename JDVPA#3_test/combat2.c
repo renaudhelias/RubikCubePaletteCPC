@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+// #define NO_SOUND
 
-#include "jdvapi_basic.h"
+#include "jdvapi_basic1.h"
 #include "jdvapi_frame.h"
 #include "jdvapi_keyb.h"
 #include "jdvapi_sync.h"
@@ -20,7 +21,7 @@
 
 unsigned int *vram;
 
-
+#ifndef NO_SOUND
 void cpct_akp_musicInit()
 {
 	__asm
@@ -93,7 +94,7 @@ void cpct_akp_musicPlay()
   pop af
 	__endasm;
 }
-
+#endif
 
 void border_raster_begin()
 {
@@ -135,6 +136,7 @@ void border_raster_end()
   __endasm;
 }
 
+const char math_2pow[8]={1,2,4,8,16,32,64,128};
 
 unsigned char is_vsync;
 
@@ -145,10 +147,10 @@ void callback_roulette(unsigned char roulette)
 		is_vsync=is_vsync+1;
 	} else if (roulette==5) {
 		border_raster_begin();
-		
+#ifndef NO_SOUND		
 		// Play the STarKos song
 		cpct_akp_musicPlay();
-		
+#endif
 		border_raster_end();
 	}
 	return;
@@ -172,6 +174,79 @@ void transfertEtDecoupe()
 		}
 	}
 }
+
+
+void put_byte(char nX, char nY, unsigned char nByte) {
+	// if (xo==1) {pByteAddress = 0xC0FF + vram[nY] + nX;} else {
+	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
+	*pByteAddress = nByte;
+}
+
+void progressbar(char x, char y, int value, int max) {
+	int i;char j;char b;
+	char mod8=(value+2) %8;
+	char div8=(value+2) /8;
+	for (i=0;i<max/8;i++){
+		put_byte(x+i,y,0xFF);
+		if (i==0) {
+			put_byte(x+i,y+1,0x80);
+		} else if (i==max/8 -1) {
+			put_byte(x+i,y+1,0x01);
+		} else {
+			put_byte(x+i,y+1,0x00);
+		}
+		for (j=2;j<8;j++){
+			if (i<div8) {
+				b=0xFF;
+			} else if (i>div8) {
+				b=0x00;
+			} else {
+				switch(mod8) {
+					case 0:
+						b=0x00;
+						break;
+					case 1:
+						b=0x80;
+						break;
+					case 2:
+						b=0xC0;
+						break;
+					case 3:
+						b=0xE0;
+						break;
+					case 4:
+						b=0xF0;
+						break;
+					case 5:
+						b=0xF8;
+						break;
+					case 6:
+						b=0xFC;
+						break;
+					case 7:
+						b=0xFE;
+						break;
+				}
+			}
+			if (i==0) {
+				b=(b & 0xBF) | 0x80;
+			}
+			if (i==max/8 -1) {
+				b=(b & 0xFD) | 0x01;
+			}
+			put_byte(x+i,y+j,b);
+		}
+		if (i==0) {
+			put_byte(x+i,y+8,0x80);
+		} else if (i==max/8 -1) {
+			put_byte(x+i,y+8,0x01);
+		} else {
+			put_byte(x+i,y+8,0x00);
+		}
+		put_byte(x+i,y+9,0xFF);
+	}
+}
+
 
 const unsigned char combat2_palette[]=
 {
@@ -398,6 +473,95 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			}
 			liu_kang->old_x=liu_kang->x;
 		}
+	}
+}
+
+typedef struct {
+	char furie; // 0-196
+	char aura; // 0-196
+	char expert; // 0-196
+	char tech_perd; // 0-96
+	char tech_gagne; // 0-96
+	char tech; // 0-196
+	int vie; // 0-296
+} SCORE;
+
+SCORE liu_kang_score={100,196,100,30,75,194,100};
+SCORE sub_zero_score={100,193,100,92,90,191,290};
+
+char refresh = 0;
+void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
+	
+	//liu_kang->anim_restant 0 1  2  3  4   5
+	//liu_kang->animation.p  1 2 [4] 8 [16] 32
+
+	if (liu_kang->anim_restant<8) {
+	if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
+		// liu_kang PORTE un coup
+		if (sub_zero_score.vie == 0) {
+			sub_zero_score.vie = 296;
+		} else {
+			sub_zero_score.vie = sub_zero_score.vie - 1;
+		}
+	}
+	}
+	if (sub_zero->anim_restant<8) {
+	if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
+		// sub_zero PORTE un coup
+		if (liu_kang_score.vie == 0) {
+			liu_kang_score.vie = 296;
+		} else {
+			liu_kang_score.vie = liu_kang_score.vie - 1;
+		}
+	}
+	}
+	
+	sub_zero_score.aura = (sub_zero_score.aura +1)%197;
+	
+	refresh = refresh+1 % 14;
+	switch (refresh) {
+		case 0:
+			progressbar(3,30,liu_kang_score.furie,200);
+			break;
+		case 1:
+			progressbar(3,45,liu_kang_score.aura,200);
+			break;
+		case 2:
+			progressbar(3,60,liu_kang_score.expert,200);
+			break;
+		case 3:
+			progressbar(3,75,liu_kang_score.tech_perd,100);
+			break;
+		case 4:
+			progressbar(13+3,75,liu_kang_score.tech_gagne,100);
+			break;
+		case 5:
+			progressbar(3,90,liu_kang_score.tech,200);
+			break;
+		case 6:
+			progressbar(3,105,liu_kang_score.vie,300-6);
+			break;
+		case 7:
+			progressbar(52,30,sub_zero_score.furie,200);
+			break;
+		case 8:
+			progressbar(52,45,sub_zero_score.aura,200);
+			break;
+		case 9:
+			progressbar(52,60,sub_zero_score.expert,200);
+			break;
+		case 10:
+			progressbar(52,75,sub_zero_score.tech_perd,100);
+			break;
+		case 11:
+			progressbar(13+52,75,sub_zero_score.tech_gagne,100);
+			break;
+		case 12:
+			progressbar(52,90,sub_zero_score.tech,200);
+			break;
+		case 13:
+			progressbar(41,105,sub_zero_score.vie,300-6);
+			break;
 	}
 }
 
@@ -636,81 +800,6 @@ const CALQUE J1A_repos ={0,2,0,BANK_4,MARCHE | MARCHER};
 const CALQUE J2A_repos ={24,2,0,BANK_6,MARCHE | MARCHER};
 
 
-void put_byte(char nX, char nY, unsigned char nByte) {
-	// if (xo==1) {pByteAddress = 0xC0FF + vram[nY] + nX;} else {
-	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
-	*pByteAddress = nByte;
-}
-
-void progressbar(char x, char y, int value, int max) {
-	int i;char j;char b;
-	char mod8=(value+2) %8;
-	char div8=(value+2) /8;
-	for (i=0;i<max/8;i++){
-		put_byte(x+i,y,0xFF);
-		if (i==0) {
-			put_byte(x+i,y+1,0x80);
-		} else if (i==max/8 -1) {
-			put_byte(x+i,y+1,0x01);
-		} else {
-			put_byte(x+i,y+1,0x00);
-		}
-		for (j=2;j<8;j++){
-			if (i<div8) {
-				b=0xFF;
-			} else if (i>div8) {
-				b=0x00;
-			} else {
-				switch(mod8) {
-					case 0:
-						b=0x00;
-						break;
-					case 1:
-						b=0x80;
-						break;
-					case 2:
-						b=0xC0;
-						break;
-					case 3:
-						b=0xE0;
-						break;
-					case 4:
-						b=0xF0;
-						break;
-					case 5:
-						b=0xF8;
-						break;
-					case 6:
-						b=0xFC;
-						break;
-					case 7:
-						b=0xFE;
-						break;
-				}
-			}
-			if (i==0) {
-				b=(b & 0xBF) | 0x80;
-			}
-			if (i==max/8 -1) {
-				b=(b & 0xFD) | 0x01;
-			}
-			put_byte(x+i,y+j,b);
-		}
-		if (i==0) {
-			put_byte(x+i,y+8,0x80);
-		} else if (i==max/8 -1) {
-			put_byte(x+i,y+8,0x01);
-		} else {
-			put_byte(x+i,y+8,0x00);
-		}
-		
-		put_byte(x+i,y+9,0xFF);
-	}
-	
-
-	
-}
-
 void main(void)
 {
 	char i;char direction;char direction2;
@@ -794,8 +883,10 @@ void main(void)
 	LoadFile("intro-oh.scr", (char *)0x4000);
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
+#ifndef NO_SOUND
 	LoadFile("sks2000.bin", (char *)0x2000);
 	LoadFile("sudo3000.bin", (char *)0x3000);
+#endif
 	vram=precalc_vram();
 	
 	bank0123();
@@ -835,25 +926,10 @@ calqueC000();
 	//locate(5,1);printf("00");
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
-	progressbar(3,30,100,200);
-	progressbar(3,45,196,200);
-	progressbar(3,60,100,200);
 	
-	progressbar(3,75,30,100);
-	progressbar(13+3,75,50,100);
-	
-	progressbar(3,90,194,200);
-	progressbar(3,105,100,300-6);
-	
-	progressbar(52,30,100,200);
-	progressbar(52,45,193,200);
-	progressbar(52,60,100,200);
-	
-	progressbar(52,75,92,100);
-	progressbar(13+52,75,90,100);
-	
-	progressbar(52,90,191,200);
-	progressbar(41,105,290,300-6);
+	for (i=0;i<14;i++) {
+		paf(&liu_kang,&sub_zero);
+	}
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
@@ -862,18 +938,18 @@ calqueC000();
 	vsync();
 	handle_raster(callback_roulette);
 	raster();
-	
+#ifndef NO_SOUND
 	// cpctelera-1.4.2/examples/medium/arkosAudio
 	cpct_akp_musicInit(); //(void *)0x4000);
-
+#endif
 	is_vsync=0;
 	
 	// faire une boucle qui :
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	while (is_vsync!=1) {
-		if (is_vsync>1) {
+	while (is_vsync!=2) {
+		if (is_vsync>2) {
 			// saturation !
 			border_raster_begin2();
 		}
@@ -944,6 +1020,8 @@ calqueC000();
 	action(&sub_zero,direction2);
 	
 	check_mur(&liu_kang,&sub_zero);
+	
+	paf(&liu_kang,&sub_zero);
 
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	
