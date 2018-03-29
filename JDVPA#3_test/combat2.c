@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// #define NO_SOUND
+//#define NO_SOUND
 
 #include "jdvapi_basic1.h"
 #include "jdvapi_frame.h"
@@ -180,13 +180,21 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 	// if (xo==1) {pByteAddress = 0xC0FF + vram[nY] + nX;} else {
 	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
 	*pByteAddress = nByte;
+	pByteAddress = 0x4000 + vram[nY] + nX;
+	*pByteAddress = nByte;
 }
 
-void progressbar(char x, char y, int value, int max) {
+void progressbar(char x, char y, int value, int max, char pas64) {
 	int i;char j;char b;
 	char mod8=(value+2) %8;
 	char div8=(value+2) /8;
-	for (i=0;i<max/8;i++){
+	char maxi;
+	if ((pas64*8+1)>max/8) {
+		maxi=(max/8)%8;
+	} else {
+		maxi=8;
+	}
+	for (i=pas64*8;i<pas64*8+maxi;i++){
 		put_byte(x+i,y,0xFF);
 		if (i==0) {
 			put_byte(x+i,y+1,0x80);
@@ -486,16 +494,17 @@ typedef struct {
 	int vie; // 0-296
 } SCORE;
 
-SCORE liu_kang_score={100,196,100,30,75,194,100};
-SCORE sub_zero_score={100,193,100,92,90,191,290};
+SCORE liu_kang_score;//={100,196,100,30,75,194,100};
+SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 
 char refresh = 0;
+char zob = 0;
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	
 	//liu_kang->anim_restant 0 1  2  3  4   5
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
 
-	if (liu_kang->anim_restant<8) {
+	/*if (liu_kang->anim_restant<8) {
 	if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
 		// liu_kang PORTE un coup
 		if (sub_zero_score.vie == 0) {
@@ -514,53 +523,61 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			liu_kang_score.vie = liu_kang_score.vie - 1;
 		}
 	}
-	}
+	}*/
 	
-	sub_zero_score.aura = (sub_zero_score.aura +1)%197;
+	sub_zero_score.vie = (sub_zero_score.vie +1)%128;//296;
 	
-	refresh = refresh+1 % 14;
+	refresh = (refresh+1) % 16;
+	//zob=(zob+1)%32;
+	//progressbar(3,0,zob,32,0);
 	switch (refresh) {
 		case 0:
-			progressbar(3,30,liu_kang_score.furie,200);
+			progressbar(3,30,liu_kang_score.furie,200,0);
 			break;
 		case 1:
-			progressbar(3,45,liu_kang_score.aura,200);
+			progressbar(3,45,liu_kang_score.aura,200,0);
 			break;
 		case 2:
-			progressbar(3,60,liu_kang_score.expert,200);
+			progressbar(3,60,liu_kang_score.expert,200,0);
 			break;
 		case 3:
-			progressbar(3,75,liu_kang_score.tech_perd,100);
+			progressbar(3,75,liu_kang_score.tech_perd,100,0);
 			break;
 		case 4:
-			progressbar(13+3,75,liu_kang_score.tech_gagne,100);
+			progressbar(13+3,75,liu_kang_score.tech_gagne,100,0);
 			break;
 		case 5:
-			progressbar(3,90,liu_kang_score.tech,200);
+			progressbar(3,90,liu_kang_score.tech,200,0);
 			break;
 		case 6:
-			progressbar(3,105,liu_kang_score.vie,300-6);
+			progressbar(3,105,liu_kang_score.vie,300-6,0);
 			break;
 		case 7:
-			progressbar(52,30,sub_zero_score.furie,200);
+			progressbar(52,30,sub_zero_score.furie,200,0);
 			break;
 		case 8:
-			progressbar(52,45,sub_zero_score.aura,200);
+			progressbar(52,45,sub_zero_score.aura,200,0);
 			break;
 		case 9:
-			progressbar(52,60,sub_zero_score.expert,200);
+			progressbar(52,60,sub_zero_score.expert,200,0);
 			break;
 		case 10:
-			progressbar(52,75,sub_zero_score.tech_perd,100);
+			progressbar(52,75,sub_zero_score.tech_perd,100,0);
 			break;
 		case 11:
-			progressbar(13+52,75,sub_zero_score.tech_gagne,100);
+			progressbar(13+52,75,sub_zero_score.tech_gagne,100,0);
 			break;
 		case 12:
-			progressbar(52,90,sub_zero_score.tech,200);
+			progressbar(52,90,sub_zero_score.tech,200,0);
 			break;
 		case 13:
-			progressbar(41,105,sub_zero_score.vie,300-6);
+			progressbar(41,105,sub_zero_score.vie%16,300-6,0);
+			break;
+		case 14:
+			progressbar(41,105,sub_zero_score.vie,300-6,1);
+			break;
+		case 15:
+			progressbar(41,105,sub_zero_score.vie,300-6,2);
 			break;
 	}
 }
@@ -927,7 +944,7 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
-	for (i=0;i<14;i++) {
+	for (i=0;i<16;i++) {
 		paf(&liu_kang,&sub_zero);
 	}
 
@@ -948,8 +965,8 @@ calqueC000();
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	while (is_vsync!=2) {
-		if (is_vsync>2) {
+	while (is_vsync!=4) {
+		if (is_vsync>4) {
 			// saturation !
 			border_raster_begin2();
 		}
