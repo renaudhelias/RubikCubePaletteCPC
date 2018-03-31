@@ -184,17 +184,23 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 	*pByteAddress = nByte;
 }
 
-void progressbar(char x, char y, int value, int max, char pas64) {
-	int i;char j;char b;
+// on trace TAILLE_PAS*8 pixels à chaque lancement de progressbar()
+#define TAILLE_PAS 8
+char progressbar(char x, char y, int value, int max, char pas) {
+	int i;char j;char b;char max2;char maxi;
 	char mod8=(value+2) %8;
 	char div8=(value+2) /8;
-	char maxi;
-	if ((pas64*8+1)>max/8) {
-		maxi=(max/8)%8;
+	i=max/8;
+	max2=i; // max2 est un char, pas un int...
+	
+	// si max<
+	if (pas*TAILLE_PAS <= max/8) {
+		maxi=TAILLE_PAS;
 	} else {
-		maxi=8;
+		maxi=(max/8)%TAILLE_PAS;
 	}
-	for (i=pas64*8;i<pas64*8+maxi;i++){
+	for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+maxi;i++){
+	//for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+TAILLE_PAS;i++){
 		put_byte(x+i,y,0xFF);
 		if (i==0) {
 			put_byte(x+i,y+1,0x80);
@@ -252,6 +258,11 @@ void progressbar(char x, char y, int value, int max, char pas64) {
 			put_byte(x+i,y+8,0x00);
 		}
 		put_byte(x+i,y+9,0xFF);
+	}
+	if (pas*TAILLE_PAS > max2) {
+		return 0;
+	} else {
+		return pas + 1;
 	}
 }
 
@@ -498,6 +509,7 @@ SCORE liu_kang_score;//={100,196,100,30,75,194,100};
 SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 
 char refresh = 0;
+char refresh_pas = 0;
 char zob = 0;
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	
@@ -527,58 +539,62 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	
 	sub_zero_score.vie = (sub_zero_score.vie +1)%128;//296;
 	
-	refresh = (refresh+1) % 16;
+	
 	//zob=(zob+1)%32;
 	//progressbar(3,0,zob,32,0);
 	switch (refresh) {
 		case 0:
-			progressbar(3,30,liu_kang_score.furie,200,0);
+			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
 			break;
 		case 1:
-			progressbar(3,45,liu_kang_score.aura,200,0);
+			refresh_pas=progressbar(3,45,liu_kang_score.aura,200,refresh_pas);
 			break;
 		case 2:
-			progressbar(3,60,liu_kang_score.expert,200,0);
+			refresh_pas=progressbar(3,60,liu_kang_score.expert,200,refresh_pas);
 			break;
 		case 3:
-			progressbar(3,75,liu_kang_score.tech_perd,100,0);
+			refresh_pas=progressbar(3,75,liu_kang_score.tech_perd,100,refresh_pas);
 			break;
 		case 4:
-			progressbar(13+3,75,liu_kang_score.tech_gagne,100,0);
+			refresh_pas=progressbar(13+3,75,liu_kang_score.tech_gagne,100,refresh_pas);
 			break;
 		case 5:
-			progressbar(3,90,liu_kang_score.tech,200,0);
+			refresh_pas=progressbar(3,90,liu_kang_score.tech,200,refresh_pas);
 			break;
 		case 6:
-			progressbar(3,105,liu_kang_score.vie,300-6,0);
+			refresh_pas=progressbar(3,105,liu_kang_score.vie,300-6,refresh_pas);
 			break;
 		case 7:
-			progressbar(52,30,sub_zero_score.furie,200,0);
+			refresh_pas=progressbar(52,30,sub_zero_score.furie,200,refresh_pas);
 			break;
 		case 8:
-			progressbar(52,45,sub_zero_score.aura,200,0);
+			refresh_pas=progressbar(52,45,sub_zero_score.aura,200,refresh_pas);
 			break;
 		case 9:
-			progressbar(52,60,sub_zero_score.expert,200,0);
+			refresh_pas=progressbar(52,60,sub_zero_score.expert,200,refresh_pas);
 			break;
 		case 10:
-			progressbar(52,75,sub_zero_score.tech_perd,100,0);
+			refresh_pas=progressbar(52,75,sub_zero_score.tech_perd,100,refresh_pas);
 			break;
 		case 11:
-			progressbar(13+52,75,sub_zero_score.tech_gagne,100,0);
+			refresh_pas=progressbar(13+52,75,sub_zero_score.tech_gagne,100,refresh_pas);
 			break;
 		case 12:
-			progressbar(52,90,sub_zero_score.tech,200,0);
+			refresh_pas=progressbar(52,90,sub_zero_score.tech,200,refresh_pas);
 			break;
 		case 13:
-			progressbar(41,105,sub_zero_score.vie%16,300-6,0);
+			refresh_pas=progressbar(41,105,sub_zero_score.vie%16,300-6,refresh_pas);
 			break;
-		case 14:
-			progressbar(41,105,sub_zero_score.vie,300-6,1);
-			break;
-		case 15:
-			progressbar(41,105,sub_zero_score.vie,300-6,2);
-			break;
+	}
+	if (refresh_pas == 0) {
+		zob = 0;
+		refresh = (refresh+1) % 14;
+	} else {
+		zob = zob+1;
+		if (zob>20) {
+			zob = 0;
+			refresh = (refresh+1) % 14;	
+		}
 	}
 }
 
@@ -944,7 +960,7 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
-	for (i=0;i<16;i++) {
+	for (i=0;i<50;i++) {
 		paf(&liu_kang,&sub_zero);
 	}
 
