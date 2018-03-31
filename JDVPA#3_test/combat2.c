@@ -194,10 +194,10 @@ char progressbar(char x, char y, int value, int max, char pas) {
 	max2=i; // max2 est un char, pas un int...
 	
 	// si max<
-	if (pas*TAILLE_PAS <= max/8) {
-		maxi=TAILLE_PAS;
+	if ((pas+1)*TAILLE_PAS >= max2) {
+		maxi=max2%TAILLE_PAS;
 	} else {
-		maxi=(max/8)%TAILLE_PAS;
+		maxi=TAILLE_PAS;
 	}
 	for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+maxi;i++){
 	//for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+TAILLE_PAS;i++){
@@ -259,7 +259,7 @@ char progressbar(char x, char y, int value, int max, char pas) {
 		}
 		put_byte(x+i,y+9,0xFF);
 	}
-	if (pas*TAILLE_PAS > max2) {
+	if ((pas+1)*TAILLE_PAS >= max2) {
 		return 0;
 	} else {
 		return pas + 1;
@@ -538,6 +538,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	}*/
 	
 	sub_zero_score.vie = (sub_zero_score.vie +1)%128;//296;
+	liu_kang_score.vie = (liu_kang_score.vie +10)%128;//296;
 	
 	
 	//zob=(zob+1)%32;
