@@ -510,7 +510,6 @@ SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 
 char refresh = 0;
 char refresh_pas = 0;
-char zob = 0;
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	
 	//liu_kang->anim_restant 0 1  2  3  4   5
@@ -541,8 +540,6 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	liu_kang_score.vie = (liu_kang_score.vie +10)%128;//296;
 	
 	
-	//zob=(zob+1)%32;
-	//progressbar(3,0,zob,32,0);
 	switch (refresh) {
 		case 0:
 			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
@@ -586,16 +583,12 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		case 13:
 			refresh_pas=progressbar(41,105,sub_zero_score.vie%16,300-6,refresh_pas);
 			break;
+		default :
+			refresh_pas=0; refresh=0;
+			return;
 	}
 	if (refresh_pas == 0) {
-		zob = 0;
 		refresh = (refresh+1) % 14;
-	} else {
-		zob = zob+1;
-		if (zob>20) {
-			zob = 0;
-			refresh = (refresh+1) % 14;	
-		}
 	}
 }
 
