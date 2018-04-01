@@ -188,7 +188,7 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 
 // on trace TAILLE_PAS*8 pixels à chaque lancement de progressbar()
 char optim_bar=0;
-#define TAILLE_PAS 2
+#define TAILLE_PAS 4
 char progressbar(char x, char y, unsigned int value, unsigned int max, char pas) {
 	unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
 	char mod8=(value+2) %8;
@@ -997,7 +997,7 @@ calqueC000();
 	//locate(7,1);printf("99");
 	
 	optim_bar=0;
-	for (i=0;i<250;i++) {
+	for (i=0;i<100;i++) {
 		refresh_all_progressbar();
 	}
 	optim_bar=1;
