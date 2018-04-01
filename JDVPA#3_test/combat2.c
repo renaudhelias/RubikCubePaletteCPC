@@ -329,6 +329,7 @@ struct CALQUE_J1A {
 #define BANK_6 2
 #define BANK_7 3
 #define HADOUKEN 4
+#define IMPARABLE 4
 
 #define ALLEZ_RETOUR 1
 #define RETOUR 2
@@ -346,13 +347,13 @@ const struct CALQUE_J1A J1A= {
 	.bas={10,0,0,BANK_4,0},
 	.tres_haut={11,0,0,BANK_4,0},
 	.pied_haut={12,3,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu={16,3,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
+	.pied_milieu={16,3,PORTE_EN_4,BANK_4 | IMPARABLE,ALLEZ_RETOUR},
 	.genoux_milieu={20,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	.pied_haut2={22,4,PORTE_EN_3,BANK_4,0},
 	.balayette={27,3,PORTE_EN_3,BANK_4,MARCHE},
 	.hypercut={31,4,PORTE_EN_5,BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu2={38,1,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	.pied_milieu2={38,1,PORTE_EN_2,BANK_4 | IMPARABLE,ALLEZ_RETOUR},
 	.balayette2={40,2,PORTE_EN_3,BANK_4,0},
 	.pied_rotatif={43,8,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,MARCHE}
 };
@@ -408,8 +409,8 @@ struct CALQUE_J2A {
 const struct CALQUE_J2A J2A= {
 	.pied_haut={0,7,PORTE_EN_4,BANK_6,0},
 	.pied_haut2={8,2,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
-	.genoux_haut={11,1,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
-	.pied_retourne={13,6,PORTE_EN_4,BANK_6,0},
+	.genoux_haut={11,1,PORTE_EN_2,BANK_6 | IMPARABLE,ALLEZ_RETOUR},
+	.pied_retourne={13,6,PORTE_EN_4,BANK_6 | IMPARABLE,0},
 	.balayette={20,3,PORTE_EN_3,BANK_6,MARCHE},
 	.marcher={24,9,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={34,0,0,BANK_6,0},
@@ -607,6 +608,18 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 	}
 	
+	if (degats_liu_kang>degats_sub_zero && ((sub_zero->animation.b & IMPARABLE)==0) && ((sub_zero->allez_retour & MARCHER) == 0)) {
+		// le coup de sub_zero est paré
+		sub_zero->allez_retour=NON_CYCLIQUE;
+		sub_zero->anim_restant=sub_zero->animation.l;
+	} else if (degats_sub_zero>degats_liu_kang && ((liu_kang->animation.b & IMPARABLE)==0) && ((liu_kang->allez_retour & MARCHER) == 0)) {
+		// le coup de liu_kang est paré
+		liu_kang->allez_retour=NON_CYCLIQUE;
+		liu_kang->anim_restant=liu_kang->animation.l;
+	}
+		
+		
+	
 /*	if (refresh==0 && refresh_pas==0) {
 		if (liu_kang_score.vie==0) {
 			liu_kang_score.vie = 296;
@@ -628,7 +641,7 @@ void refresh_all_progressbar() {
 		case 1:
 			refresh_pas=progressbar(41,105,sub_zero_score.vie,300-6,refresh_pas);
 			break;
-		case 2:
+		/*case 2:
 			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
 			break;
 		case 3:
@@ -663,18 +676,18 @@ void refresh_all_progressbar() {
 			break;
 		case 13:
 			refresh_pas=progressbar(52,90,sub_zero_score.tech,200,refresh_pas);
-			break;
+			break;*/
 		default :
-			refresh_pas=0; refresh=2;
+			refresh_pas=0; refresh=0;//2;
 			return;
 	}
 	if (refresh_pas == 0) {
-		if (refresh<2) {
+//		if (refresh<2) {
 			// ne raffraichir que la vie
 			refresh = (refresh+1) % 2;
-		} else {
-			refresh = (refresh+1) % 14;
-		}
+//		} else {
+//			refresh = (refresh+1) % 14;
+//		}
 	}
 }
 
@@ -1064,7 +1077,7 @@ calqueC000();
 	//locate(7,1);printf("99");
 	
 	optim_bar=0;
-	for (i=0;i<100;i++) {
+	for (i=0;i<20;i++) {
 		refresh_all_progressbar();
 	}
 	optim_bar=1;
