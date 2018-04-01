@@ -478,7 +478,42 @@ ANIMATION sub_zero;
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
+	
 	if (liu_kang->x+4 > sub_zero->x) {
+		
+		//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
+		//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
+		//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
+		//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
+		
+		// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
+		if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
+			&& ((sub_zero->allez_retour & MARCHER) != 0)) {
+		// liu_kang attaque en avançant et sub_zero n'attaque pas
+			// liu_kang pousse sub_zero
+			if (sub_zero->x < 48) {
+				sub_zero->x=sub_zero->x+1;
+			} else {
+				liu_kang->x=liu_kang->old_x;
+			}
+			sub_zero->old_x=sub_zero->x;
+		} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
+			&& ((liu_kang->allez_retour & MARCHER) != 0)) {
+		// sub_zero attaque en avançant et liu_kang n'attaque pas
+			// sub_zero pousse liu_kang
+			if (liu_kang->x > 3) {
+				liu_kang->x=liu_kang->x-1;
+			} else {
+				sub_zero->x=sub_zero->old_x;
+			}
+			liu_kang->old_x=liu_kang->x;
+		} else {
+			// les deux poussent à la fois
+			liu_kang->x=liu_kang->old_x;
+			sub_zero->x=sub_zero->old_x;
+		}
+		
+		/* c'est bof le coup de pousser un gars sans lui taper dessus
 		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
 			// les deux poussent à la fois
 			liu_kang->x=liu_kang->old_x;
@@ -499,7 +534,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->old_x;
 			}
 			liu_kang->old_x=liu_kang->x;
-		}
+		}*/
 	}
 }
 
@@ -518,30 +553,34 @@ SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 
 char refresh = 0;
 char refresh_pas = 0;
+#define DEGATS 5
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
-	
+	char boum;
 	//liu_kang->anim_restant 0 1  2  3  4   5
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
 
-	if (liu_kang->anim_restant<8) {
-	if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
-		// liu_kang PORTE un coup
-		if (sub_zero_score.vie < 10) {
-			sub_zero_score.vie = 296;
-		} else {
-			sub_zero_score.vie = sub_zero_score.vie - 10;
+	if (liu_kang->x+4+DEGATS > sub_zero->x) {
+		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*5;
+		if (liu_kang->anim_restant<8) {
+		if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
+			// liu_kang PORTE un coup
+			if (sub_zero_score.vie < boum) {
+				sub_zero_score.vie = 296;
+			} else {
+				sub_zero_score.vie = sub_zero_score.vie - boum;
+			}
 		}
-	}
-	}
-	if (sub_zero->anim_restant<8) {
-	if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
-		// sub_zero PORTE un coup
-		if (liu_kang_score.vie < 10) {
-			liu_kang_score.vie = 296;
-		} else {
-			liu_kang_score.vie = liu_kang_score.vie - 10;
 		}
-	}
+		if (sub_zero->anim_restant<8) {
+		if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
+			// sub_zero PORTE un coup
+			if (liu_kang_score.vie < boum) {
+				liu_kang_score.vie = 296;
+			} else {
+				liu_kang_score.vie = liu_kang_score.vie - boum;
+			}
+		}
+		}
 	}
 	
 /*	if (refresh==0 && refresh_pas==0) {
