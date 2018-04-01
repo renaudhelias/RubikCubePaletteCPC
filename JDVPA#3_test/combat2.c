@@ -1142,6 +1142,7 @@ calqueC000();
 
 	// optimisation
 	for (i=120;i<120+50;i++) {
+		// utiliser du min/max sur x/old_x ?
 		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
 	}
 
@@ -1202,6 +1203,7 @@ calqueC000();
 	
 	check_mur(&liu_kang,&sub_zero);
 
+	// sang par ici ?
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
