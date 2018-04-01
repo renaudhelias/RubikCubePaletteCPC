@@ -38,7 +38,7 @@ void bank7_4000();
 // 0-255 h
 //void scroll(unsigned char h);
 
-void overscan();
+//void overscan();
 //void overscan24K();
 void overscanH();
 void scan();

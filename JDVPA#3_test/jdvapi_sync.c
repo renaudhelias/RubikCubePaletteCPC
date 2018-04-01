@@ -242,7 +242,7 @@ void bank7_4000()
 	__endasm;
 } */
 
-void overscan()
+/* void overscan()
 {
   __asm
     ld bc,#0xBC00+1 ; On met la valeur 48 dans
@@ -262,7 +262,7 @@ void overscan()
     ld bc,#0xBD00+35
     out (c),c
  __endasm;
-}
+} */
 
 void overscanH()
 {

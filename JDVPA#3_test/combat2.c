@@ -477,15 +477,17 @@ ANIMATION sub_zero;
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
+#define DEGATS 5
+char degats_liu_kang;
+char degats_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
+
+	//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
+	//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
+	//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
+	//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
 	
 	if (liu_kang->x+4 > sub_zero->x) {
-		
-		//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
-		//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
-		//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
-		//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
-		
 		// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
 		if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
 			&& ((sub_zero->allez_retour & MARCHER) != 0)) {
@@ -496,7 +498,8 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			} else {
 				liu_kang->x=liu_kang->old_x;
 			}
-			sub_zero->old_x=sub_zero->x;
+			//sub_zero->old_x=sub_zero->x;
+			return;
 		} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
 			&& ((liu_kang->allez_retour & MARCHER) != 0)) {
 		// sub_zero attaque en avançant et liu_kang n'attaque pas
@@ -506,13 +509,32 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			} else {
 				sub_zero->x=sub_zero->old_x;
 			}
-			liu_kang->old_x=liu_kang->x;
-		} else {
+			//liu_kang->old_x=liu_kang->x;
+			return;
+		} else if (degats_liu_kang==0 && degats_sub_zero==0) {
 			// les deux poussent à la fois
 			liu_kang->x=liu_kang->old_x;
 			sub_zero->x=sub_zero->old_x;
+			return;
 		}
-		
+	}
+	
+	if (degats_liu_kang>degats_sub_zero) {
+		// sub_zero est ejecté
+		if (sub_zero->x < 48) {
+			sub_zero->x=sub_zero->x+1;
+		}
+		liu_kang->x=liu_kang->old_x;
+		//sub_zero->old_x=sub_zero->x;
+	} else if (degats_sub_zero>degats_liu_kang) {
+		// liu_kang est ejecté
+		if (liu_kang->x > 3) {
+			liu_kang->x=liu_kang->x-1;
+		}
+		sub_zero->x=sub_zero->old_x;
+		//liu_kang->old_x=liu_kang->x;
+	}
+
 		/* c'est bof le coup de pousser un gars sans lui taper dessus
 		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
 			// les deux poussent à la fois
@@ -535,7 +557,6 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			}
 			liu_kang->old_x=liu_kang->x;
 		}*/
-	}
 }
 
 typedef struct {
@@ -553,17 +574,19 @@ SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 
 char refresh = 0;
 char refresh_pas = 0;
-#define DEGATS 5
+
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char boum;
 	//liu_kang->anim_restant 0 1  2  3  4   5
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
-
+	degats_liu_kang=0;
+	degats_sub_zero=0;
 	if (liu_kang->x+4+DEGATS > sub_zero->x) {
 		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*5;
 		if (liu_kang->anim_restant<8) {
 		if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
+			degats_liu_kang=boum;
 			if (sub_zero_score.vie < boum) {
 				sub_zero_score.vie = 296;
 			} else {
@@ -574,6 +597,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if (sub_zero->anim_restant<8) {
 		if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup
+			degats_sub_zero=boum;
 			if (liu_kang_score.vie < boum) {
 				liu_kang_score.vie = 296;
 			} else {
@@ -824,6 +848,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
+			} else {
+				joueur->animation.p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
 			}
 		}
 	}
@@ -909,6 +935,8 @@ void main(void)
 	sub_zero_score.tech_gagne=90;
 	sub_zero_score.tech=191;
 	sub_zero_score.vie=296;
+	degats_liu_kang=0;
+	degats_sub_zero=0;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
@@ -1130,10 +1158,10 @@ calqueC000();
 	
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	action(&sub_zero,direction2);
+
+	paf(&liu_kang,&sub_zero);
 	
 	check_mur(&liu_kang,&sub_zero);
-	
-	paf(&liu_kang,&sub_zero);
 
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	
