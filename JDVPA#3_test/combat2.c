@@ -194,7 +194,7 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 	max2=tmp; // max2 est un char, pas un int...
 	
 	// si max<
-	if ((pas+1)*TAILLE_PAS >= max2) {
+	if ((pas+1)*TAILLE_PAS > max2) {
 		maxi=max2%TAILLE_PAS;
 	} else {
 		maxi=TAILLE_PAS;
@@ -259,7 +259,7 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 		}
 		put_byte(x+i,y+9,0xFF);
 	}
-	if ((pas+1)*TAILLE_PAS >= max2) {
+	if ((pas+1)*TAILLE_PAS > max2) {
 		return 0;
 	} else {
 		return pas + 1;
@@ -515,82 +515,95 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	//liu_kang->anim_restant 0 1  2  3  4   5
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
 
-	/*if (liu_kang->anim_restant<8) {
+	if (liu_kang->anim_restant<8) {
 	if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
 		// liu_kang PORTE un coup
-		if (sub_zero_score.vie == 0) {
+		if (sub_zero_score.vie < 10) {
 			sub_zero_score.vie = 296;
 		} else {
-			sub_zero_score.vie = sub_zero_score.vie - 1;
+			sub_zero_score.vie = sub_zero_score.vie - 10;
 		}
 	}
 	}
 	if (sub_zero->anim_restant<8) {
 	if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
 		// sub_zero PORTE un coup
-		if (liu_kang_score.vie == 0) {
+		if (liu_kang_score.vie < 10) {
 			liu_kang_score.vie = 296;
 		} else {
-			liu_kang_score.vie = liu_kang_score.vie - 1;
+			liu_kang_score.vie = liu_kang_score.vie - 10;
 		}
 	}
-	}*/
-	
-	if (refresh==0 && refresh_pas==0) {
-		sub_zero_score.vie = (sub_zero_score.vie +1)%296;
-		liu_kang_score.vie = (liu_kang_score.vie +10)%296;
 	}
+	
+/*	if (refresh==0 && refresh_pas==0) {
+		if (liu_kang_score.vie==0) {
+			liu_kang_score.vie = 296;
+		} else {
+			liu_kang_score.vie = liu_kang_score.vie -10;
+		}
+		if (sub_zero_score.vie==0) {
+			sub_zero_score.vie = 296;
+		} else {
+			sub_zero_score.vie= sub_zero_score.vie -10;
+		}
+	}*/
 }
 void refresh_all_progressbar() {
 	switch (refresh) {
 		case 0:
-			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
-			break;
-		case 1:
-			refresh_pas=progressbar(3,45,liu_kang_score.aura,200,refresh_pas);
-			break;
-		case 2:
-			refresh_pas=progressbar(3,60,liu_kang_score.expert,200,refresh_pas);
-			break;
-		case 3:
-			refresh_pas=progressbar(3,75,liu_kang_score.tech_perd,100,refresh_pas);
-			break;
-		case 4:
-			refresh_pas=progressbar(13+3,75,liu_kang_score.tech_gagne,100,refresh_pas);
-			break;
-		case 5:
-			refresh_pas=progressbar(3,90,liu_kang_score.tech,200,refresh_pas);
-			break;
-		case 6:
 			refresh_pas=progressbar(3,105,liu_kang_score.vie,300-6,refresh_pas);
 			break;
+		case 1:
+			refresh_pas=progressbar(41,105,sub_zero_score.vie,300-6,refresh_pas);
+			break;
+		case 2:
+			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
+			break;
+		case 3:
+			refresh_pas=progressbar(3,45,liu_kang_score.aura,200,refresh_pas);
+			break;
+		case 4:
+			refresh_pas=progressbar(3,60,liu_kang_score.expert,200,refresh_pas);
+			break;
+		case 5:
+			refresh_pas=progressbar(3,75,liu_kang_score.tech_perd,100,refresh_pas);
+			break;
+		case 6:
+			refresh_pas=progressbar(13+3,75,liu_kang_score.tech_gagne,100,refresh_pas);
+			break;
 		case 7:
-			refresh_pas=progressbar(52,30,sub_zero_score.furie,200,refresh_pas);
+			refresh_pas=progressbar(3,90,liu_kang_score.tech,200,refresh_pas);
 			break;
 		case 8:
-			refresh_pas=progressbar(52,45,sub_zero_score.aura,200,refresh_pas);
+			refresh_pas=progressbar(52,30,sub_zero_score.furie,200,refresh_pas);
 			break;
 		case 9:
-			refresh_pas=progressbar(52,60,sub_zero_score.expert,200,refresh_pas);
+			refresh_pas=progressbar(52,45,sub_zero_score.aura,200,refresh_pas);
 			break;
 		case 10:
-			refresh_pas=progressbar(52,75,sub_zero_score.tech_perd,100,refresh_pas);
+			refresh_pas=progressbar(52,60,sub_zero_score.expert,200,refresh_pas);
 			break;
 		case 11:
-			refresh_pas=progressbar(13+52,75,sub_zero_score.tech_gagne,100,refresh_pas);
+			refresh_pas=progressbar(52,75,sub_zero_score.tech_perd,100,refresh_pas);
 			break;
 		case 12:
-			refresh_pas=progressbar(52,90,sub_zero_score.tech,200,refresh_pas);
+			refresh_pas=progressbar(13+52,75,sub_zero_score.tech_gagne,100,refresh_pas);
 			break;
 		case 13:
-			refresh_pas=progressbar(41,105,sub_zero_score.vie%16,300-6,refresh_pas);
+			refresh_pas=progressbar(52,90,sub_zero_score.tech,200,refresh_pas);
 			break;
 		default :
-			refresh_pas=0; refresh=0;
+			refresh_pas=0; refresh=2;
 			return;
 	}
 	if (refresh_pas == 0) {
-		refresh = (refresh+1) % 14;
+		if (refresh<2) {
+			// ne raffraichir que la vie
+			refresh = (refresh+1) % 2;
+		} else {
+			refresh = (refresh+1) % 14;
+		}
 	}
 }
 
@@ -653,6 +666,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
 		joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
 		joueur->animation.b=mapping_direction_calque[joueur->perso][joueur->direction]->b;
+		joueur->animation.p=mapping_direction_calque[joueur->perso][joueur->direction]->p;
 		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
@@ -833,6 +847,22 @@ void main(void)
 {
 	char i;char direction;char direction2;
 	
+	//init liu_kang_score et sub_zero_score
+	liu_kang_score.furie=100;
+	liu_kang_score.aura=196;
+	liu_kang_score.expert=100;
+	liu_kang_score.tech_perd=30;
+	liu_kang_score.tech_gagne=75;
+	liu_kang_score.tech=194;
+	liu_kang_score.vie=296;
+	sub_zero_score.furie=100;
+	sub_zero_score.aura=193;
+	sub_zero_score.expert=100;
+	sub_zero_score.tech_perd=92;
+	sub_zero_score.tech_gagne=90;
+	sub_zero_score.tech=191;
+	sub_zero_score.vie=296;
+	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
 	liu_kang.old_x=liu_kang.x;
@@ -844,6 +874,7 @@ void main(void)
 	liu_kang.animation.o=J1A_repos.o;
 	liu_kang.animation.l=J1A_repos.l;
 	liu_kang.animation.b=J1A_repos.b;
+	liu_kang.animation.p=J1A_repos.p;
 	
 	sub_zero.x=30;
 	sub_zero.old_x=sub_zero.x;
@@ -855,6 +886,7 @@ void main(void)
 	sub_zero.animation.o=J2A_repos.o;
 	sub_zero.animation.l=J2A_repos.l;
 	sub_zero.animation.b=J2A_repos.b;
+	sub_zero.animation.p=J2A_repos.p;
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
@@ -956,7 +988,7 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
-	for (i=0;i<100;i++) {
+	for (i=0;i<250;i++) {
 		refresh_all_progressbar();
 	}
 
