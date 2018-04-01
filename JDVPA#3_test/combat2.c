@@ -521,11 +521,10 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->old_x;
 			}
 			return;
-		} else if (degats_liu_kang==0 && degats_sub_zero==0) {
+		} else {
 			// les deux poussent à la fois
 			liu_kang->x=liu_kang->old_x;
 			sub_zero->x=sub_zero->old_x;
-			return;
 		}
 	}
 	
