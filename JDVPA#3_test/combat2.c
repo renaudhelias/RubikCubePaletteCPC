@@ -185,13 +185,13 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 }
 
 // on trace TAILLE_PAS*8 pixels à chaque lancement de progressbar()
-#define TAILLE_PAS 8
-char progressbar(char x, char y, int value, int max, char pas) {
-	int i;char j;char b;char max2;char maxi;
+#define TAILLE_PAS 1
+char progressbar(char x, char y, unsigned int value, unsigned int max, char pas) {
+	unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
 	char mod8=(value+2) %8;
 	char div8=(value+2) /8;
-	i=max/8;
-	max2=i; // max2 est un char, pas un int...
+	tmp=max/8;
+	max2=tmp; // max2 est un char, pas un int...
 	
 	// si max<
 	if ((pas+1)*TAILLE_PAS >= max2) {
@@ -496,13 +496,13 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 }
 
 typedef struct {
-	char furie; // 0-196
-	char aura; // 0-196
-	char expert; // 0-196
-	char tech_perd; // 0-96
-	char tech_gagne; // 0-96
-	char tech; // 0-196
-	int vie; // 0-296
+	unsigned char furie; // 0-196
+	unsigned char aura; // 0-196
+	unsigned char expert; // 0-196
+	unsigned char tech_perd; // 0-96
+	unsigned char tech_gagne; // 0-96
+	unsigned char tech; // 0-196
+	unsigned int vie; // 0-296
 } SCORE;
 
 SCORE liu_kang_score;//={100,196,100,30,75,194,100};
@@ -536,10 +536,12 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	}
 	}*/
 	
-	sub_zero_score.vie = (sub_zero_score.vie +1)%128;//296;
-	liu_kang_score.vie = (liu_kang_score.vie +10)%128;//296;
-	
-	
+	if (refresh==0 && refresh_pas==0) {
+		sub_zero_score.vie = (sub_zero_score.vie +1)%296;
+		liu_kang_score.vie = (liu_kang_score.vie +10)%296;
+	}
+}
+void refresh_all_progressbar() {
 	switch (refresh) {
 		case 0:
 			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
@@ -954,8 +956,8 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
-	for (i=0;i<50;i++) {
-		paf(&liu_kang,&sub_zero);
+	for (i=0;i<100;i++) {
+		refresh_all_progressbar();
 	}
 
 	// copie complète sur le calque 4000
@@ -975,8 +977,8 @@ calqueC000();
 	while(1){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
-	while (is_vsync!=4) {
-		if (is_vsync>4) {
+	while (is_vsync!=1) {
+		if (is_vsync>1) {
 			// saturation !
 			border_raster_begin2();
 		}
@@ -984,6 +986,8 @@ calqueC000();
 	is_vsync=0;
 	calqueC000();
 	bank0123();
+
+	refresh_all_progressbar();
 
 	//border_raster_end(); // fuck you, I'm determinist : memcpy !
 	//memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
