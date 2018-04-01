@@ -145,6 +145,8 @@ void callback_roulette(unsigned char roulette)
 	if (roulette==0) {
 		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
 		is_vsync=is_vsync+1;
+//	} else if (roulette==4) {
+//		border_raster_begin2();
 	} else if (roulette==5) {
 		border_raster_begin();
 #ifndef NO_SOUND		
@@ -185,7 +187,8 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 }
 
 // on trace TAILLE_PAS*8 pixels à chaque lancement de progressbar()
-#define TAILLE_PAS 1
+char optim_bar=0;
+#define TAILLE_PAS 2
 char progressbar(char x, char y, unsigned int value, unsigned int max, char pas) {
 	unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
 	char mod8=(value+2) %8;
@@ -201,15 +204,25 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 	}
 	for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+maxi;i++){
 	//for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+TAILLE_PAS;i++){
-		put_byte(x+i,y,0xFF);
-		if (i==0) {
-			put_byte(x+i,y+1,0x80);
-		} else if (i==max/8 -1) {
-			put_byte(x+i,y+1,0x01);
-		} else {
-			put_byte(x+i,y+1,0x00);
+		if (!optim_bar) {
+			put_byte(x+i,y,0xFF);
+			for (j=1;j<=8;j++){
+				if (i==0) {
+					put_byte(x+i,y+j,0x80);
+				} else if (i==max/8 -1) {
+					put_byte(x+i,y+j,0x01);
+				} else {
+					put_byte(x+i,y+j,0x00);
+				}
+			}
+			put_byte(x+i,y+9,0xFF);
 		}
-		for (j=2;j<8;j++){
+		//
+			if ((i/6)%2==0) {
+				j=(i%6)+2;
+			} else {
+				j=(5-(i%6))+2;
+			}
 			if (i<div8) {
 				b=0xFF;
 			} else if (i>div8) {
@@ -249,15 +262,10 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 				b=(b & 0xFD) | 0x01;
 			}
 			put_byte(x+i,y+j,b);
-		}
-		if (i==0) {
-			put_byte(x+i,y+8,0x80);
-		} else if (i==max/8 -1) {
-			put_byte(x+i,y+8,0x01);
-		} else {
-			put_byte(x+i,y+8,0x00);
-		}
-		put_byte(x+i,y+9,0xFF);
+		//}
+		//if (!optim_bar) {
+
+		//}
 	}
 	if ((pas+1)*TAILLE_PAS > max2) {
 		return 0;
@@ -988,9 +996,11 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
+	optim_bar=0;
 	for (i=0;i<250;i++) {
 		refresh_all_progressbar();
 	}
+	optim_bar=1;
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
