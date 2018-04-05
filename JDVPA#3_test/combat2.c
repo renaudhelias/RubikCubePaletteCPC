@@ -359,15 +359,15 @@ const struct CALQUE_J1A J1A= {
 	.bas={10,0,0,0,BANK_4,0},
 	.tres_haut={11,0,0,0,BANK_4,0},
 	.pied_haut={12,3,0,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu={16,3,CONTRE_EN_1 |CONTRE_EN_2|CONTRE_EN_3 |CONTRE_EN_4,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
-	.genoux_milieu={20,1,0,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_haut2={22,4,0,PORTE_EN_3,BANK_4,0},
-	.balayette={27,3,0,PORTE_EN_3,BANK_4,MARCHE},
-	.hypercut={31,4,0,PORTE_EN_5,BANK_4,NON_CYCLIQUE},
+	.pied_milieu={16,3,CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
+	.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
+	.balayette={27,3,CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,MARCHE},
+	.hypercut={31,4,0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,0,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu2={38,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.balayette2={40,2,0,PORTE_EN_3,BANK_4,0},
-	.pied_rotatif={43,8,0,PORTE_EN_4 | PORTE_EN_5 | PORTE_EN_6 | PORTE_EN_7 | PORTE_EN_8,BANK_4,MARCHE}
+	.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
+	.pied_rotatif={43,8,CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,BANK_4,MARCHE}
 };
 
 struct CALQUE_J1R {
@@ -394,11 +394,11 @@ const struct CALQUE_J1R J1R= {
 	.hadouken_fire={17,8,0,0,BANK_5,0},
 	.ko={26,5,0,0,BANK_5 | ENDING_KO,0},
 	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
-	.contre_haut={37,1,0,PORTE_EN_2,BANK_5,ALLEZ_RETOUR},
-	.macarena_milieu={39,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
+	.contre_haut={37,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR},
+	.macarena_milieu={39,4,0,0,BANK_5,0},
 	.dragon={44,2,0,0,BANK_5 | HADOUKEN,0},
 	.dragon_big={47,1,0,0,BANK_5,0},
-	.contre_haut2={49,1,0,PORTE_EN_2,BANK_5,ALLEZ_RETOUR}
+	.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2A {
@@ -419,17 +419,17 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	.pied_haut={0,7,0,PORTE_EN_4,BANK_6,0},
-	.pied_haut2={8,2,0,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
+	.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,BANK_6,0},
+	.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
-	.pied_retourne={13,6,CONTRE_EN_1 |CONTRE_EN_2 |CONTRE_EN_3 |CONTRE_EN_4 |CONTRE_EN_5 |CONTRE_EN_6 |CONTRE_EN_7,PORTE_EN_4,BANK_6,0},
-	.balayette={20,3,0,PORTE_EN_3,BANK_6,MARCHE},
+	.pied_retourne={13,6,CONTRE_EN_1 |CONTRE_EN_2 |CONTRE_EN_3,PORTE_EN_4 | PORTE_EN_5,BANK_6,0},
+	.balayette={20,3,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_3,BANK_6,MARCHE},
 	.marcher={24,9,0,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={34,0,0,0,BANK_6,0},
 	.bas={35,0,0,0,BANK_6,0},
 	.zombi={36,0,0,0,BANK_6,0},
 	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
-	.poing_double_jab={39,7,0,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
+	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6,BANK_6,0},
 	.aie={48,0,0,0,BANK_6,0},
 	.poing_gauche={49,2,0,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
@@ -460,7 +460,7 @@ const struct CALQUE_J2R J2R= {
 	.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,0,PORTE_EN_2,BANK_7,NON_CYCLIQUE},
 	.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,0,0,BANK_7,0}
+	.flaque={45,6,0,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7,0}
 };
 
 #define PERSO_LIU_KANG 0
@@ -598,7 +598,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	contre_liu_kang=0;
 	contre_sub_zero=0;
 	if (liu_kang->x+4+DEGATS > sub_zero->x) {
-		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*5;
+		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*2-1;
 		if (liu_kang->anim_restant<8) {
 		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
