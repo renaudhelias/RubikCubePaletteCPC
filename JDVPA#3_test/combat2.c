@@ -643,14 +643,14 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 	}
 	
-	if (contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0)) {
+	if (contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
 		degats_liu_kang=0;
 		// le coup de liu_kang est paré
 		//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
 		liu_kang->allez_retour=NON_CYCLIQUE;
 		liu_kang->anim_restant=liu_kang->animation->l;
 	}
-	if (contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0)) {
+	if (contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
 		degats_sub_zero=0;
 		// le coup de sub_zero est paré
 		//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
