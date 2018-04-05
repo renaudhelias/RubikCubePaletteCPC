@@ -1268,7 +1268,7 @@ calqueC000();
 		if (liu_kang_score.vie==0) {
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.fatality.ar;
-			sub_zero.animation=&J1R.fatality;
+			liu_kang.animation=&J1R.fatality;
 			liu_kang.direction=33;
 			
 			// victory
