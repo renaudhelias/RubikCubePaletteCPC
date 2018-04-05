@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NO_SOUND
+//#define NO_SOUND
 
 #include "jdvapi_basic1.h"
 #include "jdvapi_frame.h"
@@ -468,7 +468,7 @@ const struct CALQUE_J2R J2R= {
 typedef struct {
 	char perso; // identifiant du jouer
 	char direction;
-	CALQUE animation;
+	CALQUE * animation;
 	char anim_restant; // decompte un CALQUE.l
 	char allez_retour; // si ALLEZ ou RETOUR, decompte aussi un allez-retour de l'anim (ALLEZ, puis RETOUR, puis 0)
 	char x;char old_x;
@@ -599,7 +599,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	if (liu_kang->x+4+DEGATS > sub_zero->x) {
 		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*5;
 		if (liu_kang->anim_restant<8) {
-		if ((liu_kang->animation.p & math_2pow[liu_kang->anim_restant]) != 0) {
+		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
 			degats_liu_kang=boum;
 			if (sub_zero_score.vie < boum) {
@@ -608,13 +608,13 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero_score.vie = sub_zero_score.vie - boum;
 			}
 		}
-		if ((liu_kang->animation.c & math_2pow[liu_kang->anim_restant]) != 0) {
+		if ((liu_kang->animation->c & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang CONTRE un coup
 			contre_liu_kang=1;
 		}
 		}
 		if (sub_zero->anim_restant<8) {
-		if ((sub_zero->animation.p & math_2pow[sub_zero->anim_restant]) != 0) {
+		if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup
 			degats_sub_zero=boum;
 			if (liu_kang_score.vie < boum) {
@@ -623,7 +623,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				liu_kang_score.vie = liu_kang_score.vie - boum;
 			}
 		}
-		if ((sub_zero->animation.c & math_2pow[sub_zero->anim_restant]) != 0) {
+		if ((sub_zero->animation->c & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero CONTRE un coup
 			contre_sub_zero=1;
 		}
@@ -634,13 +634,13 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		degats_liu_kang=0;
 		// le coup de liu_kang est paré
 		liu_kang->allez_retour=NON_CYCLIQUE;
-		liu_kang->anim_restant=liu_kang->animation.l;
+		liu_kang->anim_restant=liu_kang->animation->l;
 	}
 	if (contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0)) {
 		degats_sub_zero=0;
 		// le coup de sub_zero est paré
 		sub_zero->allez_retour=NON_CYCLIQUE;
-		sub_zero->anim_restant=sub_zero->animation.l;
+		sub_zero->anim_restant=sub_zero->animation->l;
 	}
 	
 /*	if (refresh==0 && refresh_pas==0) {
@@ -727,8 +727,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	} else {
 
 	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
-		&& mapping_direction_calque[joueur->perso][direction_pressed]->o == joueur->animation.o
-		&& mapping_direction_calque[joueur->perso][direction_pressed]->b == joueur->animation.b) {
+		&& mapping_direction_calque[joueur->perso][direction_pressed]->o == joueur->animation->o
+		&& mapping_direction_calque[joueur->perso][direction_pressed]->b == joueur->animation->b) {
 		// hypercut : un coup un seul !
 		is_anim_fini=0;
 	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
@@ -740,7 +740,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			is_anim_fini=0;
 		}
 	} else {
-		if (joueur->anim_restant == joueur->animation.l) {
+		if (joueur->anim_restant == joueur->animation->l) {
 			is_anim_fini=1;
 		} else {
 			is_anim_fini=0;
@@ -777,17 +777,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			deplacement = DEPLACEMENT_AUCUNE;
 		}
 		
-		joueur->animation.o=mapping_direction_calque[joueur->perso][joueur->direction]->o;
-		joueur->animation.l=mapping_direction_calque[joueur->perso][joueur->direction]->l;
-		joueur->animation.b=mapping_direction_calque[joueur->perso][joueur->direction]->b;
-		joueur->animation.c=mapping_direction_calque[joueur->perso][joueur->direction]->c;
-		joueur->animation.p=mapping_direction_calque[joueur->perso][joueur->direction]->p;
+		joueur->animation=mapping_direction_calque[joueur->perso][joueur->direction];
 		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 		if (joueur->perso == PERSO_LIU_KANG) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
 				 if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation.l) {
+					if (joueur->anim_restant==joueur->animation->l) {
 						joueur->anim_restant=0; // cyclique
 					} else {
 						joueur->anim_restant=joueur->anim_restant+1;
@@ -803,13 +799,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 				if (is_continue_marcher) {
 					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation.l; // cyclique
+						joueur->anim_restant=joueur->animation->l; // cyclique
 					} else {
 						joueur->anim_restant=joueur->anim_restant-1;
 					}
 				} else {
 					if ((joueur->allez_retour & RETOUR) != 0) {
-						joueur->anim_restant=joueur->animation.l;
+						joueur->anim_restant=joueur->animation->l;
 					} else {
 						joueur->anim_restant=0;
 					}
@@ -822,7 +818,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			if (deplacement == DEPLACEMENT_AVANCE) {
 				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
 				if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation.l) {
+					if (joueur->anim_restant==joueur->animation->l) {
 						joueur->anim_restant=0; // cyclique
 					} else {
 						joueur->anim_restant=joueur->anim_restant+1;
@@ -837,13 +833,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 				if (is_continue_marcher) {
 					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation.l; // cyclique
+						joueur->anim_restant=joueur->animation->l; // cyclique
 					} else {
 						joueur->anim_restant=joueur->anim_restant-1;
 					}
 				} else {
 					if ((joueur->allez_retour & RETOUR) != 0) {
-						joueur->anim_restant=joueur->animation.l;
+						joueur->anim_restant=joueur->animation->l;
 					} else {
 						joueur->anim_restant=0;
 					}
@@ -861,14 +857,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		
 		if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
 			// animation de type ALLEZ_RETOUR : incremente, puis RETOUR
-			if (joueur->anim_restant < joueur->animation.l) {
+			if (joueur->anim_restant < joueur->animation->l) {
 				joueur->anim_restant = joueur->anim_restant +1;
-				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation.l) {
+				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation->l) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
-				if (joueur->anim_restant == joueur->animation.l ) {
-					joueur->anim_restant = joueur->animation.l;
+				if (joueur->anim_restant == joueur->animation->l ) {
+					joueur->anim_restant = joueur->animation->l;
 					joueur->allez_retour = ((joueur->allez_retour & (!ALLEZ_RETOUR)) | RETOUR);
 				}
 			}
@@ -886,14 +882,15 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			}
 		} else {
 			// animation de type normale ! incrémente
-			if (joueur->anim_restant < joueur->animation.l) {
+			if (joueur->anim_restant < joueur->animation->l) {
 				joueur->anim_restant = joueur->anim_restant +1;
-				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation.l) {
+				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation->l) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
 			} else {
-				joueur->animation.p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
+				//joueur->animation->p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
+				//FIXME croiser avec NON_CYCLIQUE ?
 				if (direction_pressed == 32 && ((joueur->allez_retour & NON_CYCLIQUE) == 0) ) {
 					// animation ENDING || ENDING_KO en boucle
 					joueur->anim_restant = 0;
@@ -940,7 +937,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 
 void switch_bank(ANIMATION * joueur) {
 	// sur les deux derniers bit : BANK
-	switch (joueur->animation.b & 3) {
+	switch (joueur->animation->b & 3) {
 		case BANK_4 :
 			bank4_4000();
 		return;
@@ -1098,12 +1095,7 @@ calqueC000();
 	liu_kang.anim_restant=0;
 	liu_kang.allez_retour=J1A_repos.ar;
 
-	liu_kang.animation.o=J1A_repos.o;
-	liu_kang.animation.l=J1A_repos.l;
-	liu_kang.animation.b=J1A_repos.b;
-	liu_kang.animation.c=J1A_repos.c;
-	liu_kang.animation.p=J1A_repos.p;
-	liu_kang.animation.ar=J1A_repos.ar;
+	liu_kang.animation=&J1A_repos;
 	
 	sub_zero.x=30;
 	sub_zero.old_x=sub_zero.x;
@@ -1112,14 +1104,7 @@ calqueC000();
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=J2A_repos.ar;
 
-	sub_zero.animation.o=J2A_repos.o;
-	sub_zero.animation.l=J2A_repos.l;
-	sub_zero.animation.b=J2A_repos.b;
-	sub_zero.animation.c=J2A_repos.c;
-	sub_zero.animation.p=J2A_repos.p;
-	sub_zero.animation.ar=J2A_repos.ar;
-
-
+	sub_zero.animation=&J2A_repos;
 	
 	// fond
 	erase_frame((unsigned char *)(0xC000 + vram[120]+3),6*8+3,50);
@@ -1236,11 +1221,7 @@ calqueC000();
 		if (sub_zero_score.vie==0) {
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2R.fatality.ar;
-			sub_zero.animation.o=J2R.fatality.o;
-			sub_zero.animation.l=J2R.fatality.l;
-			sub_zero.animation.b=J2R.fatality.b;
-			sub_zero.animation.c=J2R.fatality.c;
-			sub_zero.animation.p=J2R.fatality.p;
+			sub_zero.animation=&J2R.fatality;
 			sub_zero.direction=33;
 			
 			// victory
@@ -1252,11 +1233,7 @@ calqueC000();
 			}
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.victory.ar;
-			liu_kang.animation.o=J1R.victory.o;
-			liu_kang.animation.l=J1R.victory.l;
-			liu_kang.animation.b=J1R.victory.b;
-			liu_kang.animation.c=J1R.victory.c;
-			liu_kang.animation.p=J1R.victory.p;
+			liu_kang.animation=&J1R.victory;
 			liu_kang.direction=33;
 			direction2=34;
 			direction=34;
@@ -1266,11 +1243,7 @@ calqueC000();
 		sub_zero.anim_restant=0;
 		sub_zero.allez_retour=J2R.ko.ar;
 
-		sub_zero.animation.o=J2R.ko.o;
-		sub_zero.animation.l=J2R.ko.l;
-		sub_zero.animation.b=J2R.ko.b;
-		sub_zero.animation.c=J2R.ko.c;
-		sub_zero.animation.p=J2R.ko.p;
+		sub_zero.animation=&J2R.ko;
 		sub_zero.direction=32;
 		direction2=34;
 		sub_zero_score.vie=296/2; // 50% pour aller au fatality
@@ -1287,11 +1260,7 @@ calqueC000();
 		if (liu_kang_score.vie==0) {
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.fatality.ar;
-			liu_kang.animation.o=J1R.fatality.o;
-			liu_kang.animation.l=J1R.fatality.l;
-			liu_kang.animation.b=J1R.fatality.b;
-			liu_kang.animation.c=J1R.fatality.c;
-			liu_kang.animation.p=J1R.fatality.p;
+			sub_zero.animation=&J1R.fatality;
 			liu_kang.direction=33;
 			
 			// victory
@@ -1303,11 +1272,7 @@ calqueC000();
 			}
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2A.victory.ar;
-			sub_zero.animation.o=J2A.victory.o;
-			sub_zero.animation.l=J2A.victory.l;
-			sub_zero.animation.b=J2A.victory.b;
-			sub_zero.animation.c=J2A.victory.c;
-			sub_zero.animation.p=J2A.victory.p;
+			sub_zero.animation=&J2A.victory;
 			sub_zero.direction=33;
 			direction2=34;
 			direction=34;
@@ -1317,11 +1282,7 @@ calqueC000();
 		liu_kang.anim_restant=0;
 		liu_kang.allez_retour=J1R.ko.ar;
 
-		liu_kang.animation.o=J1R.ko.o;
-		liu_kang.animation.l=J1R.ko.l;
-		liu_kang.animation.b=J1R.ko.b;
-		liu_kang.animation.c=J1R.ko.c;
-		liu_kang.animation.p=J1R.ko.p;
+		liu_kang.animation=&J1R.ko;
 		liu_kang.direction=32;
 		direction=34;
 		liu_kang_score.vie=296/2; // 50% pour aller au fatality
@@ -1350,10 +1311,10 @@ calqueC000();
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 
 	switch_bank(&liu_kang);
-	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation.o+liu_kang.anim_restant)));
+	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
 
 	switch_bank(&sub_zero);
-	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
+	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
 
 	}// while !replay
 	}// while 1
