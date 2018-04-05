@@ -674,10 +674,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 void refresh_all_progressbar() {
 	switch (refresh) {
 		case 0:
-			refresh_pas=progressbar(3,105,liu_kang_score.vie,300-6,refresh_pas);
+			refresh_pas=progressbar(3,105,liu_kang_score.vie / 3,300-6,refresh_pas);
 			break;
 		case 1:
-			refresh_pas=progressbar(41,105,sub_zero_score.vie,300-6,refresh_pas);
+			refresh_pas=progressbar(41,105,sub_zero_score.vie / 3,300-6,refresh_pas);
 			break;
 		/*case 2:
 			refresh_pas=progressbar(3,30,liu_kang_score.furie,200,refresh_pas);
@@ -1093,14 +1093,14 @@ calqueC000();
 	liu_kang_score.tech_perd=30;
 	liu_kang_score.tech_gagne=75;
 	liu_kang_score.tech=194;*/
-	liu_kang_score.vie=296;
+	liu_kang_score.vie=296*3;
 /*	sub_zero_score.furie=100;
 	sub_zero_score.aura=193;
 	sub_zero_score.expert=100;
 	sub_zero_score.tech_perd=92;
 	sub_zero_score.tech_gagne=90;
 	sub_zero_score.tech=191;*/
-	sub_zero_score.vie=296;
+	sub_zero_score.vie=296*3;
 	degats_liu_kang=0;
 	degats_sub_zero=0;
 	contre_liu_kang=0;
@@ -1268,7 +1268,7 @@ calqueC000();
 		sub_zero.animation=&J2R.ko;
 		sub_zero.direction=32;
 		direction2=34;
-		sub_zero_score.vie=296/2; // 50% pour aller au fatality
+		sub_zero_score.vie=296/2; // 15% pour aller au fatality
 	}
 	
 	if (liu_kang.direction == 33) {
@@ -1307,7 +1307,7 @@ calqueC000();
 		liu_kang.animation=&J1R.ko;
 		liu_kang.direction=32;
 		direction=34;
-		liu_kang_score.vie=296/2; // 50% pour aller au fatality
+		liu_kang_score.vie=296/2; // 15% pour aller au fatality
 	}
 		
 	//action(&liu_kang,direction);
