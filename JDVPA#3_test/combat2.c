@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-//#define NO_SOUND
+#define NO_SOUND
 
 #include "jdvapi_basic1.h"
 #include "jdvapi_frame.h"
@@ -339,6 +339,8 @@ struct CALQUE_J1A {
 #define BANK_6 2
 #define BANK_7 3
 #define HADOUKEN 4
+#define ENDING_KO 8
+#define ENDING 16
 
 #define ALLEZ_RETOUR 1
 #define RETOUR 2
@@ -384,12 +386,12 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,5,0,0,BANK_5,0},
-	.fatality={6,2,0,0,BANK_5,0},
+	.victory={0,5,0,0,BANK_5 | ENDING,0},
+	.fatality={6,2,0,0,BANK_5 | ENDING,NON_CYCLIQUE},
 	.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
 	.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
 	.hadouken_fire={17,8,0,0,BANK_5,0},
-	.ko={26,5,0,0,BANK_5,0},
+	.ko={26,5,0,0,BANK_5 | ENDING_KO,0},
 	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
 	.contre_haut={37,1,0,PORTE_EN_2,BANK_5,ALLEZ_RETOUR},
 	.macarena_milieu={39,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
@@ -425,7 +427,7 @@ const struct CALQUE_J2A J2A= {
 	.haut={34,0,0,0,BANK_6,0},
 	.bas={35,0,0,0,BANK_6,0},
 	.zombi={36,0,0,0,BANK_6,0},
-	.victory={37,1,0,0,BANK_6,ALLEZ_RETOUR},
+	.victory={37,1,0,0,BANK_6 | ENDING,ALLEZ_RETOUR},
 	.poing_double_jab={39,7,0,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
 	.aie={48,0,0,0,BANK_6,0},
 	.poing_gauche={49,2,0,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
@@ -448,8 +450,8 @@ struct CALQUE_J2R{
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
 	.poing_droit={0,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.ko={2,4,0,0,BANK_7,0},
-	.fatality={7,4,0,0,BANK_7,0},
+	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
+	.fatality={7,4,0,0,BANK_7 | ENDING,NON_CYCLIQUE},
 	.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
 	.hadouken1_fire={22,0,0,0,BANK_7,0},
 	.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
@@ -571,12 +573,12 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 }
 
 typedef struct {
-	unsigned char furie; // 0-196
+/*	unsigned char furie; // 0-196
 	unsigned char aura; // 0-196
 	unsigned char expert; // 0-196
 	unsigned char tech_perd; // 0-96
 	unsigned char tech_gagne; // 0-96
-	unsigned char tech; // 0-196
+	unsigned char tech; // 0-196*/
 	unsigned int vie; // 0-296
 } SCORE;
 
@@ -601,7 +603,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			// liu_kang PORTE un coup
 			degats_liu_kang=boum;
 			if (sub_zero_score.vie < boum) {
-				sub_zero_score.vie = 296;
+				sub_zero_score.vie = 0;//296;
 			} else {
 				sub_zero_score.vie = sub_zero_score.vie - boum;
 			}
@@ -616,7 +618,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			// sub_zero PORTE un coup
 			degats_sub_zero=boum;
 			if (liu_kang_score.vie < boum) {
-				liu_kang_score.vie = 296;
+				liu_kang_score.vie = 0;//296;
 			} else {
 				liu_kang_score.vie = liu_kang_score.vie - boum;
 			}
@@ -717,6 +719,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 
 	joueur->old_x=joueur->x;
 
+	if (direction_pressed==32) {
+		// special animation : ENDING_KO | ENDING, déjà préchargé
+		is_anim_fini=0;
+		is_arrete_marcher=0;
+		is_continue_marcher=0;
+	} else {
+
 	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
 		&& mapping_direction_calque[joueur->perso][direction_pressed]->o == joueur->animation.o
 		&& mapping_direction_calque[joueur->perso][direction_pressed]->b == joueur->animation.b) {
@@ -744,7 +753,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
 	is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
-	
+}
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
 	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
 		// déclanchement d'une nouvelle animation
@@ -885,6 +894,10 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 			} else {
 				joueur->animation.p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
+				if (direction_pressed == 32 && ((joueur->allez_retour & NON_CYCLIQUE) == 0) ) {
+					// animation ENDING || ENDING_KO en boucle
+					joueur->anim_restant = 0;
+				}
 			}
 		}
 	}
@@ -953,54 +966,9 @@ const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
 void main(void)
 {
-	char i;char direction;char direction2;
+	char i;char direction;char direction2;char replay;
 	
-	//init liu_kang_score et sub_zero_score
-	liu_kang_score.furie=100;
-	liu_kang_score.aura=196;
-	liu_kang_score.expert=100;
-	liu_kang_score.tech_perd=30;
-	liu_kang_score.tech_gagne=75;
-	liu_kang_score.tech=194;
-	liu_kang_score.vie=296;
-	sub_zero_score.furie=100;
-	sub_zero_score.aura=193;
-	sub_zero_score.expert=100;
-	sub_zero_score.tech_perd=92;
-	sub_zero_score.tech_gagne=90;
-	sub_zero_score.tech=191;
-	sub_zero_score.vie=296;
-	degats_liu_kang=0;
-	degats_sub_zero=0;
-	contre_liu_kang=0;
-	contre_sub_zero=0;
 	
-	//init liu_kang et sub_zero
-	liu_kang.x=10;
-	liu_kang.old_x=liu_kang.x;
-	liu_kang.perso=PERSO_LIU_KANG;
-	liu_kang.direction=0;
-	liu_kang.anim_restant=0;
-	liu_kang.allez_retour=0;
-
-	liu_kang.animation.o=J1A_repos.o;
-	liu_kang.animation.l=J1A_repos.l;
-	liu_kang.animation.b=J1A_repos.b;
-	liu_kang.animation.c=J1A_repos.c;
-	liu_kang.animation.p=J1A_repos.p;
-	
-	sub_zero.x=30;
-	sub_zero.old_x=sub_zero.x;
-	sub_zero.perso=PERSO_SUB_ZERO;
-	sub_zero.direction=0;
-	sub_zero.anim_restant=0;
-	sub_zero.allez_retour=0;
-
-	sub_zero.animation.o=J2A_repos.o;
-	sub_zero.animation.l=J2A_repos.l;
-	sub_zero.animation.b=J2A_repos.b;
-	sub_zero.animation.c=J2A_repos.c;
-	sub_zero.animation.p=J2A_repos.p;
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
@@ -1086,6 +1054,9 @@ void main(void)
 	transfertEtDecoupe();
 
 // et finalement.
+
+
+
 calqueC000();
 	bank0123();
 	mode(2);
@@ -1094,6 +1065,62 @@ calqueC000();
 	scan();
 	bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
+	
+	
+	
+	while(1){
+
+//init liu_kang_score et sub_zero_score
+	/*liu_kang_score.furie=100;
+	liu_kang_score.aura=196;
+	liu_kang_score.expert=100;
+	liu_kang_score.tech_perd=30;
+	liu_kang_score.tech_gagne=75;
+	liu_kang_score.tech=194;*/
+	liu_kang_score.vie=296;
+/*	sub_zero_score.furie=100;
+	sub_zero_score.aura=193;
+	sub_zero_score.expert=100;
+	sub_zero_score.tech_perd=92;
+	sub_zero_score.tech_gagne=90;
+	sub_zero_score.tech=191;*/
+	sub_zero_score.vie=296;
+	degats_liu_kang=0;
+	degats_sub_zero=0;
+	contre_liu_kang=0;
+	contre_sub_zero=0;
+	
+	//init liu_kang et sub_zero
+	liu_kang.x=10;
+	liu_kang.old_x=liu_kang.x;
+	liu_kang.perso=PERSO_LIU_KANG;
+	liu_kang.direction=0;
+	liu_kang.anim_restant=0;
+	liu_kang.allez_retour=J1A_repos.ar;
+
+	liu_kang.animation.o=J1A_repos.o;
+	liu_kang.animation.l=J1A_repos.l;
+	liu_kang.animation.b=J1A_repos.b;
+	liu_kang.animation.c=J1A_repos.c;
+	liu_kang.animation.p=J1A_repos.p;
+	liu_kang.animation.ar=J1A_repos.ar;
+	
+	sub_zero.x=30;
+	sub_zero.old_x=sub_zero.x;
+	sub_zero.perso=PERSO_SUB_ZERO;
+	sub_zero.direction=0;
+	sub_zero.anim_restant=0;
+	sub_zero.allez_retour=J2A_repos.ar;
+
+	sub_zero.animation.o=J2A_repos.o;
+	sub_zero.animation.l=J2A_repos.l;
+	sub_zero.animation.b=J2A_repos.b;
+	sub_zero.animation.c=J2A_repos.c;
+	sub_zero.animation.p=J2A_repos.p;
+	sub_zero.animation.ar=J2A_repos.ar;
+
+
+	
 	// fond
 	erase_frame((unsigned char *)(0xC000 + vram[120]+3),6*8+3,50);
 	// score
@@ -1119,10 +1146,16 @@ calqueC000();
 	// cpctelera-1.4.2/examples/medium/arkosAudio
 	cpct_akp_musicInit(); //(void *)0x4000);
 #endif
+
+
+
+
+
+	replay=0;
 	is_vsync=0;
 	
 	// faire une boucle qui :
-	while(1){
+	while(!replay){
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	while (is_vsync!=1) {
@@ -1189,19 +1222,127 @@ calqueC000();
 	if (get_key(Key_L) || get_key(Key_G_Joy2Fire)) {
 		direction2=direction2 | DIRECTION_FIRE;
 	}
+	if (get_key(Key_N)) {
+		// new game
+		replay=1;
+	}
 	
+	if (sub_zero.direction == 33) {
+		// fatality
+		direction2=32;
+	} else if (sub_zero.direction == 32) {
+		// ko in progress
+		direction2=32;
+		if (sub_zero_score.vie==0) {
+			sub_zero.anim_restant=0;
+			sub_zero.allez_retour=J2R.fatality.ar;
+			sub_zero.animation.o=J2R.fatality.o;
+			sub_zero.animation.l=J2R.fatality.l;
+			sub_zero.animation.b=J2R.fatality.b;
+			sub_zero.animation.c=J2R.fatality.c;
+			sub_zero.animation.p=J2R.fatality.p;
+			sub_zero.direction=33;
+			
+			// victory
+			liu_kang.old_x=liu_kang.x;
+			if (sub_zero.x<20) {
+				liu_kang.x=30;
+			} else {
+				liu_kang.x=10;
+			}
+			liu_kang.anim_restant=0;
+			liu_kang.allez_retour=J1R.victory.ar;
+			liu_kang.animation.o=J1R.victory.o;
+			liu_kang.animation.l=J1R.victory.l;
+			liu_kang.animation.b=J1R.victory.b;
+			liu_kang.animation.c=J1R.victory.c;
+			liu_kang.animation.p=J1R.victory.p;
+			liu_kang.direction=33;
+			direction2=34;
+			direction=34;
+		}
+	} else if (sub_zero_score.vie==0) {
+		// ko
+		sub_zero.anim_restant=0;
+		sub_zero.allez_retour=J2R.ko.ar;
+
+		sub_zero.animation.o=J2R.ko.o;
+		sub_zero.animation.l=J2R.ko.l;
+		sub_zero.animation.b=J2R.ko.b;
+		sub_zero.animation.c=J2R.ko.c;
+		sub_zero.animation.p=J2R.ko.p;
+		sub_zero.direction=32;
+		direction2=34;
+		sub_zero_score.vie=296/2; // 50% pour aller au fatality
+	}
 	
+	if (liu_kang.direction == 33) {
+		// fatality
+		if (direction != 34) { // sans ghost...
+			direction=32;
+		}
+	} else if (liu_kang.direction == 32) {
+		// ko in progress
+		direction=32;
+		if (liu_kang_score.vie==0) {
+			liu_kang.anim_restant=0;
+			liu_kang.allez_retour=J1R.fatality.ar;
+			liu_kang.animation.o=J1R.fatality.o;
+			liu_kang.animation.l=J1R.fatality.l;
+			liu_kang.animation.b=J1R.fatality.b;
+			liu_kang.animation.c=J1R.fatality.c;
+			liu_kang.animation.p=J1R.fatality.p;
+			liu_kang.direction=33;
+			
+			// victory
+			sub_zero.old_x=sub_zero.x;
+			if (liu_kang.x<20) {
+				sub_zero.x=30;
+			} else {
+				sub_zero.x=10;
+			}
+			sub_zero.anim_restant=0;
+			sub_zero.allez_retour=J2A.victory.ar;
+			sub_zero.animation.o=J2A.victory.o;
+			sub_zero.animation.l=J2A.victory.l;
+			sub_zero.animation.b=J2A.victory.b;
+			sub_zero.animation.c=J2A.victory.c;
+			sub_zero.animation.p=J2A.victory.p;
+			sub_zero.direction=33;
+			direction2=34;
+			direction=34;
+		}
+	} else if (liu_kang_score.vie==0) {
+		// ko
+		liu_kang.anim_restant=0;
+		liu_kang.allez_retour=J1R.ko.ar;
+
+		liu_kang.animation.o=J1R.ko.o;
+		liu_kang.animation.l=J1R.ko.l;
+		liu_kang.animation.b=J1R.ko.b;
+		liu_kang.animation.c=J1R.ko.c;
+		liu_kang.animation.p=J1R.ko.p;
+		liu_kang.direction=32;
+		direction=34;
+		liu_kang_score.vie=296/2; // 50% pour aller au fatality
+	}
 		
 	//action(&liu_kang,direction);
 	//action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
-	action(&liu_kang,direction);
+	if (direction!=34) {
+		action(&liu_kang,direction);
+	}
 	
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
-	action(&sub_zero,direction2);
+	if (direction2!=34) {
+		action(&sub_zero,direction2);
+	}
 
-	paf(&liu_kang,&sub_zero);
+	if (!(direction==34 || direction2==34)) {
+		paf(&liu_kang,&sub_zero);
 	
-	check_mur(&liu_kang,&sub_zero);
+		check_mur(&liu_kang,&sub_zero);
+	}
 
 	// sang par ici ?
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
@@ -1214,6 +1355,6 @@ calqueC000();
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation.o+sub_zero.anim_restant)));
 
-	}
-	
+	}// while !replay
+	}// while 1
 }
