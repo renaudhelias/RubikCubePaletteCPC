@@ -388,7 +388,7 @@ struct CALQUE_J1R {
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
 	.victory={0,5,0,0,BANK_5 | ENDING,0},
-	.fatality={6,2,0,0,BANK_5 | ENDING,NON_CYCLIQUE},
+	.fatality={6,2,0,0,BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
 	.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
 	.hadouken_fire={17,8,0,0,BANK_5,0},
@@ -452,7 +452,7 @@ struct CALQUE_J2R{
 const struct CALQUE_J2R J2R= {
 	.poing_droit={0,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
-	.fatality={7,4,0,0,BANK_7 | ENDING,NON_CYCLIQUE},
+	.fatality={7,4,0,0,BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
 	.hadouken1_fire={22,0,0,0,BANK_7,0},
 	.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
