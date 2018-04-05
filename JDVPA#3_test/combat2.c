@@ -496,7 +496,11 @@ char degats_sub_zero;
 char contre_liu_kang;
 char contre_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
-
+	// pas grave de toute façon il KO... tant pis si on triche ici.
+	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)) {
+		return;
+	}	
+	
 	//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
 	//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
 	//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
@@ -505,7 +509,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	if (liu_kang->x+4 > sub_zero->x) {
 		// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
 		if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
-			&& ((sub_zero->allez_retour & MARCHER) != 0)) {
+			&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
 		// liu_kang attaque en avançant et sub_zero n'attaque pas
 			// liu_kang pousse sub_zero
 			if (sub_zero->x < 48) {
@@ -515,7 +519,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			}
 			return;
 		} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
-			&& ((liu_kang->allez_retour & MARCHER) != 0)) {
+			&& !(((liu_kang->allez_retour & MARCHE) != 0) && ((liu_kang->allez_retour & MARCHER) != 0))) {
 		// sub_zero attaque en avançant et liu_kang n'attaque pas
 			// sub_zero pousse liu_kang
 			if (liu_kang->x > 3) {
@@ -530,6 +534,10 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			sub_zero->x=sub_zero->old_x;
 		}
 	}
+
+//	if (degats_liu_kang!=degats_sub_zero && (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0))) {
+//		return;
+//	}
 	
 	if (degats_liu_kang>degats_sub_zero) {
 		if (liu_kang->x == liu_kang->old_x) {
@@ -548,6 +556,10 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			sub_zero->x=sub_zero->old_x;
 		}
 	}
+
+if (liu_kang->x+4 > sub_zero->x) {
+	liu_kang->x=sub_zero->x-4;
+}
 
 		/* c'est bof le coup de pousser un gars sans lui taper dessus
 		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
@@ -634,12 +646,14 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	if (contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0)) {
 		degats_liu_kang=0;
 		// le coup de liu_kang est paré
+		//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
 		liu_kang->allez_retour=NON_CYCLIQUE;
 		liu_kang->anim_restant=liu_kang->animation->l;
 	}
 	if (contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0)) {
 		degats_sub_zero=0;
 		// le coup de sub_zero est paré
+		//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
 		sub_zero->allez_retour=NON_CYCLIQUE;
 		sub_zero->anim_restant=sub_zero->animation->l;
 	}
@@ -1187,31 +1201,31 @@ calqueC000();
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
 	direction=0;
-	if ((get_key(Key_Joy1Left)) || (get_key(Key_W))) {
+	if (get_key(Key_Joy1Left)) {// || (get_key(Key_W))) {
 		direction=direction | DIRECTION_GAUCHE;
-	} else if ((get_key(Key_Joy1Right)) || (get_key(Key_E))) {
+	} else if (get_key(Key_Joy1Right)){// || (get_key(Key_E))) {
 		direction=direction | DIRECTION_DROITE;
 	}
-	if ((get_key(Key_Joy1Up)) || (get_key(Key_Q))) {
+	if (get_key(Key_Joy1Up)) {// || (get_key(Key_Q))) {
 		direction=direction | DIRECTION_HAUT;
 	} else if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) {
 		direction=direction | DIRECTION_BAS;
 	}
-	if (get_key(Key_Space) || get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
+	if (/*get_key(Key_Space) || */ get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
 		direction=direction | DIRECTION_FIRE;
 	}
 	direction2=0;
-	if ((get_key(Key_R_Joy2Left)) || (get_key(Key_O))) {
+	if (get_key(Key_R_Joy2Left)) {// || (get_key(Key_O))) {
 		direction2=direction2 | DIRECTION_GAUCHE;
-	} else if ((get_key(Key_T_Joy2Right)) || (get_key(Key_P))) {
+	} else if (get_key(Key_T_Joy2Right)) {// || (get_key(Key_P))) {
 		direction2=direction2 | DIRECTION_DROITE;
 	}
-	if ((get_key(Key_6_Joy2Up)) || (get_key(Key_I))) {
+	if (get_key(Key_6_Joy2Up)) {// || (get_key(Key_I))) {
 		direction2=direction2 | DIRECTION_HAUT;
-	} else if ((get_key(Key_5_Joy2Down)) || (get_key(Key_K))) {
+	} else if (get_key(Key_5_Joy2Down)) {// || (get_key(Key_K))) {
 		direction2=direction2 | DIRECTION_BAS;
 	}
-	if (get_key(Key_L) || get_key(Key_G_Joy2Fire)) {
+	if /*(get_key(Key_L) ||*/ (get_key(Key_G_Joy2Fire)) {
 		direction2=direction2 | DIRECTION_FIRE;
 	}
 	if (get_key(Key_N)) {
@@ -1309,9 +1323,8 @@ calqueC000();
 
 	if (!(direction==34 || direction2==34)) {
 		paf(&liu_kang,&sub_zero);
-	
-		check_mur(&liu_kang,&sub_zero);
 	}
+	check_mur(&liu_kang,&sub_zero);
 
 	// sang par ici ?
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
