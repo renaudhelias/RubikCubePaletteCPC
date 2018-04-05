@@ -139,6 +139,7 @@ void border_raster_end()
 const char math_2pow[8]={1,2,4,8,16,32,64,128};
 
 unsigned char is_vsync;
+//unsigned char is_interrupt_enable;
 
 void callback_roulette(unsigned char roulette)
 {
@@ -147,7 +148,7 @@ void callback_roulette(unsigned char roulette)
 		is_vsync=is_vsync+1;
 //	} else if (roulette==4) {
 //		border_raster_begin2();
-	} else if (roulette==5) {
+	} else if (roulette==5) {// && is_interrupt_enable) {
 		border_raster_begin();
 #ifndef NO_SOUND		
 		// Play the STarKos song
@@ -427,7 +428,7 @@ const struct CALQUE_J2A J2A= {
 	.haut={34,0,0,0,BANK_6,0},
 	.bas={35,0,0,0,BANK_6,0},
 	.zombi={36,0,0,0,BANK_6,0},
-	.victory={37,1,0,0,BANK_6 | ENDING,ALLEZ_RETOUR},
+	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
 	.poing_double_jab={39,7,0,PORTE_EN_3 | PORTE_EN_6,BANK_6,0},
 	.aie={48,0,0,0,BANK_6,0},
 	.poing_gauche={49,2,0,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
@@ -960,12 +961,14 @@ const CALQUE J1A_repos ={0,2,0,0,BANK_4,MARCHE | MARCHER};
 // J2A.marcher avec l=2
 const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
+char replay;
 
 void main(void)
 {
-	char i;char direction;char direction2;char replay;
+	char i;char direction;char direction2;
 	
-	
+	// ^^'
+	replay=0;
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
@@ -1066,6 +1069,8 @@ calqueC000();
 	
 	
 	while(1){
+	calqueC000();
+	bank0123();
 
 //init liu_kang_score et sub_zero_score
 	/*liu_kang_score.furie=100;
@@ -1122,15 +1127,17 @@ calqueC000();
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
-	
-	// calibration
-	vsync();
-	handle_raster(callback_roulette);
-	raster();
+	//is_interrupt_enable=1;
+	if (replay==0) {
+		// calibration
+		vsync();
+		handle_raster(callback_roulette);
+		raster();
 #ifndef NO_SOUND
-	// cpctelera-1.4.2/examples/medium/arkosAudio
-	cpct_akp_musicInit(); //(void *)0x4000);
+		// cpctelera-1.4.2/examples/medium/arkosAudio
+		cpct_akp_musicInit(); //(void *)0x4000);
 #endif
+	}
 
 
 
@@ -1210,6 +1217,7 @@ calqueC000();
 	if (get_key(Key_N)) {
 		// new game
 		replay=1;
+		//is_interrupt_enable=0;
 	}
 	
 	if (sub_zero.direction == 33) {
@@ -1313,6 +1321,9 @@ calqueC000();
 	switch_bank(&liu_kang);
 	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
 
+	//switch_bank(&sub_zero);
+	//switch_bank(&sub_zero);
+	//switch_bank(&sub_zero);
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
 
