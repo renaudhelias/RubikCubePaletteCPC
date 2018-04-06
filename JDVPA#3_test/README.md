@@ -19,6 +19,8 @@ Le gameplay change : au niveau des cinématiques, on peut par calque de cinémat
 
 Si un coup est contré, son dégat est remis à 0, et l'animation est gelée sur le dernier calque. Le joueur doit alors relancer un nouveau coup, en réappuyant par exemple sur FIRE.
 
+Personnellement je pense qu'un contre est global : on ne contre pas en haut ou en bas, on contre tout simplement, du coup il n'y a pas de distinction niveau gameplay entre une attaque en haut et une attaque en bas, hormis justement les paramétrage des animations (calque par calque : PORTE et/ou CONTRE)
+
 Un mur invisible a été ajouté entre les deux joueurs, effectivement les calques étant ici que d'un sens, il ne faut pas que le joueur se retrouve de l'autre côté du joueur. Ce mur permet aussi de calculer des projections de l'adversaire lorsqu'il reçoit un coup simple. Ou de reculer l'adversaire lorsqu'il reçoit un coup "entrant".
 
 Il y a un "finish him" : le perdant lors d'un combat est KO, sa barre est reremplie à 25%, et lorsqu'elle retombe à 0% le perdant affiche un fatality, et le gagnant un victory.
