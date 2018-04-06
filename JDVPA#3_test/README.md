@@ -34,3 +34,11 @@ mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J1A
 .poing_milieu={36,1,0,PORTE_EN_2,BANK_4,ALLEZ_RETOUR}
 
 Alors ici, l'animation commence à l'offset 36 et dur deux calques, le second portant un coup, c'est une animation de type ALLEZ_RETOUR, donc la personne se positionne (calque 1), frappe (calque 2) et se rétracte (calque 1). Vue qu'elle n'est pas de type MARCHE alors c'est un coup sur place.
+
+![J1A-parametres.png](J1A-parametres.png)
+
+![J1R-parametres.png](J1R-parametres.png)
+
+![J2A-parametres.png](J2A-parametres.png)
+
+![J2R-parametres.png](J2R-parametres.png)
