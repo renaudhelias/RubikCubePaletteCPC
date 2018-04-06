@@ -342,6 +342,7 @@ struct CALQUE_J1A {
 #define HADOUKEN 4
 #define ENDING_KO 8
 #define ENDING 16
+#define FREEZE 32
 
 #define ALLEZ_RETOUR 1
 #define RETOUR 2
@@ -460,7 +461,7 @@ const struct CALQUE_J2R J2R= {
 	.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,0,PORTE_EN_2,BANK_7,NON_CYCLIQUE},
 	.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,0,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7,0}
+	.flaque={45,6,0,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7 | FREEZE,0}
 };
 
 #define PERSO_LIU_KANG 0
@@ -497,7 +498,8 @@ char contre_liu_kang;
 char contre_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	// pas grave de toute façon il KO... tant pis si on triche ici.
-	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)) {
+	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)
+		|| ((sub_zero->animation->b & FREEZE)!=0)) {
 		return;
 	}	
 	
