@@ -396,7 +396,7 @@ const struct CALQUE_J1R J1R= {
 	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
 	.contre_haut={37,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR},
 	.macarena_milieu={39,4,0,0,BANK_5,0},
-	.dragon={44,2,0,0,BANK_5 | HADOUKEN,0},
+	.dragon={44,2,0,0,BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
 	.dragon_big={47,1,0,0,BANK_5,0},
 	.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
@@ -1003,7 +1003,7 @@ void main(void)
 
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut2; // contre
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.macarena_milieu; // humiliation
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.dragon; // humiliation
 
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
