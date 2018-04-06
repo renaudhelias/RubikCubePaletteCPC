@@ -979,6 +979,9 @@ const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
 char replay;
 
+//char * bot1=0x6300;
+//char * bot2=0x6600;
+
 void main(void)
 {
 	char i;char direction;char direction2;
@@ -1203,31 +1206,31 @@ calqueC000();
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
 	direction=0;
-	if (get_key(Key_Joy1Left)) {// || (get_key(Key_W))) {
+	if (get_key(Key_Joy1Left)) {
 		direction=direction | DIRECTION_GAUCHE;
-	} else if (get_key(Key_Joy1Right)){// || (get_key(Key_E))) {
+	} else if (get_key(Key_Joy1Right)){
 		direction=direction | DIRECTION_DROITE;
 	}
-	if (get_key(Key_Joy1Up)) {// || (get_key(Key_Q))) {
+	if (get_key(Key_Joy1Up)) {
 		direction=direction | DIRECTION_HAUT;
 	} else if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) {
 		direction=direction | DIRECTION_BAS;
 	}
-	if (/*get_key(Key_Space) || */ get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
+	if (get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
 		direction=direction | DIRECTION_FIRE;
 	}
 	direction2=0;
-	if (get_key(Key_R_Joy2Left)) {// || (get_key(Key_O))) {
+	if (get_key(Key_R_Joy2Left)) {
 		direction2=direction2 | DIRECTION_GAUCHE;
-	} else if (get_key(Key_T_Joy2Right)) {// || (get_key(Key_P))) {
+	} else if (get_key(Key_T_Joy2Right)) {
 		direction2=direction2 | DIRECTION_DROITE;
 	}
-	if (get_key(Key_6_Joy2Up)) {// || (get_key(Key_I))) {
+	if (get_key(Key_6_Joy2Up)) {
 		direction2=direction2 | DIRECTION_HAUT;
-	} else if (get_key(Key_5_Joy2Down)) {// || (get_key(Key_K))) {
+	} else if (get_key(Key_5_Joy2Down)) {
 		direction2=direction2 | DIRECTION_BAS;
 	}
-	if /*(get_key(Key_L) ||*/ (get_key(Key_G_Joy2Fire)) {
+	if (get_key(Key_G_Joy2Fire)) {
 		direction2=direction2 | DIRECTION_FIRE;
 	}
 	if (get_key(Key_N)) {
@@ -1235,6 +1238,12 @@ calqueC000();
 		replay=1;
 		//is_interrupt_enable=0;
 	}
+	
+//	bot1=bot1+1;
+//	bot2=bot2+1;
+	
+//	direction=*bot1 & 31;
+//	direction2=*bot2 & 31;
 	
 	if (sub_zero.direction == 33) {
 		// fatality
