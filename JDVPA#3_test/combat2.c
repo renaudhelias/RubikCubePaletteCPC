@@ -929,7 +929,7 @@ const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
 
 char * bot1=0x6300;
-char * bot2=0x6600;
+char * bot2=0x6301;
 
 char replay;
 char is_bot;
@@ -1186,12 +1186,12 @@ calqueC000();
 	}
 	
 	if ((is_bot & 1)!=0) {
-		bot1=bot1+1;
+		bot1=bot1-3;
 		direction=*bot1 & 31;
 	}
 
 	if ((is_bot & 2)!=0) {
-		bot2=bot2+1;
+		bot2=bot2+5;
 		direction2=*bot2 & 31;
 	}
 	
