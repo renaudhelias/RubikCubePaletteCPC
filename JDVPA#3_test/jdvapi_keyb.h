@@ -58,8 +58,8 @@ typedef enum _eKey
   Key_5_Joy2Down,
   Key_R_Joy2Left,
   Key_T_Joy2Right,
-  Key_G_Joy2Fire,
-  Key_F,
+  Key_G_Joy2Fire1,
+  Key_F_Joy2Fire2,
   Key_B,
   Key_V,
   Key_4, //56

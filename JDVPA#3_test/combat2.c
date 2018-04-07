@@ -113,7 +113,8 @@ void border_raster_begin()
 
 void border_raster_begin2()
 {
-  //grimware/official.sks.player.1.2.zip/exemple.asm
+border_raster_begin();
+/*  //grimware/official.sks.player.1.2.zip/exemple.asm
   __asm
 	; Set the BORDER to un peu de violet...
 ;red border
@@ -121,7 +122,7 @@ void border_raster_begin2()
  ld A,#0x5D
  out (C),C
  out (C),A
-  __endasm;
+  __endasm;*/
 }
 
 void border_raster_end()
@@ -497,71 +498,77 @@ char degats_sub_zero;
 char contre_liu_kang;
 char contre_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
+	char is_delautrebord=(liu_kang->x+4 > sub_zero->x);
 	// pas grave de toute façon il KO... tant pis si on triche ici.
 	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)
 		|| ((sub_zero->animation->b & FREEZE)!=0)) {
-		return;
-	}	
+		if (is_delautrebord) {
+			// animation MARCHE sans MARCHER
+			liu_kang->x=liu_kang->old_x;
+			sub_zero->x=sub_zero->old_x;
+		}
+	} else {
 	
 	//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
 	//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
 	//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
 	//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
 	
-	if (liu_kang->x+4 > sub_zero->x) {
-		// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
-		if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
-			&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
-		// liu_kang attaque en avançant et sub_zero n'attaque pas
-			// liu_kang pousse sub_zero
-			if (sub_zero->x < 48) {
-				sub_zero->x=sub_zero->x+1;
+		if (is_delautrebord) {
+			// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
+			if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
+				&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
+			// liu_kang attaque en avançant et sub_zero n'attaque pas
+				// liu_kang pousse sub_zero
+				if (sub_zero->x < 48) {
+					sub_zero->x=sub_zero->x+1;
+				} else {
+					liu_kang->x=liu_kang->old_x;
+				}
+				return;
+			} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
+				&& !(((liu_kang->allez_retour & MARCHE) != 0) && ((liu_kang->allez_retour & MARCHER) != 0))) {
+			// sub_zero attaque en avançant et liu_kang n'attaque pas
+				// sub_zero pousse liu_kang
+				if (liu_kang->x > 3) {
+					liu_kang->x=liu_kang->x-1;
+				} else {
+					sub_zero->x=sub_zero->old_x;
+				}
+				return;
 			} else {
+				// les deux poussent à la fois
 				liu_kang->x=liu_kang->old_x;
-			}
-			return;
-		} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
-			&& !(((liu_kang->allez_retour & MARCHE) != 0) && ((liu_kang->allez_retour & MARCHER) != 0))) {
-		// sub_zero attaque en avançant et liu_kang n'attaque pas
-			// sub_zero pousse liu_kang
-			if (liu_kang->x > 3) {
-				liu_kang->x=liu_kang->x-1;
-			} else {
 				sub_zero->x=sub_zero->old_x;
 			}
-			return;
-		} else {
-			// les deux poussent à la fois
-			liu_kang->x=liu_kang->old_x;
-			sub_zero->x=sub_zero->old_x;
 		}
-	}
 
 //	if (degats_liu_kang!=degats_sub_zero && (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0))) {
 //		return;
 //	}
 	
-	if (degats_liu_kang>degats_sub_zero) {
-		if (liu_kang->x == liu_kang->old_x) {
-			// sub_zero est ejecté
-			if (sub_zero->x < 48) {
-				sub_zero->x=sub_zero->x+1;
+		if (degats_liu_kang>degats_sub_zero) {
+			if (liu_kang->x == liu_kang->old_x) {
+				// sub_zero est ejecté
+				if (sub_zero->x < 48) {
+					sub_zero->x=sub_zero->x+1;
+				}
+				liu_kang->x=liu_kang->old_x;
 			}
-			liu_kang->x=liu_kang->old_x;
-		}
-	} else if (degats_sub_zero>degats_liu_kang) {
-		if (sub_zero->x == sub_zero->old_x) {
-			// liu_kang est ejecté
-			if (liu_kang->x > 3) {
-				liu_kang->x=liu_kang->x-1;
+		} else if (degats_sub_zero>degats_liu_kang) {
+			if (sub_zero->x == sub_zero->old_x) {
+				// liu_kang est ejecté
+				if (liu_kang->x > 3) {
+					liu_kang->x=liu_kang->x-1;
+				}
+				sub_zero->x=sub_zero->old_x;
 			}
-			sub_zero->x=sub_zero->old_x;
 		}
 	}
 
-if (liu_kang->x+4 > sub_zero->x) {
-	liu_kang->x=sub_zero->x-4;
-}
+//if (liu_kang->x+4 > sub_zero->x) {
+//	liu_kang->x=sub_zero->x-4;
+//}
 
 		/* c'est bof le coup de pousser un gars sans lui taper dessus
 		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
@@ -977,18 +984,22 @@ const CALQUE J1A_repos ={0,2,0,0,BANK_4,MARCHE | MARCHER};
 // J2A.marcher avec l=2
 const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
-char replay;
+
 
 char * bot1=0x6300;
 char * bot2=0x6600;
-char is_bot=0;
+
+char replay;
+char is_bot;
 
 void main(void)
 {
 	char i;char direction;char direction2;
 	
+	
 	// ^^'
 	replay=0;
+	is_bot=3;
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
@@ -1034,7 +1045,7 @@ void main(void)
 
 	//intro en &4000
 	SetupDOS();
-	calque4000();
+	//calque4000();
 	mode(0); // à cause de la publicité ParaDOS ;)
 	border(0);
 	set_palette(intro_palette);
@@ -1217,9 +1228,10 @@ calqueC000();
 	} else if (get_key(Key_Joy1Down)) {
 		direction=direction | DIRECTION_BAS;
 	}
-	if (get_key(Key_Joy1Fire1) /* || get_key(Key_Joy1Fire2)*/) {
+	if (get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
 		direction=direction | DIRECTION_FIRE;
 	}
+
 	direction2=0;
 	if (get_key(Key_R_Joy2Left)) {
 		direction2=direction2 | DIRECTION_GAUCHE;
@@ -1231,7 +1243,7 @@ calqueC000();
 	} else if (get_key(Key_5_Joy2Down)) {
 		direction2=direction2 | DIRECTION_BAS;
 	}
-	if (get_key(Key_G_Joy2Fire)) {
+	if (get_key(Key_G_Joy2Fire1) || get_key(Key_F_Joy2Fire2)) {
 		direction2=direction2 | DIRECTION_FIRE;
 	}
 	
@@ -1239,6 +1251,7 @@ calqueC000();
 		bot1=bot1+1;
 		direction=*bot1 & 31;
 	}
+
 	if ((is_bot & 2)!=0) {
 		bot2=bot2+1;
 		direction2=*bot2 & 31;
