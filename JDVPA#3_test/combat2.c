@@ -303,16 +303,16 @@ struct CALQUE_J1A {
 	CALQUE marcher; // cyclique, avance, recule
 	CALQUE haut;
 	CALQUE bas;
-	CALQUE tres_haut;
+	//CALQUE tres_haut;
 	CALQUE pied_haut; // allez-retour
 	CALQUE pied_milieu; // allez-retour
-	CALQUE genoux_milieu; // allez-retour
-	CALQUE pied_haut2; // cyclique, porté en 3/5
+	//CALQUE genoux_milieu; // allez-retour
+	//CALQUE pied_haut2; // cyclique, porté en 3/5
 	CALQUE balayette; // cyclique, porté en 3/4 + avance
 	CALQUE hypercut; // cyclique (sinon ridicule...)
 	CALQUE poing_milieu; // allez-retour
-	CALQUE pied_milieu2; // allez-retour
-	CALQUE balayette2; // cyclique + avance
+	//CALQUE pied_milieu2; // allez-retour
+	//CALQUE balayette2; // cyclique + avance
 	CALQUE pied_rotatif; // cyclique + avance !
 } ;
 
@@ -358,54 +358,54 @@ const struct CALQUE_J1A J1A= {
 	.marcher={0,8,0,0,BANK_4,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={9,0,0,0,BANK_4,0},
 	.bas={10,0,0,0,BANK_4,0},
-	.tres_haut={11,0,0,0,BANK_4,0},
+	//.tres_haut={11,0,0,0,BANK_4,0},
 	.pied_haut={12,3,CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
 	.pied_milieu={16,3,CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
-	.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
+	//.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	//.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
 	.balayette={27,3,CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,MARCHE},
 	.hypercut={31,4,0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,0,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
+	//.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	//.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
 	.pied_rotatif={43,8,CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,BANK_4,MARCHE}
 };
 
 struct CALQUE_J1R {
 	CALQUE victory; // cyclique
 	CALQUE fatality; // statique (stoppé au 3)
-	CALQUE hypercut2; // cyclique (sinon ridicule...)
-	CALQUE hadouken_personnage; // statique (stoppé au 4), la boule de feu affiché ensuite juste à droite du sprite, collée.
-	CALQUE hadouken_fire; // cyclique
+	//CALQUE hypercut2; // cyclique (sinon ridicule...)
+	//CALQUE hadouken_personnage; // statique (stoppé au 4), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	//CALQUE hadouken_fire; // cyclique
 	CALQUE ko; // cyclique
 	CALQUE poing_double_jab; // cyclique, porté en 2/5 et 5/5
 	CALQUE contre_haut; // allez-retour
-	CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
+	//CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
 	CALQUE dragon; // statique, enchaine avec dragon_big
-	CALQUE dragon_big; // une seule image mais deux sprites ! => un dragon c un hadouken avec un seul calque secondaire (NON_CYCLIQUE, et sans MARCHE)
-	CALQUE contre_haut2; // allez-retour
+	//CALQUE dragon_big; // une seule image mais deux sprites ! => un dragon c un hadouken avec un seul calque secondaire (NON_CYCLIQUE, et sans MARCHE)
+	//CALQUE contre_haut2; // allez-retour
 };
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
 	.victory={0,5,0,0,BANK_5 | ENDING,0},
 	.fatality={6,2,0,0,BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
-	.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
-	.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
-	.hadouken_fire={17,8,0,0,BANK_5,0},
+	//.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
+	//.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
+	//.hadouken_fire={17,8,0,0,BANK_5,0},
 	.ko={26,5,0,0,BANK_5 | ENDING_KO,0},
 	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
 	.contre_haut={37,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR},
-	.macarena_milieu={39,4,0,0,BANK_5,0},
+	//.macarena_milieu={39,4,0,0,BANK_5,0},
 	.dragon={44,2,0,0,BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
-	.dragon_big={47,1,0,0,BANK_5,0},
-	.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
+	//.dragon_big={47,1,0,0,BANK_5,0},
+	//.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2A {
 	CALQUE pied_haut; // cyclique, porté en 4/8
-	CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
-	CALQUE genoux_haut; // allez-retour
+	//CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
+	//CALQUE genoux_haut; // allez-retour
 	CALQUE pied_retourne; // cyclique, porté en 4/7
 	CALQUE balayette; // cyclique, porté en 3/4
 	CALQUE marcher; // cyclique, avance, recule
@@ -414,15 +414,15 @@ struct CALQUE_J2A {
 	CALQUE zombi;
 	CALQUE victory; // allez-retour ;)
 	CALQUE poing_double_jab; // cyclique porté en 3/8 et 6/8
-	CALQUE aie;
+	//CALQUE aie;
 	CALQUE poing_gauche; // allez-retour
 };
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
 	.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
-	.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
-	.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
+	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
+	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
 	.pied_retourne={13,6,CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,BANK_6,0},
 	.balayette={20,3,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_3,BANK_6,MARCHE},
 	.marcher={24,9,0,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
@@ -431,7 +431,7 @@ const struct CALQUE_J2A J2A= {
 	.zombi={36,0,0,0,BANK_6,0},
 	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
 	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6,BANK_6,0},
-	.aie={48,0,0,0,BANK_6,0},
+	//.aie={48,0,0,0,BANK_6,0},
 	.poing_gauche={49,2,0,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
 
@@ -439,13 +439,13 @@ struct CALQUE_J2R{
 	CALQUE poing_droit; // allez-retour
 	CALQUE ko; // cyclique
 	CALQUE fatality; // statique (stoppé au 5)
-	CALQUE hadouken1_personnage; // statique (stoppé au 10), la boule de feu affiché ensuite juste à droite du sprite, collée.
-	CALQUE hadouken1_fire; // boule de neige
-	CALQUE hadouken2_personnage; // 1 2 3
-	CALQUE hadouken2_fire; // mega fire
-	CALQUE hadouken2_personnage_patch; // p3 p1 p2 1 2 3
+	//CALQUE hadouken1_personnage; // statique (stoppé au 10), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	//CALQUE hadouken1_fire; // boule de neige
+	//CALQUE hadouken2_personnage; // 1 2 3
+	//CALQUE hadouken2_fire; // mega fire
+	//CALQUE hadouken2_personnage_patch; // p3 p1 p2 1 2 3
 	CALQUE hypercut; // cyclique porté en 3/5
-	CALQUE coup_bas; // allez-retour
+	//CALQUE coup_bas; // allez-retour
 	CALQUE flaque; //cyclique
 };
 
@@ -454,13 +454,13 @@ const struct CALQUE_J2R J2R= {
 	.poing_droit={0,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
 	.fatality={7,4,0,0,BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
-	.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
-	.hadouken1_fire={22,0,0,0,BANK_7,0},
-	.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
-	.hadouken2_fire={26,8,0,0,BANK_7,0},
-	.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
+	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
+	//.hadouken1_fire={22,0,0,0,BANK_7,0},
+	//.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
+	//.hadouken2_fire={26,8,0,0,BANK_7,0},
+	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,0,PORTE_EN_2,BANK_7,NON_CYCLIQUE},
-	.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
+	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.flaque={45,6,0,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7 | FREEZE,0}
 };
 
@@ -979,8 +979,9 @@ const CALQUE J2A_repos ={24,2,0,0,BANK_6,MARCHE | MARCHER};
 
 char replay;
 
-//char * bot1=0x6300;
-//char * bot2=0x6600;
+char * bot1=0x6300;
+char * bot2=0x6600;
+char is_bot=0;
 
 void main(void)
 {
@@ -999,14 +1000,14 @@ void main(void)
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
 		}
 	}
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut2; // attaque haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut; // attaque haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=&J1R.poing_double_jab; //attaque centre
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_FIRE]=&J1A.pied_milieu; // attaque milieu
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif; // attaque bas
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE]=&J1A.balayette; // defense bas
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.hypercut; // defense haut
 
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut2; // contre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut; // contre
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.dragon; // humiliation
 
@@ -1213,10 +1214,10 @@ calqueC000();
 	}
 	if (get_key(Key_Joy1Up)) {
 		direction=direction | DIRECTION_HAUT;
-	} else if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) {
+	} else if (get_key(Key_Joy1Down)) {
 		direction=direction | DIRECTION_BAS;
 	}
-	if (get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
+	if (get_key(Key_Joy1Fire1) /* || get_key(Key_Joy1Fire2)*/) {
 		direction=direction | DIRECTION_FIRE;
 	}
 	direction2=0;
@@ -1233,17 +1234,40 @@ calqueC000();
 	if (get_key(Key_G_Joy2Fire)) {
 		direction2=direction2 | DIRECTION_FIRE;
 	}
-	if (get_key(Key_N)) {
+	
+	if ((is_bot & 1)!=0) {
+		bot1=bot1+1;
+		direction=*bot1 & 31;
+	}
+	if ((is_bot & 2)!=0) {
+		bot2=bot2+1;
+		direction2=*bot2 & 31;
+	}
+	
+	if (get_key(Key_C)) {
 		// new game
+		is_bot=3;
 		replay=1;
 		//is_interrupt_enable=0;
 	}
-	
-//	bot1=bot1+1;
-//	bot2=bot2+1;
-	
-//	direction=*bot1 & 31;
-//	direction2=*bot2 & 31;
+	if (get_key(Key_V)) {
+		// new game
+		is_bot=1;
+		replay=1;
+		//is_interrupt_enable=0;
+	}
+	if (get_key(Key_B)) {
+		// new game
+		is_bot=2;
+		replay=1;
+		//is_interrupt_enable=0;
+	}
+	if (get_key(Key_N)) {
+		// new game
+		is_bot=0;
+		replay=1;
+		//is_interrupt_enable=0;
+	}
 	
 	if (sub_zero.direction == 33) {
 		// fatality
