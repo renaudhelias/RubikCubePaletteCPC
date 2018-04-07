@@ -140,16 +140,13 @@ void border_raster_end()
 const char math_2pow[8]={1,2,4,8,16,32,64,128};
 
 unsigned char is_vsync;
-//unsigned char is_interrupt_enable;
 
 void callback_roulette(unsigned char roulette)
 {
 	if (roulette==0) {
 		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
 		is_vsync=is_vsync+1;
-//	} else if (roulette==4) {
-//		border_raster_begin2();
-	} else if (roulette==5) {// && is_interrupt_enable) {
+	} else if (roulette==5) {
 		border_raster_begin();
 #ifndef NO_SOUND		
 		// Play the STarKos song
@@ -181,7 +178,6 @@ void transfertEtDecoupe()
 
 
 void put_byte(char nX, char nY, unsigned char nByte) {
-	// if (xo==1) {pByteAddress = 0xC0FF + vram[nY] + nX;} else {
 	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
 	*pByteAddress = nByte;
 	pByteAddress = 0x4000 + vram[nY] + nX;
@@ -205,7 +201,6 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 		maxi=TAILLE_PAS;
 	}
 	for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+maxi;i++){
-	//for (i=pas*TAILLE_PAS;i<pas*TAILLE_PAS+TAILLE_PAS;i++){
 		if (!optim_bar) {
 			put_byte(x+i,y,0xFF);
 			for (j=1;j<=8;j++){
@@ -264,10 +259,6 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 				b=(b & 0xFD) | 0x01;
 			}
 			put_byte(x+i,y+j,b);
-		//}
-		//if (!optim_bar) {
-
-		//}
 	}
 	if ((pas+1)*TAILLE_PAS > max2) {
 		return 0;
@@ -520,7 +511,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
 			// liu_kang attaque en avançant et sub_zero n'attaque pas
 				// liu_kang pousse sub_zero
-				if (sub_zero->x < 48) {
+				if (sub_zero->x < 48 && sub_zero->old_x < 48) {
 					sub_zero->x=sub_zero->old_x+1;
 				} else {
 					liu_kang->x=liu_kang->old_x;
@@ -530,7 +521,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				&& !(((liu_kang->allez_retour & MARCHE) != 0) && ((liu_kang->allez_retour & MARCHER) != 0))) {
 			// sub_zero attaque en avançant et liu_kang n'attaque pas
 				// sub_zero pousse liu_kang
-				if (liu_kang->x > 3) {
+				if (liu_kang->x > 3 && liu_kang->old_x > 3) {
 					liu_kang->x=liu_kang->old_x-1;
 				} else {
 					sub_zero->x=sub_zero->old_x;
@@ -543,14 +534,10 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			}
 		}
 
-//	if (degats_liu_kang!=degats_sub_zero && (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0))) {
-//		return;
-//	}
-	
 		if (degats_liu_kang>degats_sub_zero) {
 			if (liu_kang->x == liu_kang->old_x) {
 				// sub_zero est ejecté
-				if (sub_zero->x < 48) {
+				if (sub_zero->x < 48 && sub_zero->old_x < 48) {
 					sub_zero->x=sub_zero->old_x+1;
 				}
 				liu_kang->x=liu_kang->old_x;
@@ -558,7 +545,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
-				if (liu_kang->x > 3) {
+				if (liu_kang->x > 3 && liu_kang->old_x > 3) {
 					liu_kang->x=liu_kang->old_x-1;
 				}
 				sub_zero->x=sub_zero->old_x;
@@ -566,32 +553,6 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 	}
 
-//if (liu_kang->x+4 > sub_zero->x) {
-//	liu_kang->x=sub_zero->x-4;
-//}
-
-		/* c'est bof le coup de pousser un gars sans lui taper dessus
-		if ((liu_kang->x > liu_kang->old_x) && (sub_zero->x < sub_zero->old_x)) {
-			// les deux poussent à la fois
-			liu_kang->x=liu_kang->old_x;
-			sub_zero->x=sub_zero->old_x;
-		} else if (liu_kang->x > liu_kang->old_x) {
-			// liu_kang pousse sub_zero
-			if (sub_zero->x < 48) {
-				sub_zero->x=sub_zero->x+1;
-			} else {
-				liu_kang->x=liu_kang->old_x;
-			}
-			sub_zero->old_x=sub_zero->x;
-		} else if (sub_zero->x < sub_zero->old_x) {
-			// sub_zero pousse liu_kang
-			if (liu_kang->x > 3) {
-				liu_kang->x=liu_kang->x-1;
-			} else {
-				sub_zero->x=sub_zero->old_x;
-			}
-			liu_kang->old_x=liu_kang->x;
-		}*/
 }
 
 typedef struct {
@@ -667,18 +628,6 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		sub_zero->anim_restant=sub_zero->animation->l;
 	}
 	
-/*	if (refresh==0 && refresh_pas==0) {
-		if (liu_kang_score.vie==0) {
-			liu_kang_score.vie = 296;
-		} else {
-			liu_kang_score.vie = liu_kang_score.vie -10;
-		}
-		if (sub_zero_score.vie==0) {
-			sub_zero_score.vie = 296;
-		} else {
-			sub_zero_score.vie= sub_zero_score.vie -10;
-		}
-	}*/
 }
 void refresh_all_progressbar() {
 	switch (refresh) {
@@ -729,12 +678,8 @@ void refresh_all_progressbar() {
 			return;
 	}
 	if (refresh_pas == 0) {
-//		if (refresh<2) {
-			// ne raffraichir que la vie
-			refresh = (refresh+1) % 2;
-//		} else {
-//			refresh = (refresh+1) % 14;
-//		}
+		// ne raffraichir que la vie
+		refresh = (refresh+1) % 2;
 	}
 }
 
@@ -900,9 +845,6 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant -1;
 				}
-				//if (joueur->anim_restant == 0) {
-				//	joueur->allez_retour = (joueur->allez_retour & (!RETOUR));
-				//}
 			}
 		} else {
 			// animation de type normale ! incrémente
@@ -1158,7 +1100,6 @@ calqueC000();
 
 	// copie complète sur le calque 4000
 	memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
-	//is_interrupt_enable=1;
 	if (replay==0) {
 		// calibration
 		vsync();
@@ -1192,9 +1133,6 @@ calqueC000();
 	bank0123();
 
 	refresh_all_progressbar();
-
-	//border_raster_end(); // fuck you, I'm determinist : memcpy !
-	//memcpy((char *)0x4000, (char *)0xC000, 0x3FFF); // memcpy(destination,source,longueur)
 
 	// optimisation
 	for (i=120;i<120+50;i++) {
@@ -1261,25 +1199,21 @@ calqueC000();
 		// new game
 		is_bot=3;
 		replay=1;
-		//is_interrupt_enable=0;
 	}
 	if (get_key(Key_V)) {
 		// new game
 		is_bot=1;
 		replay=1;
-		//is_interrupt_enable=0;
 	}
 	if (get_key(Key_B)) {
 		// new game
 		is_bot=2;
 		replay=1;
-		//is_interrupt_enable=0;
 	}
 	if (get_key(Key_N)) {
 		// new game
 		is_bot=0;
 		replay=1;
-		//is_interrupt_enable=0;
 	}
 	
 	liu_kang.old_x=liu_kang.x;
@@ -1359,13 +1293,9 @@ calqueC000();
 		liu_kang_score.vie=296/2; // 15% pour aller au fatality
 	}
 		
-	//action(&liu_kang,direction);
-	//action(&liu_kang,DIRECTION_GAUCHE | DIRECTION_FIRE);
 	if (direction!=34) {
 		action(&liu_kang,direction);
 	}
-	
-	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
 	
 	if (direction2!=34) {
 		action(&sub_zero,direction2);
@@ -1384,9 +1314,6 @@ calqueC000();
 	switch_bank(&liu_kang);
 	put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
 
-	//switch_bank(&sub_zero);
-	//switch_bank(&sub_zero);
-	//switch_bank(&sub_zero);
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
 
