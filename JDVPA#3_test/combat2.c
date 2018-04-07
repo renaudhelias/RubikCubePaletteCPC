@@ -521,7 +521,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			// liu_kang attaque en avançant et sub_zero n'attaque pas
 				// liu_kang pousse sub_zero
 				if (sub_zero->x < 48) {
-					sub_zero->x=sub_zero->x+1;
+					sub_zero->x=sub_zero->old_x+1;
 				} else {
 					liu_kang->x=liu_kang->old_x;
 				}
@@ -531,7 +531,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			// sub_zero attaque en avançant et liu_kang n'attaque pas
 				// sub_zero pousse liu_kang
 				if (liu_kang->x > 3) {
-					liu_kang->x=liu_kang->x-1;
+					liu_kang->x=liu_kang->old_x-1;
 				} else {
 					sub_zero->x=sub_zero->old_x;
 				}
@@ -551,7 +551,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (liu_kang->x == liu_kang->old_x) {
 				// sub_zero est ejecté
 				if (sub_zero->x < 48) {
-					sub_zero->x=sub_zero->x+1;
+					sub_zero->x=sub_zero->old_x+1;
 				}
 				liu_kang->x=liu_kang->old_x;
 			}
@@ -559,7 +559,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
 				if (liu_kang->x > 3) {
-					liu_kang->x=liu_kang->x-1;
+					liu_kang->x=liu_kang->old_x-1;
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
@@ -741,7 +741,7 @@ void refresh_all_progressbar() {
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
 
-	joueur->old_x=joueur->x;
+	
 
 	if (direction_pressed==32) {
 		// special animation : ENDING_KO | ENDING, déjà préchargé
@@ -930,14 +930,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		// déplacement
 		if ((joueur->direction & DIRECTION_DROITE) != 0) {
 			// le joueur va a droite
-			joueur->x = joueur->x + 1;
+			joueur->x = joueur->old_x + 1;
 			if (joueur->x > 48) {
 				joueur->x=48; //3;
 			}
 		}
 		if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
 			// le joueur va a gauche
-			joueur->x = joueur->x - 1;
+			joueur->x = joueur->old_x - 1;
 			if (joueur->x < 3) {
 				joueur->x=3; //48;
 			}
@@ -945,13 +945,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	} else if ((joueur->allez_retour & MARCHE) != 0) {
 		if (joueur->perso==PERSO_LIU_KANG) {
 			// le joueur va a droite
-			joueur->x = joueur->x + 1;
+			joueur->x = joueur->old_x + 1;
 			if (joueur->x > 48) {
 				joueur->x=48; //3;
 			}
 		} else {
 			// le joueur va a gauche
-			joueur->x = joueur->x - 1;
+			joueur->x = joueur->old_x - 1;
 			if (joueur->x < 3) {
 				joueur->x=3; //48;
 			}
@@ -1282,6 +1282,9 @@ calqueC000();
 		//is_interrupt_enable=0;
 	}
 	
+	liu_kang.old_x=liu_kang.x;
+	sub_zero.old_x=sub_zero.x;
+	
 	if (sub_zero.direction == 33) {
 		// fatality
 		direction2=32;
@@ -1295,7 +1298,6 @@ calqueC000();
 			sub_zero.direction=33;
 			
 			// victory
-			liu_kang.old_x=liu_kang.x;
 			if (sub_zero.x<20) {
 				liu_kang.x=30;
 			} else {
@@ -1334,7 +1336,6 @@ calqueC000();
 			liu_kang.direction=33;
 			
 			// victory
-			sub_zero.old_x=sub_zero.x;
 			if (liu_kang.x<20) {
 				sub_zero.x=30;
 			} else {
@@ -1365,6 +1366,7 @@ calqueC000();
 	}
 	
 	//action(&sub_zero,DIRECTION_DROITE | DIRECTION_FIRE);
+	
 	if (direction2!=34) {
 		action(&sub_zero,direction2);
 	}
