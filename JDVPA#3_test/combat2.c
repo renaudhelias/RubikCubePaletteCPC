@@ -424,7 +424,7 @@ const struct CALQUE_J2A J2A= {
 	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
 	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6,BANK_6,0},
 	//.aie={48,0,0,0,BANK_6,0},
-	.poing_gauche={49,2,0,PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
+	.poing_gauche={49,2,0,PORTE_EN_2|PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2R{
