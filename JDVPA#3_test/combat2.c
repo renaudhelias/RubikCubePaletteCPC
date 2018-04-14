@@ -386,7 +386,7 @@ const struct CALQUE_J1R J1R= {
 	//.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
 	//.hadouken_fire={17,8,0,0,BANK_5,0},
 	.ko={26,5,0,0,BANK_5 | ENDING_KO,0},
-	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_5,BANK_5,0},
+	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,BANK_5,0},
 	.contre_haut={37,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR},
 	//.macarena_milieu={39,4,0,0,BANK_5,0},
 	.dragon={44,2,0,0,BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
@@ -422,7 +422,7 @@ const struct CALQUE_J2A J2A= {
 	.bas={35,0,0,0,BANK_6,0},
 	.zombi={36,0,0,0,BANK_6,0},
 	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
-	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6,BANK_6,0},
+	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8,BANK_6,0},
 	//.aie={48,0,0,0,BANK_6,0},
 	.poing_gauche={49,2,0,PORTE_EN_2|PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
 };
