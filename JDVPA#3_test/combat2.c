@@ -453,7 +453,7 @@ const struct CALQUE_J2R J2R= {
 	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,0,PORTE_EN_1|PORTE_EN_2,BANK_7,NON_CYCLIQUE},
 	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,0,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7 | FREEZE,0}
+	.flaque={45,6,CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7 | FREEZE,0}
 };
 
 #define PERSO_LIU_KANG 0
