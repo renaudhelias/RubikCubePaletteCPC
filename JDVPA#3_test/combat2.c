@@ -111,9 +111,9 @@ void border_raster_begin()
   __endasm;
 }
 
-void border_raster_begin2()
-{
-border_raster_begin();
+//void border_raster_begin2()
+//{
+//border_raster_begin();
 /*  //grimware/official.sks.player.1.2.zip/exemple.asm
   __asm
 	; Set the BORDER to un peu de violet...
@@ -123,7 +123,7 @@ border_raster_begin();
  out (C),C
  out (C),A
   __endasm;*/
-}
+//}
 
 void border_raster_end()
 {
@@ -585,11 +585,6 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
 			degats_liu_kang=boum;
-			if (sub_zero_score.vie < boum) {
-				sub_zero_score.vie = 0;//296;
-			} else {
-				sub_zero_score.vie = sub_zero_score.vie - boum;
-			}
 		}
 		if ((liu_kang->animation->c & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang CONTRE un coup
@@ -600,11 +595,6 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup
 			degats_sub_zero=boum;
-			if (liu_kang_score.vie < boum) {
-				liu_kang_score.vie = 0;//296;
-			} else {
-				liu_kang_score.vie = liu_kang_score.vie - boum;
-			}
 		}
 		if ((sub_zero->animation->c & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero CONTRE un coup
@@ -613,19 +603,31 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 	}
 	
-	if (contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
+	if (degats_liu_kang>0 && contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
 		degats_liu_kang=0;
 		// le coup de liu_kang est paré
 		//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
 		liu_kang->allez_retour=NON_CYCLIQUE;
 		liu_kang->anim_restant=liu_kang->animation->l;
 	}
-	if (contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
+	if (degats_sub_zero>0 && contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
 		degats_sub_zero=0;
 		// le coup de sub_zero est paré
 		//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
 		sub_zero->allez_retour=NON_CYCLIQUE;
 		sub_zero->anim_restant=sub_zero->animation->l;
+	}
+	
+	if (sub_zero_score.vie < degats_liu_kang) {
+		sub_zero_score.vie = 0;//296;
+	} else {
+		sub_zero_score.vie = sub_zero_score.vie - degats_liu_kang;
+	}
+	
+	if (liu_kang_score.vie < degats_sub_zero) {
+		liu_kang_score.vie = 0;//296;
+	} else {
+		liu_kang_score.vie = liu_kang_score.vie - degats_sub_zero;
 	}
 	
 }
@@ -1005,7 +1007,7 @@ void main(void)
 #endif
 	vram=precalc_vram();
 	
-	bank0123();
+	//bank0123();
 	LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
 	bank4_4000();
 	transfertEtDecoupe();
@@ -1125,7 +1127,8 @@ calqueC000();
 	while (is_vsync!=1) {
 		if (is_vsync>1) {
 			// saturation !
-			border_raster_begin2();
+			//border_raster_begin2();
+			border_raster_begin();
 		}
 	}
 	is_vsync=0;
@@ -1145,7 +1148,8 @@ calqueC000();
 	while (is_vsync!=2) {
 		if (is_vsync>2) {
 			// saturation !
-			border_raster_begin2();
+			//border_raster_begin2();
+			border_raster_begin();
 		}
 	}
 	is_vsync=0;
