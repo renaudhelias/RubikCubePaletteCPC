@@ -584,7 +584,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if (liu_kang->anim_restant<8) {
 		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
-			degats_liu_kang=boum;
+			if ((liu_kang->allez_retour & NON_CYCLIQUE)==0 || liu_kang->anim_restant!=liu_kang->animation->l) {
+				// il n'est pas gelé (contré auparavant)
+				degats_liu_kang=boum;
+			}
 		}
 		if ((liu_kang->animation->c & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang CONTRE un coup
@@ -594,7 +597,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if (sub_zero->anim_restant<8) {
 		if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup
-			degats_sub_zero=boum;
+			if ((sub_zero->allez_retour & NON_CYCLIQUE)==0 || sub_zero->anim_restant!=sub_zero->animation->l) {
+				// il n'est pas gelé (contré auparavant)
+				degats_sub_zero=boum;
+			}
 		}
 		if ((sub_zero->animation->c & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero CONTRE un coup
@@ -602,6 +608,8 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 		}
 	}
+
+
 	
 	if (degats_liu_kang>0 && contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
 		degats_liu_kang=0;
@@ -1038,14 +1046,14 @@ calqueC000();
 	border(0);
 	set_palette(combat2_palette);
 	scan();
-	bank0123();
+	//bank0123();
 	LoadFile("fond2.scr", (char *)0xC000);
 	
 	
 	
 	while(1){
 	calqueC000();
-	bank0123();
+	//bank0123();
 
 //init liu_kang_score et sub_zero_score
 	/*liu_kang_score.furie=100;
@@ -1125,15 +1133,15 @@ calqueC000();
 		
 	// affiche C000 pendant qu'on recopie de C000 vers 4000 la "zone de combat"
 	while (is_vsync!=1) {
-		if (is_vsync>1) {
+		/* même pas peur :p if (is_vsync>1) {
 			// saturation !
 			//border_raster_begin2();
 			border_raster_begin();
-		}
+		} */
 	}
 	is_vsync=0;
 	calqueC000();
-	bank0123();
+	//bank0123();
 
 	refresh_all_progressbar();
 
@@ -1146,11 +1154,11 @@ calqueC000();
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	while (is_vsync!=2) {
-		if (is_vsync>2) {
+		/* même pas peur :p if (is_vsync>2) {
 			// saturation !
 			//border_raster_begin2();
 			border_raster_begin();
-		}
+		} */
 	}
 	is_vsync=0;
 	calque4000();
@@ -1320,6 +1328,8 @@ calqueC000();
 
 	switch_bank(&sub_zero);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
+	
+	bank0123();
 
 	}// while !replay
 	}// while 1
