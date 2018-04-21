@@ -20,10 +20,10 @@ void player_move_rel(char mx,char my)
 		player.oldx = player.x;
 		player.oldy = player.y;
 		
-		player.x+=mx; 
+		player.x+=mx;
 		player.y+=my;
 		player.timer++;
-		if ((player.timer&3)==0)  
+		if ((player.timer&3)==0) 
 		{
 			player.anim++;
 			if (player.anim==3) player.anim=0;

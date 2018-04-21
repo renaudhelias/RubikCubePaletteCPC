@@ -13,12 +13,16 @@
 
 #include "player.h"
 #include "ghost.h"
+#include "tiles.h"
+#include "laby_data.h"
 
 #define IMG_BLANK 0
 
 unsigned int *vram;
 
 unsigned char *spr_img[25];
+unsigned char *tiles_img[26];
+
 
 const unsigned char game_palette[]=
 {
@@ -28,7 +32,9 @@ const unsigned char game_palette[]=
 void main(void)
 {
 	char i;
-
+	unsigned int cpt,x,y;
+	
+	
 	vram=precalc_vram();
 
 	// Image vide
@@ -67,10 +73,30 @@ void main(void)
 	spr_img[22] = (unsigned char *)ghost_reduce_sprites + ((GHOST_SPRITE_HAUTEUR*GHOST_SPRITE_LARGEUR_O)*8);
 	spr_img[23] = (unsigned char *)ghost_reduce_sprites + ((GHOST_SPRITE_HAUTEUR*GHOST_SPRITE_LARGEUR_O)*9);
 	
+	// Les tiles démarrent à 1, la tile 0 est une tile transparente dans
+	// Tiled. Non utilisé ici.
+	for (i=0;i<26;i++)
+		tiles_img[i+1]= (unsigned char *)tiles + ((2*8)*i);
 	
 	mode(0);
 	border(0);
 	set_palette(game_palette);
+	vsync();
+	
+	cpt=0;
+	
+	for (y=0;y<25;y++)
+	{
+		for (x=0;x<40;x++)
+		{
+			// x et y doivent être des UNSIGNED INT PASSE A CETTE FONCTION
+			// Sinon glitch, certainement du à une conversion de type foireuse qqpart ...
+			// cpt --> Unsigned int car peut aller jusqu'à 25*40
+			put_frame(screen((x*4),(y*8)),2,8,tiles_img[laby_data[cpt]]);
+			cpt++;
+			
+		}
+	}
 	
 	player_init();
 	ghost_init();
