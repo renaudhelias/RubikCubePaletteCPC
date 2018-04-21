@@ -14,7 +14,7 @@
 #include "player.h"
 #include "ghost.h"
 #include "tiles.h"
-#include "laby_data.h"
+#include "labypac_map.h"
 
 #define IMG_BLANK 0
 
@@ -92,7 +92,7 @@ void main(void)
 			// x et y doivent être des UNSIGNED INT PASSE A CETTE FONCTION
 			// Sinon glitch, certainement du à une conversion de type foireuse qqpart ...
 			// cpt --> Unsigned int car peut aller jusqu'à 25*40
-			put_frame(screen((x*4),(y*8)),2,8,tiles_img[laby_data[cpt]]);
+			put_frame(screen((x*4),(y*8)),2,8,tiles_img[labypac_map[cpt]]);
 			cpt++;
 			
 		}

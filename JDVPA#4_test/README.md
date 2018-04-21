@@ -39,3 +39,8 @@ menu Cartes>"Ajouter un Tileset externe...">choisir "pacmanTileset.tsx".
 
 Cliquer bêtement sur une des tiles (en bas à droite) et puis ensuite sur la map (au milieu), ho ça marche.
 
+![JDVPA4_labyPac.dsk.png](JDVPA4_labyPac.dsk.png)
+
+perl Tiled_tmx2c.pl labyPac.tmx
+
+génère labyPac_map.h et labyPac_map.c
