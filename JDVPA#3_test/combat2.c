@@ -443,7 +443,7 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
+	.poing_droit={0,1,0,PORTE_EN_2,BANK_7},
 	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
 	.fatality={7,4,0,0,BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
