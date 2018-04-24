@@ -271,7 +271,7 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 const unsigned char combat2_palette[]=
 {
 		//0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-		0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		0,6,12,11,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
 const unsigned char intro_palette[]=
@@ -1042,7 +1042,7 @@ void main(void)
 
 calqueC000();
 	bank0123();
-	mode(2);
+	mode(1);
 	border(0);
 	set_palette(combat2_palette);
 	scan();
