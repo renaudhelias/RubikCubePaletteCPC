@@ -380,7 +380,7 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,5,0,0,BANK_5 | ENDING,0},
+	.victory={0,5,0,0,BANK_5 | ENDING,NON_CYCLIQUE},
 	.fatality={6,2,0,0,BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
 	//.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
