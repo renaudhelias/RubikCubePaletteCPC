@@ -1047,7 +1047,8 @@ calqueC000();
 	set_palette(combat2_palette);
 	scan();
 	//bank0123();
-	LoadFile("fond2.scr", (char *)0xC000);
+	//LoadFile("fond2.scr", (char *)0xC000);
+	LoadFile("J1A.scr", (char *)0xC000);
 	
 	
 	
