@@ -43,4 +43,10 @@ Cliquer bêtement sur une des tiles (en bas à droite) et puis ensuite sur la ma
 
 perl Tiled_tmx2c.pl labyPac.tmx
 
-génère labyPac_map.h et labyPac_map.c
+permet de générer automatiquement labyPac_map.h et labyPac_map.c à partir de labyPac.tmx
+
+__combat2.c jdvpa4_combat2.dsk__
+
+![JDVPA4_COMBAT2.dsk.png](JDVPA4_COMBAT2.dsk.png)
+
+Passage en mode 1 (4 couleurs), recentrage de quelques animations, révision de la zone de contact.
