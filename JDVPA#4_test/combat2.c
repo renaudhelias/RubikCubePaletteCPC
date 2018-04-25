@@ -484,13 +484,15 @@ ANIMATION sub_zero;
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
-#define DEGATS 5
+#define DEGATS 4
+#define BONUS_DEGATS 2
+#define DELAUTREBORD 3
 char degats_liu_kang;
 char degats_sub_zero;
 char contre_liu_kang;
 char contre_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
-	char is_delautrebord=(liu_kang->x+4 > sub_zero->x);
+	char is_delautrebord=(liu_kang->x+DELAUTREBORD > sub_zero->x);
 	// pas grave de toute façon il KO... tant pis si on triche ici.
 	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)
 		|| ((sub_zero->animation->b & FREEZE)!=0)) {
@@ -580,8 +582,8 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	degats_sub_zero=0;
 	contre_liu_kang=0;
 	contre_sub_zero=0;
-	if (liu_kang->x+4+DEGATS > sub_zero->x) {
-		boum=(liu_kang->x+4+DEGATS-sub_zero->x)*2-1;
+	if (liu_kang->x+DELAUTREBORD+DEGATS > sub_zero->x) {
+		boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*2-1;
 		if (liu_kang->anim_restant<8) {
 		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
@@ -933,8 +935,10 @@ void switch_bank(ANIMATION * joueur) {
 #define FREIN 1
 
 // J1A.marcher avec l=2
+//const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
 const CALQUE J1A_repos ={0,2,0,0,BANK_4,MARCHE | MARCHER };
 // J2A.marcher avec l=2
+//const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
 const CALQUE J2A_repos ={24,0,0,0,BANK_6,MARCHE | MARCHER };
 
 
