@@ -935,7 +935,7 @@ void switch_bank(ANIMATION * joueur) {
 // J1A.marcher avec l=2
 const CALQUE J1A_repos ={0,2,0,0,BANK_4,MARCHE | MARCHER };
 // J2A.marcher avec l=2
-const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};
+const CALQUE J2A_repos ={24,0,0,0,BANK_6,MARCHE | MARCHER };
 
 
 
