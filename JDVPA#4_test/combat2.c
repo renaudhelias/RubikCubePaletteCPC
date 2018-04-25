@@ -395,7 +395,7 @@ const struct CALQUE_J1R J1R= {
 };
 
 struct CALQUE_J2A {
-	CALQUE pied_haut; // cyclique, porté en 4/8
+	//CALQUE pied_haut; // cyclique, porté en 4/8
 	//CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
 	//CALQUE genoux_haut; // allez-retour
 	CALQUE pied_retourne; // cyclique, porté en 4/7
@@ -412,7 +412,7 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
+	//.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
 	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
 	.pied_retourne={13,6,CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,BANK_6,0},
@@ -431,7 +431,7 @@ struct CALQUE_J2R{
 	CALQUE poing_droit; // allez-retour
 	CALQUE ko; // cyclique
 	CALQUE fatality; // statique (stoppé au 5)
-	//CALQUE hadouken1_personnage; // statique (stoppé au 10), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	CALQUE hadouken1_personnage; // statique (stoppé au 10), la boule de feu affiché ensuite juste à droite du sprite, collée.
 	//CALQUE hadouken1_fire; // boule de neige
 	//CALQUE hadouken2_personnage; // 1 2 3
 	//CALQUE hadouken2_fire; // mega fire
@@ -447,6 +447,7 @@ const struct CALQUE_J2R J2R= {
 	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
 	.fatality={7,4,0,0,BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
+	.hadouken1_personnage={16,5,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_5|PORTE_EN_6,BANK_7 | HADOUKEN | FREEZE,0},
 	//.hadouken1_fire={22,0,0,0,BANK_7,0},
 	//.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
 	//.hadouken2_fire={26,8,0,0,BANK_7,0},
@@ -977,7 +978,7 @@ void main(void)
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
 
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2A.pied_haut; // attaque haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hadouken1_personnage; // attaque haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=&J2A.poing_double_jab; //attaque centre
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J2R.flaque; // attaque bas
