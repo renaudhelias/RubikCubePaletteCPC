@@ -51,23 +51,6 @@ __combat2.c jdvpa4_combat2.dsk__
 
 Passage en mode 1 (4 couleurs), recentrage de quelques animations, révision de la zone de contact.
 
-__combat2m.c jdvpa4_combat2.dsk__
-
-Ajout d'une musique MK.
-
-Afin de convertir un mod en son CPC, j'utilise "Arkos Tracker 2" http://www.julien-nevo.com/arkos/arkos-tracker-2-0-alpha/
-
-On peut lire les mod originaux avec https://milkytracker.titandemo.org/downloads/ afin de se faire une idée, j'utilise juste les boutons "Load", "Play Sng" et "Stop". Je mute les pistes 4 à 8 (il suffit de cliquer droite sur le numéro en haut de la piste) car à l'import le CPC va importer que les 3 premières voies. Quand on clique droit sur le haut d'une piste, il y a "Swap channels" qui permet d'échanger la piste avec la piste où on a posé le curseur clavier (flèche droite/gauche, le carré bleu)
-
-avmk-mod.mod https://modarchive.org/index.php?request=view_by_moduleid&query=34353 est plutôt pas mal avec les pistes 2/3/4 mais pèse lourd 287KB.
-mk_bo.mod https://modarchive.org/index.php?request=view_by_moduleid&query=52118 35KB est le plus petit que j'ai trouvé en mod... version bidouillé pour avoir que 3 voies : mk_bo-3voies-4cut.mod
-
-Je lis mk_bo-3voies-4cut.mod sur Arkos Tracker 2, certains son ne sont pas pris en compte, certains sont mauvais, mais la batterie elle passe très bien elle, la voie (qui est aussi moche que l'original mk_bo.mod donc parfais), le timing est correct.
-
-L'export choisi : AKY, en &3000, maigre fichier je trouve.
-
-Bon faut jarter tout les "SAMPLES" et mettre des "FM". Je vais prendre pour le moment les "FM" de Solarium (sks), mais l'octave du coup est mauvais (trop aigu), faudrait réécrire toutes les notes hum.
-
 __AKG Hello World__
 
 ![JDVPA4_AKGTESTER.dsk.png](JDVPA4_AKGTESTER.dsk.png)
@@ -87,3 +70,26 @@ incbin "rasmoutput.bin"
 ; offset,lenght
 ;save "akg1000.bin",&1000,&4000</pre>
 Je lance WinAPE, F3 (show assembleur), j'ouvre PlayerAkgTester_CPC-WinAPE.asm, F9, OK, et là ça joue de la musique :)
+
+__combat2m.c jdvpa4_combat2.dsk__
+
+Ajout d'une musique MK.
+
+Afin de convertir un mod en son CPC, j'utilise "Arkos Tracker 2" http://www.julien-nevo.com/arkos/arkos-tracker-2-0-alpha/
+
+On peut lire les mod originaux avec https://milkytracker.titandemo.org/downloads/ afin de se faire une idée, j'utilise juste les boutons "Load", "Play Sng" et "Stop". Je mute les pistes 4 à 8 (il suffit de cliquer droite sur le numéro en haut de la piste) car à l'import le CPC va importer que les 3 premières voies. Quand on clique droit sur le haut d'une piste, il y a "Swap channels" qui permet d'échanger la piste avec la piste où on a posé le curseur clavier (flèche droite/gauche, le carré bleu)
+
+avmk-mod.mod https://modarchive.org/index.php?request=view_by_moduleid&query=34353 est plutôt pas mal avec les pistes 2/3/4 mais pèse lourd 287KB.
+mk_bo.mod https://modarchive.org/index.php?request=view_by_moduleid&query=52118 35KB est le plus petit que j'ai trouvé en mod... version bidouillé pour avoir que 3 voies : mk_bo-3voies-4cut.mod
+
+Je lis mk_bo-3voies-4cut.mod sur Arkos Tracker 2, certains son ne sont pas pris en compte, certains sont mauvais, mais la batterie elle passe très bien elle, la voie (qui est aussi moche que l'original mk_bo.mod donc parfais), le timing est correct.
+
+L'export choisi : AKY, en &3000, maigre fichier je trouve.
+
+Bon faut jarter tout les "SAMPLES" et mettre des "FM". Je vais prendre pour le moment les "FM" de Solarium (sks), mais l'octave du coup est mauvais (trop aigu), faudrait réécrire toutes les notes hum.
+
+J'utilise PlayerAkg2000.asm afin de générer akg2000.bin avec rasm.exe
+
+J'utilise MK2-Solarium.aks afin de générer mk3000.bin
+
+Bon ça marche, mais par contre du coup c'est très aigu.
