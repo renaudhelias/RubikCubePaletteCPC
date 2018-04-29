@@ -68,6 +68,22 @@ L'export choisi : AKY, en &3000, maigre fichier je trouve.
 
 Bon faut jarter tout les "SAMPLES" et mettre des "FM". Je vais prendre pour le moment les "FM" de Solarium (sks), mais l'octave du coup est mauvais (trop aigu), faudrait réécrire toutes les notes hum.
 
-Bon, allons de l'autre bord, testons un Hello World AKY, Targhan dit qu'il y a un hello world dans le dossier testers/.
+__AKG Hello World__
 
-Que tout ça se compile avec SJasmPlus ou Rasm... Faudra tenter avec SJasmPlus, une prochaine fois.
+![JDVPA4_AKGTESTER.dsk.png](JDVPA4_AKGTESTER.dsk.png)
+
+Testons un Hello World AKG, Targhan dit qu'il y a un hello world dans le dossier testers/. Que tout ça se compile avec SJasmPlus ou Rasm... effectivement, ce n'est pas de la syntaxe assembleur WinAPE ici :/
+
+http://www.roudoudou.com/rasm/rasm_fr.html
+
+http://www.roudoudou.com/rasm/ http://www.cpcwiki.eu/forum/programming/rasm-z80-assembler-in-beta/ rasm_v086.zip rasm.exe
+
+Je copie rasm.exe dans C:\Arkos Tracker 2\players\playerAkg\sources\tester et je glisse dessus "PlayerAkgTester_CPC.asm" j'obtiens alors rasmoutput.bin
+
+Je crée un fichier "PlayerAkgTester_CPC-WinAPE.asm" toujours dans ce même dossier avec dedans :
+<pre>org #1000
+run $
+incbin "rasmoutput.bin"
+; offset,lenght
+;save "akg1000.bin",&1000,&4000</pre>
+Je lance WinAPE, F3 (show assembleur), j'ouvre PlayerAkgTester_CPC-WinAPE.asm, F9, OK, et là ça joue de la musique :)
