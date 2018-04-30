@@ -93,3 +93,17 @@ J'utilise PlayerAkg2000.asm afin de générer akg2000.bin avec rasm.exe
 J'utilise MK2-Solarium.aks afin de générer mk3000.bin
 
 Bon ça marche, mais par contre du coup c'est très aigu.
+
+__AKG SFX Hello World__
+
+Dans C:\Arkos Tracker 2\players\playerAkg\sources\PlayerAkg.asm il faut mettre PLY_AKG_MANAGE_SOUND_EFFECTS à 1.
+
+Je copie rasm.exe dans C:\Arkos Tracker 2\players\playerAkg\sources\tester et je glisse dessus "PlayerAkgWithSoundEffectTester_CPC.asm" j'obtiens alors rasmoutput.bin
+
+Je crée un fichier "PlayerAkgTester_CPC-WinAPE.asm" toujours dans ce même dossier avec dedans :
+<pre>org #1000
+run $
+incbin "rasmoutput.bin"
+; offset,lenght
+;save "akg1000.bin",&1000,&4000</pre>
+Je lance WinAPE, F3 (show assembleur), j'ouvre PlayerAkgTester_CPC-WinAPE.asm, F9, OK, et là ça joue de la musique, appuyer sur 1/2/3 sur le clavier numérique à droite du clavier, ça joue des sons respectivement sur l'haut parleur gauche, les deux, l'haut parleur de droite.
