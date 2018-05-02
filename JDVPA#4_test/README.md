@@ -107,3 +107,18 @@ incbin "rasmoutput.bin"
 ; offset,lenght
 ;save "akg1000.bin",&1000,&4000</pre>
 Je lance WinAPE, F3 (show assembleur), j'ouvre PlayerAkgTester_CPC-WinAPE.asm, F9, OK, et là ça joue de la musique, appuyer sur 1/2/3 sur le clavier numérique à droite du clavier, ça joue des sons respectivement sur l'haut parleur gauche, les deux, l'haut parleur de droite.
+
+__combat2e.c jdvpa4_combat2.dsk__
+
+Ajout du SFX, 3 instruments créés.
+
+Je rajoute des points d'ancrage dans PlayerAkg.asm :
+<pre>;Hooks for external calls. Can be removed if not needed.
+jp PLY_AKG_Init          ;PLY_AKG_Start + 0.
+jp PLY_AKG_Play          ;PLY_AKG_Start + 3.
+jp PLY_AKG_Stop          ;PLY_AKG_Start + 6.
+jp PLY_AKG_InitSoundEffects ;+9
+jp PLY_AKG_PlaySoundEffect ;+C</pre>
+Je compile PlayerAkg2000.asm, j'obtiens akx2000.bin, akx2D20.akx comprend les SFX, je le place en adresse x2D20 juste après la fin de akx2000.bin en fait, car il est tout petit et ne dépassera pas l'adresse 3000, où je pose mk3000.bin (la musique de fond)
+
+Quand les personnages s'infligent des dégats ça joue un instrument SFX.

@@ -7,7 +7,7 @@ copy akg2000.bin.vo akg2000.bin
 copy akx2000.bin.vo akx2000.bin
 copy sudo3000.bin.vo sudo3000.bin
 copy mk3000.akg mk3000.bin
-copy akx2D10.akx akx2D10.bin
+copy akx2D20.akx akx2D20.bin
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic1.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic2.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -28,12 +28,15 @@ sdcc -mz80 -c --std-c99 --opt-code-speed labyPac_map.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --no-std-crt0 jdvapi_basic1.rel jdvapi_keyb.rel jdvapi_frame.rel jdvapi_sync.rel crt0_cpc.rel putchar_cpc.rel pacman_reduce_sprites.rel ghost_reduce_sprites.rel blank_reduce_sprites.rel player.rel ghost.rel tiles.rel labyPac_map.rel main.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2m.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2e.c
 hex2bin main.ihx
 hex2bin combat2.ihx
 hex2bin combat2m.ihx
+hex2bin combat2e.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa4.dsk
 CPCDiskXP -File combat2.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa4_combat2.dsk
 CPCDiskXP -File combat2m.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File combat2e.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa4_combat2.dsk
@@ -45,5 +48,6 @@ CPCDiskXP -File mk3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2
 CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File akg2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File akx2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File akx2D10.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akx2D20.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 pause
+
