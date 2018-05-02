@@ -4,8 +4,10 @@ sdasz80 -o crt0_cpc.s
 sdasz80 -o putchar_cpc.s
 copy sks2000.bin.vo sks2000.bin
 copy akg2000.bin.vo akg2000.bin
+copy akx2000.bin.vo akx2000.bin
 copy sudo3000.bin.vo sudo3000.bin
 copy mk3000.akg mk3000.bin
+copy akx2D10.akx akx2D10.bin
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic1.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic2.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -42,4 +44,6 @@ CPCDiskXP -File sudo3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_comba
 CPCDiskXP -File mk3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File akg2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akx2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akx2D10.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 pause
