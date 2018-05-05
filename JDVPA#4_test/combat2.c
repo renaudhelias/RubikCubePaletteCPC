@@ -1121,11 +1121,11 @@ calqueC000();
 		vsync();
 		handle_raster(callback_roulette);
 		raster();
+	}
 #ifndef NO_SOUND
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
 #endif
-	}
 
 
 
