@@ -1016,7 +1016,8 @@ void main(void)
 	//LoadFile("intro.scr", (char *)0x4000);
 #ifndef NO_SOUND
 	LoadFile("sks2000.bin", (char *)0x2000);
-	LoadFile("sudo3000.bin", (char *)0x3000);
+	//LoadFile("sudo3000.bin", (char *)0x3000);
+	LoadFile("mk-bo.bin", (char *)0x3000);
 #endif
 	vram=precalc_vram();
 	

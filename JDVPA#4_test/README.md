@@ -51,6 +51,8 @@ __combat2.c jdvpa4_combat2.dsk__
 
 Passage en mode 1 (4 couleurs), recentrage de quelques animations, révision de la zone de contact.
 
+Ecriture de la bande sonore MK-BO.SKS par SuTeKH/Epyteor
+
 __AKG Hello World__
 
 ![JDVPA4_AKGTESTER.dsk.png](JDVPA4_AKGTESTER.dsk.png)
