@@ -39,9 +39,9 @@ void cpct_akp_musicInit()
   push de
   push hl
   
-	; sks2000.bin/exemple.asm
-	ld de,#0x3000
-	call #0x2000
+	; sks8000.bin/exemple.asm
+	ld de,#0x9000
+	call #0x8000
 	
 	;; restore Z80 state
   pop hl
@@ -77,7 +77,7 @@ void cpct_akp_musicPlay()
   push hl
 	
 	; sks2000.bin/exemple.asm
-	call #0x2003
+	call #0x8003
 	
 	;; restore Z80 state
   pop hl
@@ -1000,6 +1000,8 @@ void main(void)
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
 
+	raster_halt();
+
 	//intro en &4000
 	SetupDOS();
 	//calque4000();
@@ -1015,9 +1017,8 @@ void main(void)
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
 #ifndef NO_SOUND
-	LoadFile("sks2000.bin", (char *)0x2000);
-	//LoadFile("sudo3000.bin", (char *)0x3000);
-	LoadFile("mk-bo.bin", (char *)0x3000);
+	LoadFile("sks8000.bin", (char *)0x8000);
+	LoadFile("mkbo9000.bin", (char *)0x9000);
 #endif
 	vram=precalc_vram();
 	

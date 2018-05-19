@@ -2,13 +2,19 @@
 rem set path=%path%;\sdcc\bin
 sdasz80 -o crt0_cpc.s
 sdasz80 -o putchar_cpc.s
-copy sks2000.bin.vo sks2000.bin
-copy akg2000.bin.vo akg2000.bin
-copy akx2000.bin.vo akx2000.bin
+rem copy sks2000.bin.vo sks2000.bin
+copy sks8000.bin.vo sks8000.bin
+rem copy akg2000.bin.vo akg2000.bin
+copy akg8000.bin.vo akg8000.bin
+rem copy akx2000.bin.vo akx2000.bin
+copy akx8000.bin.vo akx8000.bin
 copy sudo3000.bin.vo sudo3000.bin
-copy MK-BO.BIN.vo MK-BO.BIN
-copy mk3000.akg mk3000.bin
-copy akx2D20.akx akx2D20.bin
+rem copy MKBO3000.BIN.vo MKBO3000.BIN
+copy MKBO9000.BIN.vo MKBO9000.BIN
+rem copy mk3000.akg mk3000.bin
+copy mk9000.akg mk9000.bin
+rem copy akx2D20.akx akx2D20.bin
+copy akx8D20.akx akx8D20.bin
 copy MK-BO.SKS.vo MK-BO.SKS
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic1.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic2.c
@@ -46,12 +52,18 @@ CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File sudo3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File mk3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File akg2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File akx2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File akx2D20.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File mk3000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File mk9000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File sks2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File sks8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File akg2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akg8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File akx2000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akx8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File akx2D20.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File akx8D20.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa4_combat2.dsk
-CPCDiskXP -File MK-BO.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+rem CPCDiskXP -File MKBO3000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 pause
 

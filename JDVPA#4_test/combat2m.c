@@ -39,14 +39,14 @@ void cpct_akp_musicInit()
   push de
   push hl
   
-	; sks2000.bin/exemple.asm
-	; ld de,#0x3000
-	; call #0x2000
+	; sks8000.bin/exemple.asm
+	; ld de,#0x9000
+	; call #0x8000
 	
-	; agk2000.bin/PlayerAkgTester_CPC.asm
-	ld hl,#0x3000
+	; agk8000.bin/PlayerAkgTester_CPC.asm
+	ld hl,#0x9000
     xor a                   ;Subsong 0.
-    call #0x2000
+    call #0x8000
 	
 	;; restore Z80 state
   pop hl
@@ -82,7 +82,7 @@ void cpct_akp_musicPlay()
   push hl
 	
 	; sks2000.bin/exemple.asm
-	call #0x2003
+	call #0x8003
 	
 	;; restore Z80 state
   pop hl
@@ -1005,6 +1005,8 @@ void main(void)
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
 
+	raster_halt();
+
 	//intro en &4000
 	SetupDOS();
 	//calque4000();
@@ -1020,10 +1022,8 @@ void main(void)
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
 #ifndef NO_SOUND
-	//LoadFile("sks2000.bin", (char *)0x2000);
-	LoadFile("akg2000.bin", (char *)0x2000);
-	//LoadFile("sudo3000.bin", (char *)0x3000);
-	LoadFile("mk3000.bin", (char *)0x3000);
+	LoadFile("akg8000.bin", (char *)0x8000);
+	LoadFile("mk9000.bin", (char *)0x9000);
 #endif
 	vram=precalc_vram();
 	
@@ -1127,11 +1127,11 @@ calqueC000();
 		vsync();
 		handle_raster(callback_roulette);
 		raster();
+	}
 #ifndef NO_SOUND
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
 #endif
-	}
 
 
 

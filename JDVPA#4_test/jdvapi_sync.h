@@ -9,7 +9,7 @@ void vsync();
 typedef  void (*MyFunctionReturningVoid)(unsigned char);
 
 // does kill the system
-//void raster_halt();
+void raster_halt();
 // does restore the system
 //void firmware();
 // does replace the system by a callback

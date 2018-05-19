@@ -14,7 +14,7 @@ void vsync()
   __endasm;
 }
 
-/* void raster_halt()
+void raster_halt()
 {
   // does kill the system
   __asm
@@ -23,7 +23,7 @@ void vsync()
     LD (#0x38),HL
     ei
   __endasm;
-} */
+}
 
 /* void firmware()
 {

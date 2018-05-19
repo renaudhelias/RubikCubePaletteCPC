@@ -39,18 +39,18 @@ void cpct_akp_musicInit()
   push de
   push hl
   
-	; sks2000.bin/exemple.asm
-	; ld de,#0x3000
-	; call #0x2000
+	; sks8000.bin/exemple.asm
+	; ld de,#0x9000
+	; call #0x8000
 	
-	; agk2000.bin/PlayerAkgTester_CPC.asm
-	ld hl,#0x3000
+	; agk8000.bin/PlayerAkgTester_CPC.asm
+	ld hl,#0x9000
     xor a                   ;Subsong 0.
-    call #0x2000
+    call #0x8000
 	
 	; PLY_AKG_InitSoundEffects
-	ld hl,#0x2D20
-    call #0x2009
+	ld hl,#0x8D20
+    call #0x8009
 	
 	;; restore Z80 state
   pop hl
@@ -86,7 +86,7 @@ void cpct_akp_musicPlay()
   push hl
 	
 	; sks2000.bin/exemple.asm
-	call #0x2003
+	call #0x8003
 	
 	;; restore Z80 state
   pop hl
@@ -125,7 +125,7 @@ void cpct_akp_sfxPlay()
 	ld c,#0          ;Channel 1.
     ld a,#1 ;The selected sound effect (>=1).
     ld b,#0          ;Full volume.
-    call #0x200C
+    call #0x800C
 	
 	;; restore Z80 state
   pop hl
@@ -237,7 +237,7 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 char optim_bar=0;
 #define TAILLE_PAS 4
 char progressbar(char x, char y, unsigned int value, unsigned int max, char pas) {
-	/*unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
+	unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
 	char mod8=(value+2) %8;
 	char div8=(value+2) /8;
 	tmp=max/8;
@@ -313,9 +313,7 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 		return 0;
 	} else {
 		return pas + 1;
-	}*/
-	
-	return 0;
+	}
 }
 
 
@@ -1053,6 +1051,8 @@ void main(void)
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
 
+	raster_halt();
+
 	//intro en &4000
 	SetupDOS();
 	//calque4000();
@@ -1068,12 +1068,9 @@ void main(void)
 	//LoadFile("intro-oc.scr", (char *)0x4000);
 	//LoadFile("intro.scr", (char *)0x4000);
 #ifndef NO_SOUND
-	//LoadFile("sks2000.bin", (char *)0x2000);
-	//LoadFile("akg2000.bin", (char *)0x2000);
-	LoadFile("akx2000.bin", (char *)0x2000);
-	LoadFile("akx2D20.bin", (char *)0x2D20);
-	//LoadFile("sudo3000.bin", (char *)0x3000);
-	LoadFile("mk3000.bin", (char *)0x3000);
+	LoadFile("akx8000.bin", (char *)0x8000);
+	LoadFile("akx8D20.bin", (char *)0x8D20);
+	LoadFile("mk9000.bin", (char *)0x9000);
 #endif
 	vram=precalc_vram();
 	
@@ -1177,11 +1174,11 @@ calqueC000();
 		vsync();
 		handle_raster(callback_roulette);
 		raster();
+	}
 #ifndef NO_SOUND
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
 #endif
-	}
 
 
 
