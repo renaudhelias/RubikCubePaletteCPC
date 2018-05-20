@@ -37,14 +37,17 @@ sdcc -mz80 --code-loc 0x0138 --data-loc 0 --no-std-crt0 jdvapi_basic1.rel jdvapi
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2m.c
 sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2e.c
+sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel jdvapi_basic1.rel jdvapi_frame.rel jdvapi_keyb.rel jdvapi_sync.rel jdvapi_floppy.rel combat2i.c
 hex2bin main.ihx
 hex2bin combat2.ihx
 hex2bin combat2m.ihx
 hex2bin combat2e.ihx
+hex2bin combat2i.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa4.dsk
 CPCDiskXP -File combat2.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa4_combat2.dsk
 CPCDiskXP -File combat2m.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File combat2e.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
+CPCDiskXP -File combat2i.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa4_combat2.dsk
 CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa4_combat2.dsk

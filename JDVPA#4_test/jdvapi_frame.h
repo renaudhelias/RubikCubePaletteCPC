@@ -13,6 +13,8 @@
 
 extern void put_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image);
 
+extern void put_inversed_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image);
+
 extern void put_frame_transparent(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight, const unsigned char *image);
 
 extern void erase_frame(unsigned char *pAddress, unsigned char nWidth, unsigned char nHeight);

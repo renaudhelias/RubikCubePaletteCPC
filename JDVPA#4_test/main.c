@@ -119,7 +119,7 @@ void main(void)
 			player.dd = PLAYER_UP;
 		}
 		else
-		if ((get_key(Key_Joy1Right)) || (get_key(Key_A))) 		
+		if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) 		
 		{
 			player.dd = PLAYER_DOWN;
 		}
