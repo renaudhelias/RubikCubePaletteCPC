@@ -70,14 +70,13 @@ void put_inversed_frame(unsigned char *pAddress, unsigned char nWidth, unsigned 
 
     _loop_alto004:
        PUSH BC				; Sauvegarde de BC sur la pile (width et height)
-       LD B,C				; Charge C (width) dans B
        PUSH HL				; Sauvegarde de HL (adresse de la destination)
 	   
-	   ; ADD L,B
-	   LD A,L
-	   ADD A,B
-	   LD L,A
-	   
+	  LD B,#0x0
+	  ADD HL, BC
+	  
+      LD B,C				; Charge C (width) dans B
+      
     _loop_ancho004:
        LD A,(DE)			; Met dans A un octet de de la source
 	   
@@ -94,7 +93,7 @@ void put_inversed_frame(unsigned char *pAddress, unsigned char nWidth, unsigned 
        LD (HL),A			; Met dans la destination A
 	   
        INC DE				; Avance dans l'adresse de la source
-       ; INC HL				; Avance dans l'adresse de la destination
+      ; INC HL				; Avance dans l'adresse de la destination
 	   DEC HL
 	   
        DJNZ _loop_ancho004		; Décrémente B qui contient la largeur. Si on à pas finit de copier 
