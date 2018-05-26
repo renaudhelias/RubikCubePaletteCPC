@@ -34,6 +34,7 @@ CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File sks8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 pause

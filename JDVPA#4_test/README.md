@@ -53,6 +53,8 @@ Passage en mode 1 (4 couleurs), recentrage de quelques animations, révision de 
 
 Ecriture de la bande sonore MK-BO.SKS par SuTeKH/Epyteor
 
+Plus de mémoire disponible pour programmer. J'ai lancé la fonction raster_halt() qui coupe le firmware RAM. Juste avant de lancer les fonctions de chargement disquette (qui elles sont en firmware ROM), et comme quand on écrit en ROM en fait on écrit en RAM, les fonctions de chargement disquette marchent très bien partout. J'ai donc chargé la routine son finalement en &8000 et la bande son en &9000, ce qui me libère 8Ko de plus pour le programme (et +4Ko pour le son si besoin), donc du coup l'espace occupé par mon programme n'est plus 100%, mais 50% donc je peux... aller plus loin :)
+
 __AKG Hello World__
 
 ![JDVPA4_AKGTESTER.dsk.png](JDVPA4_AKGTESTER.dsk.png)
@@ -124,9 +126,3 @@ jp PLY_AKG_PlaySoundEffect ;+C</pre>
 Je compile PlayerAkg2000.asm, j'obtiens akx2000.bin, akx2D20.akx comprend les SFX, je le place en adresse x2D20 juste après la fin de akx2000.bin en fait, car il est tout petit et ne dépassera pas l'adresse 3000, où je pose mk3000.bin (la musique de fond)
 
 Quand les personnages s'infligent des dégats ça joue un instrument SFX.
-
-__combat2i.c jdvpa4_combat2.dsk__
-Test d'affichage inversé d'un sprite, utilisation d'un tableau de transposition pour les octets, ça prend un peu de temps de calcul mais ça va.
-Pour la répartition de la charge j'ai pensé qu'un personnage était toujours affiché à l'inverse de l'autre, donc changer de sens n'est pas plus couteux.
-
-Sinon niveau mémoire, j'ai lancé la fonction raster_halt() qui coupe le firmware RAM. Juste avant de lancer les fonctions de chargement disquette (qui elles sont en firmware ROM), et comme quand on écrit en ROM en fait on écrit en RAM, les fonctions de chargement disquette marchent très bien partout. J'ai donc chargé la routine son finalement en &8000 et la bande son en &9000, ce qui me libère 8Ko de plus pour le programme (et +4Ko pour le son si besoin), donc du coup l'espace occupé par mon programme n'est plus 100%, mais 50% donc je peux... aller plus loin :)
