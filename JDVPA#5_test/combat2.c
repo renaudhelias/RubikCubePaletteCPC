@@ -544,16 +544,28 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if (degats_liu_kang>degats_sub_zero) {
 			if (liu_kang->x == liu_kang->old_x) {
 				// sub_zero est ejecté
-				if (sub_zero->x < 48 && sub_zero->old_x < 48) {
-					sub_zero->x=sub_zero->old_x+1;
+				if (liu_kang->polarite==0) {
+					if (sub_zero->x < 48 && sub_zero->old_x < 48) {
+						sub_zero->x=sub_zero->old_x+1;
+					}
+				} else {
+					if (sub_zero->x > 3 && sub_zero->old_x > 3) {
+						sub_zero->x=sub_zero->old_x-1;
+					}
 				}
 				liu_kang->x=liu_kang->old_x;
 			}
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
-				if (liu_kang->x > 3 && liu_kang->old_x > 3) {
-					liu_kang->x=liu_kang->old_x-1;
+				if (liu_kang->polarite==0) {
+					if (liu_kang->x > 3 && liu_kang->old_x > 3) {
+						liu_kang->x=liu_kang->old_x-1;
+					}
+				} else {
+					if (liu_kang->x < 48 && liu_kang->old_x < 48) {
+						liu_kang->x=liu_kang->old_x+1;
+					}
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
