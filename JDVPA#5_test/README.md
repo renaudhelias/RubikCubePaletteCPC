@@ -13,5 +13,7 @@ Mais comme dit dans la vidéo, le nombre de sprite une fois qu'ils marcheront da
 
 __combat2.c jdvpa5_combat2.dsk__
 
-Test d'affichage inversé d'un sprite, utilisation d'un tableau de transposition pour les octets, ça prend un peu de temps de calcul mais ça va.
+Les personnages peuvent changent de sens lorsqu'ils se croisent.
+
+Affichage inversé d'un sprite, utilisation d'un tableau de transposition pour les octets, ça prend un peu de temps de calcul mais ça va.
 Pour la répartition de la charge j'ai pensé qu'un personnage était toujours affiché à l'inverse de l'autre, donc changer de sens n'est pas plus couteux.
