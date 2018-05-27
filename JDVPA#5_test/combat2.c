@@ -492,7 +492,11 @@ char degats_sub_zero;
 char contre_liu_kang;
 char contre_sub_zero;
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
-	char is_delautrebord=(liu_kang->x+DELAUTREBORD > sub_zero->x);
+	char is_delautrebord=(
+	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD))
+	||
+	((sub_zero->x > liu_kang->x) && (sub_zero->x - liu_kang->x < DELAUTREBORD))
+	);
 	// pas grave de toute façon il KO... tant pis si on triche ici.
 	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)
 		|| ((sub_zero->animation->b & FREEZE)!=0)) {
@@ -508,7 +512,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
 	//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
 	
-		if (is_delautrebord) {
+		/* if (is_delautrebord) {
 			// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
 			if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
 				&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
@@ -535,7 +539,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				liu_kang->x=liu_kang->old_x;
 				sub_zero->x=sub_zero->old_x;
 			}
-		}
+		} */
 
 		if (degats_liu_kang>degats_sub_zero) {
 			if (liu_kang->x == liu_kang->old_x) {
@@ -554,8 +558,41 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->old_x;
 			}
 		}
+		
+		// polarite
+		if ((liu_kang->x > sub_zero->x && liu_kang->polarite==0)
+			|| (sub_zero->x > liu_kang->x && liu_kang->polarite==1)) {
+			// inversion de la polarite
+			liu_kang->polarite=(!liu_kang->polarite) & 1;
+			sub_zero->polarite=(!sub_zero->polarite) & 1;
+			// fin de l'animation déclenché par le joystick
+			if ((liu_kang->direction & DIRECTION_AVANT) != 0) {
+				liu_kang->direction=((liu_kang->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
+			} else if ((liu_kang->direction & DIRECTION_ARRIERE) != 0) {
+				liu_kang->direction=((liu_kang->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			}
+			// change de sens donc si marchait en avançant désormais il recule.
+			if ((liu_kang->allez_retour & MARCHER) != 0) {
+				if ((liu_kang->allez_retour & RETOUR) != 0) {
+					liu_kang->allez_retour = (liu_kang->allez_retour & (!RETOUR));
+				} else {
+					liu_kang->allez_retour = (liu_kang->allez_retour | RETOUR);
+				}
+			}
+			if ((sub_zero->direction & DIRECTION_AVANT) != 0) {
+				sub_zero->direction=((sub_zero->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
+			} else if ((sub_zero->direction & DIRECTION_ARRIERE) != 0) {
+				sub_zero->direction=((sub_zero->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			}
+			if ((sub_zero->allez_retour & MARCHER) != 0) {
+				if ((sub_zero->allez_retour & RETOUR) != 0) {
+					sub_zero->allez_retour = (sub_zero->allez_retour & (!RETOUR));
+				} else {
+					sub_zero->allez_retour = (sub_zero->allez_retour | RETOUR);
+				}
+			}
+		}
 	}
-
 }
 
 typedef struct {
@@ -697,7 +734,7 @@ void refresh_all_progressbar() {
 }
 
 void action(ANIMATION * joueur, char direction_pressed) {
-	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_continue_marcher;
+	char deplacement=0; char is_anim_fini;char is_arrete_marcher;//char is_continue_marcher;
 
 	
 
@@ -705,7 +742,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		// special animation : ENDING_KO | ENDING, déjà préchargé
 		is_anim_fini=0;
 		is_arrete_marcher=0;
-		is_continue_marcher=0;
+		//is_continue_marcher=0;
 	} else {
 
 	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
@@ -732,46 +769,47 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	// si le joueur marchait et ne marche plus
 	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
 	// sinon si le joueur marchait mais change de direction => à prendre compte
-	is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
+	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
-	is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
+	// FIXME : ar c'est jamais VERS_L_AVANT | VERS_L_ARRIERE car c'est une constante ar ici.
+	//is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
 }
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
-	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
+	if (is_arrete_marcher || is_anim_fini) { //is_continue_marcher || 
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
 		joueur->animation=mapping_direction_calque[joueur->perso][joueur->direction];
 		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
 		if ((joueur->direction & DIRECTION_AVANT) != 0) {
 			joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-			 if (is_continue_marcher) {
-				if (joueur->anim_restant==joueur->animation->l) {
-					joueur->anim_restant=0; // cyclique
-				} else {
-					joueur->anim_restant=joueur->anim_restant+1;
-				}
-			} else {
+			 //if (is_continue_marcher) {
+			//	if (joueur->anim_restant==joueur->animation->l) {
+			//		joueur->anim_restant=0; // cyclique
+			//	} else {
+			//		joueur->anim_restant=joueur->anim_restant+1;
+			//	}
+			//} else {
 				// pas de simple "RETOUR" ici.
 				joueur->anim_restant=0;
-			}
+			//}
 		} else if ((joueur->direction & DIRECTION_ARRIERE) != 0) {
 			joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 			if ((joueur->allez_retour & MARCHER) != 0) {
 				joueur->allez_retour = joueur->allez_retour | RETOUR;
 			}
-			if (is_continue_marcher) {
-				if (joueur->anim_restant==0) {
-					joueur->anim_restant=joueur->animation->l; // cyclique
-				} else {
-					joueur->anim_restant=joueur->anim_restant-1;
-				}
-			} else {
+			//if (is_continue_marcher) {
+			//	if (joueur->anim_restant==0) {
+			//		joueur->anim_restant=joueur->animation->l; // cyclique
+			//	} else {
+			//		joueur->anim_restant=joueur->anim_restant-1;
+			//	}
+			//} else {
 				if ((joueur->allez_retour & RETOUR) != 0) {
 					joueur->anim_restant=joueur->animation->l;
 				} else {
 					joueur->anim_restant=0;
 				}
-			}
+			//}
 		} else {
 			// pas de simple "RETOUR" ici.
 			joueur->anim_restant=0;
