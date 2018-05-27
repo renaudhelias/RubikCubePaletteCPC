@@ -462,6 +462,7 @@ const struct CALQUE_J2R J2R= {
 typedef struct {
 	char perso; // identifiant du jouer
 	char direction;
+	char polarite; // 0 : normal, 1 : sprite inversé
 	CALQUE * animation;
 	char anim_restant; // decompte un CALQUE.l
 	char allez_retour; // si ALLEZ ou RETOUR, decompte aussi un allez-retour de l'anim (ALLEZ, puis RETOUR, puis 0)
@@ -1088,6 +1089,7 @@ calqueC000();
 	liu_kang.direction=0;
 	liu_kang.anim_restant=0;
 	liu_kang.allez_retour=J1A_repos.ar;
+	liu_kang.polarite=0;
 
 	liu_kang.animation=&J1A_repos;
 	
@@ -1097,6 +1099,7 @@ calqueC000();
 	sub_zero.direction=0;
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=J2A_repos.ar;
+	sub_zero.polarite=1;
 
 	sub_zero.animation=&J2A_repos;
 	
@@ -1328,12 +1331,21 @@ calqueC000();
 	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 
-	switch_bank(&liu_kang);
-	//put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
-	put_inversed_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
+	if (liu_kang.polarite == 1) {
+		switch_bank(&liu_kang);
+		//put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
+		put_inversed_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
 
-	switch_bank(&sub_zero);
-	put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
+		switch_bank(&sub_zero);
+		put_frame_transparent((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
+	} else {
+		switch_bank(&sub_zero);
+		//put_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
+		put_inversed_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.x),6,50,0x4000+((6*50)*(sub_zero.animation->o+sub_zero.anim_restant)));
+
+		switch_bank(&liu_kang);
+		put_frame_transparent((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
+	}
 	
 	bank0123();
 
