@@ -625,14 +625,25 @@ char refresh_pas = 0;
 
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char boum;
+	char is_delautrebord_plus_degats=(
+	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD + DEGATS))
+	||
+	((sub_zero->x > liu_kang->x) && (sub_zero->x - liu_kang->x < DELAUTREBORD + DEGATS))
+	);
 	//liu_kang->anim_restant 0 1  2  3  4   5
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
 	degats_liu_kang=0;
 	degats_sub_zero=0;
 	contre_liu_kang=0;
 	contre_sub_zero=0;
-	if (liu_kang->x+DELAUTREBORD+DEGATS > sub_zero->x) {
-		boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*2-1;
+	if (is_delautrebord_plus_degats) {
+		if (liu_kang->x > sub_zero->x) {
+			boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*2-1;
+		} else if (sub_zero->x > liu_kang->x) {
+			boum=(sub_zero->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-liu_kang->x)*2-1;
+		} else {
+			boum=(DELAUTREBORD+DEGATS+BONUS_DEGATS)*2-1;
+		}
 		if (liu_kang->anim_restant<8) {
 		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
