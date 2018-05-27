@@ -74,6 +74,7 @@ void put_inversed_frame(unsigned char *pAddress, unsigned char nWidth, unsigned 
 	   
 	  LD B,#0x0
 	  ADD HL, BC
+	  DEC HL
 	  
       LD B,C				; Charge C (width) dans B
       
