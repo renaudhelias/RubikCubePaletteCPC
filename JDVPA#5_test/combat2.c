@@ -469,8 +469,8 @@ typedef struct {
 	char x;char old_x;
 } ANIMATION;
 
-#define DIRECTION_DROITE 1
-#define DIRECTION_GAUCHE 2
+#define DIRECTION_AVANT 1
+#define DIRECTION_ARRIERE 2
 #define DIRECTION_HAUT 4
 #define DIRECTION_BAS 8
 #define DIRECTION_FIRE 16
@@ -478,11 +478,11 @@ typedef struct {
 ANIMATION liu_kang;
 ANIMATION sub_zero;
 
-#define DEPLACEMENT_AVANCE 1
-#define DEPLACEMENT_RECULE 2
+#define DEPLACEMENT_DROITE 1
+#define DEPLACEMENT_GAUCHE 2
 #define DEPLACEMENT_AUCUNE 3
 
-CALQUE * mapping_direction_calque[2][1+DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
+CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 #define DEGATS 4
 #define BONUS_DEGATS 2
@@ -740,96 +740,41 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	if (is_continue_marcher || is_arrete_marcher || is_anim_fini) {
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
-		if (((joueur->direction & DIRECTION_DROITE) != 0) && ((joueur->direction & DIRECTION_GAUCHE) != 0)) {
-			// un idiot
-			deplacement = DEPLACEMENT_AUCUNE;
-		} else if ((joueur->direction & DIRECTION_DROITE) != 0) {
-			if (joueur->perso==PERSO_LIU_KANG) {
-				deplacement = DEPLACEMENT_AVANCE;
-			} else {
-				deplacement = DEPLACEMENT_RECULE;
-			}
-		} else if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
-			if (joueur->perso==PERSO_SUB_ZERO) {
-				deplacement = DEPLACEMENT_AVANCE;
-			} else {
-				deplacement = DEPLACEMENT_RECULE;
-			}
-		} else {
-			deplacement = DEPLACEMENT_AUCUNE;
-		}
-		
 		joueur->animation=mapping_direction_calque[joueur->perso][joueur->direction];
 		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
-		if (joueur->perso == PERSO_LIU_KANG) {
-			if (deplacement == DEPLACEMENT_AVANCE) {
-				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-				 if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation->l) {
-						joueur->anim_restant=0; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant+1;
-					}
+		if ((joueur->direction & DIRECTION_AVANT) != 0) {
+			joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
+			 if (is_continue_marcher) {
+				if (joueur->anim_restant==joueur->animation->l) {
+					joueur->anim_restant=0; // cyclique
 				} else {
-					// pas de simple "RETOUR" ici.
-					joueur->anim_restant=0;
-				}
-			} else if (deplacement == DEPLACEMENT_RECULE) {
-				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
-				if ((joueur->allez_retour & MARCHER) != 0) {
-					joueur->allez_retour = joueur->allez_retour | RETOUR;
-				}
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation->l; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant-1;
-					}
-				} else {
-					if ((joueur->allez_retour & RETOUR) != 0) {
-						joueur->anim_restant=joueur->animation->l;
-					} else {
-						joueur->anim_restant=0;
-					}
+					joueur->anim_restant=joueur->anim_restant+1;
 				}
 			} else {
 				// pas de simple "RETOUR" ici.
 				joueur->anim_restant=0;
+			}
+		} else if ((joueur->direction & DIRECTION_ARRIERE) != 0) {
+			joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
+			if ((joueur->allez_retour & MARCHER) != 0) {
+				joueur->allez_retour = joueur->allez_retour | RETOUR;
+			}
+			if (is_continue_marcher) {
+				if (joueur->anim_restant==0) {
+					joueur->anim_restant=joueur->animation->l; // cyclique
+				} else {
+					joueur->anim_restant=joueur->anim_restant-1;
+				}
+			} else {
+				if ((joueur->allez_retour & RETOUR) != 0) {
+					joueur->anim_restant=joueur->animation->l;
+				} else {
+					joueur->anim_restant=0;
+				}
 			}
 		} else {
-			if (deplacement == DEPLACEMENT_AVANCE) {
-				joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==joueur->animation->l) {
-						joueur->anim_restant=0; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant+1;
-					}
-				} else {
-					joueur->anim_restant=0;
-				}
-			} else if (deplacement == DEPLACEMENT_RECULE) {
-				joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
-				if ((joueur->allez_retour & MARCHER) != 0) {
-					joueur->allez_retour = joueur->allez_retour | RETOUR;
-				}
-				if (is_continue_marcher) {
-					if (joueur->anim_restant==0) {
-						joueur->anim_restant=joueur->animation->l; // cyclique
-					} else {
-						joueur->anim_restant=joueur->anim_restant-1;
-					}
-				} else {
-					if ((joueur->allez_retour & RETOUR) != 0) {
-						joueur->anim_restant=joueur->animation->l;
-					} else {
-						joueur->anim_restant=0;
-					}
-				}
-			} else {
-				// pas de simple "RETOUR" ici.
-				joueur->anim_restant=0;
-			}
+			// pas de simple "RETOUR" ici.
+			joueur->anim_restant=0;
 		}
 	} else {
 		// jouer l'animation
@@ -880,17 +825,35 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	
 	// dans tout les cas, le personnage subit éventuellement un VERS_L_AVANT ou VERS_L_ARRIERE
 	
+	if (((joueur->direction & DIRECTION_AVANT) != 0) && ((joueur->direction & DIRECTION_ARRIERE) != 0)) {
+		// un idiot
+		deplacement = DEPLACEMENT_AUCUNE;
+	} else if ((joueur->direction & DIRECTION_AVANT) != 0) {
+		if (joueur->polarite==0) {
+			deplacement = DEPLACEMENT_DROITE;
+		} else {
+			deplacement = DEPLACEMENT_GAUCHE;
+		}
+	} else if ((joueur->direction & DIRECTION_ARRIERE) != 0) {
+		if (joueur->polarite==1) {
+			deplacement = DEPLACEMENT_DROITE;
+		} else {
+			deplacement = DEPLACEMENT_GAUCHE;
+		}
+	} else {
+		deplacement = DEPLACEMENT_AUCUNE;
+	}
+	
 	// une animation MARCHE est en cours
 	if ((joueur->allez_retour & MARCHER) != 0) {
 		// déplacement
-		if ((joueur->direction & DIRECTION_DROITE) != 0) {
+		if (deplacement == DEPLACEMENT_DROITE) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
 			if (joueur->x > 48) {
 				joueur->x=48; //3;
 			}
-		}
-		if ((joueur->direction & DIRECTION_GAUCHE) != 0) {
+		} else if (deplacement == DEPLACEMENT_GAUCHE) {
 			// le joueur va a gauche
 			joueur->x = joueur->old_x - 1;
 			if (joueur->x < 3) {
@@ -898,7 +861,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			}
 		}
 	} else if ((joueur->allez_retour & MARCHE) != 0) {
-		if (joueur->perso==PERSO_LIU_KANG) {
+		if (joueur->polarite==0) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
 			if (joueur->x > 48) {
@@ -959,8 +922,8 @@ void main(void)
 	is_bot=3;
 	
 	// init mapping
-	for (i=0;i<=DIRECTION_DROITE+DIRECTION_GAUCHE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
-		if ((i & DIRECTION_DROITE) == 0 && (i & DIRECTION_GAUCHE) == 0) {
+	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
+		if ((i & DIRECTION_AVANT) == 0 && (i & DIRECTION_ARRIERE) == 0) {
 			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A_repos;
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A_repos;
 		} else {
@@ -968,30 +931,30 @@ void main(void)
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
 		}
 	}
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut; // attaque haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut; // attaque haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=&J1R.poing_double_jab; //attaque centre
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_FIRE]=&J1A.pied_milieu; // attaque milieu
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif; // attaque bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE]=&J1A.pied_milieu; // attaque milieu
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif; // attaque bas
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE]=&J1A.balayette; // defense bas
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.hypercut; // defense haut
 
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut; // contre
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.dragon; // humiliation
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut; // contre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.dragon; // humiliation
 
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
 
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hadouken1_personnage; // attaque haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hadouken1_personnage; // attaque haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=&J2A.poing_double_jab; //attaque centre
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_GAUCHE | DIRECTION_BAS | DIRECTION_FIRE]=&J2R.flaque; // attaque bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=&J2R.flaque; // attaque bas
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE]=&J2A.balayette; // defense bas
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hypercut; // defense haut
 
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.poing_droit; // contre
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_FIRE]=&J2A.poing_gauche; // revers
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_DROITE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.zombi; // humiliation
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.poing_droit; // contre
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE]=&J2A.poing_gauche; // revers
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.zombi; // humiliation
 
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT]=&J2A.haut; // haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS]=&J2A.bas; // bas
@@ -1177,9 +1140,17 @@ calqueC000();
 	check_controller();
 	direction=0;
 	if (get_key(Key_Joy1Left)) {
-		direction=direction | DIRECTION_GAUCHE;
+		if (liu_kang.polarite==0) {
+			direction=direction | DIRECTION_ARRIERE;
+		} else {
+			direction=direction | DIRECTION_AVANT;
+		}
 	} else if (get_key(Key_Joy1Right)){
-		direction=direction | DIRECTION_DROITE;
+		if (liu_kang.polarite==0) {
+			direction=direction | DIRECTION_AVANT;
+		} else {
+			direction=direction | DIRECTION_ARRIERE;
+		}
 	}
 	if (get_key(Key_Joy1Up)) {
 		direction=direction | DIRECTION_HAUT;
@@ -1192,9 +1163,17 @@ calqueC000();
 
 	direction2=0;
 	if (get_key(Key_R_Joy2Left)) {
-		direction2=direction2 | DIRECTION_GAUCHE;
+		if (sub_zero.polarite==0) {
+			direction2=direction2 | DIRECTION_ARRIERE;
+		} else {
+			direction2=direction2 | DIRECTION_AVANT;
+		}
 	} else if (get_key(Key_T_Joy2Right)) {
-		direction2=direction2 | DIRECTION_DROITE;
+		if (sub_zero.polarite==0) {
+			direction2=direction2 | DIRECTION_AVANT;
+		} else {
+			direction2=direction2 | DIRECTION_ARRIERE;
+		}
 	}
 	if (get_key(Key_6_Joy2Up)) {
 		direction2=direction2 | DIRECTION_HAUT;
