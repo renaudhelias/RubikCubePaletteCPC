@@ -572,6 +572,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 		
 		// polarite
+		// Laurent Gendrop : Sur tous les jeux de baston le perso fini son attaque avant de changer de sens, si l'autre esquive en passant de l'autre coté tu donne un coup dans le vide. C'est archi classique, ca me choque pas
 		if ((liu_kang->x > sub_zero->x && liu_kang->polarite==0)
 			|| (sub_zero->x > liu_kang->x && liu_kang->polarite==1)) {
 			// inversion de la polarite
@@ -590,6 +591,9 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				} else {
 					liu_kang->allez_retour = (liu_kang->allez_retour | RETOUR);
 				}
+			} else {//if ((liu_kang->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
+				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
+				liu_kang->allez_retour = liu_kang->allez_retour & (!MARCHE);
 			}
 			if ((sub_zero->direction & DIRECTION_AVANT) != 0) {
 				sub_zero->direction=((sub_zero->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
@@ -602,6 +606,9 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				} else {
 					sub_zero->allez_retour = (sub_zero->allez_retour | RETOUR);
 				}
+			} else {//if ((sub_zero->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
+				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
+				sub_zero->allez_retour = sub_zero->allez_retour & (!MARCHE);
 			}
 		}
 	}
