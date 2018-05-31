@@ -126,3 +126,19 @@ jp PLY_AKG_PlaySoundEffect ;+C</pre>
 Je compile PlayerAkg2000.asm, j'obtiens akx2000.bin, akx2D20.akx comprend les SFX, je le place en adresse x2D20 juste après la fin de akx2000.bin en fait, car il est tout petit et ne dépassera pas l'adresse 3000, où je pose mk3000.bin (la musique de fond)
 
 Quand les personnages s'infligent des dégats ça joue un instrument SFX.
+
+__Test gameplay MK2 MAME__
+
+Il y a six touches : poing haut, poing milieu, pied haut, pied milieu, contre haut, contre milieu.
+
+Le Hadouken sort via un coup de poing, quand on se porte assez à distance.
+
+Mais le jeu d'origine, on est tout le temps assez proche quand même, la fenêtre de vision est assez carré, bon la fenêtre de vision est glissante.
+
+Un balayette est lent à sortir, c'est un contre de longue porté, pour le noob (comme moi) qui avance en continue sur l'adversaire. Donc du coup soit on recule pour être hors de porté, soit on saute.
+
+Le poing en avant frappe. Le poing en arrière bouton bas faire une projection (la planchette japonaise), et le poing en arrière bouton haut fait un crochet.
+
+Le pied en avant frappe. Le pied en arrière bouton bas fait une balayette en bas, le pied en arrière bouton haut fait une balayette dans la tête on va dire. Frapper en avant-bas donne un coup, même porté que la balayette mais c'est un simple coup.
+
+Le sang n'est pas toujours présent. Possible que ce soit pour les coups bien portés (maximisant le dégats, genre attaque vs attaque s'annule un peu pour le sang : c'est pour des touches au corps surtout). On peut avoir une giclée symétrique quand ça part vers le haut (hypercut)
