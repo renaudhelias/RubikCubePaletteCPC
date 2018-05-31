@@ -135,7 +135,7 @@ Le Hadouken sort via un coup de poing, quand on se porte assez à distance.
 
 Mais le jeu d'origine, on est tout le temps assez proche quand même, la fenêtre de vision est assez carré, bon la fenêtre de vision est glissante.
 
-Un balayette est lent à sortir, c'est un contre de longue porté, pour le noob (comme moi) qui avance en continue sur l'adversaire. Donc du coup soit on recule pour être hors de porté, soit on saute.
+Une balayette est lente à sortir, c'est un contre de longue porté, pour le noob qui avance en continue sur l'adversaire. Donc du coup soit on recule pour être hors de porté, soit on saute.
 
 Le poing en avant frappe. Le poing en arrière bouton bas faire une projection (la planchette japonaise), et le poing en arrière bouton haut fait un crochet.
 
