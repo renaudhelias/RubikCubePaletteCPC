@@ -143,7 +143,7 @@ Le pied en avant frappe. Le pied en arrière bouton bas fait une balayette en ba
 
 Le sang n'est pas toujours présent. Possible que ce soit pour les coups bien portés (maximisant le dégats, genre attaque vs attaque s'annule un peu pour le sang : c'est pour des touches au corps surtout). On peut avoir une giclée symétrique quand ça part vers le haut (hypercut)
 
-Donc deux idées que je retiens, il n'y a pas vraiment d'important dans le fait d'appuyer sur le bouton en même temps, avant ou après une direction. Par contre le côté bouton haut et bouton bas, pour peut-être la fin de trajectoire d'une technique lancée n'est pas bête.
+Donc deux idées que je retiens, il n'y a pas vraiment d'importance dans le fait d'appuyer sur le bouton en même temps, avant ou après une direction. Par contre le côté bouton haut et bouton bas, pour peut-être axer la fin de trajectoire d'une technique lancée n'est pas bête.
 
 __Test gameplay Barbarian__
 
