@@ -266,12 +266,22 @@ char progressbar(char x, char y, unsigned int value, unsigned int max, char pas)
 	}
 }
 
+unsigned char * no_combatAddr;
+unsigned char no_combat;
 
-const unsigned char combat2_palette[]=
+const unsigned char combat2_palette[3][16]=
 {
+		// salle dragon fond2
 		//0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-		0,6,12,11,0,0,0,0,0,0,0,0,0,0,0,0
+		{0,6,12,11,0,0,0,0,0,0,0,0,0,0,0,0},
+		// foret : 0,6,4,24 fond1
+		{0,6,4,24,0,0,0,0,0,0,0,0,0,0,0,0},
+		// maitre : 0,6,26,13 fond3
+		{0,6,26,13,0,0,0,0,0,0,0,0,0,0,0,0}
 };
+
+
+
 
 const unsigned char intro_palette[]=
 {
@@ -984,7 +994,16 @@ void main(void)
 {
 	char i;char direction;char direction2;
 	
-	
+	bank4_4000();
+	// print peek(&5FFF)
+	// poke &5FFF,1
+	// print peek(&5FFF)
+	//
+	// out &7FC4,&C4
+	// poke &5FFF,1
+	no_combatAddr=(char *)0x5FFF;
+	no_combat=*no_combatAddr;
+
 	// ^^'
 	replay=0;
 	is_bot=3;
@@ -1082,12 +1101,20 @@ calqueC000();
 	bank0123();
 	mode(1);
 	border(0);
-	set_palette(combat2_palette);
+	set_palette(combat2_palette[no_combat]);
 	scan();
 	//bank0123();
-	LoadFile("fond2.scr", (char *)0xC000);
-	
-	
+	switch (no_combat) {
+		case 0:
+			LoadFile("fond2.scr", (char *)0xC000);
+			break;
+		case 1:
+			LoadFile("fond1.scr", (char *)0xC000);
+			break;
+		case 2:
+			LoadFile("fond3.scr", (char *)0xC000);
+			break;
+	}
 	
 	while(1){
 	calqueC000();
