@@ -1495,6 +1495,7 @@ calqueC000();
 		}
 	} else if (sub_zero_score.vie==0) {
 		// ko
+		blood_depth=0;
 		sub_zero.anim_restant=0;
 		sub_zero.allez_retour=J2R.ko.ar;
 
@@ -1533,6 +1534,7 @@ calqueC000();
 		}
 	} else if (liu_kang_score.vie==0) {
 		// ko
+		blood_depth=0;
 		liu_kang.anim_restant=0;
 		liu_kang.allez_retour=J1R.ko.ar;
 
