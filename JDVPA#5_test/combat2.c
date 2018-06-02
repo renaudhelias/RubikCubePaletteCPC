@@ -710,7 +710,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				liu_kang->x=liu_kang->old_x;
 			}
 			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
-			bloodDegats(blood_g%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,32); // tête
+			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,32); // tête
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
@@ -725,7 +725,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
-			bloodDegats(blood_g%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,32); // tête
+			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,32); // tête
 		} else {
 			blood();
 		}
