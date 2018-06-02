@@ -615,8 +615,10 @@ void bloodRender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
+			if (blood_x+current_blood[i][0]>6*8+3+2) continue;
 			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		} else {
+			if (blood_x-current_blood[i][0]<3) continue;
 			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		}
 	}
@@ -626,8 +628,10 @@ void bloodDerender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
+			if (blood_x+current_blood[i][0]>6*8+3+2) continue;
 			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		} else {
+			if (blood_x-current_blood[i][0]<3) continue;
 			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		}
 	}
