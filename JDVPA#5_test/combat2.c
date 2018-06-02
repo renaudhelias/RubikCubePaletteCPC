@@ -512,6 +512,7 @@ CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTI
 // BLOOD_SIZE pixel-bytes blood : de largeur BLOOD_SIZE et hauteur y (jusqu'à 0 en bas), nombre de gouttes : BLOOD_SIZE
 unsigned char current_blood[BLOOD_SIZE][2];
 char blood_depth=0;
+char blood_n=0;
 //unsigned char blood_b_slow=0;
 unsigned char blood_x_slow=0;
 unsigned char blood_y_slow=0;
@@ -556,7 +557,7 @@ void blood() {
 		// blood_b_slow=0;
 	// }
 	// if (blood_b_slow==0) {
-		if (blood_depth<BLOOD_SIZE) {
+		if (blood_depth<blood_n) {
 			// insertion
 			current_blood[blood_depth][0]=0;
 			current_blood[blood_depth][1]=blood_y;
@@ -601,8 +602,9 @@ void blood() {
 	}
 }
 
-void bloodDegats(char d, char x, char y) {
+void bloodDegats(char d, char n,char x, char y) {
 	blood_d = d;
+	blood_n = n;
 	blood_x = x;
 	blood_y = y;
 	blood_depth=0;
@@ -612,20 +614,29 @@ void bloodDegats(char d, char x, char y) {
 void bloodRender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
-		put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+		if (blood_d==0) {
+			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+		} else {
+			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+		}
 	}
 }
 
 void bloodDerender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
-		put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
+		if (blood_d==0) {
+			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
+		} else {
+			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
+		}
 	}
 }
 
 #define DEGATS 4
 #define BONUS_DEGATS 2
 #define DELAUTREBORD 3
+char degats_blood;
 char degats_liu_kang;
 char degats_sub_zero;
 char contre_liu_kang;
@@ -694,7 +705,8 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				liu_kang->x=liu_kang->old_x;
 			}
-			bloodDegats(0,subzero.x+2,32); // tête
+			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
+			bloodDegats(blood_g%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,32); // tête
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
@@ -709,7 +721,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
-			bloodDegats(1,liu_kang.x+2,32); // tête
+			bloodDegats(blood_g%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,32); // tête
 		} else {
 			blood();
 		}
@@ -1548,6 +1560,10 @@ calqueC000();
 	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 
+	// sang !
+	bank0123();
+	bloodRender();
+
 	if (liu_kang.polarite == 1) {
 		switch_bank(&liu_kang);
 		//put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
@@ -1565,8 +1581,6 @@ calqueC000();
 	}
 	
 	bank0123();
-	
-	bloodRender();
 
 	}// while !replay
 	}// while 1
