@@ -505,7 +505,7 @@ CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTI
 
 
 
-#define BLOOD_SIZE 16
+#define BLOOD_SIZE 14
 //#define BLOOD_B_SPEED 1
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
@@ -515,6 +515,7 @@ char blood_depth=0;
 //unsigned char blood_b_slow=0;
 unsigned char blood_x_slow=0;
 unsigned char blood_y_slow=0;
+char blood_x;
 char blood_y; // tete ou ventre ou pied
 char blood_d; // direction
 char blood_g; // gravite
@@ -564,14 +565,20 @@ void blood() {
 		} else {
 			// gravité
 			for (i=1;i<blood_depth;i++)  {
-				if (current_blood[i][1]>g) {
+				if (current_blood[i][1]>blood_g + g) {
 					// descend à vitesse non constante
-					current_blood[i][1]=current_blood[i][1]-g;
+					current_blood[i][1]=current_blood[i][1]-g-blood_g;
 					g++;
 				} else {
 					// touche le sol
 					current_blood[i][1]=0;
 				}
+			}
+			blood_g++;
+			if (blood_g>7) {
+				// on coupe l'animation sang
+				blood_y=0;
+				blood_depth=0;
 			}
 		}
 		//return;
@@ -594,24 +601,25 @@ void blood() {
 	}
 }
 
-void bloodDegats(char d, char y) {
+void bloodDegats(char d, char x, char y) {
 	blood_d = d;
+	blood_x = x;
 	blood_y = y;
 	blood_depth=0;
 	blood();
 }
 
-void bloodRender(char x) {
+void bloodRender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
-		put_byte(3+x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+		put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 	}
 }
 
-void bloodDerender(char x) {
+void bloodDerender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
-		put_byteC000(3+x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
+		put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 	}
 }
 
@@ -686,7 +694,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				liu_kang->x=liu_kang->old_x;
 			}
-			bloodDegats(0,32); // tête
+			bloodDegats(0,subzero.x+2,32); // tête
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
@@ -701,7 +709,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
-			bloodDegats(1,32); // tête
+			bloodDegats(1,liu_kang.x+2,32); // tête
 		} else {
 			blood();
 		}
@@ -1364,11 +1372,7 @@ calqueC000();
 
 	bank0123();
 	
-	if (blood_d==1) { // c'était pas la polarisation plutôt cette variable ? (oups)
-		bloodDerender(liu_kang.x);
-	} else {
-		bloodDerender(sub_zero.x);
-	}
+	bloodDerender();
 	
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
@@ -1562,11 +1566,7 @@ calqueC000();
 	
 	bank0123();
 	
-	if (blood_d==1) { // c'était pas la polarisation plutôt cette variable ? (oups)
-		bloodRender(liu_kang.x);
-	} else {
-		bloodRender(sub_zero.x);
-	}
+	bloodRender();
 
 	}// while !replay
 	}// while 1
