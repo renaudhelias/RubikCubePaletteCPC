@@ -175,8 +175,17 @@ void transfertEtDecoupe()
 	}
 }
 
+void put_byteC000(unsigned char nX, unsigned char nY, unsigned char nByte) {
+	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
+	*pByteAddress = nByte;
+}
 
-void put_byte(char nX, char nY, unsigned char nByte) {
+void put_byte4000(unsigned char nX, unsigned char nY, unsigned char nByte) {
+	unsigned char * pByteAddress = 0x4000 + vram[nY] + nX;
+	*pByteAddress = nByte;
+}
+
+void put_byte(unsigned char nX, unsigned char nY, unsigned char nByte) {
 	unsigned char * pByteAddress = 0xC000 + vram[nY] + nX;
 	*pByteAddress = nByte;
 	pByteAddress = 0x4000 + vram[nY] + nX;
@@ -186,7 +195,7 @@ void put_byte(char nX, char nY, unsigned char nByte) {
 // on trace TAILLE_PAS*8 pixels à chaque lancement de progressbar()
 char optim_bar=0;
 #define TAILLE_PAS 4
-char progressbar(char x, char y, unsigned int value, unsigned int max, char pas) {
+char progressbar(unsigned char x, unsigned char y, unsigned int value, unsigned int max, char pas) {
 	unsigned int tmp;char i;char j;unsigned char b;char max2;char maxi;
 	char mod8=(value+2) %8;
 	char div8=(value+2) /8;
@@ -494,6 +503,116 @@ ANIMATION sub_zero;
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
+
+
+#define BLOOD_SIZE 16
+//#define BLOOD_B_SPEED 1
+#define BLOOD_X_SPEED 2
+#define BLOOD_Y_SPEED 4
+// BLOOD_SIZE pixel-bytes blood : de largeur BLOOD_SIZE et hauteur y (jusqu'à 0 en bas), nombre de gouttes : BLOOD_SIZE
+unsigned char current_blood[BLOOD_SIZE][2];
+char blood_depth=0;
+//unsigned char blood_b_slow=0;
+unsigned char blood_x_slow=0;
+unsigned char blood_y_slow=0;
+char blood_y; // tete ou ventre ou pied
+char blood_d; // direction
+char blood_g; // gravite
+
+void blood() {
+	char i;char sx;char sy;char g;
+	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
+	blood_x_slow++;
+	if (blood_x_slow == BLOOD_X_SPEED) { // x
+		blood_x_slow=0;
+	}
+	if (blood_x_slow==0) {
+		for (i=0;i<blood_depth;i++)  {
+			// se poussent en x
+			if (current_blood[i][0]<BLOOD_SIZE) { // x
+				current_blood[i][0]=current_blood[i][0]+1;
+			}
+		}
+		return;
+	}
+	blood_y_slow++;
+	if (blood_y_slow == BLOOD_Y_SPEED) { // y
+		blood_y_slow=0;
+	}
+	if (blood_y_slow==0) {
+		for (i=0;i<blood_depth;i++)  {
+			if (current_blood[i][1]>0) { // y
+				// descend à vitesse constante.
+				current_blood[i][1]=current_blood[i][1]-1;
+			}
+		}
+		return;
+	}
+	// blood_b_slow++;
+	// if (blood_b_slow == BLOOD_B_SPEED) { // x
+		// blood_b_slow=0;
+	// }
+	// if (blood_b_slow==0) {
+		if (blood_depth<BLOOD_SIZE) {
+			// insertion
+			current_blood[blood_depth][0]=0;
+			current_blood[blood_depth][1]=blood_y;
+			blood_depth++;
+			blood_g=1;
+		} else {
+			// gravité
+			for (i=1;i<blood_depth;i++)  {
+				if (current_blood[i][1]>g) {
+					// descend à vitesse non constante
+					current_blood[i][1]=current_blood[i][1]-g;
+					g++;
+				} else {
+					// touche le sol
+					current_blood[i][1]=0;
+				}
+			}
+		}
+		//return;
+	//}
+	// solve superpositions X
+	sx=current_blood[0][0];sy=current_blood[0][1];
+	for (i=1;i<blood_depth;i++)  {
+		if (current_blood[i][1] != sy) {
+			// nouvelle ligne, pas de problème de gouttes
+			sx=current_blood[i][0];
+			sy=current_blood[i][1];
+		} else if (current_blood[i][0] <= sx) {
+			// goutte génante, je la pousse, puis je la bank
+			sx=sx+1;
+			current_blood[i][0]= sx;
+		} else {
+			// goutte pas génante, je la bank
+			sx=current_blood[i][0];
+		}
+	}
+}
+
+void bloodDegats(char d, char y) {
+	blood_d = d;
+	blood_y = y;
+	blood_depth=0;
+	blood();
+}
+
+void bloodRender(char x) {
+	char i;
+	for (i=0;i<blood_depth;i++)  {
+		put_byte(3+x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+	}
+}
+
+void bloodDerender(char x) {
+	char i;
+	for (i=0;i<blood_depth;i++)  {
+		put_byteC000(3+x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
+	}
+}
+
 #define DEGATS 4
 #define BONUS_DEGATS 2
 #define DELAUTREBORD 3
@@ -565,6 +684,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				liu_kang->x=liu_kang->old_x;
 			}
+			bloodDegats(0,32); // tête
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
@@ -579,6 +699,9 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
+			bloodDegats(1,32); // tête
+		} else {
+			blood();
 		}
 		
 		// polarite
@@ -1007,6 +1130,10 @@ void main(void)
 	// ^^'
 	replay=0;
 	is_bot=3;
+	//for (i=0;i<BLOOD_SIZE;i++) {
+	//	current_blood[i][0]=i;
+	//	current_blood[i][1]=i;
+	//}
 	
 	// init mapping
 	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
@@ -1117,6 +1244,8 @@ calqueC000();
 	}
 	
 	while(1){
+	blood_depth=0;
+		
 	calqueC000();
 	//bank0123();
 
@@ -1218,6 +1347,8 @@ calqueC000();
 	}
 
 	
+	
+	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
 	while (is_vsync!=2) {
 		if (is_vsync>2) {
@@ -1229,7 +1360,13 @@ calqueC000();
 	is_vsync=0;
 	calque4000();
 
-
+	bank0123();
+	
+	if (blood_d==1) { // c'était pas la polarisation plutôt cette variable ? (oups)
+		bloodDerender(liu_kang.x);
+	} else {
+		bloodDerender(sub_zero.x);
+	}
 	
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
@@ -1422,6 +1559,12 @@ calqueC000();
 	}
 	
 	bank0123();
+	
+	if (blood_d==1) { // c'était pas la polarisation plutôt cette variable ? (oups)
+		bloodRender(liu_kang.x);
+	} else {
+		bloodRender(sub_zero.x);
+	}
 
 	}// while !replay
 	}// while 1
