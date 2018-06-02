@@ -507,7 +507,7 @@ CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTI
 
 #define BLOOD_SIZE 16
 //#define BLOOD_B_SPEED 1
-#define BLOOD_X_SPEED 2
+#define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
 // BLOOD_SIZE pixel-bytes blood : de largeur BLOOD_SIZE et hauteur y (jusqu'à 0 en bas), nombre de gouttes : BLOOD_SIZE
 unsigned char current_blood[BLOOD_SIZE][2];
@@ -521,6 +521,8 @@ char blood_g; // gravite
 
 void blood() {
 	char i;char sx;char sy;char g;
+	if (blood_y==0) return;
+
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
 	blood_x_slow++;
 	if (blood_x_slow == BLOOD_X_SPEED) { // x
@@ -1244,7 +1246,7 @@ calqueC000();
 	}
 	
 	while(1){
-	blood_depth=0;
+	blood_depth=0;blood_y=0;
 		
 	calqueC000();
 	//bank0123();
