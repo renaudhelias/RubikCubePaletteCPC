@@ -504,16 +504,13 @@ ANIMATION sub_zero;
 CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
 
 
-
 #define BLOOD_SIZE 14
-//#define BLOOD_B_SPEED 1
+//#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
-// BLOOD_SIZE pixel-bytes blood : de largeur BLOOD_SIZE et hauteur y (jusqu'à 0 en bas), nombre de gouttes : BLOOD_SIZE
 unsigned char current_blood[BLOOD_SIZE][2];
 char blood_depth=0;
 char blood_n=0;
-//unsigned char blood_b_slow=0;
 unsigned char blood_x_slow=0;
 unsigned char blood_y_slow=0;
 char blood_x;
@@ -521,9 +518,13 @@ char blood_y; // tete ou ventre ou pied
 char blood_d; // direction
 char blood_g; // gravite
 
+/**
+ * Controler : propagation du sang (lancé à chaque frame)
+ */
 void blood() {
 	char i;char sx;char sy;char g;
 	if (blood_y==0) return;
+	g=0; // glitch (formule capturée lors de tests en échecs, car c'est jolie)
 
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
 	blood_x_slow++;
@@ -552,38 +553,32 @@ void blood() {
 		}
 		return;
 	}
-	// blood_b_slow++;
-	// if (blood_b_slow == BLOOD_B_SPEED) { // x
-		// blood_b_slow=0;
-	// }
-	// if (blood_b_slow==0) {
-		if (blood_depth<blood_n) {
-			// insertion
-			current_blood[blood_depth][0]=0;
-			current_blood[blood_depth][1]=blood_y;
-			blood_depth++;
-			blood_g=1;
-		} else {
-			// gravité
-			for (i=1;i<blood_depth;i++)  {
-				if (current_blood[i][1]>blood_g + g) {
-					// descend à vitesse non constante
-					current_blood[i][1]=current_blood[i][1]-g-blood_g;
-					g++;
-				} else {
-					// touche le sol
-					current_blood[i][1]=0;
-				}
-			}
-			blood_g++;
-			if (blood_g>7) {
-				// on coupe l'animation sang
-				blood_y=0;
-				blood_depth=0;
+	// BLOOD_B_SPEED/blood_b_slow
+	if (blood_depth<blood_n) {
+		// insertion
+		current_blood[blood_depth][0]=0;
+		current_blood[blood_depth][1]=blood_y;
+		blood_depth++;
+		blood_g=1;
+	} else {
+		// gravité
+		for (i=1;i<blood_depth;i++)  {
+			if (current_blood[i][1]>blood_g + g) {
+				// descend à vitesse non constante
+				current_blood[i][1]=current_blood[i][1]-g-blood_g;
+				g++;
+			} else {
+				// touche le sol
+				current_blood[i][1]=0;
 			}
 		}
-		//return;
-	//}
+		blood_g++;
+		if (blood_g>7) {
+			// on coupe l'animation sang (car c'est moche sinon : une goutte reste bizarrement suspendue...)
+			blood_y=0;
+			blood_depth=0;
+		}
+	}
 	// solve superpositions X
 	sx=current_blood[0][0];sy=current_blood[0][1];
 	for (i=1;i<blood_depth;i++)  {
@@ -592,16 +587,22 @@ void blood() {
 			sx=current_blood[i][0];
 			sy=current_blood[i][1];
 		} else if (current_blood[i][0] <= sx) {
-			// goutte génante, je la pousse, puis je la bank
+			// goutte génante, je la pousse, puis je la garde de côté
 			sx=sx+1;
 			current_blood[i][0]= sx;
 		} else {
-			// goutte pas génante, je la bank
+			// goutte pas génante, je la garde de côté
 			sx=current_blood[i][0];
 		}
 	}
 }
 
+/**
+ * Controler : lancé à la place de blood() lors d'un nouveau dégat - ça déclanche une nouvelle animation
+ * @param d : direction (plutôt aléatoire)
+ * @param n : dégats (entre 1 et BLOOD_SIZE)
+ * @param x,y : coordonnées du coup reçu
+ */
 void bloodDegats(char d, char n,char x, char y) {
 	blood_d = d;
 	blood_n = n;
@@ -611,6 +612,9 @@ void bloodDegats(char d, char n,char x, char y) {
 	blood();
 }
 
+/**
+ * Renderer : Affiche le sang
+ */
 void bloodRender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
@@ -624,6 +628,9 @@ void bloodRender() {
 	}
 }
 
+/**
+ * Renderer : Efface le sang
+ */
 void bloodDerender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {

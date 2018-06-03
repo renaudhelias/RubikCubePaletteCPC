@@ -13,7 +13,19 @@ Mais comme dit dans la vidéo, le nombre de sprite une fois qu'ils marcheront da
 
 __combat2.c jdvpa5_combat2.dsk__
 
+___put_inversed_frame()___
+
 Les personnages peuvent changent de sens lorsqu'ils se croisent.
 
 Affichage inversé d'un sprite, utilisation d'un tableau de transposition pour les octets, ça prend un peu de temps de calcul mais ça va.
 Pour la répartition de la charge j'ai pensé qu'un personnage était toujours affiché à l'inverse de l'autre, donc changer de sens n'est pas plus couteux.
+
+___CHOICE.BAS___
+
+J'ai créé un menu afin de passer quelques paramètres de basic vers asm :
+* le choix de la partie : "Liu Kang vs Sub Zero", "Johnny Cage vs Scorpion", "Sonya vs Kano". Chacun change le fond, les perso et la palette, la palette de 4 couleurs (mode 1) étant : noir, rouge, neutre, adversaire (rouge étant généralement aussi le héro), ou noir, rouge, hero, adversaire.
+* le mode "ARCADE" : ça permet de jouer avec les deux boutons.
+
+___blood()___
+
+Un effet type particules, qui marche un peu.
