@@ -505,6 +505,8 @@ CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTI
 
 
 #define BLOOD_SIZE 14
+// 1 + 2 + 3 + 4 < 14
+#define BLOOD_SIZE_INIT 5
 //#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
@@ -559,6 +561,11 @@ void blood() {
 		current_blood[blood_depth][0]=0;
 		current_blood[blood_depth][1]=blood_y;
 		blood_depth++;
+		if (blood_depth<blood_n) {
+			current_blood[blood_depth][0]=1;
+			current_blood[blood_depth][1]=blood_y+1;
+			blood_depth++;
+		}
 		blood_g=1;
 	} else {
 		// gravité
@@ -609,7 +616,9 @@ void bloodDegats(char d, char n,char x, char y) {
 	blood_x = x;
 	blood_y = y;
 	blood_depth=0;
-	blood();
+	while (blood_depth<blood_n && blood_depth<BLOOD_SIZE_INIT) {
+		blood();
+	}
 }
 
 /**
