@@ -1396,7 +1396,6 @@ calqueC000();
 		if (is_vsync>2) {
 			// saturation !
 			border_raster_begin2();
-			border_raster_begin();
 		}
 	}
 	is_vsync=0;
