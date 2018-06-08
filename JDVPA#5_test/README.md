@@ -30,6 +30,6 @@ ___blood()___
 
 Un effet type particules, qui marche un peu.
 
-__hadouken()___
+___hadouken()___
 
 Un autre effet type particules, qui marche un peu.
