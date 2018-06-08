@@ -525,7 +525,7 @@ char blood_g; // gravite
  */
 void blood() {
 	char i;char sx;char sy;char g;
-	if (blood_y==0) return;
+	if (blood_n==0) return;
 	g=0; // glitch (formule capturée lors de tests en échecs, car c'est jolie)
 
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
@@ -582,7 +582,7 @@ void blood() {
 		blood_g++;
 		if (blood_g>7) {
 			// on coupe l'animation sang (car c'est moche sinon : une goutte reste bizarrement suspendue...)
-			blood_y=0;
+			blood_n=0;
 			blood_depth=0;
 		}
 	}
@@ -601,23 +601,6 @@ void blood() {
 			// goutte pas génante, je la garde de côté
 			sx=current_blood[i][0];
 		}
-	}
-}
-
-/**
- * Controler : lancé à la place de blood() lors d'un nouveau dégat - ça déclanche une nouvelle animation
- * @param d : direction (plutôt aléatoire)
- * @param n : dégats (entre 1 et BLOOD_SIZE)
- * @param x,y : coordonnées du coup reçu
- */
-void bloodDegats(char d, char n,char x, char y) {
-	blood_d = d;
-	blood_n = n;
-	blood_x = x;
-	blood_y = y;
-	blood_depth=0;
-	while (blood_depth<blood_n && blood_depth<BLOOD_SIZE_INIT) {
-		blood();
 	}
 }
 
@@ -653,10 +636,235 @@ void bloodDerender() {
 	}
 }
 
+
+
+// BLOOD_SIZE/4
+#define HADOUKEN_SIZE 6
+// 1 + 2 + 3 < 7
+#define HADOUKEN_SIZE_INIT 2
+#define HADOUKEN_X_SPEED 3
+#define HADOUKEN_BOULE_OFFSET 2
+#define HADOUKEN_BOULE_SPEED 2
+#define HADOUKEN_Y 25
+
+unsigned char current_hadouken[HADOUKEN_SIZE][2];
+char hadouken_depth=0;
+char hadouken_n=0;
+unsigned char hadouken_x_slow=0;
+unsigned char hadouken_boule_slow=0;
+char hadouken_x;
+char hadouken_x2; // boule (relatif à x)
+char hadouken_x3; // impact (coupé lors du rendu) (relatif à x)
+char hadouken_y_top;
+char hadouken_d; // direction
+
+/**
+ * Controler : propagation du hadouken (lancé à chaque frame)
+ */
+void hadouken() {
+	char i;char sx;char sy;
+	if (hadouken_n == 0) return;
+	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
+	if (hadouken_x2<hadouken_x3) {
+		hadouken_x2 = hadouken_x2+HADOUKEN_BOULE_SPEED;
+	} else {
+		// fin d'animation
+		hadouken_n=0;
+		hadouken_depth=0;
+		return;
+	}
+	for (i=0;i<hadouken_depth;i++)  {
+		// se poussent en x
+		if (current_hadouken[i][0]<hadouken_x2) { // x
+			current_hadouken[i][0]=current_hadouken[i][0]+HADOUKEN_X_SPEED;
+		}
+	}
+	// HADOUKEN_B_SPEED/hadouken_b_slow
+	for (i=0;i<HADOUKEN_X_SPEED;i++) {
+		if (hadouken_depth<hadouken_n) {
+			// insertion (selon vitesse propagation pixels : HADOUKEN_X_SPEED
+			current_hadouken[hadouken_depth][0]=i;
+			current_hadouken[hadouken_depth][1]=HADOUKEN_Y;
+			hadouken_depth++;
+		}
+	}
+	// solve superpositions X
+	sx=current_hadouken[0][0];sy=current_hadouken[0][1];
+	for (i=1;i<hadouken_depth;i++)  {
+		if (current_hadouken[i][1] != sy) {
+			// nouvelle ligne, pas de problème de gouttes
+			sx=current_hadouken[i][0];
+			sy=current_hadouken[i][1];
+		} else if (current_hadouken[i][0] >= sx) {
+			if (sx<hadouken_x2) {
+				// goutte génante je la pousse, puis je la garde de côté
+				sx=sx+1;
+				current_hadouken[i][0]= sx;
+			} else {
+				// goutte génante au bord je la pousse au dessus, relativement à hadouken_y_top, puis je ne la garde de côté (car y change)
+				current_hadouken[i][1]=current_hadouken[i][1]+1;
+				if (current_hadouken[i][1]>hadouken_y_top) {
+					hadouken_y_top = current_hadouken[i][1];
+				}
+				current_hadouken[i][0]= hadouken_x2 - (hadouken_y_top - current_hadouken[i][1]);
+			}
+		} else {
+			// goutte pas génante, je la garde de côté
+			sx=current_hadouken[i][0];
+		}
+	}
+}
+
+/**
+ * Renderer : Affiche le hadouken
+ */
+void hadoukenRender() {
+	char i; char pixel;
+	for (i=0;i<hadouken_depth;i++)  {
+		if (current_hadouken[i][1] == hadouken_y_top) {
+			pixel=0xFF;
+		} else if (current_hadouken[i][1]%2 == 0) {
+			pixel=0xAA;
+		} else {
+			pixel=0x55;
+		}
+		if (hadouken_d==0) {
+			if (current_hadouken[i][0]>hadouken_x3) continue;
+			put_byte(hadouken_x+current_hadouken[i][0],120+50-1-current_hadouken[i][1],pixel);
+			if (current_hadouken[i][1] != 0) {
+				// impair mirror
+				put_byte(hadouken_x+current_hadouken[i][0],120+50-1+current_hadouken[i][1],pixel);
+			}
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+				continue;
+			}
+			// boule mirror
+			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],pixel);
+/*			if (current_hadouken[i][1] != 0) {
+				// boule impair mirror
+				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],pixel);
+			}*/
+		} else {
+			if (current_hadouken[i][0]>hadouken_x3) continue;
+			put_byte(hadouken_x-current_hadouken[i][0],120+50-1-current_hadouken[i][1],pixel);
+			if (current_hadouken[i][1] != 0) {
+				// impair mirror
+				put_byte(hadouken_x-current_hadouken[i][0],120+50-1+current_hadouken[i][1],pixel);
+			}
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+				continue;
+			}
+			// boule mirror
+			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],pixel);
+/*			if (current_hadouken[i][1] != 0) {
+				// boule impair mirror
+				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],pixel);
+			}*/
+		}
+	}
+}
+
+/**
+ * Renderer : Efface le hadouken
+ */
+void hadoukenDerender() {
+	char i;
+	for (i=0;i<hadouken_depth;i++)  {
+		if (hadouken_d==0) {
+			if (current_hadouken[i][0]>hadouken_x3) continue;
+			put_byte(hadouken_x+current_hadouken[i][0],120+50-1-current_hadouken[i][1],0x00);
+			if (current_hadouken[i][1] != 0) {
+				// impair mirror
+				put_byte(hadouken_x+current_hadouken[i][0],120+50-1+current_hadouken[i][1],0x00);
+			}
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+				continue;
+			}
+			// boule mirror
+			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],0x00);
+/*			if (current_hadouken[i][1] != 0) {
+				// boule impair mirror
+				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],0x00);
+			}*/
+		} else {
+			if (current_hadouken[i][0]>hadouken_x3) continue;
+			put_byte(hadouken_x-current_hadouken[i][0],120+50-1-current_hadouken[i][1],0x00);
+			if (current_hadouken[i][1] != 0) {
+				// impair mirror
+				put_byte(hadouken_x-current_hadouken[i][0],120+50-1+current_hadouken[i][1],0x00);
+			}
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+				continue;
+			}
+			// boule mirror
+			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],0x00);
+/*			if (current_hadouken[i][1] != 0) {
+				// boule impair mirror
+				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],0x00);
+			}*/
+		}
+	}
+}
+
+
+/**
+ * Controler : lancé à la place de blood() lors d'un nouveau dégat - ça déclanche une nouvelle animation
+ * @param d : direction (plutôt aléatoire)
+ * @param n : dégats (entre 1 et BLOOD_SIZE)
+ * @param x,y : coordonnées du coup reçu
+ */
+void bloodDegats(char d, char n,char x, char y) {
+	hadouken_n=0;
+	hadouken_depth=0;
+	
+	blood_d = d;
+	blood_n = n;
+	blood_x = x;
+	blood_y = y;
+	blood_depth=0;
+	while (blood_depth<blood_n && blood_depth<BLOOD_SIZE_INIT) {
+		blood();
+	}
+}
+
+/**
+ * Controler : lancé à la place de hadouken() lors d'un nouveau dégat - ça déclanche une nouvelle animation
+ * @param n : dégats (entre 1 et HADOUKEN_SIZE)
+ * @param x : coordonnée x de la personne ayant fait un hadouken
+ * @param x2 : coordonnée x de l'autre joueur
+ */
+void hadoukenDegats(char n,char x, char x2) {
+	blood_n=0;
+	blood_depth=0;
+	
+	hadouken_n = n;
+	hadouken_x = x;
+	if (x2>x) {
+		hadouken_x2 = HADOUKEN_BOULE_OFFSET;
+		hadouken_x3 = x2-x;
+		hadouken_d = 0;
+		if (hadouken_x3<hadouken_x2) {
+			hadouken_x2=hadouken_x3;
+		}
+	} else {
+		hadouken_x2 = HADOUKEN_BOULE_OFFSET;
+		hadouken_x3 = x-x2;
+		hadouken_d = 1;
+		if (hadouken_x3<hadouken_x2) {
+			hadouken_x2=hadouken_x3;
+		}
+	}
+	hadouken_y_top = 0;
+	hadouken_depth=0;
+	while (hadouken_depth<hadouken_n && hadouken_depth<HADOUKEN_SIZE_INIT) {
+		hadouken();
+	}
+}
+
+
 #define DEGATS 4
 #define BONUS_DEGATS 2
 #define DELAUTREBORD 3
-char degats_blood;
 char degats_liu_kang;
 char degats_sub_zero;
 char contre_liu_kang;
@@ -852,6 +1060,16 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			contre_sub_zero=1;
 		}
 		}
+		hadouken();
+		// FIXME : un peu d'injustice par là...
+	} else if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0  && ((liu_kang->animation->b & HADOUKEN) != 0)) {
+			// liu_kang PORTE un coup HADOUKEN
+			hadoukenDegats(HADOUKEN_SIZE-1, liu_kang->x, sub_zero->x);
+	} else if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0  && ((sub_zero->animation->b & HADOUKEN) != 0)) {
+			// sub_zero PORTE un coup HADOUKEN
+			hadoukenDegats(HADOUKEN_SIZE-1, sub_zero->x, liu_kang->x);
+	} else {
+		hadouken();
 	}
 
 
@@ -1286,7 +1504,8 @@ calqueC000();
 	}
 	
 	while(1){
-	blood_depth=0;blood_y=0;
+	blood_depth=0;blood_n=0;
+	hadouken_depth=0;hadouken_n=0;
 		
 	calqueC000();
 	//bank0123();
@@ -1404,6 +1623,7 @@ calqueC000();
 	bank0123();
 	
 	bloodDerender();
+	hadoukenDerender();
 	
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
@@ -1515,6 +1735,7 @@ calqueC000();
 	} else if (sub_zero_score.vie==0) {
 		// ko
 		blood_depth=0;
+		hadouken_depth=0;
 		sub_zero.anim_restant=0;
 		sub_zero.allez_retour=J2R.ko.ar;
 
@@ -1554,6 +1775,7 @@ calqueC000();
 	} else if (liu_kang_score.vie==0) {
 		// ko
 		blood_depth=0;
+		hadouken_depth=0;
 		liu_kang.anim_restant=0;
 		liu_kang.allez_retour=J1R.ko.ar;
 
@@ -1581,9 +1803,10 @@ calqueC000();
 	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
 
-	// sang !
+	// sang et hadouken !
 	bank0123();
 	bloodRender();
+	hadoukenRender();
 
 	if (liu_kang.polarite == 1) {
 		switch_bank(&liu_kang);
