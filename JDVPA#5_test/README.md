@@ -29,3 +29,7 @@ J'ai créé un menu afin de passer quelques paramètres de basic vers asm :
 ___blood()___
 
 Un effet type particules, qui marche un peu.
+
+__hadouken()___
+
+Un autre effet type particules, qui marche un peu.
