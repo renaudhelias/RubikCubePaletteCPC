@@ -684,7 +684,7 @@ void hadouken() {
 		if (hadouken_depth<hadouken_n) {
 			// insertion (selon vitesse propagation pixels : HADOUKEN_X_SPEED
 			current_hadouken[hadouken_depth][0]=i;
-			current_hadouken[hadouken_depth][1]=HADOUKEN_Y;
+			current_hadouken[hadouken_depth][1]=0;
 			hadouken_depth++;
 		}
 	}
@@ -730,36 +730,36 @@ void hadoukenRender() {
 		}
 		if (hadouken_d==0) {
 			if (current_hadouken[i][0]>hadouken_x3) continue;
-			put_byte(hadouken_x+current_hadouken[i][0],120+50-1-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x+current_hadouken[i][0],120+50-1+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],pixel);
-/*			if (current_hadouken[i][1] != 0) {
+			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],pixel);
-			}*/
+				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+			}
 		} else {
 			if (current_hadouken[i][0]>hadouken_x3) continue;
-			put_byte(hadouken_x-current_hadouken[i][0],120+50-1-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x-current_hadouken[i][0],120+50-1+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],pixel);
-/*			if (current_hadouken[i][1] != 0) {
+			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],pixel);
-			}*/
+				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+			}
 		}
 	}
 }
@@ -772,36 +772,36 @@ void hadoukenDerender() {
 	for (i=0;i<hadouken_depth;i++)  {
 		if (hadouken_d==0) {
 			if (current_hadouken[i][0]>hadouken_x3) continue;
-			put_byte(hadouken_x+current_hadouken[i][0],120+50-1-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x+current_hadouken[i][0],120+50-1+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],0x00);
-/*			if (current_hadouken[i][1] != 0) {
+			put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],0x00);
-			}*/
+				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+			}
 		} else {
 			if (current_hadouken[i][0]>hadouken_x3) continue;
-			put_byte(hadouken_x-current_hadouken[i][0],120+50-1-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x-current_hadouken[i][0],120+50-1+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1-current_hadouken[i][1],0x00);
-/*			if (current_hadouken[i][1] != 0) {
+			put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+50-1+current_hadouken[i][1],0x00);
-			}*/
+				put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+			}
 		}
 	}
 }
