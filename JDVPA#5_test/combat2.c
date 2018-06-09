@@ -1615,7 +1615,7 @@ void main(void)
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
 		LoadFile("J1.map", (char *)&J2A); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
-	/* ne peux pas marcher : le tableau de direction c'est une liste de pointeurs vers des adresses...
+	/* FIXME ne peux pas marcher : le tableau de direction c'est une liste de pointeurs vers des adresses...
 	} else if (no_combat==1) {
 		// test : pour le 2ème type de combat, j'inverse les joueurs.
 		
@@ -1926,6 +1926,7 @@ calqueC000();
 		// ko in progress
 		if (sub_zero_score.vie==0) {
 			sub_zero.anim_restant=0;
+			// FIXME ne peux pas marcher quand on réinjecte J1.MAP et J1.DIR...
 			sub_zero.allez_retour=J2R.fatality.ar;
 			sub_zero.animation=&J2R.fatality;
 			sub_zero.phase=PHASE_FATALITY;
