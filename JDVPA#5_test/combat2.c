@@ -378,6 +378,8 @@ struct CALQUE_J1A {
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
 
+const char marqueur[17]={'D','E','B','U','T',' ','D','E','S',' ','S','P','R','I','T','E','S'};
+
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
 	.marcher={0,8,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
