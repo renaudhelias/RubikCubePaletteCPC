@@ -1039,9 +1039,15 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	contre_sub_zero=0;
 	if (is_delautrebord_plus_degats) {
 		if (liu_kang->x > sub_zero->x) {
-			boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*2-1;
+			// plus je tape près, plus je score.
+			// 10,5 => 5-10+7=2
+			// 7,5 => 5-7+7=5
+			boum=(sub_zero->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-liu_kang->x)*4-1;
+			// 10,5 => 10-5+7=12
+			// 7,5 => 7-5+7=9
+			//boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*2-1;
 		} else if (sub_zero->x > liu_kang->x) {
-			boum=(sub_zero->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-liu_kang->x)*2-1;
+			boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*4-1;
 		} else {
 			boum=(DELAUTREBORD+DEGATS+BONUS_DEGATS)*2-1;
 		}
