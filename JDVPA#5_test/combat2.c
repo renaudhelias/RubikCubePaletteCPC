@@ -277,6 +277,8 @@ char progressbar(unsigned char x, unsigned char y, unsigned int value, unsigned 
 
 unsigned char * no_combatAddr;
 unsigned char no_combat;
+unsigned char * arcadeAddr;
+unsigned char arcade;
 
 const unsigned char combat2_palette[3][16]=
 {
@@ -348,6 +350,15 @@ struct CALQUE_J1A {
 #define CONTRE_EN_7 64
 #define CONTRE_EN_8 128
 
+#define ESQUIVE_EN_1 1
+#define ESQUIVE_EN_2 2
+#define ESQUIVE_EN_3 4
+#define ESQUIVE_EN_4 8
+#define ESQUIVE_EN_5 16
+#define ESQUIVE_EN_6 32
+#define ESQUIVE_EN_7 64
+#define ESQUIVE_EN_8 128
+
 // sur les deux derniers bit : BANK
 #define BANK_4 0
 #define BANK_5 1
@@ -371,18 +382,18 @@ struct CALQUE_J1A {
 const struct CALQUE_J1A J1A= {
 	.marcher={0,8,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={9,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,0},
-	.bas={10,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,0},
+	.bas={10,0,{{CONTRE_EN_1,0,ESQUIVE_EN_1},{0,0,0},{0,0,0}},BANK_4,0},
 	//.tres_haut={11,0,0,0,BANK_4,0},
-	.pied_haut={12,3,{{CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
-	.pied_milieu={16,3,{{CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.pied_haut={12,3,{{CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,0},{CONTRE_EN_2 | CONTRE_EN_3,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.pied_milieu={16,3,{{0,0,0},{CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
 	//.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	//.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
-	.balayette={27,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_4,MARCHE},
+	.balayette={27,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3|ESQUIVE_EN_4},{CONTRE_EN_3,0,ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0}},BANK_4,MARCHE},
 	.hypercut={31,4,{{0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,NON_CYCLIQUE},
-	.poing_milieu={36,1,{{0,PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.poing_milieu={36,1,{{CONTRE_EN_1|CONTRE_EN_2,0,ESQUIVE_EN_1|ESQUIVE_EN_2},{0,PORTE_EN_2,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
 	//.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	//.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
-	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{0,0,0},{0,0,0}},BANK_4,MARCHE}
+	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0}},BANK_4,MARCHE}
 };
 
 struct CALQUE_J1R {
@@ -409,7 +420,7 @@ const struct CALQUE_J1R J1R= {
 	//.hadouken_fire={17,8,0,0,BANK_5,0},
 	.ko={26,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING_KO,0},
 	.poing_double_jab={32,4,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_5,0},
-	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{0,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
+	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
 	//.macarena_milieu={39,4,0,0,BANK_5,0},
 	.dragon={44,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
 	//.dragon_big={47,1,0,0,BANK_5,0},
@@ -437,11 +448,11 @@ const struct CALQUE_J2A J2A= {
 	//.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
 	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
-	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_6,0},
-	.balayette={20,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_6,MARCHE},
+	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,0},{CONTRE_EN_2 |CONTRE_EN_6,0,0},{0,0,0}},BANK_6,0},
+	.balayette={20,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3|ESQUIVE_EN_4},{CONTRE_EN_1,CONTRE_EN_2,CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0}},BANK_6,MARCHE},
 	.marcher={24,9,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER | RAPIDEMENT},
 	.haut={34,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
-	.bas={35,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.bas={35,0,{{CONTRE_EN_1,0,ESQUIVE_EN_1},{0,0,0},{0,0,0}},BANK_6,0},
 	.zombi={36,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
 	.victory={37,1,{{0,0,0},{0,0,0},{0,0,0}},BANK_6 | ENDING,0},//ALLEZ_RETOUR},
 	.poing_double_jab={39,7,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8,0},{0,0,0},{0,0,0}},BANK_6,0},
@@ -476,7 +487,7 @@ const struct CALQUE_J2R J2R= {
 	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,{{0,PORTE_EN_1|PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,NON_CYCLIQUE},
 	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,{{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0},{0,0,0},{0,0,0}},BANK_7 | FREEZE,0}
+	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0}
 };
 
 #define PERSO_LIU_KANG 0
@@ -512,7 +523,7 @@ ANIMATION sub_zero;
 #define DEPLACEMENT_GAUCHE 2
 #define DEPLACEMENT_AUCUNE 3
 
-CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE];
+CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
 
 
 #define BLOOD_SIZE 14
@@ -878,8 +889,23 @@ void hadoukenDegats(char n,char x, char x2) {
 #define DELAUTREBORD 3
 char degats_liu_kang;
 char degats_sub_zero;
-char contre_liu_kang;
-char contre_sub_zero;
+char degats_liu_kang_corps;
+char degats_sub_zero_corps;
+char contre_liu_kang[3];
+char contre_sub_zero[3];
+char porte_liu_kang[3];
+char porte_sub_zero[3];
+const char corps[3]=
+{
+	// tête
+	32,
+	// ventre
+	22,
+	// genoux
+	12
+};
+
+
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char is_delautrebord=(
 	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD))
@@ -945,7 +971,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				liu_kang->x=liu_kang->old_x;
 			}
 			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
-			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,32); // tête
+			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,corps[degats_liu_kang_corps]); // tête
 		} else if (degats_sub_zero>degats_liu_kang) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
@@ -960,7 +986,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
-			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,32); // tête
+			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,corps[degats_sub_zero_corps]); // tête
 		} else {
 			blood();
 		}
@@ -1025,7 +1051,7 @@ char refresh = 0;
 char refresh_pas = 0;
 
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
-	char boum;
+	char boum;char i;
 	char is_delautrebord_plus_degats=(
 	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD + DEGATS))
 	||
@@ -1035,8 +1061,14 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	//liu_kang->animation.p  1 2 [4] 8 [16] 32
 	degats_liu_kang=0;
 	degats_sub_zero=0;
-	contre_liu_kang=0;
-	contre_sub_zero=0;
+	//contre_liu_kang=0;
+	//contre_sub_zero=0;
+	for (i=0;i<3;i++) {
+		porte_liu_kang[i]=0;
+		contre_liu_kang[i]=0;
+		porte_sub_zero[i]=0;
+		contre_sub_zero[i]=0;
+	}
 	if (is_delautrebord_plus_degats) {
 		if (liu_kang->x > sub_zero->x) {
 			// plus je tape près, plus je score.
@@ -1051,31 +1083,57 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		} else {
 			boum=(DELAUTREBORD+DEGATS+BONUS_DEGATS)*2-1;
 		}
-		if (liu_kang->anim_restant<8) {
-		if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
-			// liu_kang PORTE un coup
-			if ((liu_kang->allez_retour & NON_CYCLIQUE)==0 || liu_kang->anim_restant!=liu_kang->animation->l) {
-				// il n'est pas gelé (contré auparavant)
-				degats_liu_kang=boum;
+		for (i=0;i<3;i++) {
+			if (liu_kang->anim_restant<8) {
+				if ((liu_kang->animation->c[i].p & math_2pow[liu_kang->anim_restant]) != 0) {
+					// liu_kang PORTE un coup
+					if ((liu_kang->allez_retour & NON_CYCLIQUE)==0 || liu_kang->anim_restant!=liu_kang->animation->l) {
+						// il n'est pas gelé (contré auparavant)
+						porte_liu_kang[i]=1;
+					}
+				}
+				if ((liu_kang->animation->c[i].c & math_2pow[liu_kang->anim_restant]) != 0) {
+					// liu_kang CONTRE un coup
+					contre_liu_kang[i]=1;
+				}
 			}
-		}
-		if ((liu_kang->animation->c[0].c & math_2pow[liu_kang->anim_restant]) != 0) {
-			// liu_kang CONTRE un coup
-			contre_liu_kang=1;
-		}
-		}
-		if (sub_zero->anim_restant<8) {
-		if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
-			// sub_zero PORTE un coup
-			if ((sub_zero->allez_retour & NON_CYCLIQUE)==0 || sub_zero->anim_restant!=sub_zero->animation->l) {
-				// il n'est pas gelé (contré auparavant)
-				degats_sub_zero=boum;
+			if (sub_zero->anim_restant<8) {
+				if ((sub_zero->animation->c[i].p & math_2pow[sub_zero->anim_restant]) != 0) {
+					// sub_zero PORTE un coup
+					if ((sub_zero->allez_retour & NON_CYCLIQUE)==0 || sub_zero->anim_restant!=sub_zero->animation->l) {
+						// il n'est pas gelé (contré auparavant)
+						porte_sub_zero[i]=1;
+					}
+				}
+				if ((sub_zero->animation->c[i].c & math_2pow[sub_zero->anim_restant]) != 0) {
+					// sub_zero CONTRE un coup
+					contre_sub_zero[i]=1;
+				}
 			}
-		}
-		if ((sub_zero->animation->c[0].c & math_2pow[sub_zero->anim_restant]) != 0) {
-			// sub_zero CONTRE un coup
-			contre_sub_zero=1;
-		}
+			if (porte_liu_kang[i]) {
+				if (contre_sub_zero[i] && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
+					// le coup de liu_kang est paré
+					//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
+					liu_kang->allez_retour=NON_CYCLIQUE;
+					liu_kang->anim_restant=liu_kang->animation->l;
+				} else {
+					// le coup de liu_kang est porté
+					degats_liu_kang=boum;
+					degats_liu_kang_corps=i;
+				}
+			}
+			if (porte_sub_zero[i]) {
+				if(contre_liu_kang[i] && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
+					// le coup de sub_zero est paré
+					//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
+					sub_zero->allez_retour=NON_CYCLIQUE;
+					sub_zero->anim_restant=sub_zero->animation->l;
+				} else {
+					// le coup de sub_zero est porté
+					degats_sub_zero=boum;
+					degats_sub_zero_corps=i;
+				}
+			}
 		}
 		hadouken();
 		// FIXME : un peu d'injustice par là...
@@ -1091,20 +1149,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 
 
 	
-	if (degats_liu_kang>0 && contre_sub_zero && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
-		degats_liu_kang=0;
-		// le coup de liu_kang est paré
-		//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
-		liu_kang->allez_retour=NON_CYCLIQUE;
-		liu_kang->anim_restant=liu_kang->animation->l;
-	}
-	if (degats_sub_zero>0 && contre_liu_kang && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
-		degats_sub_zero=0;
-		// le coup de sub_zero est paré
-		//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
-		sub_zero->allez_retour=NON_CYCLIQUE;
-		sub_zero->anim_restant=sub_zero->animation->l;
-	}
+	
 	
 	if (sub_zero_score.vie < degats_liu_kang) {
 		sub_zero_score.vie = 0;//296;
@@ -1401,6 +1446,9 @@ void main(void)
 	// poke &5FFF,1
 	no_combatAddr=(char *)0x5FFF;
 	no_combat=*no_combatAddr;
+	
+	arcadeAddr=(char *)0x5FFE;
+	arcade=*arcadeAddr;
 
 	// ^^'
 	replay=0;
@@ -1411,7 +1459,7 @@ void main(void)
 	//}
 	
 	// init mapping
-	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE;i++) {
+	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2;i++) {
 		if ((i & DIRECTION_AVANT) == 0 && (i & DIRECTION_ARRIERE) == 0) {
 			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A_repos;
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A_repos;
@@ -1434,6 +1482,28 @@ void main(void)
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
 
+	//ARCADE
+	// => (+ /\ \/)
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1]=&J1A.pied_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J1A.pied_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=&J1A.pied_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2]=&J1A.pied_haut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J1A.pied_haut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=&J1A.pied_haut;
+	// <= (+ /\ \/)
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1]=&J1A.poing_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J1A.poing_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=&J1A.poing_milieu;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2]=&J1A.hypercut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J1A.hypercut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=&J1A.hypercut;
+	// \/
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE1]=&J1A.balayette;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE2]=&J1A.pied_rotatif;
+	// <>
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=&J1R.contre_haut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=&J1R.poing_double_jab;
+	
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hadouken1_personnage; // attaque haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=&J2A.poing_double_jab; //attaque centre
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
@@ -1448,6 +1518,28 @@ void main(void)
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT]=&J2A.haut; // haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS]=&J2A.bas; // bas
 
+	//ARCADE
+	// => (+ /\ \/)
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1]=&J2A.balayette;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J2A.balayette;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=&J2A.balayette;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2]=&J2A.pied_retourne;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J2A.pied_retourne;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=&J2A.pied_retourne;
+	// <= (+ /\ \/)
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1]=&J2R.poing_droit;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J2R.poing_droit;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=&J2R.poing_droit;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2]=&J2R.hypercut;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J2R.hypercut;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=&J2R.hypercut;
+	// \/
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE1]=&J2R.flaque;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE2]=&J2R.hadouken1_personnage;
+	// <>
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE1]=&J2A.poing_gauche;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE2]=&J2A.poing_double_jab;
+	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
@@ -1542,8 +1634,6 @@ calqueC000();
 	sub_zero_score.vie=296*3;
 	degats_liu_kang=0;
 	degats_sub_zero=0;
-	contre_liu_kang=0;
-	contre_sub_zero=0;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=10;
@@ -1663,8 +1753,20 @@ calqueC000();
 	} else if (get_key(Key_Joy1Down)) {
 		direction=direction | DIRECTION_BAS;
 	}
-	if (get_key(Key_Joy1Fire1) || get_key(Key_Joy1Fire2)) {
-		direction=direction | DIRECTION_FIRE;
+	
+	if (get_key(Key_Joy1Fire1)) {
+		if (arcade) {
+			direction=direction | DIRECTION_FIRE1;
+		} else {
+			direction=direction | DIRECTION_FIRE;
+		}
+	}
+	if (get_key(Key_Joy1Fire2)) {
+		if (arcade) {
+			direction=direction | DIRECTION_FIRE2;
+		} else {
+			direction=direction | DIRECTION_FIRE;
+		}
 	}
 
 	direction2=0;
@@ -1686,8 +1788,19 @@ calqueC000();
 	} else if (get_key(Key_5_Joy2Down)) {
 		direction2=direction2 | DIRECTION_BAS;
 	}
-	if (get_key(Key_G_Joy2Fire1) || get_key(Key_F_Joy2Fire2)) {
-		direction2=direction2 | DIRECTION_FIRE;
+	if (get_key(Key_G_Joy2Fire1)) {
+		if (arcade) {
+			direction2=direction2 | DIRECTION_FIRE1;
+		} else {
+			direction2=direction2 | DIRECTION_FIRE;
+		}
+	}
+	if (get_key(Key_F_Joy2Fire2)) {
+		if (arcade) {
+			direction2=direction2 | DIRECTION_FIRE2;
+		} else {
+			direction2=direction2 | DIRECTION_FIRE;
+		}
 	}
 	
 	if ((is_bot & 1)!=0) {
