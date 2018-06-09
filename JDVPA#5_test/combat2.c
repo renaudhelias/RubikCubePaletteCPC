@@ -378,7 +378,7 @@ struct CALQUE_J1A {
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
 
-const char marqueur_sprites[17]={'D','E','B','U','T',' ','D','E','S',' ','S','P','R','I','T','E','S'};
+const char marqueur_sprite1[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','1'};
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
@@ -433,6 +433,7 @@ const struct CALQUE_J1R J1R= {
 //const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
 const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
 
+const char marqueur_sprite2[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','2'};
 
 struct CALQUE_J2A {
 	//CALQUE pied_haut; // cyclique, porté en 4/8
@@ -501,6 +502,8 @@ const struct CALQUE_J2R J2R= {
 //const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
 const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
 
+const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
+
 #define PERSO_LIU_KANG 0
 #define PERSO_SUB_ZERO 1
 
@@ -534,10 +537,23 @@ ANIMATION sub_zero;
 #define DEPLACEMENT_GAUCHE 2
 #define DEPLACEMENT_AUCUNE 3
 
-const char marqueur_directions[20]={'D','E','B','U','T',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
+//const char marqueur_directions[20]={'D','E','B','U','T',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
+
+// bon le dump je regarde la taille du fichier pondu, j'en déduis la taille de l'entête du dump à supprimer : FF
+// SPRITE1 est à "0885", effectivement selon combat2.map j'ai 00000885  _J1A, bon il y a 16 sprites dans J1.MAP donc 13 octets par sprite.
+//                           5618 ;combat2.c:1480: mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=&J1R.poing_double_jab; //attaque centre
+//   1F84 21rE9r07      [10] 5619 	ld	hl,#(_J1R + 0x0027) <= 3*13
+//   1F87 22r3Dr00      [16] 5620 	ld	((_mapping_direction_calque + 0x0020)), hl 16*2 car c'est 2 octets une adresse !
+//                           5682 ;combat2.c:1512: mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=&J1R.contre_haut;
+//   1FFC 21rF6r07      [10] 5683 	ld	hl,#(_J1R + 0x0034)
+//   1FFF 22r5Dr00      [16] 5684 	ld	((_mapping_direction_calque + 0x0040)), hl
+// donc idiot : 000008FA  _J1R et 00002F67  _mapping_direction_calque donc si ok en 2FA7 on a "092E" => j'ai "2E09" :)
+// la fin du tableau est certainement le début du tableau d'après : 00003167  _current_blood, des tailles "0100" en fait.
+
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
 
+//const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
 #define BLOOD_SIZE 14
 // 1 + 2 + 3 + 4 < 14
@@ -1570,26 +1586,88 @@ void main(void)
 #endif
 	vram=precalc_vram();
 	
-	//bank0123();
-	LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank4_4000();
-	transfertEtDecoupe();
+	if (no_combat==2) {
+		// test : pour le 3ème type de combat, je fais liu_kang vs liu_kang (ça sature un peu)
+		
+		//bank0123();
+		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank4_4000();
+		transfertEtDecoupe();
 
-	bank0123();
-	LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank5_4000();
-	transfertEtDecoupe();
+		bank0123();
+		LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank5_4000();
+		transfertEtDecoupe();
 
-	//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
-	bank0123();
-	LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank6_4000();
-	transfertEtDecoupe();
+		//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
+		bank0123();
+		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank6_4000();
+		transfertEtDecoupe();
 
-	bank0123();
-	LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
-	bank7_4000();
-	transfertEtDecoupe();
+		bank0123();
+		LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank7_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J1.map", (char *)&J1A); // des sprites
+		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
+		LoadFile("J1.map", (char *)&J2A); // des sprites
+		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
+	/* ne peux pas marcher : le tableau de direction c'est une liste de pointeurs vers des adresses...
+	} else if (no_combat==1) {
+		// test : pour le 2ème type de combat, j'inverse les joueurs.
+		
+		//bank0123();
+		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank4_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank5_4000();
+		transfertEtDecoupe();
+
+		//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
+		bank0123();
+		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank6_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank7_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J2.map", (char *)&J1A); // des sprites
+		LoadFile("J2.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
+		LoadFile("J1.map", (char *)&J2A); // des sprites
+		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
+	*/
+	} else {
+		//bank0123();
+		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank4_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J1R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank5_4000();
+		transfertEtDecoupe();
+
+		//if (J2R.hadouken2_personnage_patch.l == aaah) { // volatiles... sucks ?
+		bank0123();
+		LoadFile("J2A.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank6_4000();
+		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
+		bank7_4000();
+		transfertEtDecoupe();
+	}
 
 // et finalement.
 

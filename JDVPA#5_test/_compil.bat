@@ -5,6 +5,10 @@ sdasz80 -o putchar_cpc.s
 copy sks8000.bin.vo sks8000.bin
 copy MKBO9000.BIN.vo MKBO9000.BIN
 copy MK-BO.SKS.vo MK-BO.SKS
+copy J1.MAP.vo J1.MAP
+copy J1.DIR.vo J1.DIR
+copy J2.MAP.vo J2.MAP
+copy J2.DIR.vo J2.DIR
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic1.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic2.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -40,5 +44,9 @@ CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File sks8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 pause
 
