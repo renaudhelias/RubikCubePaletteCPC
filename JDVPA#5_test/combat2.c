@@ -378,7 +378,7 @@ struct CALQUE_J1A {
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
 
-const char marqueur[17]={'D','E','B','U','T',' ','D','E','S',' ','S','P','R','I','T','E','S'};
+const char marqueur_sprites[17]={'D','E','B','U','T',' ','D','E','S',' ','S','P','R','I','T','E','S'};
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
@@ -428,6 +428,11 @@ const struct CALQUE_J1R J1R= {
 	//.dragon_big={47,1,0,0,BANK_5,0},
 	//.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
+
+// J1A.marcher avec l=2
+//const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
+const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
+
 
 struct CALQUE_J2A {
 	//CALQUE pied_haut; // cyclique, porté en 4/8
@@ -492,6 +497,10 @@ const struct CALQUE_J2R J2R= {
 	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0}
 };
 
+// J2A.marcher avec l=2
+//const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
+const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
+
 #define PERSO_LIU_KANG 0
 #define PERSO_SUB_ZERO 1
 
@@ -524,6 +533,8 @@ ANIMATION sub_zero;
 #define DEPLACEMENT_DROITE 1
 #define DEPLACEMENT_GAUCHE 2
 #define DEPLACEMENT_AUCUNE 3
+
+const char marqueur_directions[20]={'D','E','B','U','T',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
 CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
 
@@ -1417,15 +1428,6 @@ void switch_bank(ANIMATION * joueur) {
 		return;
 	}
 }
-
-#define FREIN 1
-
-// J1A.marcher avec l=2
-//const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
-const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
-// J2A.marcher avec l=2
-//const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
-const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
 
 
 
