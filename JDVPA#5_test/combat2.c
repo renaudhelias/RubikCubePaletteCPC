@@ -497,10 +497,9 @@ typedef struct {
 #define DIRECTION_FIRE1 32
 #define DIRECTION_FIRE2 64
 
-#define PHASE_INIT 1
-#define PHASE_KO 2
-#define PHASE_FATALITY 4
-#define PHASE_VICTORY 8
+#define PHASE_KO 1
+#define PHASE_FATALITY 2
+#define PHASE_VICTORY 3
 
 ANIMATION liu_kang;
 ANIMATION sub_zero;
@@ -1715,15 +1714,7 @@ calqueC000();
 	liu_kang.old_x=liu_kang.x;
 	sub_zero.old_x=sub_zero.x;
 	
-	if ((sub_zero.phase & PHASE_INIT) == PHASE_INIT) {
-		if ((sub_zero.phase & PHASE_VICTORY) == 0) {
-			if (sub_zero.phase == (PHASE_FATALITY & PHASE_INIT)) {
-				liu_kang.phase = PHASE_VICTORY;
-			}
-			sub_zero.phase=sub_zero.phase & (~PHASE_INIT);
-		}
-		direction2=0;
-	} else if (sub_zero.phase == PHASE_FATALITY || sub_zero.phase == PHASE_VICTORY) {
+	if (sub_zero.phase == PHASE_FATALITY || sub_zero.phase == PHASE_VICTORY) {
 		// fatality
 		direction2=0;
 	} else if (sub_zero.phase == PHASE_KO) {
@@ -1732,7 +1723,7 @@ calqueC000();
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2R.fatality.ar;
 			sub_zero.animation=&J2R.fatality;
-			sub_zero.phase=PHASE_FATALITY | PHASE_INIT;
+			sub_zero.phase=PHASE_FATALITY;
 
 			// victory
 			if (sub_zero.x<20) {
@@ -1743,7 +1734,7 @@ calqueC000();
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.victory.ar;
 			liu_kang.animation=&J1R.victory;
-			liu_kang.phase=PHASE_VICTORY | PHASE_INIT;
+			liu_kang.phase=PHASE_VICTORY;
 			direction=0;
 		}
 		direction2=0;
@@ -1755,20 +1746,12 @@ calqueC000();
 		sub_zero.allez_retour=J2R.ko.ar;
 
 		sub_zero.animation=&J2R.ko;
-		sub_zero.phase=PHASE_KO | PHASE_INIT;
+		sub_zero.phase=PHASE_KO;
 		sub_zero_score.vie=296/2; // 15% pour aller au fatality
 		direction2=0;
 	}
 	
-	if ((liu_kang.phase & PHASE_INIT) == PHASE_INIT) {
-		if ((liu_kang.phase & PHASE_VICTORY) == 0) {
-			if (liu_kang.phase == (PHASE_FATALITY & PHASE_INIT)) {
-				sub_zero.phase=PHASE_VICTORY;
-			}
-			liu_kang.phase=liu_kang.phase & (~PHASE_INIT);
-		}
-		direction=0;
-	} else if (liu_kang.phase == PHASE_FATALITY || liu_kang.phase == PHASE_VICTORY) {
+	if (liu_kang.phase == PHASE_FATALITY || liu_kang.phase == PHASE_VICTORY) {
 		// fatality
 		direction=0;
 	} else if (liu_kang.phase == PHASE_KO) {
@@ -1777,7 +1760,7 @@ calqueC000();
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.fatality.ar;
 			liu_kang.animation=&J1R.fatality;
-			liu_kang.phase=PHASE_FATALITY | PHASE_INIT;
+			liu_kang.phase=PHASE_FATALITY;
 			
 			// victory
 			if (liu_kang.x<20) {
@@ -1788,7 +1771,7 @@ calqueC000();
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2A.victory.ar;
 			sub_zero.animation=&J2A.victory;
-			sub_zero.phase=PHASE_VICTORY | PHASE_INIT;
+			sub_zero.phase=PHASE_VICTORY;
 			direction2=0;
 		}
 		direction=0;
@@ -1800,7 +1783,7 @@ calqueC000();
 		liu_kang.allez_retour=J1R.ko.ar;
 
 		liu_kang.animation=&J1R.ko;
-		liu_kang.phase=PHASE_KO | PHASE_INIT;
+		liu_kang.phase=PHASE_KO;
 		liu_kang_score.vie=296/2; // 15% pour aller au fatality
 		direction=0;
 	}
@@ -1809,7 +1792,7 @@ calqueC000();
 	
 	action(&sub_zero,direction2);
 
-	if (!((sub_zero.phase & PHASE_VICTORY)==PHASE_VICTORY || (liu_kang.phase & PHASE_VICTORY)==PHASE_VICTORY)) {
+	if (!(sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY)) {
 		paf(&liu_kang,&sub_zero);
 	}
 	check_mur(&liu_kang,&sub_zero);
