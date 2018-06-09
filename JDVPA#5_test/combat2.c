@@ -298,13 +298,17 @@ const unsigned char intro_palette[]=
 		0,4,1,11,5,16,25,26,15,3,12,14,23,2,6,0
 };
 
+typedef struct {
+	char c; // contre le coup
+	char p; // porte le coup
+	char e; // esquive le coup
+} COUPS;
 
 
 typedef struct {
 	char o; // offset
 	char l; // longueur
-	char c; // contre le coup
-	char p; // porte le coup
+	COUPS c[3]; // contre le coup
 	char b; // bank
 	char ar; // allez_retour
 } CALQUE;
@@ -365,20 +369,20 @@ struct CALQUE_J1A {
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
-	.marcher={0,8,0,0,BANK_4,MARCHE | MARCHER | RAPIDEMENT},
-	.haut={9,0,0,0,BANK_4,0},
-	.bas={10,0,0,0,BANK_4,0},
+	.marcher={0,8,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
+	.haut={9,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,0},
+	.bas={10,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,0},
 	//.tres_haut={11,0,0,0,BANK_4,0},
-	.pied_haut={12,3,CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
-	.pied_milieu={16,3,CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,BANK_4,ALLEZ_RETOUR},
+	.pied_haut={12,3,{{CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.pied_milieu={16,3,{{CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
 	//.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	//.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
-	.balayette={27,3,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,MARCHE},
-	.hypercut={31,4,0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,BANK_4,NON_CYCLIQUE},
-	.poing_milieu={36,1,0,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
+	.balayette={27,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_4,MARCHE},
+	.hypercut={31,4,{{0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,NON_CYCLIQUE},
+	.poing_milieu={36,1,{{0,PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
 	//.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	//.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
-	.pied_rotatif={43,8,CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,BANK_4,MARCHE}
+	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{0,0,0},{0,0,0}},BANK_4,MARCHE}
 };
 
 struct CALQUE_J1R {
@@ -398,16 +402,16 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,5,0,0,BANK_5 | ENDING,NON_CYCLIQUE},
-	.fatality={6,2,0,0,BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
+	.victory={0,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING,NON_CYCLIQUE},
+	.fatality={6,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
 	//.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
 	//.hadouken_fire={17,8,0,0,BANK_5,0},
-	.ko={26,5,0,0,BANK_5 | ENDING_KO,0},
-	.poing_double_jab={32,4,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,BANK_5,0},
-	.contre_haut={37,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,NON_CYCLIQUE},
+	.ko={26,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING_KO,0},
+	.poing_double_jab={32,4,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_5,0},
+	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{0,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
 	//.macarena_milieu={39,4,0,0,BANK_5,0},
-	.dragon={44,2,0,0,BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
+	.dragon={44,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
 	//.dragon_big={47,1,0,0,BANK_5,0},
 	//.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
@@ -433,16 +437,16 @@ const struct CALQUE_J2A J2A= {
 	//.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
 	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
-	.pied_retourne={13,6,CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,BANK_6,0},
-	.balayette={20,3,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_6,MARCHE},
-	.marcher={24,9,0,0,BANK_6,MARCHE | MARCHER | RAPIDEMENT},
-	.haut={34,0,0,0,BANK_6,0},
-	.bas={35,0,0,0,BANK_6,0},
-	.zombi={36,0,0,0,BANK_6,0},
-	.victory={37,1,0,0,BANK_6 | ENDING,0},//ALLEZ_RETOUR},
-	.poing_double_jab={39,7,0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8,BANK_6,0},
+	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.balayette={20,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_6,MARCHE},
+	.marcher={24,9,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER | RAPIDEMENT},
+	.haut={34,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.bas={35,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.zombi={36,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.victory={37,1,{{0,0,0},{0,0,0},{0,0,0}},BANK_6 | ENDING,0},//ALLEZ_RETOUR},
+	.poing_double_jab={39,7,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8,0},{0,0,0},{0,0,0}},BANK_6,0},
 	//.aie={48,0,0,0,BANK_6,0},
-	.poing_gauche={49,2,0,PORTE_EN_2|PORTE_EN_3,BANK_6,ALLEZ_RETOUR}
+	.poing_gauche={49,2,{{0,PORTE_EN_2|PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_6,ALLEZ_RETOUR}
 };
 
 struct CALQUE_J2R{
@@ -461,18 +465,18 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,1,0,PORTE_EN_2,BANK_7},
-	.ko={2,4,0,0,BANK_7 | ENDING_KO,0},
-	.fatality={7,4,0,0,BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
+	.poing_droit={0,1,{{0,PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,0},
+	.ko={2,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING_KO,0},
+	.fatality={7,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
-	.hadouken1_personnage={16,5,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_4|PORTE_EN_5,BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
+	.hadouken1_personnage={16,5,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_4|PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
 	//.hadouken1_fire={22,0,0,0,BANK_7,0},
 	//.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
 	//.hadouken2_fire={26,8,0,0,BANK_7,0},
 	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
-	.hypercut={38,2,0,PORTE_EN_1|PORTE_EN_2,BANK_7,NON_CYCLIQUE},
+	.hypercut={38,2,{{0,PORTE_EN_1|PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,NON_CYCLIQUE},
 	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,BANK_7 | FREEZE,0}
+	.flaque={45,6,{{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0},{0,0,0},{0,0,0}},BANK_7 | FREEZE,0}
 };
 
 #define PERSO_LIU_KANG 0
@@ -1042,37 +1046,37 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			boum=(DELAUTREBORD+DEGATS+BONUS_DEGATS)*2-1;
 		}
 		if (liu_kang->anim_restant<8) {
-		if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0) {
+		if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup
 			if ((liu_kang->allez_retour & NON_CYCLIQUE)==0 || liu_kang->anim_restant!=liu_kang->animation->l) {
 				// il n'est pas gelé (contré auparavant)
 				degats_liu_kang=boum;
 			}
 		}
-		if ((liu_kang->animation->c & math_2pow[liu_kang->anim_restant]) != 0) {
+		if ((liu_kang->animation->c[0].c & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang CONTRE un coup
 			contre_liu_kang=1;
 		}
 		}
 		if (sub_zero->anim_restant<8) {
-		if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0) {
+		if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup
 			if ((sub_zero->allez_retour & NON_CYCLIQUE)==0 || sub_zero->anim_restant!=sub_zero->animation->l) {
 				// il n'est pas gelé (contré auparavant)
 				degats_sub_zero=boum;
 			}
 		}
-		if ((sub_zero->animation->c & math_2pow[sub_zero->anim_restant]) != 0) {
+		if ((sub_zero->animation->c[0].c & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero CONTRE un coup
 			contre_sub_zero=1;
 		}
 		}
 		hadouken();
 		// FIXME : un peu d'injustice par là...
-	} else if ((liu_kang->animation->p & math_2pow[liu_kang->anim_restant]) != 0  && ((liu_kang->animation->b & HADOUKEN) != 0)) {
+	} else if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0  && ((liu_kang->animation->b & HADOUKEN) != 0)) {
 			// liu_kang PORTE un coup HADOUKEN
 			hadoukenDegats(HADOUKEN_SIZE-1, liu_kang->x, sub_zero->x);
-	} else if ((sub_zero->animation->p & math_2pow[sub_zero->anim_restant]) != 0  && ((sub_zero->animation->b & HADOUKEN) != 0)) {
+	} else if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0  && ((sub_zero->animation->b & HADOUKEN) != 0)) {
 			// sub_zero PORTE un coup HADOUKEN
 			hadoukenDegats(HADOUKEN_SIZE-1, sub_zero->x, liu_kang->x);
 	} else {
@@ -1365,10 +1369,10 @@ void switch_bank(ANIMATION * joueur) {
 
 // J1A.marcher avec l=2
 //const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
-const CALQUE J1A_repos ={0,2,0,0,BANK_4,MARCHE | MARCHER };
+const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
 // J2A.marcher avec l=2
 //const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
-const CALQUE J2A_repos ={24,0,0,0,BANK_6,MARCHE | MARCHER };
+const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
 
 
 
