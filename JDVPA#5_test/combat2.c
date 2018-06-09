@@ -481,6 +481,7 @@ const struct CALQUE_J2R J2R= {
 typedef struct {
 	char perso; // identifiant du jouer
 	char direction;
+	char phase; // in game,ko,victory
 	char polarite; // 0 : normal, 1 : sprite inversé
 	CALQUE * animation;
 	char anim_restant; // decompte un CALQUE.l
@@ -493,6 +494,13 @@ typedef struct {
 #define DIRECTION_HAUT 4
 #define DIRECTION_BAS 8
 #define DIRECTION_FIRE 16
+#define DIRECTION_FIRE1 32
+#define DIRECTION_FIRE2 64
+
+#define PHASE_INIT 1
+#define PHASE_KO 2
+#define PHASE_FATALITY 4
+#define PHASE_VICTORY 8
 
 ANIMATION liu_kang;
 ANIMATION sub_zero;
@@ -1159,9 +1167,7 @@ void refresh_all_progressbar() {
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;//char is_continue_marcher;
 
-	
-
-	if (direction_pressed==32) {
+	if (joueur->phase != 0) {
 		// special animation : ENDING_KO | ENDING, déjà préchargé
 		is_anim_fini=0;
 		is_arrete_marcher=0;
@@ -1253,7 +1259,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 				if (joueur->anim_restant == joueur->animation->l ) {
 					joueur->anim_restant = joueur->animation->l;
-					joueur->allez_retour = ((joueur->allez_retour & (!ALLEZ_RETOUR)) | RETOUR);
+					joueur->allez_retour = ((joueur->allez_retour & (~ALLEZ_RETOUR)) | RETOUR);
 				}
 			}
 		} else if ((joueur->allez_retour & RETOUR) != 0) {
@@ -1276,7 +1282,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			} else {
 				//joueur->animation->p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
 				//FIXME croiser avec NON_CYCLIQUE ?
-				if (direction_pressed == 32 && ((joueur->allez_retour & NON_CYCLIQUE) == 0) ) {
+				if (joueur->phase != 0 && ((joueur->allez_retour & NON_CYCLIQUE) == 0) ) {
 					// animation ENDING || ENDING_KO en boucle
 					joueur->anim_restant = 0;
 				}
@@ -1535,6 +1541,7 @@ calqueC000();
 	liu_kang.old_x=liu_kang.x;
 	liu_kang.perso=PERSO_LIU_KANG;
 	liu_kang.direction=0;
+	liu_kang.phase=0;
 	liu_kang.anim_restant=0;
 	liu_kang.allez_retour=J1A_repos.ar;
 	liu_kang.polarite=0;
@@ -1545,6 +1552,7 @@ calqueC000();
 	sub_zero.old_x=sub_zero.x;
 	sub_zero.perso=PERSO_SUB_ZERO;
 	sub_zero.direction=0;
+	sub_zero.phase=0;
 	sub_zero.anim_restant=0;
 	sub_zero.allez_retour=J2A_repos.ar;
 	sub_zero.polarite=1;
@@ -1707,18 +1715,25 @@ calqueC000();
 	liu_kang.old_x=liu_kang.x;
 	sub_zero.old_x=sub_zero.x;
 	
-	if (sub_zero.direction == 33) {
+	if ((sub_zero.phase & PHASE_INIT) == PHASE_INIT) {
+		if ((sub_zero.phase & PHASE_VICTORY) == 0) {
+			if (sub_zero.phase == (PHASE_FATALITY & PHASE_INIT)) {
+				liu_kang.phase = PHASE_VICTORY;
+			}
+			sub_zero.phase=sub_zero.phase & (~PHASE_INIT);
+		}
+		direction2=0;
+	} else if (sub_zero.phase == PHASE_FATALITY || sub_zero.phase == PHASE_VICTORY) {
 		// fatality
-		direction2=32;
-	} else if (sub_zero.direction == 32) {
+		direction2=0;
+	} else if (sub_zero.phase == PHASE_KO) {
 		// ko in progress
-		direction2=32;
 		if (sub_zero_score.vie==0) {
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2R.fatality.ar;
 			sub_zero.animation=&J2R.fatality;
-			sub_zero.direction=33;
-			
+			sub_zero.phase=PHASE_FATALITY | PHASE_INIT;
+
 			// victory
 			if (sub_zero.x<20) {
 				liu_kang.x=30;
@@ -1728,10 +1743,10 @@ calqueC000();
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.victory.ar;
 			liu_kang.animation=&J1R.victory;
-			liu_kang.direction=33;
-			direction2=34;
-			direction=34;
+			liu_kang.phase=PHASE_VICTORY | PHASE_INIT;
+			direction=0;
 		}
+		direction2=0;
 	} else if (sub_zero_score.vie==0) {
 		// ko
 		blood_depth=0;
@@ -1740,24 +1755,29 @@ calqueC000();
 		sub_zero.allez_retour=J2R.ko.ar;
 
 		sub_zero.animation=&J2R.ko;
-		sub_zero.direction=32;
-		direction2=34;
+		sub_zero.phase=PHASE_KO | PHASE_INIT;
 		sub_zero_score.vie=296/2; // 15% pour aller au fatality
+		direction2=0;
 	}
 	
-	if (liu_kang.direction == 33) {
-		// fatality
-		if (direction != 34) { // sans ghost...
-			direction=32;
+	if ((liu_kang.phase & PHASE_INIT) == PHASE_INIT) {
+		if ((liu_kang.phase & PHASE_VICTORY) == 0) {
+			if (liu_kang.phase == (PHASE_FATALITY & PHASE_INIT)) {
+				sub_zero.phase=PHASE_VICTORY;
+			}
+			liu_kang.phase=liu_kang.phase & (~PHASE_INIT);
 		}
-	} else if (liu_kang.direction == 32) {
+		direction=0;
+	} else if (liu_kang.phase == PHASE_FATALITY || liu_kang.phase == PHASE_VICTORY) {
+		// fatality
+		direction=0;
+	} else if (liu_kang.phase == PHASE_KO) {
 		// ko in progress
-		direction=32;
 		if (liu_kang_score.vie==0) {
 			liu_kang.anim_restant=0;
 			liu_kang.allez_retour=J1R.fatality.ar;
 			liu_kang.animation=&J1R.fatality;
-			liu_kang.direction=33;
+			liu_kang.phase=PHASE_FATALITY | PHASE_INIT;
 			
 			// victory
 			if (liu_kang.x<20) {
@@ -1768,10 +1788,10 @@ calqueC000();
 			sub_zero.anim_restant=0;
 			sub_zero.allez_retour=J2A.victory.ar;
 			sub_zero.animation=&J2A.victory;
-			sub_zero.direction=33;
-			direction2=34;
-			direction=34;
+			sub_zero.phase=PHASE_VICTORY | PHASE_INIT;
+			direction2=0;
 		}
+		direction=0;
 	} else if (liu_kang_score.vie==0) {
 		// ko
 		blood_depth=0;
@@ -1780,20 +1800,16 @@ calqueC000();
 		liu_kang.allez_retour=J1R.ko.ar;
 
 		liu_kang.animation=&J1R.ko;
-		liu_kang.direction=32;
-		direction=34;
+		liu_kang.phase=PHASE_KO | PHASE_INIT;
 		liu_kang_score.vie=296/2; // 15% pour aller au fatality
+		direction=0;
 	}
 		
-	if (direction!=34) {
-		action(&liu_kang,direction);
-	}
+	action(&liu_kang,direction);
 	
-	if (direction2!=34) {
-		action(&sub_zero,direction2);
-	}
+	action(&sub_zero,direction2);
 
-	if (!(direction==34 || direction2==34)) {
+	if (!((sub_zero.phase & PHASE_VICTORY)==PHASE_VICTORY || (liu_kang.phase & PHASE_VICTORY)==PHASE_VICTORY)) {
 		paf(&liu_kang,&sub_zero);
 	}
 	check_mur(&liu_kang,&sub_zero);
