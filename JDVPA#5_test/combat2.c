@@ -555,7 +555,7 @@ CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTI
 
 //const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
-#define BLOOD_SIZE 14
+#define BLOOD_SIZE 13
 // 1 + 2 + 3 + 4 < 14
 #define BLOOD_SIZE_INIT 5
 //#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
