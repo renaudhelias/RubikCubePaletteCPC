@@ -28,8 +28,12 @@ J'ai créé un menu afin de passer quelques paramètres de basic vers asm :
 
 ___blood()___
 
+![JDVPA5_combat2-sang.dsk.png](JDVPA5_combat2-sang.dsk.png)
+
 Un effet type particules, qui marche un peu.
 
 ___hadouken()___
+
+![JDVPA5_combat2-hadouken.dsk.png](JDVPA5_combat2-hadouken.dsk.png)
 
 Un autre effet type particules, qui marche un peu.
