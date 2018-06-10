@@ -547,11 +547,14 @@ ANIMATION sub_zero;
 //                           5682 ;combat2.c:1512: mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=&J1R.contre_haut;
 //   1FFC 21rF6r07      [10] 5683 	ld	hl,#(_J1R + 0x0034)
 //   1FFF 22r5Dr00      [16] 5684 	ld	((_mapping_direction_calque + 0x0040)), hl
-// donc idiot : 000008FA  _J1R et 00002F67  _mapping_direction_calque donc si ok en 2FA7 on a "092E" => j'ai "2E09" :)
+// donc idiot : 00000885  _J1A, 000008FA  _J1R et 0000335A  _mapping_direction_calque donc si ok en 335A+0020=337A on a 08FA+0034-0885=00A9 => j'ai "0C00" :/
 // la fin du tableau est certainement le début du tableau d'après : 00003167  _current_blood, des tailles "0100" en fait.
 
+// 10101001 A9
+//     1100 0C
 
-CALQUE * mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
+unsigned int mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
+unsigned int normDIR[2];
 
 //const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
@@ -1249,7 +1252,11 @@ void refresh_all_progressbar() {
 
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;//char is_continue_marcher;
-
+	CALQUE * mapping_direction_pressed;
+    unsigned int mapping_direction_pressedAddr;
+	mapping_direction_pressedAddr = mapping_direction_calque[joueur->perso][direction_pressed]+normDIR[joueur->perso];
+	mapping_direction_pressed=(CALQUE *)mapping_direction_pressedAddr;
+	
 	if (joueur->phase != 0) {
 		// special animation : ENDING_KO | ENDING, déjà préchargé
 		is_anim_fini=0;
@@ -1258,8 +1265,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	} else {
 
 	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
-		&& mapping_direction_calque[joueur->perso][direction_pressed]->o == joueur->animation->o
-		&& mapping_direction_calque[joueur->perso][direction_pressed]->b == joueur->animation->b) {
+		&& mapping_direction_pressed->o == joueur->animation->o
+		&& mapping_direction_pressed->b == joueur->animation->b) {
 		// hypercut : un coup un seul !
 		is_anim_fini=0;
 	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
@@ -1279,7 +1286,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	}
 	
 	// si le joueur marchait et ne marche plus
-	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) == 0);
+	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_pressed->ar & MARCHER) == 0);
 	// sinon si le joueur marchait mais change de direction => à prendre compte
 	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
@@ -1290,8 +1297,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	if (is_arrete_marcher || is_anim_fini) { //is_continue_marcher || 
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
-		joueur->animation=mapping_direction_calque[joueur->perso][joueur->direction];
-		joueur->allez_retour=mapping_direction_calque[joueur->perso][joueur->direction]->ar;
+		joueur->animation=mapping_direction_pressed;
+		joueur->allez_retour=mapping_direction_pressed->ar;
 		if ((joueur->direction & DIRECTION_AVANT) != 0) {
 			joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
 			 //if (is_continue_marcher) {
@@ -1479,86 +1486,89 @@ void main(void)
 	//}
 	
 	// init mapping
+	normDIR[PERSO_LIU_KANG]=(int)&J1A;
+	normDIR[PERSO_SUB_ZERO]=(int)&J2A;
+	
 	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2;i++) {
 		if ((i & DIRECTION_AVANT) == 0 && (i & DIRECTION_ARRIERE) == 0) {
-			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A_repos;
-			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A_repos;
+			mapping_direction_calque[PERSO_LIU_KANG][i]=(int)&J1A_repos-normDIR[PERSO_LIU_KANG];
+			mapping_direction_calque[PERSO_SUB_ZERO][i]=(int)&J2A_repos-normDIR[PERSO_SUB_ZERO];
 		} else {
-			mapping_direction_calque[PERSO_LIU_KANG][i]=&J1A.marcher;
-			mapping_direction_calque[PERSO_SUB_ZERO][i]=&J2A.marcher;
+			mapping_direction_calque[PERSO_LIU_KANG][i]=(int)&J1A.marcher-normDIR[PERSO_LIU_KANG];
+			mapping_direction_calque[PERSO_SUB_ZERO][i]=(int)&J2A.marcher-normDIR[PERSO_SUB_ZERO];
 		}
 	}
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.pied_haut; // attaque haut
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=&J1R.poing_double_jab; //attaque centre
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE]=&J1A.pied_milieu; // attaque milieu
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=&J1A.pied_rotatif; // attaque bas
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE]=&J1A.balayette; // defense bas
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=&J1A.hypercut; // defense haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J1A.pied_haut-normDIR[PERSO_LIU_KANG]; // attaque haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE]=(int)&J1R.poing_double_jab-normDIR[PERSO_LIU_KANG]; //attaque centre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE]=(int)&J1A.pied_milieu-normDIR[PERSO_LIU_KANG]; // attaque milieu
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=(int)&J1A.pied_rotatif-normDIR[PERSO_LIU_KANG]; // attaque bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE]=(int)&J1A.balayette-normDIR[PERSO_LIU_KANG]; // defense bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG]; // defense haut
 
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=&J1R.contre_haut; // contre
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE]=&J1A.poing_milieu; // revers
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=&J1R.dragon; // humiliation
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG]; // contre
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG]; // revers
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=(int)&J1R.dragon-normDIR[PERSO_LIU_KANG]; // humiliation
 
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=&J1A.haut; // haut
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=&J1A.bas; // bas
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=(int)&J1A.haut-normDIR[PERSO_LIU_KANG]; // haut
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=(int)&J1A.bas-normDIR[PERSO_LIU_KANG]; // bas
 
 	//ARCADE
 	// => (+ /\ \/)
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1]=&J1A.pied_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J1A.pied_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=&J1A.pied_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2]=&J1A.pied_haut;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J1A.pied_haut;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=&J1A.pied_haut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1]=(int)&J1A.pied_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=(int)&J1A.pied_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=(int)&J1A.pied_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2]=(int)&J1A.pied_haut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J1A.pied_haut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J1A.pied_haut-normDIR[PERSO_LIU_KANG];
 	// <= (+ /\ \/)
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1]=&J1A.poing_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J1A.poing_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=&J1A.poing_milieu;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2]=&J1A.hypercut;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J1A.hypercut;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=&J1A.hypercut;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
 	// \/
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE1]=&J1A.balayette;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE2]=&J1A.pied_rotatif;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE1]=(int)&J1A.balayette-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE2]=(int)&J1A.pied_rotatif-normDIR[PERSO_LIU_KANG];
 	// <>
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=&J1R.contre_haut;
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=&J1R.poing_double_jab;
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=(int)&J1R.poing_double_jab-normDIR[PERSO_LIU_KANG];
 	
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hadouken1_personnage; // attaque haut
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=&J2A.poing_double_jab; //attaque centre
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE]=&J2A.pied_retourne; //attaque milieu
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=&J2R.flaque; // attaque bas
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE]=&J2A.balayette; // defense bas
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.hypercut; // defense haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J2R.hadouken1_personnage-normDIR[PERSO_SUB_ZERO]; // attaque haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=(int)&J2A.poing_double_jab-normDIR[PERSO_SUB_ZERO]; //attaque centre
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE]=(int)&J2A.pied_retourne-normDIR[PERSO_SUB_ZERO]; //attaque milieu
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_BAS | DIRECTION_FIRE]=(int)&J2R.flaque-normDIR[PERSO_SUB_ZERO]; // attaque bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE]=(int)&J2A.balayette-normDIR[PERSO_SUB_ZERO]; // defense bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J2R.hypercut-normDIR[PERSO_SUB_ZERO]; // defense haut
 
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=&J2R.poing_droit; // contre
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE]=&J2A.poing_gauche; // revers
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=&J2A.zombi; // humiliation
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J2R.poing_droit-normDIR[PERSO_SUB_ZERO]; // contre
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE]=(int)&J2A.poing_gauche-normDIR[PERSO_SUB_ZERO]; // revers
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_BAS | DIRECTION_FIRE]=(int)&J2A.zombi-normDIR[PERSO_SUB_ZERO]; // humiliation
 
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT]=&J2A.haut; // haut
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS]=&J2A.bas; // bas
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_HAUT]=(int)&J2A.haut-normDIR[PERSO_SUB_ZERO]; // haut
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS]=(int)&J2A.bas-normDIR[PERSO_SUB_ZERO]; // bas
 
 	//ARCADE
 	// => (+ /\ \/)
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1]=&J2A.balayette;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J2A.balayette;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=&J2A.balayette;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2]=&J2A.pied_retourne;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J2A.pied_retourne;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=&J2A.pied_retourne;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1]=(int)&J2A.balayette-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_HAUT]=(int)&J2A.balayette-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE1 | DIRECTION_BAS]=(int)&J2A.balayette-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2]=(int)&J2A.pied_retourne-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J2A.pied_retourne-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J2A.pied_retourne-normDIR[PERSO_SUB_ZERO];
 	// <= (+ /\ \/)
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1]=&J2R.poing_droit;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=&J2R.poing_droit;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=&J2R.poing_droit;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2]=&J2R.hypercut;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=&J2R.hypercut;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=&J2R.hypercut;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1]=(int)&J2R.poing_droit-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=(int)&J2R.poing_droit-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=(int)&J2R.poing_droit-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2]=(int)&J2R.hypercut-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J2R.hypercut-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J2R.hypercut-normDIR[PERSO_SUB_ZERO];
 	// \/
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE1]=&J2R.flaque;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE2]=&J2R.hadouken1_personnage;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE1]=(int)&J2R.flaque-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_BAS | DIRECTION_FIRE2]=(int)&J2R.hadouken1_personnage-normDIR[PERSO_SUB_ZERO];
 	// <>
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE1]=&J2A.poing_gauche;
-	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE2]=&J2A.poing_double_jab;
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE1]=(int)&J2A.poing_gauche-normDIR[PERSO_SUB_ZERO];
+	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE2]=(int)&J2A.poing_double_jab-normDIR[PERSO_SUB_ZERO];
 	
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
@@ -1615,7 +1625,6 @@ void main(void)
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
 		LoadFile("J1.map", (char *)&J2A); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
-	/* FIXME ne peux pas marcher : le tableau de direction c'est une liste de pointeurs vers des adresses...
 	} else if (no_combat==1) {
 		// test : pour le 2ème type de combat, j'inverse les joueurs.
 		
@@ -1642,10 +1651,12 @@ void main(void)
 
 		bank0123();
 		LoadFile("J2.map", (char *)&J1A); // des sprites
+		bank0123();
 		LoadFile("J2.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
+		bank0123();
 		LoadFile("J1.map", (char *)&J2A); // des sprites
+		bank0123();
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
-	*/
 	} else {
 		//bank0123();
 		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
