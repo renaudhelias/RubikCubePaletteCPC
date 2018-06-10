@@ -398,6 +398,10 @@ const struct CALQUE_J1A J1A= {
 	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0}},BANK_4,MARCHE}
 };
 
+// J1A.marcher avec l=2
+//const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
+const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
+
 struct CALQUE_J1R {
 	CALQUE victory; // cyclique
 	CALQUE fatality; // statique (stoppé au 3)
@@ -429,9 +433,6 @@ const struct CALQUE_J1R J1R= {
 	//.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
 };
 
-// J1A.marcher avec l=2
-//const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
-const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
 
 const char marqueur_sprite2[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','2'};
 
@@ -468,6 +469,10 @@ const struct CALQUE_J2A J2A= {
 	.poing_gauche={49,2,{{0,PORTE_EN_2|PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_6,ALLEZ_RETOUR}
 };
 
+// J2A.marcher avec l=2
+//const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
+const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
+
 struct CALQUE_J2R{
 	CALQUE poing_droit; // allez-retour
 	CALQUE ko; // cyclique
@@ -497,10 +502,6 @@ const struct CALQUE_J2R J2R= {
 	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
 	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0}
 };
-
-// J2A.marcher avec l=2
-//const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
-const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
 
 const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
 
@@ -1452,6 +1453,29 @@ void switch_bank(ANIMATION * joueur) {
 	}
 }
 
+void fix_bank() {
+	char i;
+	unsigned int j1;unsigned int j2;char b1;char b2;
+	j1=(int)&J1A;
+	j2=(int)&J2A;
+	for (i=0;i<16;i++) {
+		b1 = *(char*)(j1+11);
+		b2 = *(char*)(j2+11);
+		b1 = b1 & (~3);
+		b2 = b2 & (~3);
+		if (i<10) { // FIXME : pour le moment le premier tas (y compris repos) a 10 éléments...
+			b1 = b1 | BANK_4;
+			b2 = b2 | BANK_6;
+		} else {
+			b1 = b1 | BANK_5;
+			b2 = b2 | BANK_7;
+		}
+		*(char*)(j1+11)=b1;
+		*(char*)(j2+11)=b2;
+		j1=j1+13;
+		j2=j2+13;
+	}
+}
 
 
 char * bot1=0x6300;
@@ -1621,9 +1645,9 @@ void main(void)
 		transfertEtDecoupe();
 
 		bank0123();
-		LoadFile("J1.map", (char *)&J1A); // des sprites
+		LoadFile("J1.map", (char *)normDIR[PERSO_LIU_KANG]); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
-		LoadFile("J1.map", (char *)&J2A); // des sprites
+		LoadFile("J1.map", (char *)normDIR[PERSO_SUB_ZERO]); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
 	} else if (no_combat==1) {
 		// test : pour le 2ème type de combat, j'inverse les joueurs.
@@ -1650,13 +1674,11 @@ void main(void)
 		transfertEtDecoupe();
 
 		bank0123();
-		LoadFile("J2.map", (char *)&J1A); // des sprites
-		bank0123();
+		LoadFile("J2.map", (char *)normDIR[PERSO_LIU_KANG]); // des sprites
 		LoadFile("J2.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
-		bank0123();
-		LoadFile("J1.map", (char *)&J2A); // des sprites
-		bank0123();
+		LoadFile("J1.map", (char *)normDIR[PERSO_SUB_ZERO]); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
+		fix_bank();
 	} else {
 		//bank0123();
 		LoadFile("J1A.scr", (char *)0xC000); // un scr exporté "linéaire"
