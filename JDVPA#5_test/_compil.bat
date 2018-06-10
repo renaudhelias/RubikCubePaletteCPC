@@ -7,8 +7,10 @@ copy MKBO9000.BIN.vo MKBO9000.BIN
 copy MK-BO.SKS.vo MK-BO.SKS
 copy J1.MAP.vo J1.MAP
 copy J1.DIR.vo J1.DIR
+copy J1.PHA.vo J1.PHA
 copy J2.MAP.vo J2.MAP
 copy J2.DIR.vo J2.DIR
+copy J2.PHA.vo J2.PHA
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic1.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_basic2.c
 sdcc -mz80 -c --std-c99 --opt-code-speed --oldralloc jdvapi_keyb.c
@@ -46,7 +48,9 @@ CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J1.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J1.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 pause
 
