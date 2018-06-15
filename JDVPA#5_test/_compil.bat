@@ -5,6 +5,10 @@ sdasz80 -o putchar_cpc.s
 copy sks8000.bin.vo sks8000.bin
 copy MKBO9000.BIN.vo MKBO9000.BIN
 copy MK-BO.SKS.vo MK-BO.SKS
+copy sudoku-1.sks.vo sudoku-1.sks
+copy sudoku-2.sks.vo sudoku-2.sks
+copy SUDOKU-1.BIN.vo SUDOKU-1.BIN
+copy SUDOKU-2.BIN.vo SUDOKU-2.BIN
 copy J1.MAP.vo J1.MAP
 copy J1.DIR.vo J1.DIR
 copy J1.PHA.vo J1.PHA
@@ -52,5 +56,9 @@ CPCDiskXP -File J1.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+rem CPCDiskXP -File sudoku-1.sks -AddToExistingDsk jdvpa5_combat2.dsk
+rem CPCDiskXP -File sudoku-2.sks -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File SUDOKU-1.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File SUDOKU-2.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
 pause
 

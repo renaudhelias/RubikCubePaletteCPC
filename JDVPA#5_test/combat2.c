@@ -1627,7 +1627,17 @@ void main(void)
 	//LoadFile("intro.scr", (char *)0x4000);
 #ifndef NO_SOUND
 	LoadFile("sks8000.bin", (char *)0x8000);
-	LoadFile("mkbo9000.bin", (char *)0x9000);
+	switch (no_combat) {
+		case 0:
+			LoadFile("mkbo9000.bin", (char *)0x9000);
+			break;
+		case 1:
+			LoadFile("SUDOKU-1.BIN", (char *)0x9000);
+			break;
+		case 2:
+			LoadFile("SUDOKU-2.BIN", (char *)0x9000);
+			break;
+	}
 #endif
 	vram=precalc_vram();
 	
