@@ -279,6 +279,9 @@ unsigned char * no_combatAddr;
 unsigned char no_combat;
 unsigned char * arcadeAddr;
 unsigned char arcade;
+unsigned char fond_largeur; // vrai largeur
+unsigned char fond_offset; // début de vrai fond
+unsigned char fond_joueur; // largeur+offset-taillePerso
 
 const unsigned char combat2_palette[3][16]=
 {
@@ -668,10 +671,10 @@ void bloodRender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
-			if (blood_x+current_blood[i][0]>6*8+3+2) continue;
+			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
 			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		} else {
-			if (blood_x-current_blood[i][0]<3) continue;
+			if (blood_x-current_blood[i][0]<1) continue;
 			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		}
 	}
@@ -684,10 +687,10 @@ void bloodDerender() {
 	char i;
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
-			if (blood_x+current_blood[i][0]>6*8+3+2) continue;
+			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
 			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		} else {
-			if (blood_x-current_blood[i][0]<3) continue;
+			if (blood_x-current_blood[i][0]<1) continue;
 			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		}
 	}
@@ -957,49 +960,17 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 	} else {
 	
-	//is_liu_kang_attaque = ((liu_kang->allez_retour & MARCHER) == 0);
-	//is_liu_kang_avance = (liu_kang->x > liu_kang->old_x);
-	//is_sub_zero_attaque = ((sub_zero->allez_retour & MARCHER) == 0);
-	//is_sub_zero_avance = (sub_zero->x < sub_zero->old_x);
 	
-		/* if (is_delautrebord) {
-			// gameplay Barbarian :p - on ne pousse pas le gars sans le frapper.
-			if (((liu_kang->allez_retour & MARCHER) == 0) && (liu_kang->x > liu_kang->old_x)
-				&& !(((sub_zero->allez_retour & MARCHE) != 0) && ((sub_zero->allez_retour & MARCHER) == 0))) {
-			// liu_kang attaque en avançant et sub_zero n'attaque pas
-				// liu_kang pousse sub_zero
-				if (sub_zero->x < 48 && sub_zero->old_x < 48) {
-					sub_zero->x=sub_zero->old_x+1;
-				} else {
-					liu_kang->x=liu_kang->old_x;
-				}
-				return;
-			} else if (((sub_zero->allez_retour & MARCHER) == 0) && (sub_zero->x < sub_zero->old_x)
-				&& !(((liu_kang->allez_retour & MARCHE) != 0) && ((liu_kang->allez_retour & MARCHER) != 0))) {
-			// sub_zero attaque en avançant et liu_kang n'attaque pas
-				// sub_zero pousse liu_kang
-				if (liu_kang->x > 3 && liu_kang->old_x > 3) {
-					liu_kang->x=liu_kang->old_x-1;
-				} else {
-					sub_zero->x=sub_zero->old_x;
-				}
-				return;
-			} else {
-				// les deux poussent à la fois
-				liu_kang->x=liu_kang->old_x;
-				sub_zero->x=sub_zero->old_x;
-			}
-		} */
 
 		if (degats_liu_kang>degats_sub_zero) {
 			if (liu_kang->x == liu_kang->old_x) {
 				// sub_zero est ejecté
 				if (liu_kang->polarite==0) {
-					if (sub_zero->x < 48 && sub_zero->old_x < 48) {
+					if (sub_zero->x < fond_joueur && sub_zero->old_x < fond_joueur) {
 						sub_zero->x=sub_zero->old_x+1;
 					}
 				} else {
-					if (sub_zero->x > 3 && sub_zero->old_x > 3) {
+					if (sub_zero->x > fond_offset && sub_zero->old_x > fond_offset) {
 						sub_zero->x=sub_zero->old_x-1;
 					}
 				}
@@ -1011,11 +982,11 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
 				if (liu_kang->polarite==0) {
-					if (liu_kang->x > 3 && liu_kang->old_x > 3) {
+					if (liu_kang->x > fond_offset && liu_kang->old_x > fond_offset) {
 						liu_kang->x=liu_kang->old_x-1;
 					}
 				} else {
-					if (liu_kang->x < 48 && liu_kang->old_x < 48) {
+					if (liu_kang->x < fond_largeur && liu_kang->old_x < fond_largeur) {
 						liu_kang->x=liu_kang->old_x+1;
 					}
 				}
@@ -1409,28 +1380,28 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		if (deplacement == DEPLACEMENT_DROITE) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
-			if (joueur->x > 48) {
-				joueur->x=48; //3;
+			if (joueur->x > fond_joueur) {
+				joueur->x=fond_joueur;
 			}
 		} else if (deplacement == DEPLACEMENT_GAUCHE) {
 			// le joueur va a gauche
 			joueur->x = joueur->old_x - 1;
-			if (joueur->x < 3) {
-				joueur->x=3; //48;
+			if (joueur->x < fond_offset) {
+				joueur->x=fond_offset;
 			}
 		}
 	} else if ((joueur->allez_retour & MARCHE) != 0) {
 		if (joueur->polarite==0) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
-			if (joueur->x > 48) {
-				joueur->x=48; //3;
+			if (joueur->x > fond_joueur) {
+				joueur->x=fond_joueur;
 			}
 		} else {
 			// le joueur va a gauche
 			joueur->x = joueur->old_x - 1;
-			if (joueur->x < 3) {
-				joueur->x=3; //48;
+			if (joueur->x < fond_offset) {
+				joueur->x=fond_offset;
 			}
 		}
 	}
@@ -1484,6 +1455,8 @@ char * bot2=0x6301;
 
 char replay;
 char is_bot;
+
+unsigned int a;unsigned int b;
 
 void main(void)
 {
@@ -1633,6 +1606,7 @@ void main(void)
 			break;
 		case 1:
 			LoadFile("SUDOKU-1.BIN", (char *)0x9000);
+			//LoadFile("mkbo9000.bin", (char *)0x9000);
 			break;
 		case 2:
 			LoadFile("SUDOKU-2.BIN", (char *)0x9000);
@@ -1741,14 +1715,24 @@ calqueC000();
 	switch (no_combat) {
 		case 0:
 			LoadFile("fond2.scr", (char *)0xC000);
+			//fond_largeur=6*8+3;
+			fond_largeur=6*8+3;
+			fond_offset=3;
 			break;
 		case 1:
 			LoadFile("fond1.scr", (char *)0xC000);
+			//fond_largeur=6*12+2;
+			fond_largeur=6*8+3;
+			fond_offset=15;
 			break;
 		case 2:
 			LoadFile("fond3.scr", (char *)0xC000);
+			fond_largeur=6*6+3;
+			fond_offset=20;
 			break;
 	}
+	
+	fond_joueur=fond_largeur+fond_offset-6-1;
 	
 	while(1){
 	blood_depth=0;blood_n=0;
@@ -1776,7 +1760,7 @@ calqueC000();
 	degats_sub_zero=0;
 	
 	//init liu_kang et sub_zero
-	liu_kang.x=10;
+	liu_kang.x=fond_offset+fond_largeur/4;
 	liu_kang.old_x=liu_kang.x;
 	liu_kang.perso=PERSO_LIU_KANG;
 	liu_kang.direction=0;
@@ -1786,7 +1770,7 @@ calqueC000();
 	liu_kang.allez_retour=liu_kang.animation->ar;
 	liu_kang.polarite=0;
 	
-	sub_zero.x=30;
+	sub_zero.x=fond_offset+fond_largeur/2+fond_largeur/4;
 	sub_zero.old_x=sub_zero.x;
 	sub_zero.perso=PERSO_SUB_ZERO;
 	sub_zero.direction=0;
@@ -1798,7 +1782,11 @@ calqueC000();
 
 	
 	// fond
-	erase_frame((unsigned char *)(0xC000 + vram[120]+3),6*8+3,50);
+	if (no_combat==1) {
+		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur+4,50);
+	} else {
+		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur,50);
+	}
 	// score
 	//locate(4,1);printf("THSF 2018");
 	//locate(5,1);printf("00");
@@ -1822,11 +1810,14 @@ calqueC000();
 #ifndef NO_SOUND
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
+		// re-calibration
+		vsync();
 #endif
 
 
-
-
+	// optim : invariants
+	a=0x4000+fond_offset;
+	b=0xC000+fond_offset;
 
 	replay=0;
 	is_vsync=0;
@@ -1846,14 +1837,35 @@ calqueC000();
 	//bank0123();
 
 	refresh_all_progressbar();
-
-	// optimisation
-	for (i=120;i<120+50;i++) {
-		// utiliser du min/max sur x/old_x ?
-		memcpy((char *)(0x4000 + vram[i] + 3), (char *)(0xC000 + vram[i] + 3), 6*8+3); // memcpy(destination,source,longueur)
-	}
-
 	
+	//for (i=120;i<120+50;i++) {
+	//	memcpy((char *)(0x4000 + vram[i]+liu_kang.x-1), (char *)(0xC000 + vram[i]+liu_kang.x-1), 6+2);
+	//	memcpy((char *)(0x4000 + vram[i]+sub_zero.x-1), (char *)(0xC000 + vram[i]+sub_zero.x-1), 6+2);
+	//}
+	
+	switch (no_combat) { // LOL bug 3ème param memcpy : degradation perf si variable.
+		case 0:
+			// optimisation
+			for (i=120;i<120+50;i++) {
+				// utiliser du min/max sur x/old_x ?
+				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3);// 6*12+2); // memcpy(destination,source,longueur)
+			}
+			break;
+		case 1:
+			// optimisation
+			for (i=120;i<120+50;i++) {
+				// utiliser du min/max sur x/old_x ?
+				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3);// 6*12+2); // memcpy(destination,source,longueur)
+			}
+			break;
+		case 2:
+			// optimisation
+			for (i=120;i<120+50;i++) {
+				// utiliser du min/max sur x/old_x ?
+				memcpy((char *)(0x4000 + vram[i]+fond_offset), (char *)(0xC000 + vram[i]+fond_offset), 6*6+3); // memcpy(destination,source,longueur)
+			}
+			break;
+	}
 	
 	
 	// affiche 4000 pendant qu'on pose deux sprites de 4000 vers C000
@@ -1989,10 +2001,10 @@ calqueC000();
 			sub_zero.phase=PHASE_FATALITY;
 
 			// victory
-			if (sub_zero.x<20) {
-				liu_kang.x=30;
+			if (sub_zero.x<fond_offset+fond_largeur/2) {
+				liu_kang.x=sub_zero.x+fond_largeur/4;
 			} else {
-				liu_kang.x=10;
+				liu_kang.x=fond_offset+fond_largeur/4;
 			}
 			liu_kang.anim_restant=0;
 			liu_kang.animation=(CALQUE *)(mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]+normDIR[PERSO_LIU_KANG]);
@@ -2025,10 +2037,10 @@ calqueC000();
 			liu_kang.phase=PHASE_FATALITY;
 			
 			// victory
-			if (liu_kang.x<20) {
-				sub_zero.x=30;
+			if (liu_kang.x<fond_offset+fond_largeur/2) {
+				sub_zero.x=liu_kang.x+fond_largeur/4;
 			} else {
-				sub_zero.x=10;
+				sub_zero.x=fond_offset+fond_largeur/4;
 			}
 			sub_zero.anim_restant=0;
 			sub_zero.animation=(CALQUE *)(mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]+normDIR[PERSO_SUB_ZERO]);

@@ -2,7 +2,6 @@ unsigned char callback_counter=0;
 
 void vsync()
 {
-  callback_counter=0;
   __asm
     ld b,#0xf5          ;; PPI port B input
     _wait_vsync:
@@ -12,6 +11,7 @@ void vsync()
     rra                 ;; [1] put bit 0 into carry flag
     jp nc,_wait_vsync   ;; [3] if carry not set, loop, otherwise continue
   __endasm;
+  callback_counter=0;
 }
 
 void raster_halt()
