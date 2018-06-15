@@ -1848,21 +1848,21 @@ calqueC000();
 			// optimisation
 			for (i=120;i<120+50;i++) {
 				// utiliser du min/max sur x/old_x ?
-				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3);// 6*12+2); // memcpy(destination,source,longueur)
+				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3); // memcpy(destination,source,longueur)
 			}
 			break;
 		case 1:
 			// optimisation
 			for (i=120;i<120+50;i++) {
 				// utiliser du min/max sur x/old_x ?
-				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3);// 6*12+2); // memcpy(destination,source,longueur)
+				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*8+3); // memcpy(destination,source,longueur)
 			}
 			break;
 		case 2:
 			// optimisation
 			for (i=120;i<120+50;i++) {
 				// utiliser du min/max sur x/old_x ?
-				memcpy((char *)(0x4000 + vram[i]+fond_offset), (char *)(0xC000 + vram[i]+fond_offset), 6*6+3); // memcpy(destination,source,longueur)
+				memcpy((char *)(a + vram[i]), (char *)(b + vram[i]), 6*6+3); // memcpy(destination,source,longueur)
 			}
 			break;
 	}
