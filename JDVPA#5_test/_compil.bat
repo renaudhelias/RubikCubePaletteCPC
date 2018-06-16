@@ -37,7 +37,20 @@ sdcc -mz80 --code-loc 0x0138 --data-loc 0 --oldralloc --no-std-crt0 crt0_cpc.rel
 hex2bin main.ihx
 hex2bin combat2.ihx
 CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa5.dsk
-CPCDiskXP -File combat2.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa5_combat2.dsk
+
+CPCDiskXP -File combat2.bin -AddAmsdosHeader 100
+CPCDiskXP -File sks8000.bin -AddAmsdosHeader 100
+CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100
+CPCDiskXP -File J1.MAP -AddAmsdosHeader 100
+CPCDiskXP -File J1.DIR -AddAmsdosHeader 100
+CPCDiskXP -File J1.PHA -AddAmsdosHeader 100
+CPCDiskXP -File J2.MAP -AddAmsdosHeader 100
+CPCDiskXP -File J2.DIR -AddAmsdosHeader 100
+CPCDiskXP -File J2.PHA -AddAmsdosHeader 100
+CPCDiskXP -File SUDOKU-1.BIN -AddAmsdosHeader 100
+CPCDiskXP -File SUDOKU-2.BIN -AddAmsdosHeader 100
+
+CPCDiskXP -File combat2.bin -AddToNewDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa5_combat2.dsk
@@ -47,18 +60,42 @@ CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File fond3.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File CHOICE.BAS -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File sks8000.bin -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File sks8000.bin -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File MKBO9000.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J1.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J1.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J1.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J2.MAP -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J2.DIR -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File J2.PHA -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File MKBO9000.BIN -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.MAP -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.DIR -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J1.PHA -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.MAP -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.DIR -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File J2.PHA -AddToExistingDsk jdvpa5_combat2.dsk
 rem CPCDiskXP -File sudoku-1.sks -AddToExistingDsk jdvpa5_combat2.dsk
 rem CPCDiskXP -File sudoku-2.sks -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File SUDOKU-1.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File SUDOKU-2.BIN -AddAmsdosHeader 100 -AddToExistingDsk jdvpa5_combat2.dsk
-pause
+CPCDiskXP -File SUDOKU-1.BIN -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File SUDOKU-2.BIN -AddToExistingDsk jdvpa5_combat2.dsk
 
+rem CPCDiskXP/Readme.txt 9 "ROMDOS D2 - Double Side - 80 Tracks - 256 Dir. Entries - 720K  (712K Free)"
+CPCDiskXP -File combat2.bin -AddToNewDsk jdvpa5_combat2_720K.dsk -NewDskFormat 9 
+CPCDiskXP -File J1A.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J1R.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J2A.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File fond1.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File fond3.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File CHOICE.BAS -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File sks8000.bin -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File MKBO9000.BIN -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J1.MAP -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J1.DIR -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J1.PHA -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J2.MAP -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J2.DIR -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File J2.PHA -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File sudoku-1.sks -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File sudoku-2.sks -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File SUDOKU-1.BIN -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File SUDOKU-2.BIN -AddToExistingDsk jdvpa5_combat2_720K.dsk
+pause
