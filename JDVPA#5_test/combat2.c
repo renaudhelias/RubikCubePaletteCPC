@@ -1533,15 +1533,15 @@ void main(void)
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_HAUT]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE1 | DIRECTION_BAS]=(int)&J1A.poing_milieu-normDIR[PERSO_LIU_KANG];
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_HAUT]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_ARRIERE | DIRECTION_FIRE2 | DIRECTION_BAS]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG];
 	// \/
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE1]=(int)&J1A.balayette-normDIR[PERSO_LIU_KANG];
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS | DIRECTION_FIRE2]=(int)&J1A.pied_rotatif-normDIR[PERSO_LIU_KANG];
 	// <>
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=(int)&J1R.contre_haut-normDIR[PERSO_LIU_KANG];
-	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=(int)&J1R.poing_double_jab-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=(int)&J1R.poing_double_jab-normDIR[PERSO_LIU_KANG];
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
 	
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J2R.hadouken1_personnage-normDIR[PERSO_SUB_ZERO]; // attaque haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=(int)&J2A.poing_double_jab-normDIR[PERSO_SUB_ZERO]; //attaque centre
