@@ -874,9 +874,7 @@ void hadoukenDerender() {
  * @param x,y : coordonnées du coup reçu
  */
 void bloodDegats(char d, char n,char x, char y) {
-	hadouken_n=0;
-	hadouken_depth=0;
-	
+	if (hadouken_n!=0) return;
 	blood_d = d;
 	blood_n = n;
 	blood_x = x;
@@ -894,8 +892,12 @@ void bloodDegats(char d, char n,char x, char y) {
  * @param x2 : coordonnée x de l'autre joueur
  */
 void hadoukenDegats(char n,char x, char x2) {
-	blood_n=0;
-	blood_depth=0;
+	if (blood_n!=0) return;
+	if (hadouken_n!=0) {
+		// on coupe pas un hadouken avec un autre hadouken
+		hadouken();
+		return;
+	}
 	
 	hadouken_n = n;
 	hadouken_x = x;
@@ -961,43 +963,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	} else {
 	
 	
-
-		if (degats_liu_kang>degats_sub_zero) {
-			if (liu_kang->x == liu_kang->old_x) {
-				// sub_zero est ejecté
-				if (liu_kang->polarite==0) {
-					if (sub_zero->x < fond_joueur && sub_zero->old_x < fond_joueur) {
-						sub_zero->x=sub_zero->old_x+1;
-					}
-				} else {
-					if (sub_zero->x > fond_offset && sub_zero->old_x > fond_offset) {
-						sub_zero->x=sub_zero->old_x-1;
-					}
-				}
-				liu_kang->x=liu_kang->old_x;
-			}
-			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
-			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,corps[degats_liu_kang_corps]); // tête
-		} else if (degats_sub_zero>degats_liu_kang) {
-			if (sub_zero->x == sub_zero->old_x) {
-				// liu_kang est ejecté
-				if (liu_kang->polarite==0) {
-					if (liu_kang->x > fond_offset && liu_kang->old_x > fond_offset) {
-						liu_kang->x=liu_kang->old_x-1;
-					}
-				} else {
-					if (liu_kang->x < fond_largeur && liu_kang->old_x < fond_largeur) {
-						liu_kang->x=liu_kang->old_x+1;
-					}
-				}
-				sub_zero->x=sub_zero->old_x;
-			}
-			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,corps[degats_sub_zero_corps]); // tête
-		} else {
-			blood();
-		}
-		
-		// polarite
+// polarite
 		// Laurent Gendrop : Sur tous les jeux de baston le perso fini son attaque avant de changer de sens, si l'autre esquive en passant de l'autre coté tu donne un coup dans le vide. C'est archi classique, ca me choque pas
 		if ((liu_kang->x > sub_zero->x && liu_kang->polarite==0)
 			|| (sub_zero->x > liu_kang->x && liu_kang->polarite==1)) {
@@ -1047,6 +1013,39 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->x+2;
 				liu_kang->x=liu_kang->x-2;
 			}
+		} else if (degats_liu_kang>degats_sub_zero) {
+			if (liu_kang->x == liu_kang->old_x) {
+				// sub_zero est ejecté
+				if (liu_kang->polarite==0) {
+					if (sub_zero->x < fond_joueur && sub_zero->old_x < fond_joueur) {
+						sub_zero->x=sub_zero->old_x+1;
+					}
+				} else {
+					if (sub_zero->x > fond_offset && sub_zero->old_x > fond_offset) {
+						sub_zero->x=sub_zero->old_x-1;
+					}
+				}
+				liu_kang->x=liu_kang->old_x;
+			}
+			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
+			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,corps[degats_liu_kang_corps]); // tête
+		} else if (degats_sub_zero>degats_liu_kang) {
+			if (sub_zero->x == sub_zero->old_x) {
+				// liu_kang est ejecté
+				if (liu_kang->polarite==0) {
+					if (liu_kang->x > fond_offset && liu_kang->old_x > fond_offset) {
+						liu_kang->x=liu_kang->old_x-1;
+					}
+				} else {
+					if (liu_kang->x < fond_largeur && liu_kang->old_x < fond_largeur) {
+						liu_kang->x=liu_kang->old_x+1;
+					}
+				}
+				sub_zero->x=sub_zero->old_x;
+			}
+			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,corps[degats_sub_zero_corps]); // tête
+		} else {
+			blood();
 		}
 	}
 }

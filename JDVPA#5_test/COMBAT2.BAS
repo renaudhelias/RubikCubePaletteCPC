@@ -18,7 +18,7 @@
 82 PRINT "                        ";CHR$(34);"^T$$$$$$$$$$$$$$$$$$$$$$$$$$P^";CHR$(34);"               
 83 PRINT "                            ";CHR$(34);"";CHR$(34);"";CHR$(34);"^^^T$$$$$$$$$$P^^^";CHR$(34);"";CHR$(34);"";CHR$(34);"
 84 RUN"combat2.bin
-90 REM PRINT "Ascii art by Blazej Kozlowski
+90 LOCATE 1,25:REM PRINT "Ascii art by Blazej Kozlowski
 100 PRINT "                                _..gggggppppp.._                       
 110 PRINT "                           _.gd$$$$$$$$$$$$$$$$$$bp._                  
 120 PRINT "                        .g$$$$$$P^^";CHR$(34);"";CHR$(34);"j$$b";CHR$(34);"";CHR$(34);"";CHR$(34);"";CHR$(34);"^^T$$$$$$p.               
