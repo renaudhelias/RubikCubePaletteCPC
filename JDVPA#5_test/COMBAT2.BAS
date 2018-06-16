@@ -2,7 +2,7 @@
 5 OUT &7FC4,&C4
 7 POKE &5FFE,0
 8 b$="NO
-9 LOCATE 39,20 :PRINT "-------------------------"
+9 REM LOCATE 39,20 :PRINT "-------------------------"
 10 LOCATE 39,20:PRINT " 1. Liu Kang vs Sub Zero "
 20 LOCATE 39,21:PRINT " 2. Sub Zero vs Liu Kang "
 30 LOCATE 39,22:PRINT " 3. Liu Kang vs Liu Kang "
