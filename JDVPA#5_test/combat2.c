@@ -1897,83 +1897,83 @@ calqueC000();
 	
 	// touche w pour faire reculer liu_kang (querty)
 	check_controller();
-	direction=0;
-	if (get_key(Key_Joy1Left)) {
-		if (liu_kang.polarite==0) {
-			direction=direction | DIRECTION_ARRIERE;
-		} else {
-			direction=direction | DIRECTION_AVANT;
-		}
-	} else if (get_key(Key_Joy1Right)){
-		if (liu_kang.polarite==0) {
-			direction=direction | DIRECTION_AVANT;
-		} else {
-			direction=direction | DIRECTION_ARRIERE;
-		}
-	}
-	if (get_key(Key_Joy1Up)) {
-		direction=direction | DIRECTION_HAUT;
-	} else if (get_key(Key_Joy1Down)) {
-		direction=direction | DIRECTION_BAS;
-	}
-	
-	if (get_key(Key_Joy1Fire1)) {
-		if (arcade) {
-			direction=direction | DIRECTION_FIRE1;
-		} else {
-			direction=direction | DIRECTION_FIRE;
-		}
-	}
-	if (get_key(Key_Joy1Fire2)) {
-		if (arcade) {
-			direction=direction | DIRECTION_FIRE2;
-		} else {
-			direction=direction | DIRECTION_FIRE;
-		}
-	}
-
-	direction2=0;
-	if (get_key(Key_R_Joy2Left)) {
-		if (sub_zero.polarite==0) {
-			direction2=direction2 | DIRECTION_ARRIERE;
-		} else {
-			direction2=direction2 | DIRECTION_AVANT;
-		}
-	} else if (get_key(Key_T_Joy2Right)) {
-		if (sub_zero.polarite==0) {
-			direction2=direction2 | DIRECTION_AVANT;
-		} else {
-			direction2=direction2 | DIRECTION_ARRIERE;
-		}
-	}
-	if (get_key(Key_6_Joy2Up)) {
-		direction2=direction2 | DIRECTION_HAUT;
-	} else if (get_key(Key_5_Joy2Down)) {
-		direction2=direction2 | DIRECTION_BAS;
-	}
-	if (get_key(Key_G_Joy2Fire1)) {
-		if (arcade) {
-			direction2=direction2 | DIRECTION_FIRE1;
-		} else {
-			direction2=direction2 | DIRECTION_FIRE;
-		}
-	}
-	if (get_key(Key_F_Joy2Fire2)) {
-		if (arcade) {
-			direction2=direction2 | DIRECTION_FIRE2;
-		} else {
-			direction2=direction2 | DIRECTION_FIRE;
-		}
-	}
-	
 	if ((is_bot & 1)!=0) {
 		bot1=bot1-3;
 		direction=(*bot1 + direction) % 31;
+	} else {
+		direction=0;
+		if (get_key(Key_Joy1Left)) {
+			if (liu_kang.polarite==0) {
+				direction=direction | DIRECTION_ARRIERE;
+			} else {
+				direction=direction | DIRECTION_AVANT;
+			}
+		} else if (get_key(Key_Joy1Right)){
+			if (liu_kang.polarite==0) {
+				direction=direction | DIRECTION_AVANT;
+			} else {
+				direction=direction | DIRECTION_ARRIERE;
+			}
+		}
+		if (get_key(Key_Joy1Up)) {
+			direction=direction | DIRECTION_HAUT;
+		} else if (get_key(Key_Joy1Down)) {
+			direction=direction | DIRECTION_BAS;
+		}
+		
+		if (get_key(Key_Joy1Fire1)) {
+			if (arcade) {
+				direction=direction | DIRECTION_FIRE1;
+			} else {
+				direction=direction | DIRECTION_FIRE;
+			}
+		}
+		if (get_key(Key_Joy1Fire2)) {
+			if (arcade) {
+				direction=direction | DIRECTION_FIRE2;
+			} else {
+				direction=direction | DIRECTION_FIRE;
+			}
+		}
 	}
 
 	if ((is_bot & 2)!=0) {
 		bot2=bot2+5;
 		direction2=(*bot2 + direction2) % 31;
+	} else {
+		direction2=0;
+		if (get_key(Key_R_Joy2Left)) {
+			if (sub_zero.polarite==0) {
+				direction2=direction2 | DIRECTION_ARRIERE;
+			} else {
+				direction2=direction2 | DIRECTION_AVANT;
+			}
+		} else if (get_key(Key_T_Joy2Right)) {
+			if (sub_zero.polarite==0) {
+				direction2=direction2 | DIRECTION_AVANT;
+			} else {
+				direction2=direction2 | DIRECTION_ARRIERE;
+			}
+		}
+		if (get_key(Key_6_Joy2Up)) {
+			direction2=direction2 | DIRECTION_HAUT;
+		} else if (get_key(Key_5_Joy2Down)) {
+			direction2=direction2 | DIRECTION_BAS;
+		}
+		if (get_key(Key_G_Joy2Fire1)) {
+			if (arcade) {
+				direction2=direction2 | DIRECTION_FIRE1;
+			} else {
+				direction2=direction2 | DIRECTION_FIRE;
+			}
+		}
+		if (get_key(Key_F_Joy2Fire2)) {
+			if (arcade) {
+				direction2=direction2 | DIRECTION_FIRE2;
+			} else {
+				direction2=direction2 | DIRECTION_FIRE;
+			}
+		}
 	}
 	
 	if (get_key(Key_C)) {
