@@ -1723,7 +1723,7 @@ calqueC000();
 			LoadFile("fond1.scr", (char *)0xC000);
 			//fond_largeur=6*12+2;
 			fond_largeur=6*8+3;
-			fond_offset=15;
+			fond_offset=15-2;
 			break;
 		case 2:
 			LoadFile("fond3.scr", (char *)0xC000);
@@ -1783,7 +1783,7 @@ calqueC000();
 	
 	// fond
 	if (no_combat==1) {
-		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur+4,50);
+		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset+2),fond_largeur+2,50);
 	} else {
 		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur,50);
 	}
@@ -1808,6 +1808,8 @@ calqueC000();
 		raster();
 	}
 #ifndef NO_SOUND
+		// re-calibration
+		vsync();
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
 		// re-calibration
@@ -1878,7 +1880,7 @@ calqueC000();
 	is_vsync=0;
 	calque4000();
 
-	bank0123();
+	//bank0123();
 	
 	bloodDerender();
 	hadoukenDerender();

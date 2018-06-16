@@ -5,16 +5,10 @@
  */
 unsigned char aKeyboard[10];
 
-unsigned char get_key(enum _eKey eKey)
+/*unsigned char get_key(unsigned char eKey)
 {
-  unsigned char nKeyLine = eKey / 8;
-  unsigned char nBit = eKey % 8;
-  
-  if(((unsigned char)1 << nBit & aKeyboard[nKeyLine]) == 0)
-    return 1;
-  
-  return 0;
-}
+  return (1 << (eKey%8) & aKeyboard[eKey/8]) == 0;
+}*/
 
 void check_controller()
 {

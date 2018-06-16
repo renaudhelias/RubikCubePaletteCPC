@@ -41,8 +41,8 @@ Un autre effet type particules, qui marche un peu.
 TODO :
 * OSEF rendre paramétrable le choix des joueurs, mais faire des préselection dans le menu basic
 * OSEF terrain paramétrable aussi.
-* image dernier terrain OK, mais zone de combat : le 1 est OK, la foret devrait être plus large, et le dernier plus court/centré (genre arène) 
-* ajouter 2 sons (OSEF choix paramétrable aussi), dont le son du prototype
+* DONE image dernier terrain OK, mais zone de combat : le 1 est OK, la foret devrait être plus large, et le dernier plus court/centré (genre arène) 
+* DONE ajouter 2 sons (OSEF choix paramétrable aussi), dont le son du prototype
 * calibrer algo inverse sprite, empécher lock
 * finaliser hadouken (dégats, et cible mouvante)
 * AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
