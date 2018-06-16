@@ -1036,6 +1036,17 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
 				sub_zero->allez_retour = sub_zero->allez_retour & (!MARCHE);
 			}
+			if (liu_kang->x-3 < fond_offset) {
+				sub_zero->x=sub_zero->x+4;
+			} else if (sub_zero->x+3 > fond_joueur) {
+				liu_kang->x=liu_kang->x-4;
+			} else if (liu_kang->x > sub_zero->x) {
+				liu_kang->x=liu_kang->x+2;
+				sub_zero->x=sub_zero->x-2;
+			} else {
+				sub_zero->x=sub_zero->x+2;
+				liu_kang->x=liu_kang->x-2;
+			}
 		}
 	}
 }
@@ -1606,7 +1617,6 @@ void main(void)
 			break;
 		case 1:
 			LoadFile("SUDOKU-1.BIN", (char *)0x9000);
-			//LoadFile("mkbo9000.bin", (char *)0x9000);
 			break;
 		case 2:
 			LoadFile("SUDOKU-2.BIN", (char *)0x9000);
@@ -1723,7 +1733,7 @@ calqueC000();
 			LoadFile("fond1.scr", (char *)0xC000);
 			//fond_largeur=6*12+2;
 			fond_largeur=6*8+3;
-			fond_offset=15-2;
+			fond_offset=15;
 			break;
 		case 2:
 			LoadFile("fond3.scr", (char *)0xC000);
@@ -1783,7 +1793,7 @@ calqueC000();
 	
 	// fond
 	if (no_combat==1) {
-		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset+2),fond_largeur+2,50);
+		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset-4),fond_largeur+8,50);
 	} else {
 		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur,50);
 	}

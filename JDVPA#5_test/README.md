@@ -43,12 +43,12 @@ TODO :
 * OSEF terrain paramétrable aussi.
 * DONE image dernier terrain OK, mais zone de combat : le 1 est OK, la foret devrait être plus large, et le dernier plus court/centré (genre arène) 
 * DONE ajouter 2 sons (OSEF choix paramétrable aussi), dont le son du prototype
-* calibrer algo inverse sprite, empécher lock
+* DONE calibrer algo inverse sprite, empécher lock
 * finaliser hadouken (dégats, et cible mouvante)
 * AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * peaufiner algo sang
 
-__CHOICE.BAS___
+__CHOICE.BAS__
 
 Passage de CHOICE.BAS en mode texte, afin d'être éditable sous notepad++ :
 <pre>load "choice.bas"
