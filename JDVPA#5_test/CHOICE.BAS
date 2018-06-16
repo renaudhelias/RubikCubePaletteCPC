@@ -13,12 +13,11 @@
 70 IF a$="3" THEN POKE &5FFF,2
 75 IF a$="4" AND b$="NO" THEN b$="YES":POKE &5FFE,1:GOTO 9
 78 IF a$="4" THEN 7
-80 LOCATE 1,25
+80 LOCATE 1,25:INK 1,24:INK 0,1:BORDER 0
 81 PRINT "                     ";CHR$(34);"^$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$^";CHR$(34);"            
 82 PRINT "                        ";CHR$(34);"^T$$$$$$$$$$$$$$$$$$$$$$$$$$P^";CHR$(34);"               
 83 PRINT "                            ";CHR$(34);"";CHR$(34);"";CHR$(34);"^^^T$$$$$$$$$$P^^^";CHR$(34);"";CHR$(34);"";CHR$(34);"
-84 PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT : PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT:PRINT : PRINT:PRINT:PRINT:PRINT:PRINT
-85 RUN"combat2
+84 RUN"combat2
 90 REM PRINT "Ascii art by Blazej Kozlowski
 100 PRINT "                                _..gggggppppp.._                       
 110 PRINT "                           _.gd$$$$$$$$$$$$$$$$$$bp._                  
