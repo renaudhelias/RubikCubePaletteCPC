@@ -58,7 +58,7 @@ CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File fond1.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File fond3.scr -AddToExistingDsk jdvpa5_combat2.dsk
-CPCDiskXP -File CHOICE.BAS -AddToExistingDsk jdvpa5_combat2.dsk
+CPCDiskXP -File COMBAT2.BAS -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File sks8000.bin -AddToExistingDsk jdvpa5_combat2.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2.dsk
@@ -83,7 +83,7 @@ CPCDiskXP -File J2R.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File fond1.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File fond2.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File fond3.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
-CPCDiskXP -File CHOICE.BAS -AddToExistingDsk jdvpa5_combat2_720K.dsk
+CPCDiskXP -File COMBAT2.BAS -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File intro-oh.scr -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File sks8000.bin -AddToExistingDsk jdvpa5_combat2_720K.dsk
 CPCDiskXP -File MK-BO.SKS -AddToExistingDsk jdvpa5_combat2_720K.dsk

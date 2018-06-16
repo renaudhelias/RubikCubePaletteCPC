@@ -20,7 +20,7 @@ Les personnages peuvent changent de sens lorsqu'ils se croisent.
 Affichage inversé d'un sprite, utilisation d'un tableau de transposition pour les octets, ça prend un peu de temps de calcul mais ça va.
 Pour la répartition de la charge j'ai pensé qu'un personnage était toujours affiché à l'inverse de l'autre, donc changer de sens n'est pas plus couteux.
 
-___CHOICE.BAS___
+__COMBAT2.BAS___
 
 J'ai créé un menu afin de passer quelques paramètres de basic vers asm :
 * le choix de la partie : "Liu Kang vs Sub Zero", "Johnny Cage vs Scorpion", "Sonya vs Kano". Chacun change le fond, les perso et la palette, la palette de 4 couleurs (mode 1) étant : noir, rouge, neutre, adversaire (rouge étant généralement aussi le héro), ou noir, rouge, hero, adversaire.
@@ -48,9 +48,9 @@ TODO :
 * OSEF AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * peaufiner algo sang
 
-__CHOICE.BAS__
+__COMBAT2.BAS__
 
-Passage de CHOICE.BAS en mode texte, afin d'être éditable sous notepad++ :
-<pre>load "choice.bas"
- save "choice.bas",a</pre>
+Passage de COMBAT2.BAS en mode texte, afin d'être éditable sous notepad++ :
+<pre>load "combat2.bas"
+ save "combat2.bas",a</pre>
 Si on ouvre avec notepad++, on peut garder juste le texte + le dernier caractère étrange "(SUB)" (sinon on a Line too long)
