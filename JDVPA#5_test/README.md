@@ -45,7 +45,7 @@ TODO :
 * DONE ajouter 2 sons (OSEF choix paramétrable aussi), dont le son du prototype
 * DONE calibrer algo inverse sprite, empécher lock
 * finaliser hadouken (dégats, et cible mouvante)
-* OSEF AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
+* DONE AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * peaufiner algo sang
 
 __COMBAT2.BAS__

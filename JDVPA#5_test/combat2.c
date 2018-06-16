@@ -1968,12 +1968,12 @@ calqueC000();
 	
 	if ((is_bot & 1)!=0) {
 		bot1=bot1-3;
-		direction=*bot1 & 31;
+		direction=(*bot1 + direction) % 31;
 	}
 
 	if ((is_bot & 2)!=0) {
 		bot2=bot2+5;
-		direction2=*bot2 & 31;
+		direction2=(*bot2 + direction2) % 31;
 	}
 	
 	if (get_key(Key_C)) {
