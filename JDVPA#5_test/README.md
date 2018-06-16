@@ -51,6 +51,6 @@ TODO :
 __CHOICE.BAS___
 
 Passage de CHOICE.BAS en mode texte, afin d'être éditable sous notepad++ :
- load "choice.bas"
- save "choice.bas",a
+<pre>load "choice.bas"
+ save "choice.bas",a</pre>
 Si on ouvre avec notepad++, on peut garder juste le texte + le dernier caractère étrange "(SUB)" (sinon on a Line too long)
