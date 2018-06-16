@@ -534,6 +534,7 @@ typedef struct {
 #define PHASE_KO 1
 #define PHASE_FATALITY 2
 #define PHASE_VICTORY 3
+#define PHASE_GEL 4
 
 ANIMATION liu_kang;
 ANIMATION sub_zero;
