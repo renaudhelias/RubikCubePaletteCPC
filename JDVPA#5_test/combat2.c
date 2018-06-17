@@ -1014,7 +1014,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->x+2;
 				liu_kang->x=liu_kang->x-2;
 			}
-		} else if (degats_liu_kang>degats_sub_zero) {
+		} else if (degats_liu_kang>0 && degats_sub_zero==0) {
 			if (liu_kang->x == liu_kang->old_x) {
 				// sub_zero est ejecté
 				if (liu_kang->polarite==0) {
@@ -1029,8 +1029,8 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				liu_kang->x=liu_kang->old_x;
 			}
 			// FIXME : le scoring n'est pas bon de toute manière donc le sang selon le score encore moins.
-			bloodDegats((blood_depth+blood_g)%2,(degats_liu_kang-degats_sub_zero)%BLOOD_SIZE,sub_zero->x+2,corps[degats_liu_kang_corps]); // tête
-		} else if (degats_sub_zero>degats_liu_kang) {
+			bloodDegats((blood_depth+blood_g)%2,degats_liu_kang%BLOOD_SIZE,sub_zero->x+3,corps[degats_liu_kang_corps]); // tête
+		} else if (degats_sub_zero>0 && degats_liu_kang==0) {
 			if (sub_zero->x == sub_zero->old_x) {
 				// liu_kang est ejecté
 				if (liu_kang->polarite==0) {
@@ -1044,10 +1044,10 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 				sub_zero->x=sub_zero->old_x;
 			}
-			bloodDegats((blood_depth+blood_g)%2,(degats_sub_zero-degats_liu_kang)%BLOOD_SIZE,liu_kang->x+4,corps[degats_sub_zero_corps]); // tête
-		} else {
+			bloodDegats((blood_depth+blood_g)%2,degats_sub_zero%BLOOD_SIZE,liu_kang->x+3,corps[degats_sub_zero_corps]); // tête
+		} else if (degats_sub_zero==0 && degats_liu_kang==0) {
 			blood();
-		}
+		} // sinon : dégats des deux côtés à la fois, déjà assez de calculs fait par ici auparavant (?!?)
 	}
 }
 
@@ -1127,10 +1127,12 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					contre_sub_zero[i]=1;
 				}
 			}
+		}
+		for (i=0;i<3;i++) {
 			if (porte_liu_kang[i]) {
-				if (contre_sub_zero[i] && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
+				if (contre_sub_zero[i]) {
 					// le coup de liu_kang est paré
-					liu_kang->phase=PHASE_GEL;
+					liu_kang->phase=liu_kang->phase | PHASE_GEL;
 				} else {
 					// le coup de liu_kang est porté
 					degats_liu_kang=boum;
@@ -1138,9 +1140,9 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				}
 			}
 			if (porte_sub_zero[i]) {
-				if(contre_liu_kang[i] && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
+				if(contre_liu_kang[i]) {
 					// le coup de sub_zero est paré
-					sub_zero->phase=PHASE_GEL;
+					sub_zero->phase=sub_zero->phase | PHASE_GEL;
 				} else {
 					// le coup de sub_zero est porté
 					degats_sub_zero=boum;
@@ -1150,10 +1152,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		}
 		hadouken();
 		// FIXME : un peu d'injustice par là...
-	} else if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0  && ((liu_kang->animation->b & HADOUKEN) != 0)) {
+	} else if (((liu_kang->animation->b & HADOUKEN) != 0) && (liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
 			// liu_kang PORTE un coup HADOUKEN
 			hadoukenDegats(HADOUKEN_SIZE-1, liu_kang->x, sub_zero->x);
-	} else if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0  && ((sub_zero->animation->b & HADOUKEN) != 0)) {
+	} else if (((sub_zero->animation->b & HADOUKEN) != 0) && (sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
 			// sub_zero PORTE un coup HADOUKEN
 			hadoukenDegats(HADOUKEN_SIZE-1, sub_zero->x, liu_kang->x);
 	} else {
