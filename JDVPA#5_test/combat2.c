@@ -1104,7 +1104,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (liu_kang->anim_restant<8) {
 				if ((liu_kang->animation->c[i].p & math_2pow[liu_kang->anim_restant]) != 0) {
 					// liu_kang PORTE un coup
-					if ((liu_kang->allez_retour & NON_CYCLIQUE)==0 || liu_kang->anim_restant!=liu_kang->animation->l) {
+					if (liu_kang->phase != PHASE_GEL) {
 						// il n'est pas gelé (contré auparavant)
 						porte_liu_kang[i]=1;
 					}
@@ -1117,7 +1117,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (sub_zero->anim_restant<8) {
 				if ((sub_zero->animation->c[i].p & math_2pow[sub_zero->anim_restant]) != 0) {
 					// sub_zero PORTE un coup
-					if ((sub_zero->allez_retour & NON_CYCLIQUE)==0 || sub_zero->anim_restant!=sub_zero->animation->l) {
+					if (sub_zero->phase != PHASE_GEL) {
 						// il n'est pas gelé (contré auparavant)
 						porte_sub_zero[i]=1;
 					}
@@ -1130,9 +1130,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (porte_liu_kang[i]) {
 				if (contre_sub_zero[i] && ((liu_kang->allez_retour & MARCHER) == 0) && ((liu_kang->animation->b & ENDING_KO) == 0)) {
 					// le coup de liu_kang est paré
-					//liu_kang->allez_retour= (liu_kang->allez_retour & MARCHE) | (liu_kang->allez_retour & MARCHER) | NON_CYCLIQUE;
-					liu_kang->allez_retour=NON_CYCLIQUE;
-					liu_kang->anim_restant=liu_kang->animation->l;
+					liu_kang->phase=PHASE_GEL;
 				} else {
 					// le coup de liu_kang est porté
 					degats_liu_kang=boum;
@@ -1142,9 +1140,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (porte_sub_zero[i]) {
 				if(contre_liu_kang[i] && ((sub_zero->allez_retour & MARCHER) == 0) && ((sub_zero->animation->b & ENDING_KO) == 0)) {
 					// le coup de sub_zero est paré
-					//sub_zero->allez_retour=(sub_zero->allez_retour & MARCHE) | (sub_zero->allez_retour & MARCHER) | NON_CYCLIQUE;
-					sub_zero->allez_retour=NON_CYCLIQUE;
-					sub_zero->anim_restant=sub_zero->animation->l;
+					sub_zero->phase=PHASE_GEL;
 				} else {
 					// le coup de sub_zero est porté
 					degats_sub_zero=boum;
@@ -1241,14 +1237,19 @@ void action(ANIMATION * joueur, char direction_pressed) {
 
 	mapping_direction_pressed=(CALQUE *)(mapping_direction_calque[joueur->perso][direction_pressed]+normDIR[joueur->perso]);
 	
-	if (joueur->phase != 0) {
+	if (joueur->phase == PHASE_GEL) {
+		if (mapping_direction_pressed->o == joueur->animation->o
+		&& mapping_direction_pressed->b == joueur->animation->b) {
+			// coup paré donc gelé
+			return;
+		} else {
+			// nouvelle action
+			is_anim_fini=1;
+		}
+	} else if (joueur->phase != 0) {
 		// special animation : ENDING_KO | ENDING, déjà préchargé
 		is_anim_fini=0;
-		is_arrete_marcher=0;
-		//is_continue_marcher=0;
-	} else {
-
-	if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
+	} else if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
 		&& mapping_direction_pressed->o == joueur->animation->o
 		&& mapping_direction_pressed->b == joueur->animation->b) {
 		// hypercut : un coup un seul !
@@ -1268,19 +1269,20 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			is_anim_fini=0;
 		}
 	}
-	
+
 	// si le joueur marchait et ne marche plus
-	is_arrete_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_pressed->ar & MARCHER) == 0);
+	is_arrete_marcher = (joueur->phase == 0) && ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_pressed->ar & MARCHER) == 0);
 	// sinon si le joueur marchait mais change de direction => à prendre compte
 	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
 	
 	// FIXME : ar c'est jamais VERS_L_AVANT | VERS_L_ARRIERE car c'est une constante ar ici.
 	//is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
-}
+
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
 	if (is_arrete_marcher || is_anim_fini) { //is_continue_marcher || 
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
+		joueur->phase=0;
 		joueur->animation=mapping_direction_pressed;
 		joueur->allez_retour=mapping_direction_pressed->ar;
 		if ((joueur->direction & DIRECTION_AVANT) != 0) {
@@ -1354,9 +1356,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
 			} else {
-				//joueur->animation->p=0; // fin d'animation : donc plus de porté ! (cas hypercut)
-				//FIXME croiser avec NON_CYCLIQUE ?
-				if (joueur->phase != 0 && ((joueur->allez_retour & NON_CYCLIQUE) == 0) ) {
+				// fin d'animation : donc plus de porté ! (cas hypercut)
+				if (joueur->phase == PHASE_KO) {
 					// animation ENDING || ENDING_KO en boucle
 					joueur->anim_restant = 0;
 				}
