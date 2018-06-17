@@ -1823,6 +1823,7 @@ calqueC000();
 	while (is_vsync!=2) {
 		if (is_vsync>2) {
 			// saturation !
+			// combat2.map.border_raster_begin2=>0185, WinAPE debug breakpoint : *#0185
 			border_raster_begin2();
 		}
 	}
