@@ -565,9 +565,9 @@ unsigned int normDIR[2];
 
 //const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
-#define BLOOD_SIZE 13
+#define BLOOD_SIZE 7
 // 1 + 2 + 3 + 4 < 14
-#define BLOOD_SIZE_INIT 5
+#define BLOOD_SIZE_INIT 3
 //#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
@@ -700,7 +700,7 @@ void bloodDerender() {
 
 
 // BLOOD_SIZE/4
-#define HADOUKEN_SIZE 6
+#define HADOUKEN_SIZE 4
 // 1 + 2 + 3 < 7
 #define HADOUKEN_SIZE_INIT 2
 #define HADOUKEN_X_SPEED 3
@@ -1045,7 +1045,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				sub_zero->x=sub_zero->old_x;
 			}
 			bloodDegats((blood_depth+blood_g)%2,degats_sub_zero%BLOOD_SIZE,liu_kang->x+3,corps[degats_sub_zero_corps]); // tête
-		} else if (degats_sub_zero==0 && degats_liu_kang==0) {
+		} else {
 			blood();
 		} // sinon : dégats des deux côtés à la fois, déjà assez de calculs fait par ici auparavant (?!?)
 	}
