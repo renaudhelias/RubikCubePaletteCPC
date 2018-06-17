@@ -1038,7 +1038,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 						liu_kang->x=liu_kang->old_x-1;
 					}
 				} else {
-					if (liu_kang->x < fond_largeur && liu_kang->old_x < fond_largeur) {
+					if (liu_kang->x < fond_joueur && liu_kang->old_x < fond_joueur) {
 						liu_kang->x=liu_kang->old_x+1;
 					}
 				}
