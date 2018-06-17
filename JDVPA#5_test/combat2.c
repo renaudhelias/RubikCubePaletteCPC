@@ -1232,31 +1232,14 @@ void refresh_all_progressbar() {
 }
 
 void action(ANIMATION * joueur, char direction_pressed) {
-	char deplacement=0; char is_anim_fini;char is_arrete_marcher;//char is_continue_marcher;
+	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_same_anim;
 	CALQUE * mapping_direction_pressed;
 
+	is_same_anim=(mapping_direction_pressed->o == joueur->animation->o && mapping_direction_pressed->b == joueur->animation->b);
+
 	mapping_direction_pressed=(CALQUE *)(mapping_direction_calque[joueur->perso][direction_pressed]+normDIR[joueur->perso]);
-	
-	if (joueur->phase == PHASE_GEL) {
-		if (mapping_direction_pressed->o == joueur->animation->o
-		&& mapping_direction_pressed->b == joueur->animation->b) {
-			// coup paré donc gelé
-			return;
-		} else {
-			// nouvelle action
-			is_anim_fini=1;
-		}
-	} else if (joueur->phase != 0) {
-		// special animation : ENDING_KO | ENDING, déjà préchargé
-		is_anim_fini=0;
-	} else if (((joueur->allez_retour & NON_CYCLIQUE) != 0)
-		&& mapping_direction_pressed->o == joueur->animation->o
-		&& mapping_direction_pressed->b == joueur->animation->b) {
-		// hypercut : un coup un seul !
-		is_anim_fini=0;
-	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
-		is_anim_fini=0;
-	} else if ((joueur->allez_retour & RETOUR) != 0) {
+
+	if ((joueur->allez_retour & RETOUR) != 0) {
 		if (joueur->anim_restant == 0) {
 			is_anim_fini=1;
 		} else {
@@ -1269,17 +1252,30 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			is_anim_fini=0;
 		}
 	}
+	
+	if (joueur->phase == PHASE_GEL) {
+		if (is_same_anim) {
+			// coup paré donc gelé
+			return;
+		} else {
+			// nouvelle action
+			is_anim_fini=1;
+		}
+	} else if (joueur->phase != 0) {
+		// special animation : ENDING_KO | ENDING, déjà préchargé
+		is_anim_fini=0;
+	} else if ((joueur->allez_retour & NON_CYCLIQUE) != 0 && is_same_anim) {
+		// hypercut : un coup un seul !
+		is_anim_fini=0;
+	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
+		is_anim_fini=0;
+	}
 
 	// si le joueur marchait et ne marche plus
 	is_arrete_marcher = (joueur->phase == 0) && ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_pressed->ar & MARCHER) == 0);
-	// sinon si le joueur marchait mais change de direction => à prendre compte
-	//is_continue_marcher = ((joueur->allez_retour & MARCHER) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & MARCHER) != 0);
-	
-	// FIXME : ar c'est jamais VERS_L_AVANT | VERS_L_ARRIERE car c'est une constante ar ici.
-	//is_continue_marcher = is_continue_marcher && ((joueur->allez_retour & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0) && ((mapping_direction_calque[joueur->perso][direction_pressed]->ar & (VERS_L_AVANT | VERS_L_ARRIERE)) != 0);
 
 	// si je MARCHE, alors je peux lancer une nouvelle action. Sinon si l'animation est épuisée, alors je peux aussi lancer une nouvelle action
-	if (is_arrete_marcher || is_anim_fini) { //is_continue_marcher || 
+	if (is_arrete_marcher || is_anim_fini) {
 		// déclanchement d'une nouvelle animation
 		joueur->direction=direction_pressed;
 		joueur->phase=0;
@@ -1287,34 +1283,17 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		joueur->allez_retour=mapping_direction_pressed->ar;
 		if ((joueur->direction & DIRECTION_AVANT) != 0) {
 			//joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
-			 //if (is_continue_marcher) {
-			//	if (joueur->anim_restant==joueur->animation->l) {
-			//		joueur->anim_restant=0; // cyclique
-			//	} else {
-			//		joueur->anim_restant=joueur->anim_restant+1;
-			//	}
-			//} else {
 				// pas de simple "RETOUR" ici.
 				joueur->anim_restant=0;
-			//}
 		} else if ((joueur->direction & DIRECTION_ARRIERE) != 0) {
 			//joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 			if ((joueur->allez_retour & MARCHER) != 0) {
+				// si le joueur marche à reculons.
 				joueur->allez_retour = joueur->allez_retour | RETOUR;
+				joueur->anim_restant=joueur->animation->l;
+			} else {
+				joueur->anim_restant=0;
 			}
-			//if (is_continue_marcher) {
-			//	if (joueur->anim_restant==0) {
-			//		joueur->anim_restant=joueur->animation->l; // cyclique
-			//	} else {
-			//		joueur->anim_restant=joueur->anim_restant-1;
-			//	}
-			//} else {
-				if ((joueur->allez_retour & RETOUR) != 0) {
-					joueur->anim_restant=joueur->animation->l;
-				} else {
-					joueur->anim_restant=0;
-				}
-			//}
 		} else {
 				// pas de simple "RETOUR" ici.
 				joueur->anim_restant=0;
@@ -1355,13 +1334,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
-			}/* else {
+			} else {
 				// fin d'animation : donc plus de porté ! (cas hypercut)
 				if (joueur->phase == PHASE_KO) {
 					// animation ENDING || ENDING_KO en boucle
 					joueur->anim_restant = 0;
 				}
-			}*/
+			}
 		}
 	}
 	
