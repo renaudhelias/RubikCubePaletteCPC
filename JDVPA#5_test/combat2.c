@@ -376,8 +376,8 @@ struct CALQUE_J1A {
 #define RETOUR 2
 #define MARCHE 4
 #define MARCHER 8
-#define VERS_L_AVANT 16
-#define VERS_L_ARRIERE 32
+//#define VERS_L_AVANT 16
+//#define VERS_L_ARRIERE 32
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
 
@@ -1286,7 +1286,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		joueur->animation=mapping_direction_pressed;
 		joueur->allez_retour=mapping_direction_pressed->ar;
 		if ((joueur->direction & DIRECTION_AVANT) != 0) {
-			joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
+			//joueur->allez_retour=joueur->allez_retour | VERS_L_AVANT;
 			 //if (is_continue_marcher) {
 			//	if (joueur->anim_restant==joueur->animation->l) {
 			//		joueur->anim_restant=0; // cyclique
@@ -1298,7 +1298,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				joueur->anim_restant=0;
 			//}
 		} else if ((joueur->direction & DIRECTION_ARRIERE) != 0) {
-			joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
+			//joueur->allez_retour=joueur->allez_retour | VERS_L_ARRIERE;
 			if ((joueur->allez_retour & MARCHER) != 0) {
 				joueur->allez_retour = joueur->allez_retour | RETOUR;
 			}
@@ -1316,8 +1316,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 			//}
 		} else {
-			// pas de simple "RETOUR" ici.
-			joueur->anim_restant=0;
+				// pas de simple "RETOUR" ici.
+				joueur->anim_restant=0;
 		}
 	} else {
 		// jouer l'animation
@@ -1334,7 +1334,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
 				if (joueur->anim_restant == joueur->animation->l ) {
-					joueur->anim_restant = joueur->animation->l;
+					//joueur->anim_restant = joueur->animation->l;
 					joueur->allez_retour = ((joueur->allez_retour & (~ALLEZ_RETOUR)) | RETOUR);
 				}
 			}
@@ -1355,13 +1355,13 @@ void action(ANIMATION * joueur, char direction_pressed) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
 				}
-			} else {
+			}/* else {
 				// fin d'animation : donc plus de porté ! (cas hypercut)
 				if (joueur->phase == PHASE_KO) {
 					// animation ENDING || ENDING_KO en boucle
 					joueur->anim_restant = 0;
 				}
-			}
+			}*/
 		}
 	}
 	
