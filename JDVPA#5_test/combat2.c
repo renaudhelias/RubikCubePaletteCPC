@@ -761,14 +761,14 @@ char hadoukenContact() {
 		if (hadouken_x+hadouken_x2>hadouken_victime->x && hadouken_x+hadouken_x2_old <= hadouken_victime->x) {
 			is_contact=1;
 		}
-		if (hadouken_x+hadouken_x2+hadouken_y_top/4>=fond_largeur+fond_offset) {
+		if (HADOUKEN_BOULE_SPEED+hadouken_x+hadouken_x2+hadouken_y_top/4>fond_largeur+fond_offset) {
 			is_contact_bord=1;
 		}
 	} else {
 		if (hadouken_x<hadouken_victime->x+hadouken_x2 && hadouken_x >= hadouken_victime->x+hadouken_x2_old) {
 			is_contact=1;
 		}
-		if (hadouken_x<fond_offset+hadouken_x2+hadouken_y_top/4) {
+		if (hadouken_x<fond_offset+hadouken_x2+hadouken_y_top/4+HADOUKEN_BOULE_SPEED) {
 			is_contact_bord=1;
 		}
 	}
