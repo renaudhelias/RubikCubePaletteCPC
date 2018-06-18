@@ -496,7 +496,7 @@ const struct CALQUE_J2R J2R= {
 	.ko={2,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING_KO,0},
 	.fatality={7,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
-	.hadouken1_personnage={16,5,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_4|PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
+	.hadouken1_personnage={16,5,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_3|PORTE_EN_4|PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
 	//.hadouken1_fire={22,0,0,0,BANK_7,0},
 	//.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
 	//.hadouken2_fire={26,8,0,0,BANK_7,0},
@@ -697,7 +697,40 @@ void bloodDerender() {
 	}
 }
 
+typedef struct {
+/*	unsigned char furie; // 0-196
+	unsigned char aura; // 0-196
+	unsigned char expert; // 0-196
+	unsigned char tech_perd; // 0-96
+	unsigned char tech_gagne; // 0-96
+	unsigned char tech; // 0-196*/
+	unsigned int vie; // 0-296
+} SCORE;
 
+SCORE liu_kang_score;//={100,196,100,30,75,194,100};
+SCORE sub_zero_score;//={100,193,100,92,90,191,290};
+
+#define DEGATS 4
+#define BONUS_DEGATS 2
+#define DELAUTREBORD 3
+char degats_liu_kang;
+char degats_sub_zero;
+char boum_hadouken;
+char degats_liu_kang_corps;
+char degats_sub_zero_corps;
+char contre_liu_kang[3];
+char contre_sub_zero[3];
+char porte_liu_kang[3];
+char porte_sub_zero[3];
+const char corps[3]=
+{
+	// tête
+	32,
+	// ventre
+	22,
+	// genoux
+	12
+};
 
 // BLOOD_SIZE/4
 #define HADOUKEN_SIZE 4
@@ -715,9 +748,55 @@ unsigned char hadouken_x_slow=0;
 unsigned char hadouken_boule_slow=0;
 char hadouken_x;
 char hadouken_x2; // boule (relatif à x)
-char hadouken_x3; // impact (coupé lors du rendu) (relatif à x)
+ANIMATION * hadouken_victime; // impact (coupé lors du rendu) (relatif à x)
 char hadouken_y_top;
 char hadouken_d; // direction
+
+char hadoukenContact() {
+	char is_contact;
+	//hadouken_x3 = victime->x-lanceur->x;
+	//hadouken_d = 0;
+	if (hadouken_d==0) {
+		// si la boule touche la victime
+		if (hadouken_x+hadouken_x2>hadouken_victime->x) {
+			is_contact=1;
+		} else {
+			is_contact=0;
+		}
+	} else {
+		if (hadouken_x<hadouken_victime->x+hadouken_x2) {
+			is_contact=1;
+		} else {
+			is_contact=0;
+		}
+	}
+	if (is_contact) {
+		if (hadouken_victime->perso==PERSO_LIU_KANG) {
+			if (!contre_liu_kang[0]) {
+				// liu_kang n'a pas esquivé
+				if (liu_kang_score.vie < boum_hadouken) {
+					liu_kang_score.vie = 0;//296;
+				} else {
+					liu_kang_score.vie = liu_kang_score.vie - boum_hadouken;
+				}
+			}
+		} else {
+			if (!contre_sub_zero[0]) {
+				// sub_zero n'a pas esquivé
+				if (sub_zero_score.vie < boum_hadouken) {
+					sub_zero_score.vie = 0;//296;
+				} else {
+					sub_zero_score.vie = sub_zero_score.vie - boum_hadouken;
+				}
+			}
+		}
+		boum_hadouken=0;
+		// fin d'animation
+		hadouken_n=0;
+		hadouken_depth=0;
+	}
+	return is_contact;
+}
 
 /**
  * Controler : propagation du hadouken (lancé à chaque frame)
@@ -726,14 +805,9 @@ void hadouken() {
 	char i;char sx;char sy;
 	if (hadouken_n == 0) return;
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
-	if (hadouken_x2<hadouken_x3) {
-		hadouken_x2 = hadouken_x2+HADOUKEN_BOULE_SPEED;
-	} else {
-		// fin d'animation
-		hadouken_n=0;
-		hadouken_depth=0;
-		return;
-	}
+	// la BOULE avance.
+	hadouken_x2 = hadouken_x2+HADOUKEN_BOULE_SPEED;
+	if (hadoukenContact()) return;
 	for (i=0;i<hadouken_depth;i++)  {
 		// se poussent en x
 		if (current_hadouken[i][0]<hadouken_x2) { // x
@@ -790,13 +864,13 @@ void hadoukenRender() {
 			pixel=0x55;
 		}
 		if (hadouken_d==0) {
-			if (current_hadouken[i][0]>hadouken_x3) continue;
+			if (current_hadouken[i][0]>hadouken_victime->x-hadouken_x) continue;
 			put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
 				continue;
 			}
 			// boule mirror
@@ -806,13 +880,13 @@ void hadoukenRender() {
 				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
 		} else {
-			if (current_hadouken[i][0]>hadouken_x3) continue;
+			if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
 			put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
@@ -832,13 +906,13 @@ void hadoukenDerender() {
 	char i;
 	for (i=0;i<hadouken_depth;i++)  {
 		if (hadouken_d==0) {
-			if (current_hadouken[i][0]>hadouken_x3) continue;
+			if (current_hadouken[i][0]>hadouken_victime->x - hadouken_x) continue;
 			put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x - hadouken_x)) {
 				continue;
 			}
 			// boule mirror
@@ -848,13 +922,13 @@ void hadoukenDerender() {
 				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
 		} else {
-			if (current_hadouken[i][0]>hadouken_x3) continue;
+			if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
 			put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x3)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
@@ -866,7 +940,6 @@ void hadoukenDerender() {
 		}
 	}
 }
-
 
 /**
  * Controler : lancé à la place de blood() lors d'un nouveau dégat - ça déclanche une nouvelle animation
@@ -892,7 +965,7 @@ void bloodDegats(char d, char n,char x, char y) {
  * @param x : coordonnée x de la personne ayant fait un hadouken
  * @param x2 : coordonnée x de l'autre joueur
  */
-void hadoukenDegats(char n,char x, char x2) {
+void hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
 	if (blood_n!=0) return;
 	if (hadouken_n!=0) {
 		// on coupe pas un hadouken avec un autre hadouken
@@ -901,20 +974,18 @@ void hadoukenDegats(char n,char x, char x2) {
 	}
 	
 	hadouken_n = n;
-	hadouken_x = x;
-	if (x2>x) {
-		hadouken_x2 = HADOUKEN_BOULE_OFFSET;
-		hadouken_x3 = x2-x;
+	hadouken_x = lanceur->x;
+	hadouken_x2 = HADOUKEN_BOULE_OFFSET;
+	hadouken_victime=victime;
+	if (victime->x>lanceur->x) {
 		hadouken_d = 0;
-		if (hadouken_x3<hadouken_x2) {
-			hadouken_x2=hadouken_x3;
+		if (victime->x-lanceur->x<hadouken_x2) {
+			hadouken_x2=victime->x-lanceur->x;
 		}
 	} else {
-		hadouken_x2 = HADOUKEN_BOULE_OFFSET;
-		hadouken_x3 = x-x2;
 		hadouken_d = 1;
-		if (hadouken_x3<hadouken_x2) {
-			hadouken_x2=hadouken_x3;
+		if (lanceur->x-victime->x<hadouken_x2) {
+			hadouken_x2=lanceur->x-victime->x;
 		}
 	}
 	hadouken_y_top = 0;
@@ -923,29 +994,6 @@ void hadoukenDegats(char n,char x, char x2) {
 		hadouken();
 	}
 }
-
-
-#define DEGATS 4
-#define BONUS_DEGATS 2
-#define DELAUTREBORD 3
-char degats_liu_kang;
-char degats_sub_zero;
-char degats_liu_kang_corps;
-char degats_sub_zero_corps;
-char contre_liu_kang[3];
-char contre_sub_zero[3];
-char porte_liu_kang[3];
-char porte_sub_zero[3];
-const char corps[3]=
-{
-	// tête
-	32,
-	// ventre
-	22,
-	// genoux
-	12
-};
-
 
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char is_delautrebord=(
@@ -1051,22 +1099,6 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	}
 }
 
-typedef struct {
-/*	unsigned char furie; // 0-196
-	unsigned char aura; // 0-196
-	unsigned char expert; // 0-196
-	unsigned char tech_perd; // 0-96
-	unsigned char tech_gagne; // 0-96
-	unsigned char tech; // 0-196*/
-	unsigned int vie; // 0-296
-} SCORE;
-
-SCORE liu_kang_score;//={100,196,100,30,75,194,100};
-SCORE sub_zero_score;//={100,193,100,92,90,191,290};
-
-char refresh = 0;
-char refresh_pas = 0;
-
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char boum;char i;
 	char is_delautrebord_plus_degats=(
@@ -1151,20 +1183,29 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			}
 		}
 		hadouken();
-		// FIXME : un peu d'injustice par là...
-	} else if (((liu_kang->animation->b & HADOUKEN) != 0) && (liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
-			// liu_kang PORTE un coup HADOUKEN
-			hadoukenDegats(HADOUKEN_SIZE-1, liu_kang->x, sub_zero->x);
-	} else if (((sub_zero->animation->b & HADOUKEN) != 0) && (sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
-			// sub_zero PORTE un coup HADOUKEN
-			hadoukenDegats(HADOUKEN_SIZE-1, sub_zero->x, liu_kang->x);
 	} else {
+		// FIXME : un peu d'injustice par là...
+		if ((liu_kang->animation->b & HADOUKEN) != 0) {
+			// liu_kang PORTE un coup HADOUKEN
+			if (hadouken_n == 0 && (liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
+				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+			}
+			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
+				hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero);
+			}
+		}
+		if ((sub_zero->animation->b & HADOUKEN) != 0) {
+			// sub_zero PORTE un coup HADOUKEN
+			if (hadouken_n == 0 && (sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
+				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+			}
+			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
+				hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang);
+			}
+		}
+		// HADOUKEN_SIZE_INIT-- :p
 		hadouken();
 	}
-
-
-	
-	
 	
 	if (sub_zero_score.vie < degats_liu_kang) {
 		sub_zero_score.vie = 0;//296;
@@ -1177,8 +1218,11 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	} else {
 		liu_kang_score.vie = liu_kang_score.vie - degats_sub_zero;
 	}
-	
 }
+
+char refresh = 0;
+char refresh_pas = 0;
+
 void refresh_all_progressbar() {
 	switch (refresh) {
 		case 0:
@@ -1237,9 +1281,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_same_anim;
 	CALQUE * mapping_direction_pressed;
 
-	is_same_anim=(mapping_direction_pressed->o == joueur->animation->o && mapping_direction_pressed->b == joueur->animation->b);
-
 	mapping_direction_pressed=(CALQUE *)(mapping_direction_calque[joueur->perso][direction_pressed]+normDIR[joueur->perso]);
+	is_same_anim=(mapping_direction_pressed->o == joueur->animation->o && mapping_direction_pressed->b == joueur->animation->b);
 
 	if ((joueur->allez_retour & RETOUR) != 0) {
 		if (joueur->anim_restant == 0) {
@@ -1264,8 +1307,14 @@ void action(ANIMATION * joueur, char direction_pressed) {
 			is_anim_fini=1;
 		}
 	} else if (joueur->phase != 0) {
-		// special animation : ENDING_KO | ENDING, déjà préchargé
-		is_anim_fini=0;
+		if ((joueur->allez_retour & NON_CYCLIQUE) == 0 && joueur->anim_restant == joueur->animation->l) {
+			// animation ENDING || ENDING_KO en boucle
+			joueur->anim_restant = 0;
+			return;
+		} else {
+			// special animation : ENDING_KO | ENDING, déjà préchargé
+			is_anim_fini=0;
+		}
 	} else if ((joueur->allez_retour & NON_CYCLIQUE) != 0 && is_same_anim) {
 		// hypercut : un coup un seul !
 		is_anim_fini=0;
@@ -1335,12 +1384,6 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				if (((joueur->allez_retour & RAPIDEMENT) != 0) && joueur->anim_restant < joueur->animation->l) {
 					// patch pour zapper un calque sur deux lors de l'animation marcher.
 					joueur->anim_restant = joueur->anim_restant +1;
-				}
-			} else {
-				// fin d'animation : donc plus de porté ! (cas hypercut)
-				if (joueur->phase == PHASE_KO) {
-					// animation ENDING || ENDING_KO en boucle
-					joueur->anim_restant = 0;
 				}
 			}
 		}
@@ -1750,6 +1793,7 @@ calqueC000();
 	sub_zero_score.vie=296*3;
 	degats_liu_kang=0;
 	degats_sub_zero=0;
+	boum_hadouken=0;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=fond_offset+fond_largeur/4;
