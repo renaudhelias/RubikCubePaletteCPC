@@ -748,32 +748,36 @@ unsigned char hadouken_x_slow=0;
 unsigned char hadouken_boule_slow=0;
 char hadouken_x;
 char hadouken_x2; // boule (relatif à x)
+char hadouken_x2_old;
 ANIMATION * hadouken_victime; // impact (coupé lors du rendu) (relatif à x)
 char hadouken_y_top;
 char hadouken_d; // direction
 
 char hadoukenContact() {
-	char is_contact;
-	//hadouken_x3 = victime->x-lanceur->x;
-	//hadouken_d = 0;
+	char is_contact=0;
+	char is_contact_bord=0;
 	if (hadouken_d==0) {
 		// si la boule touche la victime
-		if (hadouken_x+hadouken_x2>hadouken_victime->x) {
+		if (hadouken_x+hadouken_x2>hadouken_victime->x && hadouken_x+hadouken_x2_old <= hadouken_victime->x) {
 			is_contact=1;
-		} else {
-			is_contact=0;
+		}
+		if (hadouken_x+hadouken_x2+hadouken_y_top/4>=fond_largeur+fond_offset) {
+			is_contact_bord=1;
 		}
 	} else {
-		if (hadouken_x<hadouken_victime->x+hadouken_x2) {
+		if (hadouken_x<hadouken_victime->x+hadouken_x2 && hadouken_x >= hadouken_victime->x+hadouken_x2_old) {
 			is_contact=1;
-		} else {
-			is_contact=0;
+		}
+		if (hadouken_x<fond_offset+hadouken_x2+hadouken_y_top/4) {
+			is_contact_bord=1;
 		}
 	}
 	if (is_contact) {
 		if (hadouken_victime->perso==PERSO_LIU_KANG) {
-			if (!contre_liu_kang[0]) {
-				// liu_kang n'a pas esquivé
+			if (contre_liu_kang[0]) {
+				// liu_kang a esquivé
+				is_contact=0;
+			} else {
 				if (liu_kang_score.vie < boum_hadouken) {
 					liu_kang_score.vie = 0;//296;
 				} else {
@@ -781,8 +785,10 @@ char hadoukenContact() {
 				}
 			}
 		} else {
-			if (!contre_sub_zero[0]) {
-				// sub_zero n'a pas esquivé
+			if (contre_sub_zero[0]) {
+				// sub_zero a esquivé
+				is_contact=0;
+			} else {
 				if (sub_zero_score.vie < boum_hadouken) {
 					sub_zero_score.vie = 0;//296;
 				} else {
@@ -790,12 +796,14 @@ char hadoukenContact() {
 				}
 			}
 		}
+	}
+	if (is_contact || is_contact_bord) {
 		boum_hadouken=0;
 		// fin d'animation
 		hadouken_n=0;
 		hadouken_depth=0;
 	}
-	return is_contact;
+	return is_contact || is_contact_bord;
 }
 
 /**
@@ -806,6 +814,7 @@ void hadouken() {
 	if (hadouken_n == 0) return;
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
 	// la BOULE avance.
+	hadouken_x2_old=hadouken_x2;
 	hadouken_x2 = hadouken_x2+HADOUKEN_BOULE_SPEED;
 	if (hadoukenContact()) return;
 	for (i=0;i<hadouken_depth;i++)  {
@@ -864,13 +873,13 @@ void hadoukenRender() {
 			pixel=0x55;
 		}
 		if (hadouken_d==0) {
-			if (current_hadouken[i][0]>hadouken_victime->x-hadouken_x) continue;
+			//if (current_hadouken[i][0]>hadouken_victime->x-hadouken_x) continue;
 			put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
 				continue;
 			}
 			// boule mirror
@@ -880,13 +889,13 @@ void hadoukenRender() {
 				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
 		} else {
-			if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
+			//if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
 			put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
@@ -906,13 +915,13 @@ void hadoukenDerender() {
 	char i;
 	for (i=0;i<hadouken_depth;i++)  {
 		if (hadouken_d==0) {
-			if (current_hadouken[i][0]>hadouken_victime->x - hadouken_x) continue;
+			//if (current_hadouken[i][0]>hadouken_victime->x - hadouken_x) continue;
 			put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x - hadouken_x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x - hadouken_x)) {
 				continue;
 			}
 			// boule mirror
@@ -922,13 +931,13 @@ void hadoukenDerender() {
 				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
 		} else {
-			if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
+			//if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
 			put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
 				put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top) || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
@@ -976,17 +985,18 @@ void hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
 	hadouken_n = n;
 	hadouken_x = lanceur->x;
 	hadouken_x2 = HADOUKEN_BOULE_OFFSET;
+	hadouken_x2_old = hadouken_x2;
 	hadouken_victime=victime;
 	if (victime->x>lanceur->x) {
 		hadouken_d = 0;
-		if (victime->x-lanceur->x<hadouken_x2) {
-			hadouken_x2=victime->x-lanceur->x;
-		}
+//		if (victime->x-lanceur->x<hadouken_x2) {
+//			hadouken_x2=victime->x-lanceur->x;
+//		}
 	} else {
 		hadouken_d = 1;
-		if (lanceur->x-victime->x<hadouken_x2) {
-			hadouken_x2=lanceur->x-victime->x;
-		}
+//		if (lanceur->x-victime->x<hadouken_x2) {
+//			hadouken_x2=lanceur->x-victime->x;
+//		}
 	}
 	hadouken_y_top = 0;
 	hadouken_depth=0;
@@ -1117,6 +1127,32 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		contre_liu_kang[i]=0;
 		porte_sub_zero[i]=0;
 		contre_sub_zero[i]=0;
+		if (liu_kang->anim_restant<8) {
+			if ((liu_kang->animation->c[i].p & math_2pow[liu_kang->anim_restant]) != 0) {
+				// liu_kang PORTE un coup
+				if (liu_kang->phase != PHASE_GEL) {
+					// il n'est pas gelé (contré auparavant)
+					porte_liu_kang[i]=1;
+				}
+			}
+			if ((liu_kang->animation->c[i].c & math_2pow[liu_kang->anim_restant]) != 0) {
+				// liu_kang CONTRE un coup
+				contre_liu_kang[i]=1;
+			}
+		}
+		if (sub_zero->anim_restant<8) {
+			if ((sub_zero->animation->c[i].p & math_2pow[sub_zero->anim_restant]) != 0) {
+				// sub_zero PORTE un coup
+				if (sub_zero->phase != PHASE_GEL) {
+					// il n'est pas gelé (contré auparavant)
+					porte_sub_zero[i]=1;
+				}
+			}
+			if ((sub_zero->animation->c[i].c & math_2pow[sub_zero->anim_restant]) != 0) {
+				// sub_zero CONTRE un coup
+				contre_sub_zero[i]=1;
+			}
+		}
 	}
 	if (is_delautrebord_plus_degats) {
 		if (liu_kang->x > sub_zero->x) {
@@ -1131,34 +1167,6 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			boum=(liu_kang->x+DELAUTREBORD+DEGATS+BONUS_DEGATS-sub_zero->x)*4-1;
 		} else {
 			boum=(DELAUTREBORD+DEGATS+BONUS_DEGATS)*2-1;
-		}
-		for (i=0;i<3;i++) {
-			if (liu_kang->anim_restant<8) {
-				if ((liu_kang->animation->c[i].p & math_2pow[liu_kang->anim_restant]) != 0) {
-					// liu_kang PORTE un coup
-					if (liu_kang->phase != PHASE_GEL) {
-						// il n'est pas gelé (contré auparavant)
-						porte_liu_kang[i]=1;
-					}
-				}
-				if ((liu_kang->animation->c[i].c & math_2pow[liu_kang->anim_restant]) != 0) {
-					// liu_kang CONTRE un coup
-					contre_liu_kang[i]=1;
-				}
-			}
-			if (sub_zero->anim_restant<8) {
-				if ((sub_zero->animation->c[i].p & math_2pow[sub_zero->anim_restant]) != 0) {
-					// sub_zero PORTE un coup
-					if (sub_zero->phase != PHASE_GEL) {
-						// il n'est pas gelé (contré auparavant)
-						porte_sub_zero[i]=1;
-					}
-				}
-				if ((sub_zero->animation->c[i].c & math_2pow[sub_zero->anim_restant]) != 0) {
-					// sub_zero CONTRE un coup
-					contre_sub_zero[i]=1;
-				}
-			}
 		}
 		for (i=0;i<3;i++) {
 			if (porte_liu_kang[i]) {
