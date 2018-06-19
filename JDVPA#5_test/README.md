@@ -47,7 +47,7 @@ TODO :
 * finaliser hadouken (dégats, et cible mouvante)
 * DONE AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * peaufiner algo sang
-* optim/debug PHASE_GEL (ne pas utiliser NON_CYCLIQUE+fin anim ? pour ça ?)
+* DONE optim/debug PHASE_GEL (ne pas utiliser NON_CYCLIQUE+fin anim ? pour ça ?)
 
 __COMBAT2.BAS__
 
