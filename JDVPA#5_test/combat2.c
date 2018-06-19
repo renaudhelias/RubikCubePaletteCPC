@@ -704,6 +704,7 @@ typedef struct {
 	unsigned char tech_perd; // 0-96
 	unsigned char tech_gagne; // 0-96
 	unsigned char tech; // 0-196*/
+	unsigned int espert; // 0-300
 	unsigned int vie; // 0-296
 } SCORE;
 
@@ -731,6 +732,28 @@ const char corps[3]=
 	// genoux
 	12
 };
+
+
+/**
+ * affiche l'espert (énergie pour le Hadouken)
+ */
+void espertRender() {
+	int i;
+	put_byte(3,105-4,0xF0); // "cadre"
+	put_byte(41,105-4,0xF0); // "cadre"
+	for (i=0;i<3;i++) {
+		if (liu_kang_score.espert>=(1+i)*100) {
+			put_byte(3,105-1-i,0xF6);
+		} else {
+			put_byte(3,105-1-i,0x90);
+		}
+		if (sub_zero_score.espert>=(1+i)*100) {
+			put_byte(41,105-1-i,0xF6);
+		} else {
+			put_byte(41,105-1-i,0x90);
+		}
+	}
+}
 
 // BLOOD_SIZE/4
 #define HADOUKEN_SIZE 4
@@ -1177,6 +1200,12 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					// le coup de liu_kang est porté
 					degats_liu_kang=boum;
 					degats_liu_kang_corps=i;
+					// l'espert grimpe car c'est à main nue.
+					if (liu_kang_score.espert>300-boum) {
+						liu_kang_score.espert=300;
+					} else {
+						liu_kang_score.espert=liu_kang_score.espert+boum;
+					}
 				}
 			}
 			if (porte_sub_zero[i]) {
@@ -1187,6 +1216,12 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					// le coup de sub_zero est porté
 					degats_sub_zero=boum;
 					degats_sub_zero_corps=i;
+					// l'espert grimpe car c'est à main nue.
+					if (sub_zero_score.espert>300-boum) {
+						sub_zero_score.espert=300;
+					} else {
+						sub_zero_score.espert=sub_zero_score.espert+boum;
+					}
 				}
 			}
 		}
@@ -1199,7 +1234,14 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
 			}
 			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
-				hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero);
+				if (liu_kang_score.espert>=100) {
+					hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero);
+					// consomme de l'espert
+					liu_kang_score.espert=liu_kang_score.espert-100;
+				} else {
+					// plouf : aucun pouvoir espert.
+					boum_hadouken=0;
+				}
 			}
 		}
 		if ((sub_zero->animation->b & HADOUKEN) != 0) {
@@ -1208,7 +1250,14 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
 			}
 			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
-				hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang);
+				if (sub_zero_score.espert>=100) {
+					hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang);
+					// consomme de l'espert
+					sub_zero_score.espert=sub_zero_score.espert-100;
+				} else {
+					// plouf : aucun pouvoir espert.
+					boum_hadouken=0;
+				}
 			}
 		}
 		// HADOUKEN_SIZE_INIT-- :p
@@ -1791,6 +1840,7 @@ calqueC000();
 	liu_kang_score.tech_perd=30;
 	liu_kang_score.tech_gagne=75;
 	liu_kang_score.tech=194;*/
+	liu_kang_score.espert=300;
 	liu_kang_score.vie=296*3;
 /*	sub_zero_score.furie=100;
 	sub_zero_score.aura=193;
@@ -1798,6 +1848,7 @@ calqueC000();
 	sub_zero_score.tech_perd=92;
 	sub_zero_score.tech_gagne=90;
 	sub_zero_score.tech=191;*/
+	sub_zero_score.espert=300;
 	sub_zero_score.vie=296*3;
 	degats_liu_kang=0;
 	degats_sub_zero=0;
@@ -1884,6 +1935,7 @@ calqueC000();
 	//bank0123();
 
 	refresh_all_progressbar();
+	espertRender();
 	
 	//for (i=120;i<120+50;i++) {
 	//	memcpy((char *)(0x4000 + vram[i]+liu_kang.x-1), (char *)(0xC000 + vram[i]+liu_kang.x-1), 6+2);
