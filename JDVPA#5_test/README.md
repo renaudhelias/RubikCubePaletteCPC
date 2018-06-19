@@ -48,6 +48,17 @@ TODO :
 * DONE AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * peaufiner algo sang
 * DONE optim/debug PHASE_GEL (ne pas utiliser NON_CYCLIQUE+fin anim ? pour ça ?)
+* peut-être GEL quand on est à la fin d'un NON_CYCLIQUE comme ça on peut mettre un PORTE_EN_X sur le dernier pas de l'animation.
+
+TODO (hadouken) :
+* le hadouken de liu kang devrait être plus bas (ventre)
+* le hadouken part pas toujours du bord du bonhomme comme il faut (perso.x c'est pas bon des deux sens)
+* le contact de la boule devrait être le milieu du personnage
+* l'esquive et le contre devrait avoir un effet différent sur la boule de feux : l'esquive laisse passer, le contre absorbe son énergie (nrj_hadouken++ à la place de vie --)
+* un contre ça pare un coup (le stoppant net), une esquive ça ne pare pas un coup, c'est comme si le perso n'était simplement pas là.
+* le bot ne hadouken pas côté liu kang du coup... (car j'ai mappé qu'en mode arcade 2 boutons, et le bot il simule le jeu normal 1 bouton)
+** mettre droite+gauche à la fois pour le hadouken du bot liu kang.
+* si je ne me suis pas retourné et que je dépasse l'adversaire, ça tire à l'envers (et dans le mur)
 
 __COMBAT2.BAS__
 
