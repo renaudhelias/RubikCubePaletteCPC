@@ -318,22 +318,6 @@ typedef struct {
 	char ar; // allez_retour
 } CALQUE;
 
-struct CALQUE_J1A {
-	CALQUE marcher; // cyclique, avance, recule
-	CALQUE haut;
-	CALQUE bas;
-	//CALQUE tres_haut;
-	CALQUE pied_haut; // allez-retour
-	CALQUE pied_milieu; // allez-retour
-	//CALQUE genoux_milieu; // allez-retour
-	//CALQUE pied_haut2; // cyclique, porté en 3/5
-	CALQUE balayette; // cyclique, porté en 3/4 + avance
-	CALQUE hypercut; // cyclique (sinon ridicule...)
-	CALQUE poing_milieu; // allez-retour
-	//CALQUE pied_milieu2; // allez-retour
-	//CALQUE balayette2; // cyclique + avance
-	CALQUE pied_rotatif; // cyclique + avance !
-} ;
 
 #define PORTE_EN_1 1
 #define PORTE_EN_2 2
@@ -383,6 +367,23 @@ struct CALQUE_J1A {
 
 const char marqueur_sprite1[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','1'};
 
+struct CALQUE_J1A {
+	CALQUE marcher; // cyclique, avance, recule
+	CALQUE haut;
+	CALQUE bas;
+	//CALQUE tres_haut;
+	CALQUE pied_haut; // allez-retour
+	CALQUE pied_milieu; // allez-retour
+	//CALQUE genoux_milieu; // allez-retour
+	//CALQUE pied_haut2; // cyclique, porté en 3/5
+	CALQUE balayette; // cyclique, porté en 3/4 + avance
+	CALQUE hypercut; // cyclique (sinon ridicule...)
+	CALQUE poing_milieu; // allez-retour
+	//CALQUE pied_milieu2; // allez-retour
+	CALQUE pied_bas; // allez-retour
+	CALQUE pied_rotatif; // cyclique + avance !
+};
+
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
 	.marcher={0,8,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
@@ -397,7 +398,7 @@ const struct CALQUE_J1A J1A= {
 	.hypercut={31,4,{{0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,NON_CYCLIQUE},
 	.poing_milieu={36,1,{{CONTRE_EN_1|CONTRE_EN_2,0,ESQUIVE_EN_1|ESQUIVE_EN_2},{0,PORTE_EN_2,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
 	//.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	//.balayette2={40,2,CONTRE_EN_2,PORTE_EN_3,BANK_4,0},
+	.pied_bas={40,2,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_2,PORTE_EN_3,0}},BANK_4,ALLEZ_RETOUR},
 	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0}},BANK_4,MARCHE}
 };
 
@@ -408,39 +409,39 @@ const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER }
 struct CALQUE_J1R {
 	CALQUE victory; // cyclique
 	CALQUE fatality; // statique (stoppé au 3)
-	//CALQUE hypercut2; // cyclique (sinon ridicule...)
-	//CALQUE hadouken_personnage; // statique (stoppé au 4), la boule de feu affiché ensuite juste à droite du sprite, collée.
+	CALQUE hypercut2; // cyclique (sinon ridicule...)
+	CALQUE hadouken_personnage; // statique (stoppé au 4), la boule de feu affiché ensuite juste à droite du sprite, collée.
 	//CALQUE hadouken_fire; // cyclique
 	CALQUE ko; // cyclique
 	CALQUE poing_double_jab; // cyclique, porté en 2/5 et 5/5
 	CALQUE contre_haut; // allez-retour
-	//CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
+	CALQUE macarena_milieu; // cyclique, porté en 2/5 et 5/5
 	CALQUE dragon; // statique, enchaine avec dragon_big
 	//CALQUE dragon_big; // une seule image mais deux sprites ! => un dragon c un hadouken avec un seul calque secondaire (NON_CYCLIQUE, et sans MARCHE)
-	//CALQUE contre_haut2; // allez-retour
+	CALQUE contre_haut2; // allez-retour
 };
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
 	.victory={0,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING,NON_CYCLIQUE},
 	.fatality={6,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
-	//.hypercut2={9,3,0,PORTE_EN_4,BANK_5,NON_CYCLIQUE},
-	//.hadouken_personnage={13,3,0,0,BANK_5 | HADOUKEN,0},
+	.hypercut2={9,3,{{0,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
+	.hadouken_personnage={13,3,{{0,PORTE_EN_1|PORTE_EN_2|PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_5 | HADOUKEN | FREEZE,NON_CYCLIQUE},
 	//.hadouken_fire={17,8,0,0,BANK_5,0},
 	.ko={26,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING_KO,0},
 	.poing_double_jab={32,4,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_5,0},
 	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
-	//.macarena_milieu={39,4,0,0,BANK_5,0},
+	.macarena_milieu={39,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_5,0},
 	.dragon={44,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
 	//.dragon_big={47,1,0,0,BANK_5,0},
-	//.contre_haut2={49,1,CONTRE_EN_1 | CONTRE_EN_2,0,BANK_5,ALLEZ_RETOUR}
+	.contre_haut2={49,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0}},BANK_5,ALLEZ_RETOUR}
 };
 
 
 const char marqueur_sprite2[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','2'};
 
 struct CALQUE_J2A {
-	//CALQUE pied_haut; // cyclique, porté en 4/8
+	CALQUE pied_haut; // cyclique, porté en 4/8
 	//CALQUE pied_haut2; // allez-retour inversé : porté en 1/3 ...
 	//CALQUE genoux_haut; // allez-retour
 	CALQUE pied_retourne; // cyclique, porté en 4/7
@@ -457,7 +458,7 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	//.pied_haut={0,7,CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,BANK_6,0},
+	.pied_haut={0,7,{{CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_6,ALLEZ_RETOUR},
 	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
 	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,0},{CONTRE_EN_2 |CONTRE_EN_6,0,0},{0,0,0}},BANK_6,0},
@@ -486,8 +487,11 @@ struct CALQUE_J2R{
 	//CALQUE hadouken2_fire; // mega fire
 	//CALQUE hadouken2_personnage_patch; // p3 p1 p2 1 2 3
 	CALQUE hypercut; // cyclique porté en 3/5
-	//CALQUE coup_bas; // allez-retour
+	CALQUE poing_milieu; // allez-retour
 	CALQUE flaque; //cyclique
+	CALQUE toto1;
+	CALQUE toto2;
+	CALQUE toto3;
 };
 
 // J2R.adresse : bank7_4000();
@@ -502,8 +506,11 @@ const struct CALQUE_J2R J2R= {
 	//.hadouken2_fire={26,8,0,0,BANK_7,0},
 	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
 	.hypercut={38,2,{{0,PORTE_EN_1|PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,NON_CYCLIQUE},
-	//.coup_bas={43,1,0,PORTE_EN_2,BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0}
+	.poing_milieu={43,1,{{0,0,0},{0,0,0},{0,PORTE_EN_2,0}},BANK_7,ALLEZ_RETOUR},
+	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0},
+	.toto1={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0},
+	.toto2={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0},
+	.toto3={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0}
 };
 
 const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
@@ -738,7 +745,7 @@ const char corps[3]=
  * affiche l'espert (énergie pour le Hadouken)
  */
 void espertRender() {
-	int i;
+	char i;
 	put_byte(3,105-4,0xF0); // "cadre"
 	put_byte(41,105-4,0xF0); // "cadre"
 	for (i=0;i<3;i++) {
@@ -1624,6 +1631,8 @@ void main(void)
 	// <>
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1]=(int)&J1R.poing_double_jab-normDIR[PERSO_LIU_KANG];
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE2]=(int)&J1A.hypercut-normDIR[PERSO_LIU_KANG];
+	// ARCADE +1
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_FIRE1 | DIRECTION_FIRE2]=(int)&J1R.hadouken_personnage-normDIR[PERSO_LIU_KANG];
 	
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_AVANT | DIRECTION_HAUT | DIRECTION_FIRE]=(int)&J2R.hadouken1_personnage-normDIR[PERSO_SUB_ZERO]; // attaque haut
 	mapping_direction_calque[PERSO_SUB_ZERO][DIRECTION_FIRE]=(int)&J2A.poing_double_jab-normDIR[PERSO_SUB_ZERO]; //attaque centre
