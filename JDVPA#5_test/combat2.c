@@ -1240,7 +1240,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (hadouken_n == 0 && (liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
 			}
-			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
+			if (hadouken_n == 0 && liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
 				if (liu_kang_score.espert>=100) {
 					hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero);
 					// consomme de l'espert
@@ -1256,7 +1256,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (hadouken_n == 0 && (sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
 			}
-			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
+			if (hadouken_n == 0 && sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
 				if (sub_zero_score.espert>=100) {
 					hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang);
 					// consomme de l'espert
@@ -1530,12 +1530,12 @@ void fix_bank() {
 	unsigned int j1;unsigned int j2;char b1;char b2;
 	j1=(int)&J1A;
 	j2=(int)&J2A;
-	for (i=0;i<16;i++) {
+	for (i=0;i<10+1+10;i++) {
 		b1 = *(char*)(j1+11);
 		b2 = *(char*)(j2+11);
 		b1 = b1 & (~3);
 		b2 = b2 & (~3);
-		if (i<10) { // FIXME : pour le moment le premier tas (y compris repos) a 10 éléments...
+		if (i<10+1) { // FIXME : pour le moment le premier tas (y compris repos) a 10+1 éléments...
 			b1 = b1 | BANK_4;
 			b2 = b2 | BANK_6;
 		} else {
