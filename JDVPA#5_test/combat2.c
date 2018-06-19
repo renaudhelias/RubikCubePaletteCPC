@@ -1208,10 +1208,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					degats_liu_kang=boum;
 					degats_liu_kang_corps=i;
 					// l'espert grimpe car c'est à main nue.
-					if (liu_kang_score.espert>300-boum) {
-						liu_kang_score.espert=300;
+					if (sub_zero_score.espert>300-boum) {
+						sub_zero_score.espert=300;
 					} else {
-						liu_kang_score.espert=liu_kang_score.espert+boum;
+						sub_zero_score.espert=sub_zero_score.espert+boum;
 					}
 				}
 			}
@@ -1224,10 +1224,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					degats_sub_zero=boum;
 					degats_sub_zero_corps=i;
 					// l'espert grimpe car c'est à main nue.
-					if (sub_zero_score.espert>300-boum) {
-						sub_zero_score.espert=300;
+					if (liu_kang_score.espert>300-boum) {
+						liu_kang_score.espert=300;
 					} else {
-						sub_zero_score.espert=sub_zero_score.espert+boum;
+						liu_kang_score.espert=liu_kang_score.espert+boum;
 					}
 				}
 			}
