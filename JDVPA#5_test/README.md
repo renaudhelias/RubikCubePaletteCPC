@@ -59,6 +59,7 @@ TODO (hadouken) :
 * le bot ne hadouken pas côté liu kang du coup... (car j'ai mappé qu'en mode arcade 2 boutons, et le bot il simule le jeu normal 1 bouton)
 ** mettre droite+gauche à la fois pour le hadouken du bot liu kang.
 * si je ne me suis pas retourné et que je dépasse l'adversaire, ça tire à l'envers (et dans le mur)
+* le sang qui clignote qu'il faudrait ne pas effacer lorsqu'il dépasse du bord.
 
 __COMBAT2.BAS__
 
