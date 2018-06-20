@@ -306,7 +306,6 @@ const unsigned char intro_palette[]=
 typedef struct {
 	char c; // contre le coup
 	char p; // porte le coup
-	char e; // esquive le coup
 } COUPS;
 
 
@@ -337,15 +336,6 @@ typedef struct {
 #define CONTRE_EN_7 64
 #define CONTRE_EN_8 128
 
-#define ESQUIVE_EN_1 1
-#define ESQUIVE_EN_2 2
-#define ESQUIVE_EN_3 4
-#define ESQUIVE_EN_4 8
-#define ESQUIVE_EN_5 16
-#define ESQUIVE_EN_6 32
-#define ESQUIVE_EN_7 64
-#define ESQUIVE_EN_8 128
-
 // sur les deux derniers bit : BANK
 #define BANK_4 0
 #define BANK_5 1
@@ -360,7 +350,7 @@ typedef struct {
 #define RETOUR 2
 #define MARCHE 4
 #define MARCHER 8
-//#define VERS_L_AVANT 16
+#define ESQUIVE 16
 //#define VERS_L_ARRIERE 32
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
@@ -386,25 +376,25 @@ struct CALQUE_J1A {
 
 // J1A.adresse : bank4_4000();
 const struct CALQUE_J1A J1A= {
-	.marcher={0,8,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
-	.haut={9,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,0},
-	.bas={10,0,{{CONTRE_EN_1,0,ESQUIVE_EN_1},{0,0,0},{0,0,0}},BANK_4,0},
+	.marcher={0,8,{{0,0},{0,0},{0,0}},BANK_4,MARCHE | MARCHER | RAPIDEMENT},
+	.haut={9,0,{{0,0},{0,0},{0,0}},BANK_4,0},
+	.bas={10,0,{{CONTRE_EN_1,0},{0,0},{0,0}},BANK_4,ESQUIVE},
 	//.tres_haut={11,0,0,0,BANK_4,0},
-	.pied_haut={12,3,{{CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4,0},{CONTRE_EN_2 | CONTRE_EN_3,0,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
-	.pied_milieu={16,3,{{0,0,0},{CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.pied_haut={12,3,{{CONTRE_EN_2 | CONTRE_EN_3,PORTE_EN_4},{CONTRE_EN_2 | CONTRE_EN_3,0},{0,0}},BANK_4,ALLEZ_RETOUR},
+	.pied_milieu={16,3,{{0,0},{CONTRE_EN_2, PORTE_EN_3 | PORTE_EN_4},{0,0}},BANK_4,ALLEZ_RETOUR},
 	//.genoux_milieu={20,1,CONTRE_EN_2,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
 	//.pied_haut2={22,4,CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,BANK_4,0},
-	.balayette={27,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3|ESQUIVE_EN_4},{CONTRE_EN_3,0,ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0}},BANK_4,MARCHE},
-	.hypercut={31,4,{{0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_4,NON_CYCLIQUE},
-	.poing_milieu={36,1,{{CONTRE_EN_1|CONTRE_EN_2,0,ESQUIVE_EN_1|ESQUIVE_EN_2},{0,PORTE_EN_2,0},{0,0,0}},BANK_4,ALLEZ_RETOUR},
+	.balayette={27,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0},{CONTRE_EN_3,0},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3}},BANK_4,MARCHE},
+	.hypercut={31,4,{{0,PORTE_EN_2|PORTE_EN_3|PORTE_EN_4},{0,0},{0,0}},BANK_4,NON_CYCLIQUE},
+	.poing_milieu={36,1,{{CONTRE_EN_1|CONTRE_EN_2,0},{0,PORTE_EN_2},{0,0}},BANK_4,ALLEZ_RETOUR},
 	//.pied_milieu2={38,1,CONTRE_EN_1 ,PORTE_EN_2,BANK_4,ALLEZ_RETOUR},
-	.pied_bas={40,2,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_2,PORTE_EN_3,0}},BANK_4,ALLEZ_RETOUR},
-	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7 ,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0},{CONTRE_EN_5 | CONTRE_EN_6,0,0}},BANK_4,MARCHE}
+	.pied_bas={40,2,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,0},{CONTRE_EN_2,PORTE_EN_3}},BANK_4,ALLEZ_RETOUR,ESQUIVE},
+	.pied_rotatif={43,8,{{CONTRE_EN_5 | CONTRE_EN_6, PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_7},{CONTRE_EN_5 | CONTRE_EN_6,0},{CONTRE_EN_5 | CONTRE_EN_6,0}},BANK_4,MARCHE}
 };
 
 // J1A.marcher avec l=2
 //const CALQUE J1A_repos ={0,2,0,0,BANK_4,0};//MARCHE | MARCHER };
-const CALQUE J1A_repos ={0,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_4,MARCHE | MARCHER };
+const CALQUE J1A_repos ={0,2,{{0,0},{0,0},{0,0}},BANK_4,MARCHE | MARCHER };
 
 struct CALQUE_J1R {
 	CALQUE victory; // cyclique
@@ -423,18 +413,18 @@ struct CALQUE_J1R {
 
 // J1R.adresse : bank5_4000();
 const struct CALQUE_J1R J1R= {
-	.victory={0,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING,NON_CYCLIQUE},
-	.fatality={6,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
-	.hypercut2={9,3,{{0,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
-	.hadouken_personnage={13,3,{{0,PORTE_EN_1|PORTE_EN_2|PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_5 | HADOUKEN | FREEZE,NON_CYCLIQUE},
+	.victory={0,5,{{0,0},{0,0},{0,0}},BANK_5 | ENDING,NON_CYCLIQUE},
+	.fatality={6,2,{{0,0},{0,0},{0,0}},BANK_5 | ENDING | ENDING_KO,NON_CYCLIQUE},
+	.hypercut2={9,3,{{0,PORTE_EN_4},{0,0},{0,0}},BANK_5,NON_CYCLIQUE},
+	.hadouken_personnage={13,3,{{0,0},{0,PORTE_EN_1|PORTE_EN_2|PORTE_EN_3},{0,0}},BANK_5 | HADOUKEN | FREEZE,NON_CYCLIQUE},
 	//.hadouken_fire={17,8,0,0,BANK_5,0},
-	.ko={26,5,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 | ENDING_KO,0},
-	.poing_double_jab={32,4,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_5,0},
-	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0},{0,0,0}},BANK_5,NON_CYCLIQUE},
-	.macarena_milieu={39,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_5,0},
-	.dragon={44,2,{{0,0,0},{0,0,0},{0,0,0}},BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
+	.ko={26,5,{{0,0},{0,0},{0,0}},BANK_5 | ENDING_KO,0},
+	.poing_double_jab={32,4,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5},{0,0},{0,0}},BANK_5,0},
+	.contre_haut={37,1,{{CONTRE_EN_1 | CONTRE_EN_2,0},{CONTRE_EN_1 | CONTRE_EN_2,0},{0,0}},BANK_5,NON_CYCLIQUE},
+	.macarena_milieu={39,4,{{0,0},{0,0},{0,0}},BANK_5,0},
+	.dragon={44,2,{{0,0},{0,0},{0,0}},BANK_5 /*| HADOUKEN*/,NON_CYCLIQUE},
 	//.dragon_big={47,1,0,0,BANK_5,0},
-	.contre_haut2={49,1,{{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0},{CONTRE_EN_1 | CONTRE_EN_2,0,0}},BANK_5,ALLEZ_RETOUR}
+	.contre_haut2={49,1,{{CONTRE_EN_1 | CONTRE_EN_2,0},{CONTRE_EN_1 | CONTRE_EN_2,0},{CONTRE_EN_1 | CONTRE_EN_2,0}},BANK_5,ALLEZ_RETOUR}
 };
 
 
@@ -458,24 +448,24 @@ struct CALQUE_J2A {
 
 // J2A.adresse : bank6_4000();
 const struct CALQUE_J2A J2A= {
-	.pied_haut={0,7,{{CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4,0},{0,0,0},{0,0,0}},BANK_6,ALLEZ_RETOUR},
+	.pied_haut={0,7,{{CONTRE_EN_1 | CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_4},{0,0},{0,0}},BANK_6,ALLEZ_RETOUR},
 	//.pied_haut2={8,2,CONTRE_EN_2 | CONTRE_EN_3 | CONTRE_EN_4,PORTE_EN_1,BANK_6,ALLEZ_RETOUR},
 	//.genoux_haut={11,1,CONTRE_EN_1 |CONTRE_EN_2,PORTE_EN_2,BANK_6,ALLEZ_RETOUR},
-	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5,0},{CONTRE_EN_2 |CONTRE_EN_6,0,0},{0,0,0}},BANK_6,0},
-	.balayette={20,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3|ESQUIVE_EN_4},{CONTRE_EN_1,CONTRE_EN_2,CONTRE_EN_3,0,ESQUIVE_EN_1|ESQUIVE_EN_2|ESQUIVE_EN_3},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3,0}},BANK_6,MARCHE},
-	.marcher={24,9,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER | RAPIDEMENT},
-	.haut={34,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
-	.bas={35,0,{{CONTRE_EN_1,0,ESQUIVE_EN_1},{0,0,0},{0,0,0}},BANK_6,0},
-	.zombi={36,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,0},
-	.victory={37,1,{{0,0,0},{0,0,0},{0,0,0}},BANK_6 | ENDING,0},//ALLEZ_RETOUR},
-	.poing_double_jab={39,7,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8,0},{0,0,0},{0,0,0}},BANK_6,0},
+	.pied_retourne={13,6,{{CONTRE_EN_2 |CONTRE_EN_6,PORTE_EN_3 | PORTE_EN_4 | PORTE_EN_5},{CONTRE_EN_2 |CONTRE_EN_6,0},{0,0}},BANK_6,0},
+	.balayette={20,3,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3|CONTRE_EN_4,0},{CONTRE_EN_1,CONTRE_EN_2,CONTRE_EN_3,0},{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_4,PORTE_EN_3}},BANK_6,MARCHE},
+	.marcher={24,9,{{0,0},{0,0},{0,0}},BANK_6,MARCHE | MARCHER | RAPIDEMENT},
+	.haut={34,0,{{0,0},{0,0},{0,0}},BANK_6,0},
+	.bas={35,0,{{CONTRE_EN_1,0},{0,0},{0,0}},BANK_6,ESQUIVE},
+	.zombi={36,0,{{0,0},{0,0},{0,0}},BANK_6,0},
+	.victory={37,1,{{0,0},{0,0},{0,0}},BANK_6 | ENDING,0},//ALLEZ_RETOUR},
+	.poing_double_jab={39,7,{{0,PORTE_EN_2 | PORTE_EN_3 | PORTE_EN_5 | PORTE_EN_6| PORTE_EN_8},{0,0},{0,0}},BANK_6,0},
 	//.aie={48,0,0,0,BANK_6,0},
-	.poing_gauche={49,2,{{0,PORTE_EN_2|PORTE_EN_3,0},{0,0,0},{0,0,0}},BANK_6,ALLEZ_RETOUR}
+	.poing_gauche={49,2,{{0,PORTE_EN_2|PORTE_EN_3},{0,0},{0,0}},BANK_6,ALLEZ_RETOUR}
 };
 
 // J2A.marcher avec l=2
 //const CALQUE J2A_repos ={24,0,0,0,BANK_6,0};//MARCHE | MARCHER };
-const CALQUE J2A_repos ={24,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_6,MARCHE | MARCHER };
+const CALQUE J2A_repos ={24,0,{{0,0},{0,0},{0,0}},BANK_6,MARCHE | MARCHER };
 
 struct CALQUE_J2R{
 	CALQUE poing_droit; // allez-retour
@@ -496,21 +486,21 @@ struct CALQUE_J2R{
 
 // J2R.adresse : bank7_4000();
 const struct CALQUE_J2R J2R= {
-	.poing_droit={0,1,{{0,PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,0},
-	.ko={2,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING_KO,0},
-	.fatality={7,4,{{0,0,0},{0,0,0},{0,0,0}},BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
+	.poing_droit={0,1,{{0,PORTE_EN_2},{0,0},{0,0}},BANK_7,0},
+	.ko={2,4,{{0,0},{0,0},{0,0}},BANK_7 | ENDING_KO,0},
+	.fatality={7,4,{{0,0},{0,0},{0,0}},BANK_7 | ENDING | ENDING_KO,NON_CYCLIQUE},
 	//.hadouken1_personnage={12,9,0,0,BANK_7 | HADOUKEN,0},
-	.hadouken1_personnage={16,5,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_3|PORTE_EN_4|PORTE_EN_5,0},{0,0,0},{0,0,0}},BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
+	.hadouken1_personnage={16,5,{{CONTRE_EN_1|CONTRE_EN_2|CONTRE_EN_3,PORTE_EN_3|PORTE_EN_4|PORTE_EN_5},{0,0},{0,0}},BANK_7 | HADOUKEN | FREEZE,NON_CYCLIQUE},
 	//.hadouken1_fire={22,0,0,0,BANK_7,0},
 	//.hadouken2_personnage={23,2,0,0,BANK_7 | HADOUKEN,0},
 	//.hadouken2_fire={26,8,0,0,BANK_7,0},
 	//.hadouken2_personnage_patch={35,2,0,0,BANK_7,0},
-	.hypercut={38,2,{{0,PORTE_EN_1|PORTE_EN_2,0},{0,0,0},{0,0,0}},BANK_7,NON_CYCLIQUE},
-	.poing_milieu={43,1,{{0,0,0},{0,0,0},{0,PORTE_EN_2,0}},BANK_7,ALLEZ_RETOUR},
-	.flaque={45,6,{{0,0,0},{CONTRE_EN_2,0,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7,0}},BANK_7 | FREEZE,0},
-	.toto1={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0},
-	.toto2={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0},
-	.toto3={0,0,{{0,0,0},{0,0,0},{0,0,0}},BANK_7,0}
+	.hypercut={38,2,{{0,PORTE_EN_1|PORTE_EN_2},{0,0},{0,0}},BANK_7,NON_CYCLIQUE},
+	.poing_milieu={43,1,{{0,0},{0,0},{0,PORTE_EN_2}},BANK_7,ALLEZ_RETOUR},
+	.flaque={45,6,{{0,0},{CONTRE_EN_2,0},{CONTRE_EN_2,PORTE_EN_5|PORTE_EN_6|PORTE_EN_7}},BANK_7 | FREEZE,0},
+	.toto1={0,0,{{0,0},{0,0},{0,0}},BANK_7,0},
+	.toto2={0,0,{{0,0},{0,0},{0,0}},BANK_7,0},
+	.toto3={0,0,{{0,0},{0,0},{0,0}},BANK_7,0}
 };
 
 const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
@@ -682,7 +672,7 @@ void bloodRender() {
 			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
 			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		} else {
-			if (blood_x-current_blood[i][0]<1) continue;
+			if (blood_x<current_blood[i][0]) continue;
 			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
 		}
 	}
@@ -696,9 +686,11 @@ void bloodDerender() {
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
 			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
+			if (blood_x+current_blood[i][0]>fond_largeur+fond_offset) continue;
 			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		} else {
-			if (blood_x-current_blood[i][0]<1) continue;
+			if (blood_x<current_blood[i][0]) continue;
+			if (blood_x+current_blood[i][0]<fond_offset) continue;
 			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		}
 	}
@@ -769,7 +761,8 @@ void espertRender() {
 #define HADOUKEN_X_SPEED 3
 #define HADOUKEN_BOULE_OFFSET 2
 #define HADOUKEN_BOULE_SPEED 2
-#define HADOUKEN_Y 25
+#define HADOUKEN_Y_TETE 25
+#define HADOUKEN_Y_VENTRE 35
 
 unsigned char current_hadouken[HADOUKEN_SIZE][2];
 char hadouken_depth=0;
@@ -779,8 +772,10 @@ unsigned char hadouken_boule_slow=0;
 char hadouken_x;
 char hadouken_x2; // boule (relatif à x)
 char hadouken_x2_old;
+char hadouken_y;
 ANIMATION * hadouken_victime; // impact (coupé lors du rendu) (relatif à x)
 char hadouken_y_top;
+#define HADOUKEN_Y_TOP_DIV4 1
 char hadouken_d; // direction
 
 char hadoukenContact() {
@@ -788,25 +783,27 @@ char hadoukenContact() {
 	char is_contact_bord=0;
 	if (hadouken_d==0) {
 		// si la boule touche la victime
-		if (hadouken_x+hadouken_x2>hadouken_victime->x && hadouken_x+hadouken_x2_old <= hadouken_victime->x) {
-			is_contact=1;
-		}
-		if (HADOUKEN_BOULE_SPEED+hadouken_x+hadouken_x2+hadouken_y_top/4>fond_largeur+fond_offset) {
+		if (HADOUKEN_BOULE_SPEED+hadouken_x+hadouken_x2+HADOUKEN_Y_TOP_DIV4>fond_largeur+fond_offset) {
 			is_contact_bord=1;
+		}
+		if (hadouken_x+hadouken_x2+HADOUKEN_Y_TOP_DIV4-2>hadouken_victime->x && hadouken_x+hadouken_x2_old+HADOUKEN_Y_TOP_DIV4-2 <= hadouken_victime->x) {
+			is_contact=1;
 		}
 	} else {
-		if (hadouken_x<hadouken_victime->x+hadouken_x2 && hadouken_x >= hadouken_victime->x+hadouken_x2_old) {
-			is_contact=1;
-		}
-		if (hadouken_x<fond_offset+hadouken_x2+hadouken_y_top/4+HADOUKEN_BOULE_SPEED) {
+		if (hadouken_x<fond_offset+hadouken_x2+HADOUKEN_Y_TOP_DIV4+HADOUKEN_BOULE_SPEED) {
 			is_contact_bord=1;
 		}
+		if (hadouken_x-hadouken_x2-HADOUKEN_Y_TOP_DIV4-4<hadouken_victime->x && hadouken_x-hadouken_x2_old-HADOUKEN_Y_TOP_DIV4-4 >= hadouken_victime->x) {
+			is_contact=1;
+		}
 	}
-	if (is_contact) {
+	if (!is_contact_bord && is_contact) {
 		if (hadouken_victime->perso==PERSO_LIU_KANG) {
-			if (contre_liu_kang[0]) {
+			if (contre_liu_kang[hadouken_y==HADOUKEN_Y_VENTRE]) {
 				// liu_kang a esquivé
-				is_contact=0;
+				if ((hadouken_victime->allez_retour & ESQUIVE) != 0) {
+					is_contact=0;
+				}
 			} else {
 				if (liu_kang_score.vie < boum_hadouken) {
 					liu_kang_score.vie = 0;//296;
@@ -815,9 +812,11 @@ char hadoukenContact() {
 				}
 			}
 		} else {
-			if (contre_sub_zero[0]) {
+			if (contre_sub_zero[hadouken_y==HADOUKEN_Y_VENTRE]) {
 				// sub_zero a esquivé
-				is_contact=0;
+				if ((hadouken_victime->allez_retour & ESQUIVE) != 0) {
+					is_contact=0;
+				}
 			} else {
 				if (sub_zero_score.vie < boum_hadouken) {
 					sub_zero_score.vie = 0;//296;
@@ -904,35 +903,35 @@ void hadoukenRender() {
 		}
 		if (hadouken_d==0) {
 			//if (current_hadouken[i][0]>hadouken_victime->x-hadouken_x) continue;
-			put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x+current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x+current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>HADOUKEN_Y_TOP_DIV4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 		} else {
 			//if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
-			put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x-current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x-current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
 			}
-			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top/4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
+			if ((hadouken_x2 - current_hadouken[i][0]>HADOUKEN_Y_TOP_DIV4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],pixel);
+			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],pixel);
+				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 		}
 	}
@@ -946,35 +945,35 @@ void hadoukenDerender() {
 	for (i=0;i<hadouken_depth;i++)  {
 		if (hadouken_d==0) {
 			//if (current_hadouken[i][0]>hadouken_victime->x - hadouken_x) continue;
-			put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x+current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byteC000(hadouken_x+current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x+current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],0x00);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x - hadouken_x)) {
 				continue;
 			}
 			// boule mirror
-			put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],0x00);
 			}
 		} else {
 			//if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
-			put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x-current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byteC000(hadouken_x-current_hadouken[i][0],120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x-current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],0x00);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>hadouken_y_top)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
-			put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y-current_hadouken[i][1],0x00);
+			put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],0x00);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+HADOUKEN_Y+current_hadouken[i][1],0x00);
+				put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],0x00);
 			}
 		}
 	}
@@ -998,41 +997,41 @@ void bloodDegats(char d, char n,char x, char y) {
 	}
 }
 
+#define HADOUKEN_MIN 20
+
 /**
  * Controler : lancé à la place de hadouken() lors d'un nouveau dégat - ça déclanche une nouvelle animation
  * @param n : dégats (entre 1 et HADOUKEN_SIZE)
  * @param x : coordonnée x de la personne ayant fait un hadouken
  * @param x2 : coordonnée x de l'autre joueur
  */
-void hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
-	if (blood_n!=0) return;
-	if (hadouken_n!=0) {
-		// on coupe pas un hadouken avec un autre hadouken
-		hadouken();
-		return;
-	}
-	
+char hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
+//	if (blood_n!=0) return 0;
+//	if (hadouken_n!=0) {
+//		// on coupe pas un hadouken avec un autre hadouken
+//		hadouken();
+//		return 0;
+//	}
+	// il y a quand même une certaine distance minimum pour lancer un hadouken...
+	if (victime->x >= lanceur->x && victime->x - lanceur->x < HADOUKEN_MIN) return 0;
+	if (lanceur->x >= victime->x && lanceur->x - victime->x < HADOUKEN_MIN) return 0;
+
 	hadouken_n = n;
-	hadouken_x = lanceur->x;
+	if (lanceur->polarite) {
+		hadouken_x = lanceur->x+1;
+	} else {
+		hadouken_x = lanceur->x+5;
+	}
 	hadouken_x2 = HADOUKEN_BOULE_OFFSET;
 	hadouken_x2_old = hadouken_x2;
 	hadouken_victime=victime;
-	if (victime->x>lanceur->x) {
-		hadouken_d = 0;
-//		if (victime->x-lanceur->x<hadouken_x2) {
-//			hadouken_x2=victime->x-lanceur->x;
-//		}
-	} else {
-		hadouken_d = 1;
-//		if (lanceur->x-victime->x<hadouken_x2) {
-//			hadouken_x2=lanceur->x-victime->x;
-//		}
-	}
+	hadouken_d = lanceur->polarite;
 	hadouken_y_top = 0;
 	hadouken_depth=0;
 	while (hadouken_depth<hadouken_n && hadouken_depth<HADOUKEN_SIZE_INIT) {
 		hadouken();
 	}
+	return 1;
 }
 
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
@@ -1235,32 +1234,42 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		hadouken();
 	} else {
 		// FIXME : un peu d'injustice par là...
-		if ((liu_kang->animation->b & HADOUKEN) != 0) {
+		if ((liu_kang->animation->b & HADOUKEN) != 0 && hadouken_n == 0) {
 			// liu_kang PORTE un coup HADOUKEN
-			if (hadouken_n == 0 && (liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
+			if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				hadouken_y=HADOUKEN_Y_TETE;
+			} else if ((liu_kang->animation->c[1].p & math_2pow[liu_kang->anim_restant]) != 0) {
+				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				hadouken_y=HADOUKEN_Y_VENTRE;
 			}
-			if (hadouken_n == 0 && liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
+			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
 				if (liu_kang_score.espert>=100) {
-					hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero);
-					// consomme de l'espert
-					liu_kang_score.espert=liu_kang_score.espert-100;
+					if (hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero)) {
+						// consomme de l'espert
+						liu_kang_score.espert=liu_kang_score.espert-100;
+					}
 				} else {
 					// plouf : aucun pouvoir espert.
 					boum_hadouken=0;
 				}
 			}
 		}
-		if ((sub_zero->animation->b & HADOUKEN) != 0) {
+		if ((sub_zero->animation->b & HADOUKEN) != 0 && hadouken_n == 0) {
 			// sub_zero PORTE un coup HADOUKEN
-			if (hadouken_n == 0 && (sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
+			if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
 				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				hadouken_y=HADOUKEN_Y_TETE;
+			} else if ((sub_zero->animation->c[1].p & math_2pow[sub_zero->anim_restant]) != 0) {
+				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				hadouken_y=HADOUKEN_Y_VENTRE;
 			}
-			if (hadouken_n == 0 && sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
+			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
 				if (sub_zero_score.espert>=100) {
-					hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang);
-					// consomme de l'espert
-					sub_zero_score.espert=sub_zero_score.espert-100;
+					if (hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang)) {
+						// consomme de l'espert
+						sub_zero_score.espert=sub_zero_score.espert-100;
+					}
 				} else {
 					// plouf : aucun pouvoir espert.
 					boum_hadouken=0;
@@ -1531,8 +1540,8 @@ void fix_bank() {
 	j1=(int)&J1A;
 	j2=(int)&J2A;
 	for (i=0;i<10+1+10;i++) {
-		b1 = *(char*)(j1+11);
-		b2 = *(char*)(j2+11);
+		b1 = *(char*)(j1+8);
+		b2 = *(char*)(j2+8);
 		b1 = b1 & (~3);
 		b2 = b2 & (~3);
 		if (i<10+1) { // FIXME : pour le moment le premier tas (y compris repos) a 10+1 éléments...
@@ -1542,8 +1551,8 @@ void fix_bank() {
 			b1 = b1 | BANK_5;
 			b2 = b2 | BANK_7;
 		}
-		*(char*)(j1+11)=b1;
-		*(char*)(j2+11)=b2;
+		*(char*)(j1+8)=b1;
+		*(char*)(j2+8)=b2;
 		j1=j1+13;
 		j2=j2+13;
 	}
@@ -1609,6 +1618,8 @@ void main(void)
 
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT]=(int)&J1A.haut-normDIR[PERSO_LIU_KANG]; // haut
 	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_BAS]=(int)&J1A.bas-normDIR[PERSO_LIU_KANG]; // bas
+	// BOT +1
+	mapping_direction_calque[PERSO_LIU_KANG][DIRECTION_HAUT | DIRECTION_BAS]=(int)&J1R.hadouken_personnage-normDIR[PERSO_LIU_KANG];
 
 	//ARCADE
 	// => (+ /\ \/)
