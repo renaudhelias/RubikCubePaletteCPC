@@ -556,8 +556,8 @@ ANIMATION sub_zero;
 // 10101001 A9
 //     1100 0C
 
-unsigned int mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
-unsigned int mapping_phase_calque[2][4];
+unsigned char mapping_direction_calque[2][1+DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2];
+unsigned char mapping_phase_calque[2][4];
 unsigned int normDIR[2];
 
 //const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
@@ -1354,7 +1354,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_same_anim;
 	CALQUE * mapping_direction_pressed;
 
-	mapping_direction_pressed=(CALQUE *)(mapping_direction_calque[joueur->perso][direction_pressed]+normDIR[joueur->perso]);
+	mapping_direction_pressed=(CALQUE *)(normDIR[joueur->perso]+mapping_direction_calque[joueur->perso][direction_pressed]);
 	is_same_anim=(mapping_direction_pressed->o == joueur->animation->o && mapping_direction_pressed->b == joueur->animation->b);
 
 	if ((joueur->allez_retour & RETOUR) != 0) {
@@ -1553,8 +1553,8 @@ void fix_bank() {
 		}
 		*(char*)(j1+8)=b1;
 		*(char*)(j2+8)=b2;
-		j1=j1+13;
-		j2=j2+13;
+		j1=j1+10;
+		j2=j2+10;
 	}
 }
 
@@ -1881,7 +1881,7 @@ calqueC000();
 	liu_kang.direction=0;
 	liu_kang.phase=0;
 	liu_kang.anim_restant=0;
-	liu_kang.animation=(CALQUE *)(mapping_phase_calque[PERSO_LIU_KANG][PHASE_REPOS]+normDIR[PERSO_LIU_KANG]);
+	liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_REPOS]);
 	liu_kang.allez_retour=liu_kang.animation->ar;
 	liu_kang.polarite=0;
 	
@@ -1891,7 +1891,7 @@ calqueC000();
 	sub_zero.direction=0;
 	sub_zero.phase=0;
 	sub_zero.anim_restant=0;
-	sub_zero.animation=(CALQUE *)(mapping_phase_calque[PERSO_SUB_ZERO][PHASE_REPOS]+normDIR[PERSO_SUB_ZERO]);
+	sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_REPOS]);
 	sub_zero.allez_retour=sub_zero.animation->ar;
 	sub_zero.polarite=1;
 
@@ -2115,7 +2115,7 @@ calqueC000();
 		if (sub_zero_score.vie==0) {
 			sub_zero.anim_restant=0;
 			// FIXME ne peux pas marcher quand on réinjecte J1.MAP et J1.DIR...
-			sub_zero.animation=(CALQUE *)(mapping_phase_calque[PERSO_SUB_ZERO][PHASE_FATALITY]+normDIR[PERSO_SUB_ZERO]);
+			sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_FATALITY]);
 			sub_zero.allez_retour=sub_zero.animation->ar;
 			sub_zero.phase=PHASE_FATALITY;
 
@@ -2126,7 +2126,7 @@ calqueC000();
 				liu_kang.x=fond_offset+fond_largeur/4;
 			}
 			liu_kang.anim_restant=0;
-			liu_kang.animation=(CALQUE *)(mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]+normDIR[PERSO_LIU_KANG]);
+			liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]);
 			liu_kang.allez_retour=liu_kang.animation->ar;
 			liu_kang.phase=PHASE_VICTORY;
 			direction=0;
@@ -2137,7 +2137,7 @@ calqueC000();
 		blood_depth=0;
 		hadouken_depth=0;
 		sub_zero.anim_restant=0;
-		sub_zero.animation=(CALQUE *)(mapping_phase_calque[PERSO_SUB_ZERO][PHASE_KO]+normDIR[PERSO_SUB_ZERO]);
+		sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_KO]);
 		sub_zero.allez_retour=sub_zero.animation->ar;
 		sub_zero.phase=PHASE_KO;
 		sub_zero_score.vie=296/2; // 15% pour aller au fatality
@@ -2151,7 +2151,7 @@ calqueC000();
 		// ko in progress
 		if (liu_kang_score.vie==0) {
 			liu_kang.anim_restant=0;
-			liu_kang.animation=(CALQUE *)(mapping_phase_calque[PERSO_LIU_KANG][PHASE_FATALITY]+normDIR[PERSO_LIU_KANG]);
+			liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_FATALITY]);
 			liu_kang.allez_retour=liu_kang.animation->ar;
 			liu_kang.phase=PHASE_FATALITY;
 			
@@ -2162,7 +2162,7 @@ calqueC000();
 				sub_zero.x=fond_offset+fond_largeur/4;
 			}
 			sub_zero.anim_restant=0;
-			sub_zero.animation=(CALQUE *)(mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]+normDIR[PERSO_SUB_ZERO]);
+			sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]);
 			sub_zero.allez_retour=sub_zero.animation->ar;
 			sub_zero.phase=PHASE_VICTORY;
 			direction2=0;
@@ -2173,7 +2173,7 @@ calqueC000();
 		blood_depth=0;
 		hadouken_depth=0;
 		liu_kang.anim_restant=0;
-		liu_kang.animation=(CALQUE *)(mapping_phase_calque[PERSO_LIU_KANG][PHASE_KO]+normDIR[PERSO_LIU_KANG]);
+		liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_KO]);
 		liu_kang.allez_retour=liu_kang.animation->ar;
 		liu_kang.phase=PHASE_KO;
 		liu_kang_score.vie=296/2; // 15% pour aller au fatality
