@@ -699,7 +699,7 @@ void bloodDerender() {
 			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		} else {
 			if (blood_x<current_blood[i][0]) continue;
-			if (blood_x+current_blood[i][0]<=fond_offset) continue;
+			if (blood_x-current_blood[i][0]<fond_offset) continue;
 			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		}
 	}
