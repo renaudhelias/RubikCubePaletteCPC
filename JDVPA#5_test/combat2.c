@@ -572,6 +572,8 @@ unsigned int normDIR[2];
 #define BLOOD_Y_SPEED 4
 // == BLOOD_SIZE_INIT ? - attente durant insertion des gouttes, afin d'appliquer la gravité
 #define BLOOD_G_WAIT_MAX 3
+// coupe l'animation dans ce cas ?
+//#define BLOOD_G_MAX 9
 unsigned char current_blood[BLOOD_SIZE][2];
 char blood_depth=0;
 char blood_n=0;
@@ -645,11 +647,11 @@ void blood() {
 			}
 		}
 		blood_g++;
-		if (blood_g>7) {
-			// on coupe l'animation sang (car c'est moche sinon : une goutte reste bizarrement suspendue...)
-			blood_n=0;
-			blood_depth=0;
-		}
+//		if (blood_g>BLOOD_G_MAX) {
+//			// on coupe l'animation sang (car c'est moche sinon : une goutte reste bizarrement suspendue...)
+//			blood_n=0;
+//			blood_depth=0;
+//		}
 	}
 	// solve superpositions X
 	sx=current_blood[0][0];sy=current_blood[0][1];
@@ -693,11 +695,11 @@ void bloodDerender() {
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
 			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
-			if (blood_x+current_blood[i][0]>fond_largeur+fond_offset) continue;
+			if (blood_x+current_blood[i][0]>=fond_largeur+fond_offset) continue;
 			put_byteC000(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		} else {
 			if (blood_x<current_blood[i][0]) continue;
-			if (blood_x+current_blood[i][0]<fond_offset) continue;
+			if (blood_x+current_blood[i][0]<=fond_offset) continue;
 			put_byteC000(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0x00);
 		}
 	}
