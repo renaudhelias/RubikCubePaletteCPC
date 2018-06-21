@@ -1281,10 +1281,15 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					if (hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero)) {
 						// consomme de l'espert
 						liu_kang_score.espert=liu_kang_score.espert-100;
+					} else {
+						// ne pas bloquer sa prochaine action (surtout pour un bot)
+						liu_kang->allez_retour = liu_kang->allez_retour | MARCHER;
 					}
 				} else {
 					// plouf : aucun pouvoir espert.
 					boum_hadouken=0;
+					// ne pas bloquer sa prochaine action (surtout pour un bot)
+					liu_kang->allez_retour = liu_kang->allez_retour | MARCHER;
 				}
 			}
 		}
@@ -1302,10 +1307,15 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					if (hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang)) {
 						// consomme de l'espert
 						sub_zero_score.espert=sub_zero_score.espert-100;
+					} else {
+						// ne pas bloquer sa prochaine action (surtout pour un bot)
+						sub_zero->allez_retour = sub_zero->allez_retour | MARCHER;
 					}
 				} else {
 					// plouf : aucun pouvoir espert.
 					boum_hadouken=0;
+					// ne pas bloquer sa prochaine action (surtout pour un bot)
+					sub_zero->allez_retour = sub_zero->allez_retour | MARCHER;
 				}
 			}
 		}

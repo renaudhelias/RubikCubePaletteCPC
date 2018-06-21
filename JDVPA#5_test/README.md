@@ -63,7 +63,7 @@ TODO (hadouken) :
 * DONE le sang qui clignote qu'il faudrait ne pas effacer lorsqu'il dépasse du bord.
 * quand on fait un hadouken et on garde la position, l'autre ne peut pas faire un hadouken (en fait ça lance l'hadouken de l'autre :D)
 * amélioration pour bot : ne pas dépasser le bonhomme si on ne peut pas se retourner, c'est ridicule. Si au bord, bah c'est foutu pour le gars.
-* amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ?) => comme ça ça attend pas bêtement la fin de l'animation pour rien
+* DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 
 __COMBAT2.BAS__
 
