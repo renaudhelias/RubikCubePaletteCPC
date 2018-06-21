@@ -531,7 +531,9 @@ typedef struct {
 #define PHASE_KO 1
 #define PHASE_FATALITY 2
 #define PHASE_VICTORY 3
-#define PHASE_GEL 4
+#define PHASE_GEL_ATTAQUE 4
+#define PHASE_GEL_DEFENCE 8
+#define PHASE_GEL 4+8
 
 ANIMATION liu_kang;
 ANIMATION sub_zero;
@@ -568,6 +570,8 @@ unsigned int normDIR[2];
 //#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
+// == BLOOD_SIZE_INIT ? - attente durant insertion des gouttes, afin d'appliquer la gravité
+#define BLOOD_G_WAIT_MAX 3
 unsigned char current_blood[BLOOD_SIZE][2];
 char blood_depth=0;
 char blood_n=0;
@@ -584,7 +588,6 @@ char blood_g; // gravite
 void blood() {
 	char i;char sx;char sy;char g;
 	if (blood_n==0) return;
-	g=0; // glitch (formule capturée lors de tests en échecs, car c'est jolie)
 
 	// ==> ou <== : on s'en fou, le tableau on le retournera à l'affichage !
 	blood_x_slow++;
@@ -624,14 +627,18 @@ void blood() {
 			current_blood[blood_depth][1]=blood_y+1;
 			blood_depth++;
 		}
-		blood_g=1;
+		if (blood_depth<BLOOD_G_WAIT_MAX) {
+			// gouttes en suspention dans l'air.
+			blood_g=1;
+		}
 	} else {
+		g=blood_depth-2; // glitch (formule capturée lors de tests en échecs, car c'est jolie)
 		// gravité
 		for (i=1;i<blood_depth;i++)  {
 			if (current_blood[i][1]>blood_g + g) {
 				// descend à vitesse non constante
 				current_blood[i][1]=current_blood[i][1]-g-blood_g;
-				g++;
+				g--;
 			} else {
 				// touche le sol
 				current_blood[i][1]=0;
@@ -803,6 +810,13 @@ char hadoukenContact() {
 				// liu_kang a esquivé
 				if ((hadouken_victime->allez_retour & ESQUIVE) != 0) {
 					is_contact=0;
+				} else {
+					// liu_kang a contré, il absorbe l'énergie du choque
+					if (liu_kang_score.espert>300-boum_hadouken) {
+						liu_kang_score.espert=300;
+					} else {
+						liu_kang_score.espert=liu_kang_score.espert+boum_hadouken;
+					}
 				}
 			} else {
 				if (liu_kang_score.vie < boum_hadouken) {
@@ -816,6 +830,13 @@ char hadoukenContact() {
 				// sub_zero a esquivé
 				if ((hadouken_victime->allez_retour & ESQUIVE) != 0) {
 					is_contact=0;
+				} else {
+					// sub_zero a contré, il absorbe l'énergie du choque
+					if (sub_zero_score.espert>300-boum_hadouken) {
+						sub_zero_score.espert=300;
+					} else {
+						sub_zero_score.espert=sub_zero_score.espert+boum_hadouken;
+					}
 				}
 			} else {
 				if (sub_zero_score.vie < boum_hadouken) {
@@ -1159,27 +1180,31 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if (liu_kang->anim_restant<8) {
 			if ((liu_kang->animation->c[i].p & math_2pow[liu_kang->anim_restant]) != 0) {
 				// liu_kang PORTE un coup
-				if (liu_kang->phase != PHASE_GEL) {
+				if ((liu_kang->phase & PHASE_GEL_ATTAQUE) != PHASE_GEL_ATTAQUE) {
 					// il n'est pas gelé (contré auparavant)
 					porte_liu_kang[i]=1;
 				}
 			}
 			if ((liu_kang->animation->c[i].c & math_2pow[liu_kang->anim_restant]) != 0) {
 				// liu_kang CONTRE un coup
-				contre_liu_kang[i]=1;
+				if ((liu_kang->phase & PHASE_GEL_DEFENCE) != PHASE_GEL_DEFENCE) {
+					contre_liu_kang[i]=1;
+				}
 			}
 		}
 		if (sub_zero->anim_restant<8) {
 			if ((sub_zero->animation->c[i].p & math_2pow[sub_zero->anim_restant]) != 0) {
 				// sub_zero PORTE un coup
-				if (sub_zero->phase != PHASE_GEL) {
+				if ((sub_zero->phase & PHASE_GEL_ATTAQUE) != PHASE_GEL_ATTAQUE) {
 					// il n'est pas gelé (contré auparavant)
 					porte_sub_zero[i]=1;
 				}
 			}
 			if ((sub_zero->animation->c[i].c & math_2pow[sub_zero->anim_restant]) != 0) {
 				// sub_zero CONTRE un coup
-				contre_sub_zero[i]=1;
+				if ((sub_zero->phase & PHASE_GEL_DEFENCE) != PHASE_GEL_DEFENCE) {
+					contre_sub_zero[i]=1;
+				}
 			}
 		}
 	}
@@ -1201,7 +1226,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (porte_liu_kang[i]) {
 				if (contre_sub_zero[i]) {
 					// le coup de liu_kang est paré
-					liu_kang->phase=liu_kang->phase | PHASE_GEL;
+					if ((sub_zero->allez_retour & ESQUIVE) == 0) {
+						// et ce n'était pas une simple esquive
+						liu_kang->phase=liu_kang->phase | PHASE_GEL;
+					}
 				} else {
 					// le coup de liu_kang est porté
 					degats_liu_kang=boum;
@@ -1217,7 +1245,10 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			if (porte_sub_zero[i]) {
 				if(contre_liu_kang[i]) {
 					// le coup de sub_zero est paré
-					sub_zero->phase=sub_zero->phase | PHASE_GEL;
+					if ((liu_kang->allez_retour & ESQUIVE) == 0) {
+						// et ce n'était pas une simple esquive
+						sub_zero->phase=sub_zero->phase | PHASE_GEL;
+					}
 				} else {
 					// le coup de sub_zero est porté
 					degats_sub_zero=boum;
@@ -1371,7 +1402,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		}
 	}
 	
-	if (joueur->phase == PHASE_GEL) {
+	if ((joueur->phase & PHASE_GEL) != 0) {
 		if (is_same_anim) {
 			// coup paré donc gelé
 			return;
@@ -1391,6 +1422,10 @@ void action(ANIMATION * joueur, char direction_pressed) {
 	} else if ((joueur->allez_retour & NON_CYCLIQUE) != 0 && is_same_anim) {
 		// hypercut : un coup un seul !
 		is_anim_fini=0;
+		if (joueur->anim_restant == joueur->animation->l) {
+			// on permet des points d'attaque sur le dernier sprite de l'anim.
+			joueur->phase = PHASE_GEL_ATTAQUE;
+		}
 	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
 		is_anim_fini=0;
 	}
