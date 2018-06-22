@@ -1031,12 +1031,7 @@ void bloodDegats(char d, char n,char x, char y) {
  * @param x2 : coordonnée x de l'autre joueur
  */
 char hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
-//	if (blood_n!=0) return 0;
-//	if (hadouken_n!=0) {
-//		// on coupe pas un hadouken avec un autre hadouken
-//		hadouken();
-//		return 0;
-//	}
+	if (blood_n!=0) return 0;
 	// il y a quand même une certaine distance minimum pour lancer un hadouken...
 	if (victime->x >= lanceur->x && victime->x - lanceur->x < HADOUKEN_MIN) return 0;
 	if (lanceur->x >= victime->x && lanceur->x - victime->x < HADOUKEN_MIN) return 0;
