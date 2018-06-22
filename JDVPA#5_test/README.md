@@ -47,6 +47,7 @@ TODO :
 * finaliser hadouken (dégats, et cible mouvante)
 * DONE AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * DONE peaufiner algo sang
+* goutte de sang bizarrement suspendue
 * DONE optim/debug PHASE_GEL (ne pas utiliser NON_CYCLIQUE+fin anim ? pour ça ?)
 * DONE peut-être GEL quand on est à la fin d'un NON_CYCLIQUE comme ça on peut mettre un PORTE_EN_X sur le dernier pas de l'animation.
 
