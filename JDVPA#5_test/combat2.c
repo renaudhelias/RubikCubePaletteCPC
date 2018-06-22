@@ -1630,7 +1630,7 @@ void main(void)
 
 	// ^^'
 	replay=0;
-	is_bot=3;
+	is_bot=4;
 	//for (i=0;i<BLOOD_SIZE;i++) {
 	//	current_blood[i][0]=i;
 	//	current_blood[i][1]=i;
@@ -1968,14 +1968,19 @@ calqueC000();
 		raster();
 	}
 #ifndef NO_SOUND
+	if (is_bot!=3+4) {
 		// re-calibration
 		vsync();
 		// cpctelera-1.4.2/examples/medium/arkosAudio
 		cpct_akp_musicInit(); //(void *)0x4000);
 		// re-calibration
 		vsync();
+	}
 #endif
-
+	if (is_bot==4) {
+		// faut bien démarrer la musique au début du jeu quand même...
+		is_bot=3+4;
+	}
 
 	// optim : invariants
 	a=0x4000+fond_offset;
@@ -2128,6 +2133,16 @@ calqueC000();
 		}
 	}
 	
+	if ((is_bot==3+4 && (sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY))) {
+		// auto new game (cool pour demo/musique en continue => mais si on souhaite faire des pronostiques on appui alors sur Key_C :p)
+		is_bot=3+4;
+		replay=1;
+	}
+	if (get_key(Key_X)) {
+		// auto new game
+		is_bot=4;
+		replay=1;
+	}
 	if (get_key(Key_C)) {
 		// new game
 		is_bot=3;
