@@ -61,7 +61,7 @@ TODO (hadouken) :
 ** DONE mettre droite+gauche à la fois pour le hadouken du bot liu kang.
 * DONE si je ne me suis pas retourné et que je dépasse l'adversaire, ça tire à l'envers (et dans le mur)
 * DONE le sang qui clignote qu'il faudrait ne pas effacer lorsqu'il dépasse du bord.
-* quand on fait un hadouken et on garde la position, l'autre ne peut pas faire un hadouken (en fait ça lance l'hadouken de l'autre :D)
+* DONE quand on fait un hadouken et on garde la position, l'autre ne peut pas faire un hadouken (en fait ça lance l'hadouken de l'autre :D)
 * amélioration pour bot : ne pas dépasser le bonhomme si on ne peut pas se retourner, c'est ridicule. Si au bord, bah c'est foutu pour le gars.
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 

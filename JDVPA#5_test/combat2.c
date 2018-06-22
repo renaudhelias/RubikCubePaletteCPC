@@ -724,7 +724,8 @@ SCORE sub_zero_score;//={100,193,100,92,90,191,290};
 #define DELAUTREBORD 3
 char degats_liu_kang;
 char degats_sub_zero;
-char boum_hadouken;
+char boum_hadouken_sub_zero;
+char boum_hadouken_liu_kang;
 char degats_liu_kang_corps;
 char degats_sub_zero_corps;
 char contre_liu_kang[3];
@@ -814,17 +815,17 @@ char hadoukenContact() {
 					is_contact=0;
 				} else {
 					// liu_kang a contré, il absorbe l'énergie du choque
-					if (liu_kang_score.espert>300-boum_hadouken) {
+					if (liu_kang_score.espert>300-boum_hadouken_sub_zero) {
 						liu_kang_score.espert=300;
 					} else {
-						liu_kang_score.espert=liu_kang_score.espert+boum_hadouken;
+						liu_kang_score.espert=liu_kang_score.espert+boum_hadouken_sub_zero;
 					}
 				}
 			} else {
-				if (liu_kang_score.vie < boum_hadouken) {
+				if (liu_kang_score.vie < boum_hadouken_sub_zero) {
 					liu_kang_score.vie = 0;//296;
 				} else {
-					liu_kang_score.vie = liu_kang_score.vie - boum_hadouken;
+					liu_kang_score.vie = liu_kang_score.vie - boum_hadouken_sub_zero;
 				}
 			}
 		} else {
@@ -834,23 +835,24 @@ char hadoukenContact() {
 					is_contact=0;
 				} else {
 					// sub_zero a contré, il absorbe l'énergie du choque
-					if (sub_zero_score.espert>300-boum_hadouken) {
+					if (sub_zero_score.espert>300-boum_hadouken_liu_kang) {
 						sub_zero_score.espert=300;
 					} else {
-						sub_zero_score.espert=sub_zero_score.espert+boum_hadouken;
+						sub_zero_score.espert=sub_zero_score.espert+boum_hadouken_liu_kang;
 					}
 				}
 			} else {
-				if (sub_zero_score.vie < boum_hadouken) {
+				if (sub_zero_score.vie < boum_hadouken_liu_kang) {
 					sub_zero_score.vie = 0;//296;
 				} else {
-					sub_zero_score.vie = sub_zero_score.vie - boum_hadouken;
+					sub_zero_score.vie = sub_zero_score.vie - boum_hadouken_liu_kang;
 				}
 			}
 		}
 	}
 	if (is_contact || is_contact_bord) {
-		boum_hadouken=0;
+		boum_hadouken_liu_kang=0;
+		boum_hadouken_sub_zero=0;
 		// fin d'animation
 		hadouken_n=0;
 		hadouken_depth=0;
@@ -1270,13 +1272,13 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if ((liu_kang->animation->b & HADOUKEN) != 0 && hadouken_n == 0) {
 			// liu_kang PORTE un coup HADOUKEN
 			if ((liu_kang->animation->c[0].p & math_2pow[liu_kang->anim_restant]) != 0) {
-				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				boum_hadouken_liu_kang=boum_hadouken_liu_kang+2*(BONUS_DEGATS*4-1);
 				hadouken_y=HADOUKEN_Y_TETE;
 			} else if ((liu_kang->animation->c[1].p & math_2pow[liu_kang->anim_restant]) != 0) {
-				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				boum_hadouken_liu_kang=boum_hadouken_liu_kang+2*(BONUS_DEGATS*4-1);
 				hadouken_y=HADOUKEN_Y_VENTRE;
 			}
-			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken>0) {
+			if (liu_kang->anim_restant == liu_kang->animation->l && boum_hadouken_liu_kang>0) {
 				if (liu_kang_score.espert>=100) {
 					if (hadoukenDegats(HADOUKEN_SIZE-1, liu_kang, sub_zero)) {
 						// consomme de l'espert
@@ -1287,7 +1289,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					}
 				} else {
 					// plouf : aucun pouvoir espert.
-					boum_hadouken=0;
+					boum_hadouken_liu_kang=0;
 					// ne pas bloquer sa prochaine action (surtout pour un bot)
 					liu_kang->allez_retour = liu_kang->allez_retour | MARCHER;
 				}
@@ -1296,13 +1298,13 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if ((sub_zero->animation->b & HADOUKEN) != 0 && hadouken_n == 0) {
 			// sub_zero PORTE un coup HADOUKEN
 			if ((sub_zero->animation->c[0].p & math_2pow[sub_zero->anim_restant]) != 0) {
-				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				boum_hadouken_sub_zero=boum_hadouken_sub_zero+2*(BONUS_DEGATS*4-1);
 				hadouken_y=HADOUKEN_Y_TETE;
 			} else if ((sub_zero->animation->c[1].p & math_2pow[sub_zero->anim_restant]) != 0) {
-				boum_hadouken=boum_hadouken+2*(BONUS_DEGATS*4-1);
+				boum_hadouken_sub_zero=boum_hadouken_sub_zero+2*(BONUS_DEGATS*4-1);
 				hadouken_y=HADOUKEN_Y_VENTRE;
 			}
-			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken>0) {
+			if (sub_zero->anim_restant == sub_zero->animation->l && boum_hadouken_sub_zero>0) {
 				if (sub_zero_score.espert>=100) {
 					if (hadoukenDegats(HADOUKEN_SIZE-1, sub_zero, liu_kang)) {
 						// consomme de l'espert
@@ -1313,7 +1315,7 @@ void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 					}
 				} else {
 					// plouf : aucun pouvoir espert.
-					boum_hadouken=0;
+					boum_hadouken_sub_zero=0;
 					// ne pas bloquer sa prochaine action (surtout pour un bot)
 					sub_zero->allez_retour = sub_zero->allez_retour | MARCHER;
 				}
@@ -1919,7 +1921,8 @@ calqueC000();
 	sub_zero_score.vie=296*3;
 	degats_liu_kang=0;
 	degats_sub_zero=0;
-	boum_hadouken=0;
+	boum_hadouken_liu_kang=0;
+	boum_hadouken_sub_zero=0;
 	
 	//init liu_kang et sub_zero
 	liu_kang.x=fond_offset+fond_largeur/4;
