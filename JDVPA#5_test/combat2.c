@@ -675,14 +675,24 @@ void blood() {
  * Renderer : Affiche le sang
  */
 void bloodRender() {
-	char i;
+	char i;char pixel;
 	for (i=0;i<blood_depth;i++)  {
 		if (blood_d==0) {
 			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
-			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+			if (blood_x+current_blood[i][0]>=fond_largeur+fond_offset) {
+				pixel=0x0F;
+			} else {
+				pixel=0xF0;
+			}
+			put_byte(blood_x+current_blood[i][0],120+50-1-current_blood[i][1],pixel);
 		} else {
 			if (blood_x<current_blood[i][0]) continue;
-			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],0xF0);
+			if (blood_x-current_blood[i][0]<fond_offset) {
+				pixel=0x0F;
+			} else {
+				pixel=0xF0;
+			}
+			put_byte(blood_x-current_blood[i][0],120+50-1-current_blood[i][1],pixel);
 		}
 	}
 }
@@ -1900,6 +1910,8 @@ calqueC000();
 			//fond_largeur=6*12+2;
 			fond_largeur=6*8+3;
 			fond_offset=15;
+			// patch un peu le dessin de fond afin les racines des arbres soient plus jolies :p
+			erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset-4),fond_largeur+8,50);
 			break;
 		case 2:
 			LoadFile("fond3.scr", (char *)0xC000);
@@ -1962,11 +1974,8 @@ calqueC000();
 
 	
 	// fond
-	if (no_combat==1) {
-		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset-4),fond_largeur+8,50);
-	} else {
-		erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur,50);
-	}
+	erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset),fond_largeur,50);
+	
 	// score
 	//locate(4,1);printf("THSF 2018");
 	//locate(5,1);printf("00");
