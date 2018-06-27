@@ -355,7 +355,7 @@ typedef struct {
 #define RAPIDEMENT 64
 #define NON_CYCLIQUE 128
 
-const char marqueur_sprite1[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','1'};
+//const char marqueur_sprite1[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','1'};
 
 struct CALQUE_J1A {
 	CALQUE marcher; // cyclique, avance, recule
@@ -428,7 +428,7 @@ const struct CALQUE_J1R J1R= {
 };
 
 
-const char marqueur_sprite2[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','2'};
+//const char marqueur_sprite2[13]={'D','E','B','U','T',' ','S','P','R','I','T','E','2'};
 
 struct CALQUE_J2A {
 	CALQUE pied_haut; // cyclique, porté en 4/8
@@ -503,7 +503,7 @@ const struct CALQUE_J2R J2R= {
 	.toto3={0,0,{{0,0},{0,0},{0,0}},BANK_7,0}
 };
 
-const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
+//const char marqueur_sprites_fin[15]={'F','I','N',' ','D','E','S',' ','S','P','R','I','T','E','S'};
 
 #define PERSO_LIU_KANG 0
 #define PERSO_SUB_ZERO 1
@@ -671,6 +671,7 @@ void blood() {
 	}
 }
 
+char pixelBloodTerrain;
 /**
  * Renderer : Affiche le sang
  */
@@ -680,7 +681,7 @@ void bloodRender() {
 		if (blood_d==0) {
 			if (blood_x+current_blood[i][0]>6*12+2+2) continue;
 			if (blood_x+current_blood[i][0]>=fond_largeur+fond_offset) {
-				pixel=0x0F;
+				pixel=pixelBloodTerrain;
 			} else {
 				pixel=0xF0;
 			}
@@ -688,7 +689,7 @@ void bloodRender() {
 		} else {
 			if (blood_x<current_blood[i][0]) continue;
 			if (blood_x-current_blood[i][0]<fond_offset) {
-				pixel=0x0F;
+				pixel=pixelBloodTerrain;
 			} else {
 				pixel=0xF0;
 			}
@@ -772,6 +773,11 @@ void espertRender() {
 			put_byte(41,105-1-i,0x90);
 		}
 	}
+}
+char nb_victory_liu_kang;
+char nb_victory_sub_zero;
+void victoryCounterRender(char offset_x,char nb_victory) {
+	put_byte(offset_x+nb_victory/5,105-nb_victory%5,0xFE); // "cadre"
 }
 
 // BLOOD_SIZE/4
@@ -1658,6 +1664,9 @@ void main(void)
 	arcadeAddr=(char *)0x5FFE;
 	arcade=*arcadeAddr;
 
+	nb_victory_sub_zero=0;
+	nb_victory_liu_kang=0;
+	
 	// ^^'
 	replay=0;
 	is_bot=4;
@@ -1904,6 +1913,7 @@ calqueC000();
 			//fond_largeur=6*8+3;
 			fond_largeur=6*8+3;
 			fond_offset=3;
+			pixelBloodTerrain=0xF0; // le terrain est principalement rouge, donc rouge sur rouge ici hop
 			break;
 		case 1:
 			LoadFile("fond1.scr", (char *)0xC000);
@@ -1911,12 +1921,14 @@ calqueC000();
 			fond_largeur=6*8+3;
 			fond_offset=15;
 			// patch un peu le dessin de fond afin les racines des arbres soient plus jolies :p
-			erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset-4),fond_largeur+8,50);
+			//erase_frame((unsigned char *)(0xC000 + vram[120]+fond_offset-4),fond_largeur+8,50);
+			pixelBloodTerrain=0x0F; // pas de mur de sang => je met la couleur des arbres ici.
 			break;
 		case 2:
 			LoadFile("fond3.scr", (char *)0xC000);
 			fond_largeur=6*6+3;
 			fond_offset=20;
+			pixelBloodTerrain=0xF0; // les bords de l'arène c'est un mur, le sang rouge se dépose dessus
 			break;
 	}
 	
@@ -1981,6 +1993,9 @@ calqueC000();
 	//locate(5,1);printf("00");
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
+	
+	victoryCounterRender(3+1,nb_victory_liu_kang);
+	victoryCounterRender(41+1,nb_victory_sub_zero);
 	
 	optim_bar=0;
 	for (i=0;i<20;i++) {
@@ -2218,6 +2233,7 @@ calqueC000();
 			liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]);
 			liu_kang.allez_retour=liu_kang.animation->ar;
 			liu_kang.phase=PHASE_VICTORY;
+			nb_victory_liu_kang++;
 			direction=0;
 		}
 		direction2=0;
@@ -2254,6 +2270,7 @@ calqueC000();
 			sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]);
 			sub_zero.allez_retour=sub_zero.animation->ar;
 			sub_zero.phase=PHASE_VICTORY;
+			nb_victory_sub_zero++;
 			direction2=0;
 		}
 		direction=0;

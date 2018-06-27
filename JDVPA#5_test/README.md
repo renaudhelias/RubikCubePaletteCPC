@@ -66,6 +66,7 @@ TODO (hadouken) :
 * DONE amélioration pour bot : ne pas dépasser le bonhomme si on ne peut pas se retourner, c'est ridicule. Si au bord, bah c'est foutu pour le gars.
 * DONE lors du KO, on peut avoir dépassé le bonhomme, et du coup rester bizarrement bloqué du mauvais côté de la victime
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
+* DONE un truc pour compter le nombre de combats gagnés par un joueur
 
 __COMBAT2.BAS__
 
