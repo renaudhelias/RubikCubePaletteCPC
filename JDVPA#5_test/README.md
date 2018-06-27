@@ -44,7 +44,7 @@ TODO :
 * DONE image dernier terrain OK, mais zone de combat : le 1 est OK, la foret devrait être plus large, et le dernier plus court/centré (genre arène) 
 * DONE ajouter 2 sons (OSEF choix paramétrable aussi), dont le son du prototype
 * DONE calibrer algo inverse sprite, empécher lock
-* finaliser hadouken (dégats, et cible mouvante)
+* DONE finaliser hadouken (dégats, et cible mouvante)
 * DONE AI : direction = (old_direction+rnd) à la place de  direction = rnd + mélange
 * DONE peaufiner algo sang
 * goutte de sang bizarrement suspendue
@@ -54,7 +54,7 @@ TODO :
 TODO (hadouken) :
 * DONE le hadouken de liu kang devrait être plus bas (ventre)
 * DONE le hadouken part pas toujours du bord du bonhomme comme il faut (perso.x c'est pas bon des deux sens)
-* le contact de la boule devrait être le milieu du personnage
+* DONE le contact de la boule devrait être le milieu du personnage
 * DONE l'esquive et le contre devrait avoir un effet différent sur la boule de feux : l'esquive laisse passer,
 * DONE le contre hadouken absorbe son énergie (nrj_hadouken++ à la place de vie --)
 * DONE un contre ça pare un coup (le stoppant net), une esquive ça ne pare pas un coup, c'est comme si le perso n'était simplement pas là.
@@ -63,8 +63,8 @@ TODO (hadouken) :
 * DONE si je ne me suis pas retourné et que je dépasse l'adversaire, ça tire à l'envers (et dans le mur)
 * DONE le sang qui clignote qu'il faudrait ne pas effacer lorsqu'il dépasse du bord.
 * DONE quand on fait un hadouken et on garde la position, l'autre ne peut pas faire un hadouken (en fait ça lance l'hadouken de l'autre :D)
-* amélioration pour bot : ne pas dépasser le bonhomme si on ne peut pas se retourner, c'est ridicule. Si au bord, bah c'est foutu pour le gars.
-* lors du KO, on peut avoir dépassé le bonhomme, et du coup rester bizarrement bloqué du mauvais côté de la victime
+* DONE amélioration pour bot : ne pas dépasser le bonhomme si on ne peut pas se retourner, c'est ridicule. Si au bord, bah c'est foutu pour le gars.
+* DONE lors du KO, on peut avoir dépassé le bonhomme, et du coup rester bizarrement bloqué du mauvais côté de la victime
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 
 __COMBAT2.BAS__

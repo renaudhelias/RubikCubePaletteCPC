@@ -1058,17 +1058,31 @@ char hadoukenDegats(char n,ANIMATION * lanceur, ANIMATION * victime) {
 
 void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char is_delautrebord=(
-	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD))
+	((liu_kang->x >= sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD))
 	||
 	((sub_zero->x > liu_kang->x) && (sub_zero->x - liu_kang->x < DELAUTREBORD))
 	);
 	// pas grave de toute façon il KO... tant pis si on triche ici.
 	if (((liu_kang->animation->b & ENDING_KO)!=0) || ((sub_zero->animation->b & ENDING_KO)!=0)
-		|| ((sub_zero->animation->b & FREEZE)!=0)) {
+		|| ((liu_kang->animation->b & FREEZE)!=0) || ((sub_zero->animation->b & FREEZE)!=0)) {
 		if (is_delautrebord) {
 			// animation MARCHE sans MARCHER
-			liu_kang->x=liu_kang->old_x;
-			sub_zero->x=sub_zero->old_x;
+			if (liu_kang->polarite==0) {
+				if (liu_kang->x>liu_kang->old_x) {
+					liu_kang->x=liu_kang->old_x;
+				}
+				//sub_zero->polarite==1
+				if (sub_zero->x<sub_zero->old_x) {
+					sub_zero->x=sub_zero->old_x;
+				}
+			} else {
+				if (liu_kang->x<liu_kang->old_x) {
+					liu_kang->x=liu_kang->old_x;
+				}
+				if (sub_zero->x>sub_zero->old_x) {
+					sub_zero->x=sub_zero->old_x;
+				}
+			}
 		}
 	} else {
 	
@@ -1112,6 +1126,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
 				sub_zero->allez_retour = sub_zero->allez_retour & (!MARCHE);
 			}
+			// remet une distance entre les deux adversaires
 			if (liu_kang->x-3 < fond_offset) {
 				sub_zero->x=sub_zero->x+4;
 			} else if (sub_zero->x+3 > fond_joueur) {
@@ -1163,7 +1178,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 void paf(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 	char boum;char i;
 	char is_delautrebord_plus_degats=(
-	((liu_kang->x > sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD + DEGATS))
+	((liu_kang->x >= sub_zero->x) && (liu_kang->x - sub_zero->x < DELAUTREBORD + DEGATS))
 	||
 	((sub_zero->x > liu_kang->x) && (sub_zero->x - liu_kang->x < DELAUTREBORD + DEGATS))
 	);
@@ -1392,6 +1407,8 @@ void refresh_all_progressbar() {
 	}
 }
 
+#define PIEGE_AU_BORD 3
+
 void action(ANIMATION * joueur, char direction_pressed) {
 	char deplacement=0; char is_anim_fini;char is_arrete_marcher;char is_same_anim;
 	CALQUE * mapping_direction_pressed;
@@ -1535,30 +1552,31 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		if (deplacement == DEPLACEMENT_DROITE) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
-			if (joueur->x > fond_joueur) {
-				joueur->x=fond_joueur;
-			}
+			
 		} else if (deplacement == DEPLACEMENT_GAUCHE) {
 			// le joueur va a gauche
 			joueur->x = joueur->old_x - 1;
-			if (joueur->x < fond_offset) {
-				joueur->x=fond_offset;
-			}
+			
 		}
 	} else if ((joueur->allez_retour & MARCHE) != 0) {
 		if (joueur->polarite==0) {
 			// le joueur va a droite
 			joueur->x = joueur->old_x + 1;
-			if (joueur->x > fond_joueur) {
-				joueur->x=fond_joueur;
-			}
 		} else {
 			// le joueur va a gauche
 			joueur->x = joueur->old_x - 1;
-			if (joueur->x < fond_offset) {
-				joueur->x=fond_offset;
-			}
 		}
+	}
+	
+	if (joueur->polarite==0 && joueur->x > fond_joueur-PIEGE_AU_BORD) {
+		joueur->x=fond_joueur-PIEGE_AU_BORD;
+	} else if (joueur->x > fond_joueur) {
+		joueur->x=fond_joueur;
+	}
+	if (joueur->polarite==1 && joueur->x < fond_offset+PIEGE_AU_BORD) {
+		joueur->x=fond_offset+PIEGE_AU_BORD;
+	} else if (joueur->x < fond_offset) {
+		joueur->x=fond_offset;
 	}
 }
 
