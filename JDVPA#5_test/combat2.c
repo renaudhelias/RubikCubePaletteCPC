@@ -96,6 +96,7 @@ void cpct_akp_musicPlay()
 }
 #endif
 
+/**
 void border_raster_begin()
 {
   //grimware/official.sks.player.1.2.zip/exemple.asm
@@ -110,6 +111,7 @@ void border_raster_begin()
  out (C),A
   __endasm;
 }
+**/
 
 void border_raster_begin2()
 {
@@ -146,7 +148,8 @@ void callback_roulette(unsigned char roulette)
 		// 5 0 1 : deux interruptions après la musique (afin d'atterrir en dehors de l'écran, en bas)
 		is_vsync=is_vsync+1;
 	} else if (roulette==5) {
-		border_raster_begin();
+		//border_raster_begin();
+		border_raster_end();
 #ifndef NO_SOUND		
 		// Play the STarKos song
 		cpct_akp_musicPlay();
