@@ -275,9 +275,8 @@ char progressbar(unsigned char x, unsigned char y, unsigned int value, unsigned 
 	}
 }
 
-unsigned char * no_combatAddr;
+//unsigned char * paramAddr;
 unsigned char no_combat;
-unsigned char * arcadeAddr;
 unsigned char arcade;
 unsigned char fond_largeur; // vrai largeur
 unsigned char fond_offset; // début de vrai fond
@@ -1658,11 +1657,10 @@ void main(void)
 	//
 	// out &7FC4,&C4
 	// poke &5FFF,1
-	no_combatAddr=(char *)0x5FFF;
-	no_combat=*no_combatAddr;
-	
-	arcadeAddr=(char *)0x5FFE;
-	arcade=*arcadeAddr;
+	bot1=*((int *)0x5FFA);
+	bot2=*((int *)0x5FFC);
+	arcade=*((char *)0x5FFE);
+	no_combat=*((char *)0x5FFF);
 
 	nb_victory_sub_zero=0;
 	nb_victory_liu_kang=0;
