@@ -573,7 +573,7 @@ unsigned int normDIR[2];
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
 // == BLOOD_SIZE_INIT ? - attente durant insertion des gouttes, afin d'appliquer la gravité
-#define BLOOD_G_WAIT_MAX 3
+//#define BLOOD_G_WAIT_MAX 3
 // coupe l'animation dans ce cas ?
 //#define BLOOD_G_MAX 9
 unsigned char current_blood[BLOOD_SIZE][2];
@@ -620,6 +620,17 @@ void blood() {
 		}
 		return;
 	}
+#ifndef BLOOD_G_WAIT_MAX
+	if (blood_depth==0) {
+		blood_g=1;
+#else
+	if (blood_depth<BLOOD_G_WAIT_MAX) {
+		// gouttes en suspention dans l'air.
+		blood_g=0;
+#endif
+	} else {
+		blood_g++;
+	}
 	// BLOOD_B_SPEED/blood_b_slow
 	if (blood_depth<blood_n) {
 		// insertion
@@ -631,24 +642,19 @@ void blood() {
 			current_blood[blood_depth][1]=blood_y+1;
 			blood_depth++;
 		}
-		if (blood_depth<BLOOD_G_WAIT_MAX) {
-			// gouttes en suspention dans l'air.
-			blood_g=1;
-		}
-	} else {
-		g=blood_depth-2; // glitch (formule capturée lors de tests en échecs, car c'est jolie)
+	}
+	if (blood_g>0) {
 		// gravité
-		for (i=1;i<blood_depth;i++)  {
+		g=blood_depth-(blood_n%3); // glitch (formule capturée lors de tests en échecs, car c'est jolie)
+		for (i=0;i<blood_depth;i++)  {
 			if (current_blood[i][1]>blood_g + g) {
 				// descend à vitesse non constante
 				current_blood[i][1]=current_blood[i][1]-g-blood_g;
-				g--;
 			} else {
 				// touche le sol
 				current_blood[i][1]=0;
 			}
 		}
-		blood_g++;
 //		if (blood_g>BLOOD_G_MAX) {
 //			// on coupe l'animation sang (car c'est moche sinon : une goutte reste bizarrement suspendue...)
 //			blood_n=0;
@@ -759,21 +765,16 @@ const char corps[3]=
 /**
  * affiche l'espert (énergie pour le Hadouken)
  */
-void espertRender() {
-	char i;
-	put_byte(3,105-4,0xF0); // "cadre"
-	put_byte(41,105-4,0xF0); // "cadre"
+void espertRender(char offset_x,char nb_espert) {
+	char i;char pixel;
+	put_byte(offset_x,105-4,0xF0); // "cadre"
 	for (i=0;i<3;i++) {
-		if (liu_kang_score.espert>=(1+i)*100) {
-			put_byte(3,105-1-i,0xF6);
+		if (nb_espert>=(1+i)*100) {
+			pixel=0xF6;
 		} else {
-			put_byte(3,105-1-i,0x90);
+			pixel=0x90;
 		}
-		if (sub_zero_score.espert>=(1+i)*100) {
-			put_byte(41,105-1-i,0xF6);
-		} else {
-			put_byte(41,105-1-i,0x90);
-		}
+		put_byte(offset_x,105-1-i,pixel);
 	}
 }
 char nb_victory_liu_kang;
@@ -946,35 +947,35 @@ void hadoukenRender() {
 		}
 		if (hadouken_d==0) {
 			//if (current_hadouken[i][0]>hadouken_victime->x-hadouken_x) continue;
-			put_byte(hadouken_x+current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
+			put_byteC000(hadouken_x+current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x+current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
+				put_byteC000(hadouken_x+current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>HADOUKEN_Y_TOP_DIV4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_victime->x-hadouken_x)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
+			put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
+				put_byteC000(hadouken_x+hadouken_x2+(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 		} else {
 			//if (current_hadouken[i][0]>hadouken_x-hadouken_victime->x) continue;
-			put_byte(hadouken_x-current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
+			put_byteC000(hadouken_x-current_hadouken[i][0],120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// impair mirror
-				put_byte(hadouken_x-current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
+				put_byteC000(hadouken_x-current_hadouken[i][0],120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 			if ((hadouken_x2 - current_hadouken[i][0]>HADOUKEN_Y_TOP_DIV4)) {// || (hadouken_x2+(hadouken_x2 - current_hadouken[i][0])>hadouken_x-hadouken_victime->x)) {
 				continue;
 			}
 			// boule mirror
-			put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
+			put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y-current_hadouken[i][1],pixel);
 			if (current_hadouken[i][1] != 0) {
 				// boule impair mirror
-				put_byte(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
+				put_byteC000(hadouken_x-hadouken_x2-(hadouken_x2 - current_hadouken[i][0]),120+hadouken_y+current_hadouken[i][1],pixel);
 			}
 		}
 	}
@@ -2050,7 +2051,8 @@ calqueC000();
 	//bank0123();
 
 	refresh_all_progressbar();
-	espertRender();
+	espertRender(3,liu_kang_score.espert);
+	espertRender(41,sub_zero_score.espert);
 	
 	//for (i=120;i<120+50;i++) {
 	//	memcpy((char *)(0x4000 + vram[i]+liu_kang.x-1), (char *)(0xC000 + vram[i]+liu_kang.x-1), 6+2);
@@ -2178,7 +2180,7 @@ calqueC000();
 		}
 	}
 	
-	if ((is_bot==3+4 && (sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY))) {
+	if ((is_bot==3+4 && (sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY || (sub_zero.phase==PHASE_FATALITY && liu_kang.phase == PHASE_FATALITY)))) {
 		// auto new game (cool pour demo/musique en continue => mais si on souhaite faire des pronostiques on appui alors sur Key_C :p)
 		is_bot=3+4;
 		replay=1;
@@ -2286,12 +2288,19 @@ calqueC000();
 		liu_kang_score.vie=296/2; // 15% pour aller au fatality
 		direction=0;
 	}
-		
+
+	if (liu_kang.phase==PHASE_KO && sub_zero.phase==PHASE_KO) {
+		liu_kang.phase=PHASE_FATALITY;
+		liu_kang_score.vie=0;
+		sub_zero.phase=PHASE_FATALITY;
+		sub_zero_score.vie=0;
+	}
+	
 	action(&liu_kang,direction);
 	
 	action(&sub_zero,direction2);
 
-	if (!(sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY)) {
+	if (!(sub_zero.phase==PHASE_VICTORY || liu_kang.phase == PHASE_VICTORY || (sub_zero.phase==PHASE_FATALITY && liu_kang.phase == PHASE_FATALITY))) {
 		paf(&liu_kang,&sub_zero);
 	}
 	check_mur(&liu_kang,&sub_zero);
@@ -2300,12 +2309,7 @@ calqueC000();
 	erase_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.old_x),6,50);
 	
 	erase_frame((unsigned char *)(0xC000 + vram[120]+sub_zero.old_x),6,50);
-
-	// sang et hadouken !
-	bank0123();
-	bloodRender();
-	hadoukenRender();
-
+	
 	if (liu_kang.polarite == 1) {
 		switch_bank(&liu_kang);
 		//put_frame((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
@@ -2322,8 +2326,13 @@ calqueC000();
 		put_frame_transparent((unsigned char *)(0xC000 + vram[120]+liu_kang.x),6,50,0x4000+((6*50)*(liu_kang.animation->o+liu_kang.anim_restant)));
 	}
 	
+	// sang et hadouken !
 	bank0123();
-
+	bloodRender();
+	hadoukenRender();
+	
+	//bank0123();
+	
 	}// while !replay
 	}// while 1
 }
