@@ -69,6 +69,7 @@ TODO (hadouken) :
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 * DONE un truc pour compter le nombre de combats gagnés par un joueur
 * DONE un random timer pour initier le random bot
+* quand le perso gel, il ne saigne plus.
 
 __COMBAT2.BAS__
 
