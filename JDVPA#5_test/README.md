@@ -69,6 +69,8 @@ TODO (hadouken) :
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 * DONE un truc pour compter le nombre de combats gagnés par un joueur
 * DONE un random timer pour initier le random bot
+* le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
+* sous WinAPE, le détecteur de latence s'affole.
 
 __COMBAT2.BAS__
 
