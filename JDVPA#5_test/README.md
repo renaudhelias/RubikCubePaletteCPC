@@ -70,6 +70,7 @@ TODO (hadouken) :
 * DONE un truc pour compter le nombre de combats gagnés par un joueur
 * DONE un random timer pour initier le random bot
 * le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
+* le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
 * sous WinAPE, le détecteur de latence s'affole.
 
 __COMBAT2.BAS__
