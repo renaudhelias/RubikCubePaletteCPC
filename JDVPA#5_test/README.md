@@ -72,7 +72,7 @@ TODO (hadouken) :
 * le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
 * le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
 * sous WinAPE, le détecteur de latence s'affole.
-* freezer tout si nb_victory max atteind en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
+* freezer les deux nb_victory si un nb_victory atteind son max en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
 
 __COMBAT2.BAS__
 
