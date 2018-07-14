@@ -1,4 +1,6 @@
 #include "player.h"
+#include "jdvapi_keyb.h"
+#include "labypac_map.h"
 
 s_player player;
 
@@ -6,7 +8,8 @@ void player_init()
 {
 	player.oldx=0;
 	player.oldy=0;
-	player.x=19<<2; // * 4      xtile --> xtile*4
+	//player.x=19<<2; // * 4      xtile --> xtile*4
+	player.x=18<<2; // * 4      xtile --> xtile*4
 	player.y=22<<3; // * 8      ytile --> ytile*8
 	
 	player.dd = PLAYER_STOP;
@@ -48,9 +51,9 @@ unsigned char player_return_tile_type(unsigned char x,unsigned char y)
 		
 		// Récupération du code tile en x,y
 		ntile = (unsigned int)((y>>3)*40)+(x>>2);
-		if (laby_data[ntile]==1) return 0;
-		if (laby_data[ntile]==10) return 1;
-		if (laby_data[ntile]==11) return 2;
+		if (labypac_map[ntile]==1) return 0;
+		if (labypac_map[ntile]==10) return 1;
+		if (labypac_map[ntile]==11) return 2;
 		
 		return 3;
 }
