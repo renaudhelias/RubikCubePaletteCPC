@@ -7,4 +7,4 @@ __main.c jdvpa6.dsk__
 
 ![JDVPA6.dsk.png](JDVPA6.dsk.png)
 
-Ajout d'un gameplay à la "Oh Mummy !" pour les déplacements.
+Ajout d'un gameplay à la "Oh Mummy !" pour les déplacements en zig zag.
