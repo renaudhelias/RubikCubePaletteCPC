@@ -76,6 +76,7 @@ TODO (hadouken) :
 * la barre d'hadouken n'est pas pleine au début, alors qu'il a bien 3 charges Hadouken
 * la barre nb_victory a déjà une valeur, alors qu'il n'y a pas encore eu de combats fini
 * la barre nb_victory s'incrémente au début du match suivant, elle devrait s'incrémenter dès lors qu'il y a eu KO ou dumoins VICTORY (le bonhomme content là)
+* la barre nb_victory de droite a de mauvais symptomes losqu'elle approche des 5 dernières colonnes...
 
 __COMBAT2.BAS__
 
