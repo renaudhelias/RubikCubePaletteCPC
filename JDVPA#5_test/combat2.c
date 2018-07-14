@@ -777,10 +777,10 @@ void espertRender(char offset_x,char nb_espert) {
 		put_byte(offset_x,105-1-i,pixel);
 	}
 }
-char nb_victory_liu_kang;
-char nb_victory_sub_zero;
-void victoryCounterRender(char offset_x,char nb_victory) {
-	put_byte(offset_x+nb_victory/5,105-nb_victory%5,0xFE); // "cadre"
+unsigned char nb_victory_liu_kang;
+unsigned char nb_victory_sub_zero;
+void victoryCounterRender(char offset_x,unsigned char nb_victory) {
+	put_byte(offset_x+nb_victory/5,104-nb_victory%5,0xFE); // "cadre"
 }
 
 // BLOOD_SIZE/4
@@ -1678,10 +1678,11 @@ void main(void)
 	//}
 	
 	// init mapping
+	
 	normDIR[PERSO_LIU_KANG]=(int)&J1A;
 	normDIR[PERSO_SUB_ZERO]=(int)&J2A;
 	
-	for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2;i++) {
+	/*for (i=0;i<=DIRECTION_AVANT+DIRECTION_ARRIERE+DIRECTION_HAUT+DIRECTION_BAS+DIRECTION_FIRE+DIRECTION_FIRE1+DIRECTION_FIRE2;i++) {
 		if ((i & DIRECTION_AVANT) == 0 && (i & DIRECTION_ARRIERE) == 0) {
 			mapping_direction_calque[PERSO_LIU_KANG][i]=(int)&J1A_repos-normDIR[PERSO_LIU_KANG];
 			mapping_direction_calque[PERSO_SUB_ZERO][i]=(int)&J2A_repos-normDIR[PERSO_SUB_ZERO];
@@ -1775,7 +1776,7 @@ void main(void)
 	mapping_phase_calque[PERSO_SUB_ZERO][PHASE_KO]=(int)&J2R.ko-normDIR[PERSO_SUB_ZERO];
 	mapping_phase_calque[PERSO_SUB_ZERO][PHASE_FATALITY]=(int)&J2R.fatality-normDIR[PERSO_SUB_ZERO];
 	mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]=(int)&J2A.victory-normDIR[PERSO_SUB_ZERO];
-	
+	*/
 	// against "so said EVELYN the modified DOG" => volatile
 	// volatile char layer=0;volatile char x=10;//char z=0;
 	// char aaah=3;
@@ -1843,6 +1844,7 @@ void main(void)
 		LoadFile("J1.map", (char *)normDIR[PERSO_SUB_ZERO]); // des sprites
 		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
 		LoadFile("J1.pha", (char *)mapping_phase_calque[PERSO_SUB_ZERO]); // des phases
+		fix_bank();
 	} else if (no_combat==1) {
 		// test : pour le 2ème type de combat, j'inverse les joueurs.
 		
@@ -1896,6 +1898,15 @@ void main(void)
 		LoadFile("J2R.scr", (char *)0xC000); // un scr exporté "linéaire"
 		bank7_4000();
 		transfertEtDecoupe();
+
+		bank0123();
+		LoadFile("J1.map", (char *)normDIR[PERSO_LIU_KANG]); // des sprites
+		LoadFile("J1.dir", (char *)mapping_direction_calque[PERSO_LIU_KANG]); // des directions
+		LoadFile("J1.pha", (char *)mapping_phase_calque[PERSO_LIU_KANG]); // des phases
+		LoadFile("J2.map", (char *)normDIR[PERSO_SUB_ZERO]); // des sprites
+		LoadFile("J2.dir", (char *)mapping_direction_calque[PERSO_SUB_ZERO]); // des directions
+		LoadFile("J2.pha", (char *)mapping_phase_calque[PERSO_SUB_ZERO]); // des phases
+		fix_bank();
 	}
 
 // et finalement.
@@ -2236,7 +2247,7 @@ calqueC000();
 			liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]);
 			liu_kang.allez_retour=liu_kang.animation->ar;
 			liu_kang.phase=PHASE_VICTORY;
-			nb_victory_liu_kang++;
+			if (nb_victory_liu_kang<175 && nb_victory_sub_zero<175) nb_victory_liu_kang++;
 			direction=0;
 		}
 		direction2=0;
@@ -2273,7 +2284,7 @@ calqueC000();
 			sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]);
 			sub_zero.allez_retour=sub_zero.animation->ar;
 			sub_zero.phase=PHASE_VICTORY;
-			nb_victory_sub_zero++;
+			if (nb_victory_liu_kang<175 && nb_victory_sub_zero<175) nb_victory_sub_zero++;
 			direction2=0;
 		}
 		direction=0;
