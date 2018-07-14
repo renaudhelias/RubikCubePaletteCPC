@@ -95,13 +95,13 @@ void player_control(void)
 	
 			if (((player.dd & PLAYER_LEFT & ~player.dc) != 0) && (player_return_type(player.x-4,player.y)!=3))
 				player.dc = PLAYER_LEFT;
-			//else
+			else
 			if (((player.dd & PLAYER_RIGHT & ~player.dc) != 0) && (player_return_type(player.x+4,player.y)!=3))
 				player.dc = PLAYER_RIGHT;
-			//else
+			else
 			if (((player.dd & PLAYER_UP & ~player.dc) != 0) && (player_return_type(player.x,player.y-8)!=3))
 				player.dc = PLAYER_UP;
-			//else
+			else
 			if (((player.dd & PLAYER_DOWN & ~player.dc) != 0) && (player_return_type(player.x,player.y+8)!=3))
 				player.dc = PLAYER_DOWN;
 		}
