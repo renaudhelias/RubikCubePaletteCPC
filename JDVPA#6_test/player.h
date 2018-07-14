@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_STOP		0
+#define PLAYER_STOP		1
 #define	PLAYER_LEFT		2
 #define	PLAYER_RIGHT	5
 #define PLAYER_UP		8
@@ -21,12 +21,14 @@ typedef struct
 	unsigned char dc; // direction courante
 	unsigned char timer;
 	unsigned char anim;
+	unsigned int score;
 
 }
 s_player;
 
 void player_init();
 void player_move_rel(char x,char y);
+void player_control(void);
 
 extern s_player player;
 

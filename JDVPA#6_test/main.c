@@ -43,16 +43,12 @@ void render_background(unsigned char x,unsigned char y)
 		xpix = (xtile<<2);
 		ypix = (ytile<<3);
 		
-		//printf("%d",ntile);
-		
 		put_frame(screen(xpix,ypix),2,8,tiles_img[labypac_map[ntile]]);
 		put_frame(screen((xpix+4),ypix),2,8,tiles_img[labypac_map[ntile+1]]);
 
 		put_frame(screen(xpix,(ypix+8)),2,8,tiles_img[labypac_map[ntile+40]]);
 		put_frame(screen((xpix+4),(ypix+8)),2,8,tiles_img[labypac_map[ntile+41]]);
-
-		//put_frame(screen(xpix,ypix),2,8,spr_img[1]);
-		//put_frame(screen((xpix+4),ypix),2,8,spr_img[1]);		
+	
 }
 
 void waito(void)
@@ -135,64 +131,22 @@ void main(void)
 	while(1)
 	{
 		check_controller();
-		if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) 
-		{
-				player.dd = PLAYER_LEFT;
-		}
-		else
-		if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) 		
-		{
-			player.dd = PLAYER_RIGHT;
-		}
-		else
-		if ((get_key(Key_Joy1Up)) || (get_key(Key_Q))) 
-		{
-			player.dd = PLAYER_UP;
-		}
-		else
-		if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) 		
-		{
-			player.dd = PLAYER_DOWN;
-		}
-		
-		player.dc = player.dd;
-		
-		if ((player.dc==PLAYER_LEFT) && (player.x>0)) {player_move_rel(-2,0);}
-		else
-		if ((player.dc==PLAYER_RIGHT) && (player.x<(160-(PLAYER_SPRITE_LARGEUR_P<<1)))) {player_move_rel(2,0);}
-		else
-		if ((player.dc==PLAYER_UP) && (player.y>0)) {player_move_rel(0,-2);}
-		else
-		if ((player.dc==PLAYER_DOWN) && (player.y<(200-(PLAYER_SPRITE_HAUTEUR<<1)))) {player_move_rel(0,2);}
-
-		if (ghost[0].x==0) ghost[0].sensx = 2; else if (ghost[0].x==160-(GHOST_SPRITE_LARGEUR_P<<1)) ghost[0].sensx = -2;
-		ghost_move_rel(0, ghost[0].sensx, ghost[0].sensy);
-		
-		if (ghost[1].y==0) ghost[1].sensy = 2; else if (ghost[1].y==200-(GHOST_SPRITE_HAUTEUR<<1)) ghost[1].sensy = -2;
-		ghost_move_rel(1, ghost[1].sensx, ghost[1].sensy);
-
-		if (ghost[2].x==0) ghost[2].sensx = 2; else if (ghost[2].x==160-(GHOST_SPRITE_LARGEUR_P<<1)) ghost[2].sensx = -2;
-		if (ghost[2].y==0) ghost[2].sensy = 2; else if (ghost[2].y==200-(GHOST_SPRITE_HAUTEUR<<1)) ghost[2].sensy = -2;		
-		ghost_move_rel(2, ghost[2].sensx, ghost[2].sensy);
-
-		if (ghost[3].x==0) ghost[3].sensx = 1; else if (ghost[3].x==160-(GHOST_SPRITE_LARGEUR_P<<1)) ghost[3].sensx = -1;
-		if (ghost[3].y==0) ghost[3].sensy = 1; else if (ghost[3].y==200-(GHOST_SPRITE_HAUTEUR<<1)) ghost[3].sensy = -1;		
-		ghost_move_rel(3, ghost[3].sensx, ghost[3].sensy);
+		player_control();
+		ghost_ia();
 
 		
 		/* Rendu graphique */		
-		vsync();
-		//put_frame(screen(player.oldx,player.oldy), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[IMG_BLANK]);		
+		vsync();		
 		render_background(player.oldx,player.oldy);
 		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);		
-
+	
+		/*
 		for (i=0;i<4;i++)
-		{
-			if (i==1 || i==3) vsync();
-			//put_frame(screen(ghost[i].oldx,ghost[i].oldy), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[IMG_BLANK]);		
+		{	
 			render_background(ghost[i].oldx,ghost[i].oldy);
 			put_frame(screen(ghost[i].x,ghost[i].y), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[14+(i<<1)+ghost[i].anim]);				
 		}
+		*/
 
 	}
 }

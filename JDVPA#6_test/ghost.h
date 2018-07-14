@@ -20,6 +20,7 @@ s_ghost;
 
 void ghost_init();
 void ghost_move_rel(char i,char mx,char my);
+void ghost_ia(void);
 
 extern s_ghost ghost[4];
 
