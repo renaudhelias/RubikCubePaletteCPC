@@ -138,7 +138,7 @@ void main(void)
 		/* Rendu graphique */		
 		vsync();		
 		render_background(player.oldx,player.oldy);
-		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);		
+		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[tile_dc[player.dc]+player.anim]);		
 	
 		/*
 		for (i=0;i<4;i++)
