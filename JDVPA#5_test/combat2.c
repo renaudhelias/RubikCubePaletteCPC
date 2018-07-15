@@ -566,9 +566,9 @@ unsigned int normDIR[2];
 
 //const char marqueur_directions_fin[18]={'F','I','N',' ','D','E','S',' ','D','I','R','E','C','T','I','O','N','S'};
 
-#define BLOOD_SIZE 7
+#define BLOOD_SIZE 6
 // 1 + 2 + 3 + 4 < 14
-#define BLOOD_SIZE_INIT 3
+#define BLOOD_SIZE_INIT 2
 //#define BLOOD_B_SPEED 0 - vitesse d'entrée des gouttes dans l'algo : déjà au maximum (en entrer plusieurs ?)
 #define BLOOD_X_SPEED 8
 #define BLOOD_Y_SPEED 4
@@ -1486,6 +1486,7 @@ void action(ANIMATION * joueur, char direction_pressed) {
 		if (joueur->anim_restant == joueur->animation->l) {
 			// on permet des points d'attaque sur le dernier sprite de l'anim.
 			joueur->phase = PHASE_GEL_ATTAQUE;
+			return;
 		}
 	} else if ((joueur->allez_retour & ALLEZ_RETOUR) != 0) {
 		is_anim_fini=0;
