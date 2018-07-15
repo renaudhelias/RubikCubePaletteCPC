@@ -73,7 +73,7 @@ TODO (hadouken) :
 * DONE le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
 * sous WinAPE, le détecteur de latence s'affole.
 * DONE freezer les deux nb_victory si un nb_victory atteind son max en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
-* la barre d'hadouken n'est pas pleine au début, alors qu'il a bien 3 charges Hadouken
+* DONE la barre d'hadouken n'est pas pleine au début, alors qu'il a bien 3 charges Hadouken
 * la barre nb_victory a déjà une valeur, alors qu'il n'y a pas encore eu de combats fini
 * la barre nb_victory s'incrémente au début du match suivant, elle devrait s'incrémenter dès lors qu'il y a eu KO ou dumoins VICTORY (le bonhomme content là)
 * la barre nb_victory de droite a de mauvais symptomes losqu'elle approche des 5 dernières colonnes...

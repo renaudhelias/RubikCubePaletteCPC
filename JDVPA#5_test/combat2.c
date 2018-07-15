@@ -765,7 +765,7 @@ const char corps[3]=
 /**
  * affiche l'espert (énergie pour le Hadouken)
  */
-void espertRender(unsigned char offset_x,char nb_espert) {
+void espertRender(unsigned char offset_x,unsigned int nb_espert) {
 	char i;char pixel;
 	put_byte(offset_x,105-4,0xF0); // "cadre"
 	for (i=0;i<3;i++) {
