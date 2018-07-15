@@ -780,7 +780,8 @@ void espertRender(unsigned char offset_x,unsigned int nb_espert) {
 unsigned char nb_victory_liu_kang;
 unsigned char nb_victory_sub_zero;
 void victoryCounterRender(unsigned char offset_x,unsigned char nb_victory) {
-	put_byte(offset_x+nb_victory/5,104-nb_victory%5,0xFE); // "cadre"
+	if (nb_victory == 0) return;
+	put_byte(offset_x+(nb_victory-1)/5,104-(nb_victory-1)%5,0xFE); // "cadre"
 }
 
 // BLOOD_SIZE/4
@@ -2007,9 +2008,6 @@ calqueC000();
 	//locate(6,1);printf("00");
 	//locate(7,1);printf("99");
 	
-	victoryCounterRender(3+1,nb_victory_liu_kang);
-	victoryCounterRender(41+1,nb_victory_sub_zero);
-	
 	optim_bar=0;
 	for (i=0;i<20;i++) {
 		refresh_all_progressbar();
@@ -2064,6 +2062,8 @@ calqueC000();
 	refresh_all_progressbar();
 	espertRender(3,liu_kang_score.espert);
 	espertRender(41,sub_zero_score.espert);
+	victoryCounterRender(3+1,nb_victory_liu_kang);
+	victoryCounterRender(41+1,nb_victory_sub_zero);
 	
 	//for (i=120;i<120+50;i++) {
 	//	memcpy((char *)(0x4000 + vram[i]+liu_kang.x-1), (char *)(0xC000 + vram[i]+liu_kang.x-1), 6+2);
@@ -2247,7 +2247,7 @@ calqueC000();
 			liu_kang.animation=(CALQUE *)(normDIR[PERSO_LIU_KANG]+mapping_phase_calque[PERSO_LIU_KANG][PHASE_VICTORY]);
 			liu_kang.allez_retour=liu_kang.animation->ar;
 			liu_kang.phase=PHASE_VICTORY;
-			if (nb_victory_liu_kang<175 && nb_victory_sub_zero<175) nb_victory_liu_kang++;
+			if (nb_victory_liu_kang<176 && nb_victory_sub_zero<176) nb_victory_liu_kang++;
 			direction=0;
 		}
 		direction2=0;
@@ -2284,7 +2284,7 @@ calqueC000();
 			sub_zero.animation=(CALQUE *)(normDIR[PERSO_SUB_ZERO]+mapping_phase_calque[PERSO_SUB_ZERO][PHASE_VICTORY]);
 			sub_zero.allez_retour=sub_zero.animation->ar;
 			sub_zero.phase=PHASE_VICTORY;
-			if (nb_victory_liu_kang<175 && nb_victory_sub_zero<175) nb_victory_sub_zero++;
+			if (nb_victory_liu_kang<176 && nb_victory_sub_zero<176) nb_victory_sub_zero++;
 			direction2=0;
 		}
 		direction=0;
