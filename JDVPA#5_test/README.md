@@ -71,8 +71,8 @@ TODO (hadouken) :
 * DONE un random timer pour initier le random bot
 * DONE le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
 * DONE le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
-* sous WinAPE, le détecteur de latence s'affole.
-* sous WinAPE, quand le perso se retourne (assez lourd déjà ça comme algo) et que du sang est présent (donc algo en train de calculer), ça rame.
+* DONE sous WinAPE, le détecteur de latence s'affole.
+* DONE sous WinAPE, quand le perso se retourne (assez lourd déjà ça comme algo) et que du sang est présent (donc algo en train de calculer), ça rame.
 * DONE freezer les deux nb_victory si un nb_victory atteind son max en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
 * DONE la barre d'hadouken n'est pas pleine au début, alors qu'il a bien 3 charges Hadouken
 * DONE la barre nb_victory a déjà une valeur, alors qu'il n'y a pas encore eu de combats fini
