@@ -1112,8 +1112,8 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 		if ((liu_kang->x > sub_zero->x && liu_kang->polarite==0)
 			|| (sub_zero->x > liu_kang->x && liu_kang->polarite==1)) {
 			// inversion de la polarite
-			liu_kang->polarite=(!liu_kang->polarite) & 1;
-			sub_zero->polarite=(!sub_zero->polarite) & 1;
+			liu_kang->polarite=!liu_kang->polarite;
+			sub_zero->polarite=!sub_zero->polarite;
 			// fin de l'animation déclenché par le joystick
 			
 			if ((liu_kang->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) != 0) {
@@ -1136,7 +1136,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				//}
 			} else {//if ((liu_kang->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
-				liu_kang->allez_retour = liu_kang->allez_retour & (!MARCHE);
+				liu_kang->allez_retour = liu_kang->allez_retour ^ MARCHE;
 			}
 			if ((sub_zero->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) != 0) {
 				sub_zero->direction=sub_zero->direction ^ (DIRECTION_AVANT|DIRECTION_ARRIERE);
@@ -1157,7 +1157,7 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 				//}
 			} else {//if ((sub_zero->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
-				sub_zero->allez_retour = sub_zero->allez_retour & (!MARCHE);
+				sub_zero->allez_retour = sub_zero->allez_retour ^ MARCHE;
 			}
 			// remet une distance entre les deux adversaires
 			if (liu_kang->x-3 < fond_offset) {
@@ -1534,7 +1534,8 @@ void action(ANIMATION * joueur, char direction_pressed) {
 				}
 				if (joueur->anim_restant == joueur->animation->l ) {
 					//joueur->anim_restant = joueur->animation->l;
-					joueur->allez_retour = ((joueur->allez_retour & (~ALLEZ_RETOUR)) | RETOUR);
+					//joueur->allez_retour = ((joueur->allez_retour & (~ALLEZ_RETOUR)) | RETOUR);
+					joueur->allez_retour = joueur->allez_retour ^ (ALLEZ_RETOUR | RETOUR);
 				}
 			}
 		} else if ((joueur->allez_retour & RETOUR) != 0) {
