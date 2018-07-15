@@ -765,7 +765,7 @@ const char corps[3]=
 /**
  * affiche l'espert (énergie pour le Hadouken)
  */
-void espertRender(char offset_x,char nb_espert) {
+void espertRender(unsigned char offset_x,char nb_espert) {
 	char i;char pixel;
 	put_byte(offset_x,105-4,0xF0); // "cadre"
 	for (i=0;i<3;i++) {
@@ -779,7 +779,7 @@ void espertRender(char offset_x,char nb_espert) {
 }
 unsigned char nb_victory_liu_kang;
 unsigned char nb_victory_sub_zero;
-void victoryCounterRender(char offset_x,unsigned char nb_victory) {
+void victoryCounterRender(unsigned char offset_x,unsigned char nb_victory) {
 	put_byte(offset_x+nb_victory/5,104-nb_victory%5,0xFE); // "cadre"
 }
 

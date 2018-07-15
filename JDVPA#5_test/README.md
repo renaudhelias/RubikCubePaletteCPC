@@ -69,10 +69,10 @@ TODO (hadouken) :
 * DONE amélioration pour bot : ne pas lancer hadouken si on ne le peut pas (dans ce cas, lancer REPOS ? |=MARCHER finalement...) => comme ça ça attend pas bêtement la fin de l'animation pour rien
 * DONE un truc pour compter le nombre de combats gagnés par un joueur
 * DONE un random timer pour initier le random bot
-* le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
-* le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
+* DONE le nb_victory, dépasse à droite quand le compteur est trop haut (genre 24h de combats)
+* DONE le nb_victory est un pixel trop bas, du coup la première victoire n'est pas visible, il devrait dépasser la charge Hadouken d'un pixel en haut.
 * sous WinAPE, le détecteur de latence s'affole.
-* freezer les deux nb_victory si un nb_victory atteind son max en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
+* DONE freezer les deux nb_victory si un nb_victory atteind son max en haut de l'écran ? genre le gars qui lance la partie sur 1 mois il a le score final...
 * la barre d'hadouken n'est pas pleine au début, alors qu'il a bien 3 charges Hadouken
 * la barre nb_victory a déjà une valeur, alors qu'il n'y a pas encore eu de combats fini
 * la barre nb_victory s'incrémente au début du match suivant, elle devrait s'incrémenter dès lors qu'il y a eu KO ou dumoins VICTORY (le bonhomme content là)
