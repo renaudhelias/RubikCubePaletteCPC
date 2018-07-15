@@ -1115,33 +1115,46 @@ void check_mur(ANIMATION * liu_kang, ANIMATION * sub_zero) {
 			liu_kang->polarite=(!liu_kang->polarite) & 1;
 			sub_zero->polarite=(!sub_zero->polarite) & 1;
 			// fin de l'animation déclenché par le joystick
-			if ((liu_kang->direction & DIRECTION_AVANT) != 0) {
-				liu_kang->direction=((liu_kang->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
-			} else if ((liu_kang->direction & DIRECTION_ARRIERE) != 0) {
-				liu_kang->direction=((liu_kang->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			
+			if ((liu_kang->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) != 0) {
+				liu_kang->direction=liu_kang->direction ^ (DIRECTION_AVANT|DIRECTION_ARRIERE);
+				//liu_kang->direction=(liu_kang->direction & ~(DIRECTION_AVANT|DIRECTION_ARRIERE)) | (~(liu_kang->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) & (DIRECTION_AVANT|DIRECTION_ARRIERE));
 			}
+			
+			//if ((liu_kang->direction & DIRECTION_AVANT) != 0) {
+			//	liu_kang->direction=((liu_kang->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
+			//} else if ((liu_kang->direction & DIRECTION_ARRIERE) != 0) {
+			//	liu_kang->direction=((liu_kang->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			//}
 			// change de sens donc si marchait en avançant désormais il recule.
 			if ((liu_kang->allez_retour & MARCHER) != 0) {
-				if ((liu_kang->allez_retour & RETOUR) != 0) {
-					liu_kang->allez_retour = (liu_kang->allez_retour & (!RETOUR));
-				} else {
-					liu_kang->allez_retour = (liu_kang->allez_retour | RETOUR);
-				}
+				liu_kang->allez_retour = liu_kang->allez_retour ^ RETOUR;
+				//if ((liu_kang->allez_retour & RETOUR) != 0) {
+				//	liu_kang->allez_retour = (liu_kang->allez_retour & (!RETOUR));
+				//} else {
+				//	liu_kang->allez_retour = (liu_kang->allez_retour | RETOUR);
+				//}
 			} else {//if ((liu_kang->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
 				liu_kang->allez_retour = liu_kang->allez_retour & (!MARCHE);
 			}
-			if ((sub_zero->direction & DIRECTION_AVANT) != 0) {
-				sub_zero->direction=((sub_zero->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
-			} else if ((sub_zero->direction & DIRECTION_ARRIERE) != 0) {
-				sub_zero->direction=((sub_zero->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			if ((sub_zero->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) != 0) {
+				sub_zero->direction=sub_zero->direction ^ (DIRECTION_AVANT|DIRECTION_ARRIERE);
+				//sub_zero->direction=(sub_zero->direction & ~(DIRECTION_AVANT|DIRECTION_ARRIERE)) | (~(sub_zero->direction & (DIRECTION_AVANT|DIRECTION_ARRIERE)) & (DIRECTION_AVANT|DIRECTION_ARRIERE));
 			}
+
+			//if ((sub_zero->direction & DIRECTION_AVANT) != 0) {
+			//	sub_zero->direction=((sub_zero->direction & (!DIRECTION_AVANT)) | DIRECTION_ARRIERE);
+			//} else if ((sub_zero->direction & DIRECTION_ARRIERE) != 0) {
+			//	sub_zero->direction=((sub_zero->direction & (!DIRECTION_ARRIERE)) | DIRECTION_AVANT);
+			//}
 			if ((sub_zero->allez_retour & MARCHER) != 0) {
-				if ((sub_zero->allez_retour & RETOUR) != 0) {
-					sub_zero->allez_retour = (sub_zero->allez_retour & (!RETOUR));
-				} else {
-					sub_zero->allez_retour = (sub_zero->allez_retour | RETOUR);
-				}
+				sub_zero->allez_retour = sub_zero->allez_retour ^ RETOUR;
+				//if ((sub_zero->allez_retour & RETOUR) != 0) {
+				//	sub_zero->allez_retour = (sub_zero->allez_retour & (!RETOUR));
+				//} else {
+				//	sub_zero->allez_retour = (sub_zero->allez_retour | RETOUR);
+				//}
 			} else {//if ((sub_zero->direction & (DIRECTION_AVANT | DIRECTION_ARRIERE)) != 0) {
 				// les attaques qui avancent on arrête d'avancer sinon ça fait droite/gauche/droite/gauche non déterministe
 				sub_zero->allez_retour = sub_zero->allez_retour & (!MARCHE);
