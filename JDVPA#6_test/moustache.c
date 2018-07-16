@@ -329,7 +329,7 @@ void callback_roulette2(unsigned char roulette)
 // chat_gaston-prudent.png
 void test_palette() {
 	bank0123();
-	put_frame((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
+	put_frame_transparent((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
 	//3) raster palette
 	vsync();
 	handle_raster(callback_roulette2);
