@@ -265,7 +265,7 @@ void callback_rouletteNOPNOPNOP(unsigned char roulette)
 // chat-venére-gaston.jpg
 void test_int() {
 	char i;
-	put_frame((unsigned char *)(0xC000 + vram[0]+30),50,200,0x5000);
+	put_frame_transparent((unsigned char *)(0xC000 + vram[0]+30),50,200,0x5000);
 	//2) VSYNC+INT :
 	//VSYNC : sert juste à synchro le démarrage du tout
 	//INT : change curseur d'un tableau (un pointeur)
