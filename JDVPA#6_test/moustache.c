@@ -15,13 +15,32 @@ const unsigned char palette_chat[]=
 
 unsigned int *vram;
 
-char fake_vsync=0;
 char get_vsync() {
-	fake_vsync++;
-	return fake_vsync%2;
+	__asm
+		ld b,#0xf5            ;; PPI port B input
+		in a,(c)            ;; [4] read PPI port B input
+		and	a, #0x01
+		ld	l,a
+	__endasm;
 }
-void set_vsync(char v) {
-	fake_vsync=v;
+
+void set_vsyncOriginal() {
+	__asm
+		//r7=30	Vertical Sync position
+		ld bc,#0xbc07
+		out (c),c
+		ld bc,#0xbd00+30
+		out (c),c
+	__endasm;
+}
+void set_vsyncMinus1() {
+	__asm
+		//r7=30	Vertical Sync position
+		ld bc,#0xbc07
+		out (c),c
+		ld bc,#0xbd00+29
+		out (c),c
+	__endasm;
 }
 
 // color BASIC 0
@@ -37,10 +56,16 @@ void set_vsync(char v) {
 // color BASIC 5
 #define FIRM_COLOR_5 93
 
-void set_firmcolor(unsigned char firmColor)
+//void set_firmcolor(unsigned char firmColor)
+void set_firmcolor(char firmColor)
 {
   __asm
     ld a, 4 (ix)
+	
+	//ld	hl, #2+0
+	//add	hl, sp
+	//ld	a, (hl)
+	
     ld bc, #0x7f00
     out (c), c
     out (c), a
@@ -79,11 +104,11 @@ void test_vsync() {
 	//mettre les différents résultats dans un tableau, comme ça on affiche un rapport à la fin.
 	//VSYNC détecter un changement d'offset, lorsqu'on maj VSYNC juste au dernier moment (just in time, juste avant la fin (ou sinon juste au début si c'est pas bon, en fait qu'est ce que ça change ? on détecte un changement de comportement à partir d'un certain moment (entre deux VSYNC en lecture...)
 	nb_vsync1[0]=0;
-	nb_vsync0[0]=1;
-	nb_vsync0_boum[0]=3;
-	nb_vsync1[1]=4;
-	nb_vsync0[1]=5;
-	nb_vsync0_boum[1]=6;
+	nb_vsync0[0]=0;
+	nb_vsync0_boum[0]=0;
+	nb_vsync1[1]=0;
+	nb_vsync0[1]=0;
+	nb_vsync0_boum[1]=0;
 	nb_vsync1[2]=0;
 	nb_vsync0[2]=0;
 	nb_vsync0_boum[2]=0;
@@ -132,29 +157,29 @@ void test_vsync() {
 	}
 	for(i=0;i<4;i++) {
 		// %u for unsigned int, %hu for unsigned char
-		printf("VSYNC %hu NOPs : VSYNC1 %hu, VSYNC0 %hu.\r\n",i,nb_vsync1[i],nb_vsync0[i]);
+		printf("%hu VS1:%hu VS0:%hu.\r\n",i,nb_vsync1[i],nb_vsync0[i]);
 	}
 	// dérapage
 	nb_vsync0[0]=nb_vsync0[0]-1;
 	vsync();
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsync(-1);
+	set_vsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[0]++;
 	}
-	set_vsync(1);
+	set_vsyncOriginal();
 	vsync();
 	__asm
 		NOP
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsync(-1);
+	set_vsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[1]++;
 	}
-	set_vsync(1);
+	set_vsyncOriginal();
 	vsync();
 	__asm
 		NOP
@@ -162,11 +187,11 @@ void test_vsync() {
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsync(-1);
+	set_vsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[2]++;
 	}
-	set_vsync(1);
+	set_vsyncOriginal();
 	vsync();
 	__asm
 		NOP
@@ -175,14 +200,14 @@ void test_vsync() {
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsync(-1);
+	set_vsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[3]++;
 	}
-	set_vsync(1);
+	set_vsyncOriginal();
 	vsync();
 	for(i=0;i<4;i++) {
-		printf("VSYNC-BOUM %hu NOPs : %hu.\r\n",i,nb_vsync0_boum[i]);
+		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
 	}
 	check_controller();
 	while (!get_key(Key_Space)) {check_controller();}
@@ -315,6 +340,7 @@ void set_firmcolor2()
 
 void callback_roulette2(unsigned char roulette)
 {
+	//set_firmcolor(FIRM_COLOR_0);
 	set_firmcolor2();
 	__asm
 		NOP
@@ -323,6 +349,7 @@ void callback_roulette2(unsigned char roulette)
 		NOP
 		NOP
 	__endasm;
+	//set_firmcolor(FIRM_COLOR_5);
 	set_firmcolor1();
 }
 
