@@ -8,3 +8,8 @@ __main.c jdvpa6.dsk__
 ![JDVPA6.dsk.png](JDVPA6.dsk.png)
 
 Ajout d'un gameplay à la "Oh Mummy !" pour les déplacements en zig zag.
+
+__moustache.c jdvpa6_moustache.dsk__
+![JDVPA6_moustache.dsk.png](JDVPA6_moustache.dsk.png)
+
+Testbench for calibrating CPC on my MiST-board : VSYNC, interrupt, palette raster.

@@ -375,6 +375,7 @@ void main() {
 	LoadFile("chat3.scr", (char *)0x7800);
 	test_vsync();
 	test_int();
+	printf("\r\n\r\n\r\n V0.0c0");
 	test_palette();
 	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
