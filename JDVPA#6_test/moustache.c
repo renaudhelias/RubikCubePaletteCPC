@@ -348,6 +348,7 @@ void callback_roulette2(unsigned char roulette)
 		NOP
 		NOP
 		NOP
+		NOP
 	__endasm;
 	//set_firmcolor(FIRM_COLOR_5);
 	set_firmcolor1();
