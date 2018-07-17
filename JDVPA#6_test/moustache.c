@@ -24,21 +24,21 @@ char get_vsync() {
 	__endasm;
 }
 
-void set_vsyncOriginal() {
+void set_hsyncOriginal() {
 	__asm
-		//r7=30	Vertical Sync position
-		ld bc,#0xbc07
+		//r2=46	Horizontal Sync Position
+		ld bc,#0xbc02
 		out (c),c
-		ld bc,#0xbd00+30
+		ld bc,#0xbd00+46
 		out (c),c
 	__endasm;
 }
-void set_vsyncMinus1() {
+void set_hsyncMinus1() {
 	__asm
-		//r7=30	Vertical Sync position
-		ld bc,#0xbc07
+		//r7=45	Vertical Sync position
+		ld bc,#0xbc02
 		out (c),c
-		ld bc,#0xbd00+29
+		ld bc,#0xbd00+45
 		out (c),c
 	__endasm;
 }
@@ -164,22 +164,22 @@ void test_vsync() {
 	vsync();
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsyncMinus1();
+	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[0]++;
 	}
-	set_vsyncOriginal();
+	set_hsyncOriginal();
 	vsync();
 	__asm
 		NOP
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsyncMinus1();
+	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[1]++;
 	}
-	set_vsyncOriginal();
+	set_hsyncOriginal();
 	vsync();
 	__asm
 		NOP
@@ -187,11 +187,11 @@ void test_vsync() {
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsyncMinus1();
+	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[2]++;
 	}
-	set_vsyncOriginal();
+	set_hsyncOriginal();
 	vsync();
 	__asm
 		NOP
@@ -200,11 +200,11 @@ void test_vsync() {
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
-	set_vsyncMinus1();
+	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[3]++;
 	}
-	set_vsyncOriginal();
+	set_hsyncOriginal();
 	vsync();
 	for(i=0;i<4;i++) {
 		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
@@ -375,7 +375,7 @@ void main() {
 	LoadFile("chat3.scr", (char *)0x7800);
 	test_vsync();
 	test_int();
-	printf("\r\n\r\n\r\n V0.0c0");
+	printf("\r\n\r\n\r\n V0.0c1");
 	test_palette();
 	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
