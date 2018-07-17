@@ -10,7 +10,7 @@
 
 const unsigned char palette_chat[]=
 {
-		26,0,18,6,0,0,0,0,0,0,0,0,0,0,0,0
+		5,0,18,6,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
 unsigned int *vram;
@@ -98,7 +98,7 @@ void test_vsync() {
 	__asm
 		DI
 	__endasm;
-	put_frame((unsigned char *)(0xC000 + vram[60]+0),40,100,0x4000);
+//	put_frame((unsigned char *)(0xC000 + vram[60]+0),40,100,0x4000);
 	//1) VSYNC : mesurer (détecter le passage de 1 à 0 et de 0 à 1, compter  trouver un moyen d'offset un certain nombre de NOP au début.
 	//genre 5 6, 5 6, 6 7, 6 7, 6 7
 	//mettre les différents résultats dans un tableau, comme ça on affiche un rapport à la fin.
@@ -209,9 +209,9 @@ void test_vsync() {
 	for(i=0;i<4;i++) {
 		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
 	}
-	check_controller();
-	while (!get_key(Key_Space)) {check_controller();}
-	while (get_key(Key_Space )) {check_controller();}
+//	check_controller();
+//	while (!get_key(Key_Space)) {check_controller();}
+//	while (get_key(Key_Space )) {check_controller();}
 	__asm
 		EI
 	__endasm;
@@ -307,9 +307,9 @@ void test_int() {
 		printf("%h2u:%3u,%3u,%3u,%3u.\r\n",i,count_int[i],count_int[i+10],count_int[i+20],count_int[i+30]);
 	}
 	
-	check_controller();
-	while (!get_key(Key_Space)) {check_controller();}
-	while (get_key(Key_Space )) {check_controller();}
+//	check_controller();
+//	while (!get_key(Key_Space)) {check_controller();}
+//	while (get_key(Key_Space )) {check_controller();}
 }
 
 void set_firmcolor1()
@@ -368,13 +368,13 @@ void main() {
 	vram=precalc_vram();
 	SetupDOS();
 	mode(1);// à cause de la publicité ParaDOS ;)
-	border(26);
+	border(5);
 	set_palette(palette_chat);
-	LoadFile("chat1.scr", (char *)0x4000);
+//	LoadFile("chat1.scr", (char *)0x4000);
 	LoadFile("chat2.scr", (char *)0x5000);
 	LoadFile("chat3.scr", (char *)0x7800);
 	test_vsync();
 	test_int();
 	test_palette();
-	while(1) {}
+	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
