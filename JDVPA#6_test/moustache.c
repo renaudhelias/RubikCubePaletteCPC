@@ -130,6 +130,7 @@ void test_vsync() {
 	nb_vsync1[3]=0;
 	nb_vsync0[3]=0;
 	nb_vsync0_boum[3]=0;
+	while (get_vsync()==1) {}
 	vsync();
 //;moustache.c:94: while (get_vsync()==1) {
 //;5	20T		call nn			call	_get_vsync
@@ -202,6 +203,7 @@ void test_vsync() {
 //;3	12T	jr e			jr	00156$
 //donc : 20-19NOPs	76us-72us
 	nb_vsync0[0]=nb_vsync0[0]-1-2;
+	while (get_vsync()==1) {}
 	vsync();
 	for (j=0;j<nb_vsync1[0];j++) {
 		// 40 NOPs FIXME set_hsyncMinus1() à chronométrer aussi par là.
@@ -566,12 +568,14 @@ void test_int() {
 	//si INT nb>10, stopper.
 	no_int=0;
 	count_int[0]=0;
+	while (get_vsync()==1) {}
 	vsync();
 	handle_raster(callback_roulette);
 	raster();
 	while (no_int<10) {
 		count_int[no_int]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	no_int=10;
 	handle_raster(callback_rouletteNOP);
@@ -579,6 +583,7 @@ void test_int() {
 	while (no_int<20) {
 		count_int[no_int]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	no_int=20;
 	handle_raster(callback_rouletteNOPNOP);
@@ -586,6 +591,7 @@ void test_int() {
 	while (no_int<30) {
 		count_int[no_int]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	no_int=30;
 	handle_raster(callback_rouletteNOPNOPNOP);
@@ -593,6 +599,7 @@ void test_int() {
 	while (no_int<40) {
 		count_int[no_int]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	printf("            \r\n");
 	printf("            \r\n");
@@ -652,6 +659,7 @@ void test_palette() {
 	bank0123();
 	put_frame_transparent((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
 	//3) raster palette
+	while (get_vsync()==1) {}
 	vsync();
 	handle_raster(callback_roulette2);
 	raster();
@@ -668,7 +676,7 @@ void main() {
 	LoadFile("chat3.scr", (char *)0x7800);
 	test_vsync();
 	test_int();
-	printf("\r\n\r\n\r\n V0.0c2");
+	printf("\r\n\r\n\r\n V0.0c3");
 	test_palette();
 	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
