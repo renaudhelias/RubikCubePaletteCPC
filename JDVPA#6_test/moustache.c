@@ -676,7 +676,7 @@ void main() {
 	LoadFile("chat2.scr", (char *)0x5000);
 	LoadFile("chat3.scr", (char *)0x7800);
 	put_frame_transparent((unsigned char *)(0xC000 + vram[0]+30),50,200,0x5000);
-	put_frame_transparent((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
+	//put_frame_transparent((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
 	test_vsync();
 	test_int();
 	printf("\r\n\r\n\r\n V0.0c4");
