@@ -16,6 +16,13 @@ const unsigned char palette_chat[]=
 unsigned int *vram;
 
 char get_vsync() {
+//;2	 8T	ld r,n	ld	b,#0xf5 ;; PPI port B input
+//;4	12T	in r (c)	in	a,(c) ;; [4] read PPI port B input
+//;2	 8T	and n	and	a, #0x01
+//;1	 4T		ld r, r'	ld	l,a
+//;3	12T		ret			ret
+//donc 12NOPs	44us
+
 	__asm
 		ld b,#0xf5            ;; PPI port B input
 		in a,(c)            ;; [4] read PPI port B input
@@ -34,6 +41,14 @@ void set_hsyncOriginal() {
 	__endasm;
 }
 void set_hsyncMinus1() {
+//;5	20T		call nn		call	_set_hsyncMinus1
+//;3	12T		ld dd, nn	ld	bc,#0xbc02
+//;4	12T		out (c), r	out	(c),c
+//;3	12T		ld dd, nn	ld	bc,#0xbd00+45
+//;4	12T		out (c), r	out	(c),c
+//;3	12T		ret			ret
+//donc : 22Nops	80us	=>	nb_vsync0[0]=nb_vsync0[0]-1-2;//2*76us<80us
+	
 	__asm
 		//r7=45	Vertical Sync position
 		ld bc,#0xbc02
@@ -116,12 +131,25 @@ void test_vsync() {
 	nb_vsync0[3]=0;
 	nb_vsync0_boum[3]=0;
 	vsync();
+//;moustache.c:94: while (get_vsync()==1) {
+//;5	20T		call nn			call	_get_vsync
+//;1	 4T		dec r			dec	l
+//;3-2	12T-8T	jr NZ, e		jr	NZ,00104$
+//;4	16T		ld A, (nn)		ld	a,(#_nb_vsync1 + 0)
+//;6	20T		ld (IX+D), r	ld	-1 (ix), a
+//;1	 4T		ld r, r'		ld	c, a
+//;1	 4T		inc r			inc	c
+//;5	16T		ld HL, (nn)		ld	hl,#_nb_vsync1
+//;2	 8T		ld (HL), r		ld	(hl),c
+//;3	12T		jr e			jr	00101$
+//donc : 31-30NOPs	116us-112us
 	while (get_vsync()==1) {
 		nb_vsync1[0]++;
 	}
 	while (get_vsync()==0) {
 		nb_vsync0[0]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
@@ -132,6 +160,7 @@ void test_vsync() {
 	while (get_vsync()==0) {
 		nb_vsync0[1]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
@@ -143,6 +172,7 @@ void test_vsync() {
 	while (get_vsync()==0) {
 		nb_vsync0[2]++;
 	}
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
@@ -160,51 +190,314 @@ void test_vsync() {
 		printf("%hu VS1:%hu VS0:%hu.\r\n",i,nb_vsync1[i],nb_vsync0[i]);
 	}
 	// dérapage
-	nb_vsync0[0]=nb_vsync0[0]-1;
+//;moustache.c:140: for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
+// http://www.cpc-power.com/cpcarchives/index.php?page=articles&num=65
+//;2	 8T	ld r,n			ld	c,#0x00
+//;5	16T	ld HL, (nn)		ld	hl, #_nb_vsync1 + 0
+//;4	16T	ld A, (nn)		ld	b,(hl)
+//;1	 4T	ld r, r'		ld	a,c
+//;1	 4T	sub r			sub	a, b
+//;3-2	12T-8T	jr NR, e		jr	NC,00126$
+//;1	 4T		inc r			inc	c
+//;3	12T	jr e			jr	00156$
+//donc : 20-19NOPs	76us-72us
+	nb_vsync0[0]=nb_vsync0[0]-1-2;
 	vsync();
-	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
+	for (j=0;j<nb_vsync1[0];j++) {
+		// 40 NOPs FIXME set_hsyncMinus1() à chronométrer aussi par là.
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC1
+	for (j=0;j<nb_vsync0[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[0]++;
 	}
 	set_hsyncOriginal();
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
+	for (j=0;j<nb_vsync1[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC1
+	for (j=0;j<nb_vsync0[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[1]++;
 	}
 	set_hsyncOriginal();
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
+	for (j=0;j<nb_vsync1[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC1
+	for (j=0;j<nb_vsync0[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[2]++;
 	}
 	set_hsyncOriginal();
+	while (get_vsync()==1) {}
 	vsync();
 	__asm
 		NOP
 		NOP
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {} // VSYNC0
+	for (j=0;j<nb_vsync1[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC1
+	for (j=0;j<nb_vsync0[0];j++) {
+		// 40 NOPs
+		__asm
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//10
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			
+			NOP
+			NOP
+			NOP
+			NOP
+			NOP
+			//20
+			NOP
+			NOP
+			NOP
+		__endasm;
+	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
 		nb_vsync0_boum[3]++;
 	}
 	set_hsyncOriginal();
+	while (get_vsync()==1) {}
 	vsync();
 	for(i=0;i<4;i++) {
 		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
@@ -375,7 +668,7 @@ void main() {
 	LoadFile("chat3.scr", (char *)0x7800);
 	test_vsync();
 	test_int();
-	printf("\r\n\r\n\r\n V0.0c1");
+	printf("\r\n\r\n\r\n V0.0c2");
 	test_palette();
 	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
