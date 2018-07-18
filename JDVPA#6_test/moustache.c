@@ -671,12 +671,15 @@ void main() {
 	mode(1);// à cause de la publicité ParaDOS ;)
 	border(5);
 	set_palette(palette_chat);
+	bank0123();
 //	LoadFile("chat1.scr", (char *)0x4000);
 	LoadFile("chat2.scr", (char *)0x5000);
 	LoadFile("chat3.scr", (char *)0x7800);
+	put_frame_transparent((unsigned char *)(0xC000 + vram[0]+30),50,200,0x5000);
+	put_frame_transparent((unsigned char *)(0xC000 + vram[148]+20),40,48,0x7800);
 	test_vsync();
 	test_int();
-	printf("\r\n\r\n\r\n V0.0c3");
+	printf("\r\n\r\n\r\n V0.0c4");
 	test_palette();
 	while(1) {} // keyboard scan does perturbate raster palette, so no keyb by here :p
 }
