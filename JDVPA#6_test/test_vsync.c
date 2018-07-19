@@ -51,7 +51,6 @@ void test_vsync() {
 	__asm
 		DI
 	__endasm;
-//	put_frame((unsigned char *)(0xC000 + vram[60]+0),40,100,0x4000);
 	//1) VSYNC : mesurer (détecter le passage de 1 à 0 et de 0 à 1, compter  trouver un moyen d'offset un certain nombre de NOP au début.
 	//genre 5 6, 5 6, 6 7, 6 7, 6 7
 	//mettre les différents résultats dans un tableau, comme ça on affiche un rapport à la fin.
@@ -144,68 +143,12 @@ void test_vsync() {
 	while (get_vsync()==1) {}
 	vsync();
 	for (j=0;j<nb_vsync1[0];j++) {
-		// 40 NOPs FIXME set_hsyncMinus1() à chronométrer aussi par là.
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs FIXME set_hsyncMinus1() à chronométrer aussi par là.
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
@@ -218,68 +161,12 @@ void test_vsync() {
 		NOP
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
@@ -293,68 +180,12 @@ void test_vsync() {
 		NOP
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
@@ -369,68 +200,12 @@ void test_vsync() {
 		NOP
 	__endasm;
 	for (j=0;j<nb_vsync1[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
 	for (j=0;j<nb_vsync0[0];j++) {
-		// 40 NOPs
-		__asm
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//10
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			//20
-			NOP
-			NOP
-			NOP
-		__endasm;
+		// 23 NOPs
+		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
 	set_hsyncMinus1();
 	while (get_vsync()==0) {
@@ -442,9 +217,6 @@ void test_vsync() {
 	for(i=0;i<4;i++) {
 		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
 	}
-//	check_controller();
-//	while (!get_key(Key_Space)) {check_controller();}
-//	while (get_key(Key_Space )) {check_controller();}
 	__asm
 		EI
 	__endasm;
