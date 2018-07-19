@@ -16,9 +16,9 @@ const unsigned char palette_chat[]=
 unsigned int *vram;
 
 char get_vsync() {
-//;2	 8T	ld r,n	ld	b,#0xf5 ;; PPI port B input
-//;4	12T	in r (c)	in	a,(c) ;; [4] read PPI port B input
-//;2	 8T	and n	and	a, #0x01
+//;2	 8T		ld r,n		ld	b,#0xf5 ;; PPI port B input
+//;4	12T		in r (c)	in	a,(c) ;; [4] read PPI port B input
+//;2	 8T		and n		and	a, #0x01
 //;1	 4T		ld r, r'	ld	l,a
 //;3	12T		ret			ret
 //donc 12NOPs	44us
@@ -140,10 +140,10 @@ void test_vsync() {
 //;6	20T		ld (IX+D), r	ld	-1 (ix), a
 //;1	 4T		ld r, r'		ld	c, a
 //;1	 4T		inc r			inc	c
-//;5	16T		ld HL, (nn)		ld	hl,#_nb_vsync1
+//;3	12T		ld dd, nn		ld	hl,#_nb_vsync1
 //;2	 8T		ld (HL), r		ld	(hl),c
 //;3	12T		jr e			jr	00101$
-//donc : 31-30NOPs	116us-112us
+//donc : 29-28NOPs	112us-108us
 	while (get_vsync()==1) {
 		nb_vsync1[0]++;
 	}
@@ -193,15 +193,15 @@ void test_vsync() {
 	// dérapage
 //;moustache.c:140: for (j=0;j<nb_vsync1[0];j++) {} // VSYNC1
 // http://www.cpc-power.com/cpcarchives/index.php?page=articles&num=65
-//;2	 8T	ld r,n			ld	c,#0x00
-//;5	16T	ld HL, (nn)		ld	hl, #_nb_vsync1 + 0
-//;4	16T	ld A, (nn)		ld	b,(hl)
-//;1	 4T	ld r, r'		ld	a,c
-//;1	 4T	sub r			sub	a, b
-//;3-2	12T-8T	jr NR, e		jr	NC,00126$
-//;1	 4T		inc r			inc	c
-//;3	12T	jr e			jr	00156$
-//donc : 20-19NOPs	76us-72us
+//;2	 8T		ld r,n		ld	c,#0x00
+//;3	12T		ld dd, nn	ld	hl, #_nb_vsync1 + 0
+//;4	16T		ld A, (nn)	ld	b,(hl)
+//;1	 4T		ld r, r'	ld	a,c
+//;1	 4T		sub r		sub	a, b
+//;3-2	12T-8T	jr NR, e	jr	NC,00126$
+//;1	 4T		inc r		inc	c
+//;3	12T		jr e		jr	00156$
+//donc : 18-17NOPs	72us-68us
 	nb_vsync0[0]=nb_vsync0[0]-1-2;
 	while (get_vsync()==1) {}
 	vsync();
