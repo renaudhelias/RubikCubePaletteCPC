@@ -68,7 +68,7 @@ void test_vsync() {
 	nb_vsync0[3]=0;
 	nb_vsync0_boum[3]=0;
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 //;moustache.c:94: while (get_vsync()==1) {
 //;5	20T		call nn			call	_get_vsync
 //;1	 4T		dec r			dec	l
@@ -88,7 +88,7 @@ void test_vsync() {
 		nb_vsync0[0]++;
 	}
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 	__endasm;
@@ -99,7 +99,7 @@ void test_vsync() {
 		nb_vsync0[1]++;
 	}
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 		NOP
@@ -111,7 +111,7 @@ void test_vsync() {
 		nb_vsync0[2]++;
 	}
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 		NOP
@@ -139,14 +139,14 @@ void test_vsync() {
 //;1	 4T		inc r		inc	c
 //;3	12T		jr e		jr	00156$
 //donc : 18-17NOPs	72us-68us
-	nb_vsync0[0]=nb_vsync0[0]-1-2;
+	nb_vsync0[2]=nb_vsync0[2]-1-2;
 	while (get_vsync()==1) {}
-	vsync();
-	for (j=0;j<nb_vsync1[0];j++) {
+	while (get_vsync()==0) {}
+	for (j=0;j<nb_vsync1[2];j++) {
 		// 23 NOPs FIXME set_hsyncMinus1() à chronométrer aussi par là.
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {
+	for (j=0;j<nb_vsync0[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
@@ -156,15 +156,15 @@ void test_vsync() {
 	}
 	set_hsyncOriginal();
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {
+	for (j=0;j<nb_vsync1[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {
+	for (j=0;j<nb_vsync0[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
@@ -174,16 +174,16 @@ void test_vsync() {
 	}
 	set_hsyncOriginal();
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {
+	for (j=0;j<nb_vsync1[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {
+	for (j=0;j<nb_vsync0[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
@@ -193,17 +193,17 @@ void test_vsync() {
 	}
 	set_hsyncOriginal();
 	while (get_vsync()==1) {}
-	vsync();
+	while (get_vsync()==0) {}
 	__asm
 		NOP
 		NOP
 		NOP
 	__endasm;
-	for (j=0;j<nb_vsync1[0];j++) {
+	for (j=0;j<nb_vsync1[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC1
-	for (j=0;j<nb_vsync0[0];j++) {
+	for (j=0;j<nb_vsync0[2];j++) {
 		// 23 NOPs
 		__asm__("NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\nNOP\nNOP\n NOP\nNOP\nNOP\n");
 	} // VSYNC0
@@ -212,7 +212,6 @@ void test_vsync() {
 		nb_vsync0_boum[3]++;
 	}
 	set_hsyncOriginal();
-	while (get_vsync()==1) {}
 	vsync();
 	for(i=0;i<4;i++) {
 		printf("BOUM%hu:%hu.\r\n",i,nb_vsync0_boum[i]);
