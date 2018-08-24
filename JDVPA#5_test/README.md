@@ -13,6 +13,8 @@ Mais comme dit dans la vidéo, le nombre de sprite une fois qu'ils marcheront da
 
 __combat2.c jdvpa5_combat2.dsk__
 
+Ecriture de la bande sonore MK-BO.SKS par SuTeKH/Epyteor.
+
 ___put_inversed_frame()___
 
 Les personnages peuvent changent de sens lorsqu'ils se croisent.
