@@ -14,7 +14,8 @@
 #include "player.h"
 #include "ghost.h"
 #include "tiles.h"
-#include "labypac_map.h"
+//#include "labypac_map.h"
+#include "laby_data.h"
 
 #define IMG_BLANK 0
 
@@ -111,6 +112,8 @@ void main(void)
 	vsync();
 	
 	cpt=0;
+	
+	laby_init();
 	
 	for (y=0;y<25;y++)
 	{

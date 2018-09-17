@@ -1,6 +1,8 @@
 #include "player.h"
 #include "jdvapi_keyb.h"
-#include "labypac_map.h"
+//#include "labypac_map.h"
+#include "laby_data.h"
+
 
 s_player player;
 
@@ -47,15 +49,15 @@ void player_move_rel(char mx,char my)
 // 1 - Pac Gum
 // 2 - Mega Pac
 // 3 - Mur
-unsigned char player_return_type(unsigned char x,unsigned char y)
+unsigned char player_return_tile_type(unsigned char x,unsigned char y)
 {
 		unsigned int ntile;
 		
 		// Récupération du code tile en x,y
 		ntile = (unsigned int)((y>>3)*40)+(x>>2);
-		if (labypac_map[ntile]==1) return 0;
-		if (labypac_map[ntile]==10) return 1;
-		if (labypac_map[ntile]==11) return 2;
+		if (laby[ntile]==1) return 0;
+		if (laby[ntile]==10) return 1;
+		if (laby[ntile]==11) return 2;
 		
 		return 3;
 }
@@ -88,7 +90,10 @@ void player_control(void)
 		//	player.dd = PLAYER_STOP;
 
 		
-		
+
+		/* Si le joueur est positionné à en endroit ou il peut changer de direction */
+		/* On va vérifier qu'il peut bien aller dans la direction désirée */
+		/* Si oui la direction désirée devient la direction courante */
 		if (((player.x&3)==0) && ((player.y&7)==0))
 		{
 			//printf("%d-",player_return_type(player.x+4,player.y));
@@ -106,7 +111,8 @@ void player_control(void)
 				player.dc = PLAYER_DOWN;
 		}
 		
-		
+		/* On déplace le joueur par rapport à la direction courante, si il n'y à pas d'obstacle */
+		/* Sinon, on le stoppe et la direction courante devient PLAYER_STOP */
 		if (player.dc==PLAYER_LEFT) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x-4,player.y)==3)) player.dc = PLAYER_STOP;
@@ -130,4 +136,12 @@ void player_control(void)
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x,player.y+8)==3)) player.dc = PLAYER_STOP;
 				if (player.dc!=PLAYER_STOP)	player_move_rel(0,2);
 		}			
+		
+		/* Mangeage de Pacgum ... MIAM */
+		if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y)<3))
+		{
+			ntile = (unsigned int)((player.y>>3)*40)+(player.x>>2);
+			laby[ntile]=1;
+		}
+		
 }
