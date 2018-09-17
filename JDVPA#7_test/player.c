@@ -98,16 +98,16 @@ void player_control(void)
 		{
 			//printf("%d-",player_return_type(player.x+4,player.y));
 	
-			if (((player.dd & PLAYER_LEFT & ~player.dc) != 0) && (player_return_type(player.x-4,player.y)!=3))
+			if (((player.dd & PLAYER_LEFT & ~player.dc) != 0) && (player_return_tile_type(player.x-4,player.y)!=3))
 				player.dc = PLAYER_LEFT;
 			else
-			if (((player.dd & PLAYER_RIGHT & ~player.dc) != 0) && (player_return_type(player.x+4,player.y)!=3))
+			if (((player.dd & PLAYER_RIGHT & ~player.dc) != 0) && (player_return_tile_type(player.x+4,player.y)!=3))
 				player.dc = PLAYER_RIGHT;
 			else
-			if (((player.dd & PLAYER_UP & ~player.dc) != 0) && (player_return_type(player.x,player.y-8)!=3))
+			if (((player.dd & PLAYER_UP & ~player.dc) != 0) && (player_return_tile_type(player.x,player.y-8)!=3))
 				player.dc = PLAYER_UP;
 			else
-			if (((player.dd & PLAYER_DOWN & ~player.dc) != 0) && (player_return_type(player.x,player.y+8)!=3))
+			if (((player.dd & PLAYER_DOWN & ~player.dc) != 0) && (player_return_tile_type(player.x,player.y+8)!=3))
 				player.dc = PLAYER_DOWN;
 		}
 		
@@ -115,25 +115,25 @@ void player_control(void)
 		/* Sinon, on le stoppe et la direction courante devient PLAYER_STOP */
 		if (player.dc==PLAYER_LEFT) 
 		{
-				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x-4,player.y)==3)) player.dc = PLAYER_STOP;
+				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x-4,player.y)==3)) player.dc = PLAYER_STOP;
 				if (player.dc!=PLAYER_STOP)	player_move_rel(-2,0);
 		}
 		else
 		if (player.dc==PLAYER_RIGHT)  
 		{
-				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x+4,player.y)==3)) player.dc = PLAYER_STOP;
+				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x+4,player.y)==3)) player.dc = PLAYER_STOP;
 				if (player.dc!=PLAYER_STOP)	player_move_rel(2,0);
 		}
 		else
 		if (player.dc==PLAYER_UP) 
 		{
-				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x,player.y-8)==3)) player.dc = PLAYER_STOP;
+				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y-8)==3)) player.dc = PLAYER_STOP;
 				if (player.dc!=PLAYER_STOP)	player_move_rel(0,-2);
 		}
 		else
 		if (player.dc==PLAYER_DOWN) 
 		{
-				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_type(player.x,player.y+8)==3)) player.dc = PLAYER_STOP;
+				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y+8)==3)) player.dc = PLAYER_STOP;
 				if (player.dc!=PLAYER_STOP)	player_move_rel(0,2);
 		}			
 		

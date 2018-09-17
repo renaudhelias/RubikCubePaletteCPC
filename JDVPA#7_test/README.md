@@ -5,3 +5,6 @@ Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch
 
 __main.c jdvpa7.dsk__
 
+![JDVPA7.dsk.png](JDVPA7.dsk.png)
+
+Miam.

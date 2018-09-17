@@ -44,11 +44,11 @@ void render_background(unsigned char x,unsigned char y)
 		xpix = (xtile<<2);
 		ypix = (ytile<<3);
 		
-		put_frame(screen(xpix,ypix),2,8,tiles_img[labypac_map[ntile]]);
-		put_frame(screen((xpix+4),ypix),2,8,tiles_img[labypac_map[ntile+1]]);
+		put_frame(screen(xpix,ypix),2,8,tiles_img[laby[ntile]]);
+		put_frame(screen((xpix+4),ypix),2,8,tiles_img[laby[ntile+1]]);
 
-		put_frame(screen(xpix,(ypix+8)),2,8,tiles_img[labypac_map[ntile+40]]);
-		put_frame(screen((xpix+4),(ypix+8)),2,8,tiles_img[labypac_map[ntile+41]]);
+		put_frame(screen(xpix,(ypix+8)),2,8,tiles_img[laby[ntile+40]]);
+		put_frame(screen((xpix+4),(ypix+8)),2,8,tiles_img[laby[ntile+41]]);
 	
 }
 
@@ -122,7 +122,7 @@ void main(void)
 			// x et y doivent être des UNSIGNED INT PASSE A CETTE FONCTION
 			// Sinon glitch, certainement du à une conversion de type foireuse qqpart ...
 			// cpt --> Unsigned int car peut aller jusqu'à 25*40
-			put_frame(screen((x*4),(y*8)),2,8,tiles_img[labypac_map[cpt]]);
+			put_frame(screen((x*4),(y*8)),2,8,tiles_img[laby[cpt]]);
 			cpt++;
 			
 		}
