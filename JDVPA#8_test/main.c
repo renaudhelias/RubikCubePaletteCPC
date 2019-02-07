@@ -23,6 +23,7 @@ unsigned int *vram;
 
 unsigned char *spr_img[25];
 unsigned char *tiles_img[26];
+unsigned char timer;
 
 
 const unsigned char game_palette[]=
@@ -35,6 +36,7 @@ void render_background(unsigned char x,unsigned char y)
 		unsigned int xtile,ytile;
 		unsigned int ntile;
 		unsigned int xpix,ypix;
+//		unsigned int addr;
 		
 		// Récupération du code tile en x,y
 		xtile = (unsigned int)x>>2; // Diviser par 4
@@ -49,7 +51,17 @@ void render_background(unsigned char x,unsigned char y)
 
 		put_frame(screen(xpix,(ypix+8)),2,8,tiles_img[laby[ntile+40]]);
 		put_frame(screen((xpix+4),(ypix+8)),2,8,tiles_img[laby[ntile+41]]);
-	
+
+/* Autre écriture*/
+/*
+		addr = *(precalc_vram+ypix);
+		put_frame((unsigned char *)(addr+(xpix>>1)),2,8,tiles_img[laby[ntile]]);
+		put_frame((unsigned char*)(addr+((xpix+4)>>1)),2,8,tiles_img[laby[ntile+1]]);
+
+		addr = *(precalc_vram+ypix+8);
+		put_frame((unsigned char *)(addr+(xpix>>1)),2,8,tiles_img[laby[ntile+40]]);
+		put_frame((unsigned char*)(addr+((xpix+4)>>1)),2,8,tiles_img[laby[ntile+41]]);
+*/
 }
 
 void waito(void)
@@ -61,6 +73,7 @@ void main(void)
 {
 	char i;
 	unsigned int cpt,x,y;
+	//unsigned int addr;
 	
 	
 	vram=precalc_vram();
@@ -115,6 +128,7 @@ void main(void)
 	
 	laby_init();
 	
+	
 	for (y=0;y<25;y++)
 	{
 		for (x=0;x<40;x++)
@@ -127,29 +141,42 @@ void main(void)
 			
 		}
 	}
-	
+		
+	/* Autre écriture*/
+/*	
+	for (y=0;y<200;y+=8)
+	{
+		addr = *(precalc_vram+y);
+		for (x=0;x<160;x+=4)
+		{			
+			put_frame((unsigned char*)addr,2,8,tiles_img[laby[cpt]]);
+			addr+=2;
+			cpt++;
+		}
+	}	
+*/	
 	player_init();
 	ghost_init();
 	
+	timer=0;
 	while(1)
 	{
 		check_controller();
-		player_control();
-		ghost_ia();
-
+		player_control();			
+		if ((timer&7)==0) {} else {ghost_update();}
 		
 		/* Rendu graphique */		
 		vsync();		
 		render_background(player.oldx,player.oldy);
+		//put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);
 		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[tile_dc[player.dc]+player.anim]);		
 	
-		/*
 		for (i=0;i<4;i++)
 		{	
 			render_background(ghost[i].oldx,ghost[i].oldy);
 			put_frame(screen(ghost[i].x,ghost[i].y), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[14+(i<<1)+ghost[i].anim]);				
 		}
-		*/
+		timer++;
 
 	}
 }
