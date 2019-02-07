@@ -7,4 +7,4 @@ __main.c jdvpa8.dsk__
 
 ![JDVPA8.dsk.png](JDVPA8.dsk.png)
 
-Wip.
+wip (ça fait des trucs, mais c'est pas encore ça, faut adapter je pense)

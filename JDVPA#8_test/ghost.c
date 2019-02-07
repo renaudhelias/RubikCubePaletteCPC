@@ -1,4 +1,7 @@
 #include "ghost.h"
+#include "player.h"
+//#include "labypac_map.h"
+#include "laby_data.h"
 
 s_ghost ghost[4];
 
