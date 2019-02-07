@@ -14,9 +14,10 @@ void ghost_init()
 		ghost[i].oldx=0;
 		ghost[i].oldy=0;
 		ghost[i].x=0;
-		ghost[i].y=0;	
-		ghost[i].y=12<<3;	
-		ghost[i].sensx=0;
+		//ghost[i].y=0;
+		//ghost[i].y=12<<3;
+		ghost[i].y=9<<3;
+		//ghost[i].sensx=0;
 		ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
 		ghost[i].sensy=0;
 		ghost[i].timer=0;
@@ -27,22 +28,26 @@ void ghost_init()
 		if (i==0) 
 		{
 			ghost[i].wait_timer=100;
-			ghost[i].x=16<<2;
+			//ghost[i].x=16<<2;
+			ghost[i].x=20<<2;
 		}
 		if (i==1) 
 		{
 			ghost[i].wait_timer=140;
-			ghost[i].x=18<<2;
+			//ghost[i].x=18<<2;
+			ghost[i].x=22<<2;
 		}
 		if (i==2) 
 		{
 			ghost[i].wait_timer=120;
-			ghost[i].x=20<<2;
+			//ghost[i].x=20<<2;
+			ghost[i].x=24<<2;
 		}
 		if (i==3) 
 		{
 			ghost[i].wait_timer=150;
-			ghost[i].x=22<<2;
+			//ghost[i].x=22<<2;
+			ghost[i].x=26<<2;
 		}
 		
 	}
