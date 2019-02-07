@@ -16,7 +16,7 @@ void ghost_init()
 		ghost[i].x=0;
 		//ghost[i].y=0;
 		//ghost[i].y=12<<3;
-		ghost[i].y=9<<3;
+		ghost[i].y=3<<3;
 		//ghost[i].sensx=0;
 		ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
 		ghost[i].sensy=0;
@@ -28,26 +28,22 @@ void ghost_init()
 		if (i==0) 
 		{
 			ghost[i].wait_timer=100;
-			//ghost[i].x=16<<2;
-			ghost[i].x=20<<2;
+			ghost[i].x=16<<2;
 		}
 		if (i==1) 
 		{
 			ghost[i].wait_timer=140;
-			//ghost[i].x=18<<2;
-			ghost[i].x=22<<2;
+			ghost[i].x=18<<2;
 		}
 		if (i==2) 
 		{
 			ghost[i].wait_timer=120;
-			//ghost[i].x=20<<2;
-			ghost[i].x=24<<2;
+			ghost[i].x=20<<2;
 		}
 		if (i==3) 
 		{
 			ghost[i].wait_timer=150;
-			//ghost[i].x=22<<2;
-			ghost[i].x=26<<2;
+			ghost[i].x=22<<2;
 		}
 		
 	}
@@ -62,6 +58,7 @@ unsigned char ghost_return_tile_type(unsigned char x,unsigned char y)
 		
 		// Récupération du code tile en x,y
 		ntile = (unsigned int)((y>>3)*40)+(x>>2);
+		// case vide ou (pate gum petite ou grosse)
 		if ((laby[ntile]==1) || (laby[ntile]==10) || (laby[ntile]==11)) return 0;
 		
 		return 1;
@@ -93,7 +90,8 @@ void ghost_ia_wait(unsigned char gid)
 			/* On le fait sortir du labyrinthe, et on lui donne un sens */
 			/* par rapport à la position courant du joueur */
 			ghost[gid].x=19<<2;
-			ghost[gid].y=10<<3;		
+			//ghost[gid].y=10<<3;		
+			ghost[gid].y=1<<3;
 			ghost[gid].sensy=0;
 			if (ghost[gid].x<=player.x) ghost[gid].sensx=-GHOST_VITESSE_H; else ghost[gid].sensx=GHOST_VITESSE_H;			
 		}
