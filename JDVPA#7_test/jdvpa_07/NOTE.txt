@@ -1,0 +1,11 @@
+PixelX vers TileX -> TileX = PixelX / 4 équivaut à PixelX >> 2
+PixelY vers TileX -> TileY = PixelY / 8 équivaut à PixelY >> 3
+
+TileXY --> Index de tableau en linéraire
+
+Index de tableau = (TileY * largeur ligne tableau) + TileX
+				 = (TileY * 40) + TileX
+				 
+TileX vers PixelX -> PixelX = TileX * 4 équivaut à PixelX << 2
+TileY vers PixelY -> PixelY = TileY * 8 équivaut à PixelY << 3
+

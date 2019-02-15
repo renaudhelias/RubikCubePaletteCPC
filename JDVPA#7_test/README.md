@@ -8,3 +8,5 @@ __main.c jdvpa7.dsk__
 ![JDVPA7.dsk.png](JDVPA7.dsk.png)
 
 Miam.
+
+Sauvegarde de l'original jdvpa_07.zip car version testé OK.
