@@ -23,6 +23,7 @@ typedef struct
 	char sensy;
 	unsigned char timer;
 	unsigned char anim;
+	unsigned char base_image;
 	
 	unsigned int wait_timer;		/* Combien de temps il attend en zone d'attente */
 	unsigned int scatter_timer;		/* Combien de temps il est en scatter mode */
@@ -35,6 +36,7 @@ void ghost_init();
 void ghost_move_rel(char i,char mx,char my);
 //void ghost_ia(void);
 void ghost_update(void);
+void ghost_fear(void);
 
 extern s_ghost ghost[4];
 

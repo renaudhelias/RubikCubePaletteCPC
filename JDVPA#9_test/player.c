@@ -12,8 +12,7 @@ void player_init()
 {
 	player.oldx=0;
 	player.oldy=0;
-	//player.x=19<<2; // * 4      xtile --> xtile*4
-	player.x=18<<2; // * 4      xtile --> xtile*4
+	player.x=19<<2; // * 4      xtile --> xtile*4
 	player.y=22<<3; // * 8      ytile --> ytile*8
 	
 	player.dd = PLAYER_STOP;
@@ -63,31 +62,31 @@ unsigned char player_return_tile_type(unsigned char x,unsigned char y)
 }
 
 void player_control(void)
-{		
-		unsigned int ntile;
-		
-		player.dd = PLAYER_STOP;
+{		unsigned int ntile;
+		unsigned char tile_centre;
+
+		/* On check les contrôles pour savoir ou désire aller le joueur --> Positionnement de la variable direction désirée */
 		if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) 
 		{
-				player.dd = player.dd | PLAYER_LEFT;				
+				player.dd = PLAYER_LEFT;				
 		}
-		//else
+		else
 		if ((get_key(Key_Joy1Right)) || (get_key(Key_P))) 		
 		{
-			player.dd = player.dd | PLAYER_RIGHT;			
+			player.dd = PLAYER_RIGHT;			
 		}
-		//else
+		else
 		if ((get_key(Key_Joy1Up)) || (get_key(Key_Q))) 
 		{
-			player.dd = player.dd | PLAYER_UP;
+			player.dd = PLAYER_UP;
 		}
-		//else
-		if ((get_key(Key_Joy1Down)) || (get_key(Key_A))) 		
+		else
+		if ((get_key(Key_Joy1Right)) || (get_key(Key_A))) 		
 		{
-			player.dd = player.dd | PLAYER_DOWN;
+			player.dd = PLAYER_DOWN;
 		}
-		//else
-		//	player.dd = PLAYER_STOP;
+		else
+			player.dd = PLAYER_STOP;
 
 		
 
@@ -97,18 +96,17 @@ void player_control(void)
 		if (((player.x&3)==0) && ((player.y&7)==0))
 		{
 			//printf("%d-",player_return_type(player.x+4,player.y));
-	
-			if (((player.dd & PLAYER_LEFT & ~player.dc) != 0) && (player_return_tile_type(player.x-4,player.y)!=3))
-				player.dc = PLAYER_LEFT;
+			if ((player.dd==PLAYER_LEFT) && (player_return_tile_type(player.x-4,player.y)!=3))
+				player.dc = player.dd;
 			else
-			if (((player.dd & PLAYER_RIGHT & ~player.dc) != 0) && (player_return_tile_type(player.x+4,player.y)!=3))
-				player.dc = PLAYER_RIGHT;
+			if ((player.dd==PLAYER_RIGHT) && (player_return_tile_type(player.x+4,player.y)!=3))
+				player.dc = player.dd;
 			else
-			if (((player.dd & PLAYER_UP & ~player.dc) != 0) && (player_return_tile_type(player.x,player.y-8)!=3))
-				player.dc = PLAYER_UP;
+			if ((player.dd==PLAYER_UP) && (player_return_tile_type(player.x,player.y-8)!=3))
+				player.dc = player.dd;
 			else
-			if (((player.dd & PLAYER_DOWN & ~player.dc) != 0) && (player_return_tile_type(player.x,player.y+8)!=3))
-				player.dc = PLAYER_DOWN;
+			if ((player.dd==PLAYER_DOWN) && (player_return_tile_type(player.x,player.y+8)!=3))
+				player.dc = player.dd;				
 		}
 		
 		/* On déplace le joueur par rapport à la direction courante, si il n'y à pas d'obstacle */
@@ -116,30 +114,32 @@ void player_control(void)
 		if (player.dc==PLAYER_LEFT) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x-4,player.y)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(-2,0);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(-PLAYER_VITESSE_H,0);
 		}
 		else
 		if (player.dc==PLAYER_RIGHT)  
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x+4,player.y)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(2,0);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(PLAYER_VITESSE_H,0);
 		}
 		else
 		if (player.dc==PLAYER_UP) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y-8)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(0,-2);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(0,-PLAYER_VITESSE_V);
 		}
 		else
 		if (player.dc==PLAYER_DOWN) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y+8)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(0,2);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(0,PLAYER_VITESSE_V);
 		}			
 		
 		/* Mangeage de Pacgum ... MIAM */
-		if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y)<3))
-		{
+		tile_centre = player_return_tile_type(player.x,player.y);
+		if ((((player.x&3)==0) && ((player.y&7)==0)) && (tile_centre<3))
+		{			
+			if (tile_centre==2) ghost_fear();
 			ntile = (unsigned int)((player.y>>3)*40)+(player.x>>2);
 			laby[ntile]=1;
 		}

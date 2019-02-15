@@ -45,7 +45,7 @@ void render_background(unsigned char x,unsigned char y)
 		
 		xpix = (xtile<<2);
 		ypix = (ytile<<3);
-		
+						
 		put_frame(screen(xpix,ypix),2,8,tiles_img[laby[ntile]]);
 		put_frame(screen((xpix+4),ypix),2,8,tiles_img[laby[ntile+1]]);
 
@@ -166,7 +166,7 @@ void main(void)
 		if ((timer&7)==0) {} else {ghost_update();}
 		
 		/* Rendu graphique */		
-		vsync();		
+		vsync();	
 		render_background(player.oldx,player.oldy);
 		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);		
 		//put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[tile_dc[player.dc]+player.anim]);		
@@ -174,7 +174,7 @@ void main(void)
 		for (i=0;i<4;i++)
 		{	
 			render_background(ghost[i].oldx,ghost[i].oldy);
-			put_frame(screen(ghost[i].x,ghost[i].y), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[14+(i<<1)+ghost[i].anim]);				
+			put_frame(screen(ghost[i].x,ghost[i].y), GHOST_SPRITE_LARGEUR_O, GHOST_SPRITE_HAUTEUR, spr_img[ghost[i].base_image+ghost[i].anim]);				
 		}
 		timer++;
 

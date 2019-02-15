@@ -14,10 +14,7 @@ void ghost_init()
 		ghost[i].oldx=0;
 		ghost[i].oldy=0;
 		ghost[i].x=0;
-		//ghost[i].y=0;
-		//ghost[i].y=12<<3;
-		ghost[i].y=3<<3;
-		//ghost[i].sensx=0;
+		ghost[i].y=12<<3;	
 		ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
 		ghost[i].sensy=0;
 		ghost[i].timer=0;
@@ -27,21 +24,25 @@ void ghost_init()
 
 		if (i==0) 
 		{
+			ghost[i].base_image = 14;
 			ghost[i].wait_timer=100;
 			ghost[i].x=16<<2;
 		}
 		if (i==1) 
 		{
+			ghost[i].base_image = 16;
 			ghost[i].wait_timer=140;
 			ghost[i].x=18<<2;
 		}
 		if (i==2) 
 		{
+			ghost[i].base_image = 18;
 			ghost[i].wait_timer=120;
 			ghost[i].x=20<<2;
 		}
 		if (i==3) 
 		{
+			ghost[i].base_image = 20;
 			ghost[i].wait_timer=150;
 			ghost[i].x=22<<2;
 		}
@@ -89,9 +90,10 @@ void ghost_ia_wait(unsigned char gid)
 		{
 			/* On le fait sortir du labyrinthe, et on lui donne un sens */
 			/* par rapport à la position courant du joueur */
+			ghost[gid].oldx=ghost[gid].x;
+			ghost[gid].oldy=ghost[gid].y;
 			ghost[gid].x=19<<2;
-			//ghost[gid].y=10<<3;		
-			ghost[gid].y=1<<3;
+			ghost[gid].y=10<<3;		
 			ghost[gid].sensy=0;
 			if (ghost[gid].x<=player.x) ghost[gid].sensx=-GHOST_VITESSE_H; else ghost[gid].sensx=GHOST_VITESSE_H;			
 		}
@@ -164,6 +166,14 @@ void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 
 }
 
+void ghost_fear(void)
+{
+	ghost[0].fear_timer = 200;
+	ghost[1].fear_timer = 200;
+	ghost[2].fear_timer = 200;
+	ghost[3].fear_timer = 200;
+	
+}
 
 void ghost_update(void)
 {
@@ -183,8 +193,17 @@ void ghost_update(void)
 		else if (ghost[i].scatter_timer>0) /* Se barre */
 		{
 		}
-		else if (ghost[i].fear_timer>0) /* Se barrre et prêt à se faire bouffer ! */
+		else if ((ghost[i].fear_timer>0) && (ghost[i].wait_timer==0))/* Se barrre et prêt à se faire bouffer ! */
 		{
+			ghost[i].fear_timer--;			
+			if (ghost[i].fear_timer==0)
+			{
+				ghost[i].base_image=14+(i<<1);
+			} else
+			{
+				ghost_ia(i,0,0);
+				ghost[i].base_image=22;
+			}
 		}
 		else	/* IA d'attaque classique */
 		{				
