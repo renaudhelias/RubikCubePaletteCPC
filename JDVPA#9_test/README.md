@@ -7,4 +7,4 @@ __main.c jdvpa9.dsk__
 
 ![JDVPA9.dsk.png](JDVPA9.dsk.png)
 
-wip, la base.
+Effectivement ils sont bleu après avalé un gros pac-gum.

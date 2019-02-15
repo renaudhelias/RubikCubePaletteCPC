@@ -6,8 +6,6 @@
 
 s_player player;
 
-const unsigned char tile_dc[] = {PLAYER_STOP_TILE, PLAYER_LEFT_TILE, PLAYER_RIGHT_TILE, PLAYER_RIGHT_TILE, PLAYER_UP_TILE, PLAYER_UP_TILE, PLAYER_UP_TILE, PLAYER_UP_TILE, PLAYER_DOWN_TILE};
-
 void player_init()
 {
 	player.oldx=0;
