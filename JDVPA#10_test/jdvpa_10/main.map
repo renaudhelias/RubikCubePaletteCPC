@@ -1,0 +1,179 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           sprite_collision
+     00000000  l__BSS                          
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__GSINIT                       
+     00000000  l__HEADER                       
+     00000000  l__HEAP                         
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00000000  s__HEADER                       
+     00000000  s__HEADER0                      
+     00000000  s__HEADER1                      
+     00000001  l__GSFINAL                      
+     00000003  l__HEADER0                      
+     00000009  l__HEADER1                      
+     00000138  s__CODE                         
+     00000638  l__DATA                         
+     00001A4C  l__CODE                         
+     00001B84  s__DATA                         
+     000021BC  s__GSFINAL                      
+     000021BC  s__GSINIT                       
+     000021BC  s__HOME                         
+     000021BC  s__INITIALIZED                  
+     000021BD  s__BSS                          
+     000021BD  s__HEAP                         
+     000021BD  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000138    00001A4C =        6732. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000138  _render_background                 main
+     000002BB  _game_palette                      main
+     000002CB  _waito                             main
+     000002CC  _main                              main
+     0000054C  _get_key                           lib
+     0000058F  _check_controller                  lib
+     000005C2  _init_cpc_lib                      lib
+     0000062D  _intern_screen_mode0               lib
+     00000659  _screen_mode0                      lib
+     0000065F  _get_time                          lib
+     00000681  _set_pixel_color0                  lib
+     000006FC  _set_color                         lib
+     00000711  _set_palette                       lib
+     0000073D  _put_frame                         lib
+     00000774  _cmemcpy                           lib
+     00000793  _vsync                             lib
+     0000079C  _put_frameXOR                      lib
+     000007D4  __clock                            crt0
+     000007D5  _exit                              crt0
+     000007D6  _putchar                           
+     000007D6  _putchar_rr_s                      
+     000007DF  _putchar_rr_dbs                    
+     000007E4  _pacman_sprites                    pacman_sprites
+     00000884  _ghost_sprites                     ghost_sprites
+     00000924  _blank_sprites                     blank_sprites
+     00000934  _player_init                       player
+     00000963  _player_move_rel                   player
+     000009AD  _player_return_tile_type           player
+     000009F7  _player_control                    player
+     00000CB0  _ghost_init                        ghost
+     00000E87  _ghost_return_tile_type            ghost
+     00000EC9  _ghost_move_rel                    ghost
+     00000F25  _ghost_ia_wait                     ghost
+     00000FFA  _ghost_ia                          ghost
+     000011C0  _ghost_fear                        ghost
+     000011D4  _ghost_update                      ghost
+     000013B7  _tiles                             tiles
+     00001547  _laby_init                         laby_data
+     00001562  _laby_data                         laby_data
+     0000194A  _isCollision                       sprite_collision
+     000019BB  _col_check                         sprite_collision
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               00001B84    00000638 =        1592. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001B84  _spr_img                           main
+     00001BB6  _tiles_img                         main
+     00001BEA  _timer                             main
+     00001BEB  _char1                             lib
+     00001BEC  _char2                             lib
+     00001BED  _char3                             lib
+     00001BEE  _char4                             lib
+     00001BEF  _aKeyboard                         lib
+     00001BF9  _precalc_vram                      lib
+     00001D89  _flags                             lib
+     00001D8A  _err                               lib
+     00001D8C  _dx                                lib
+     00001D8D  _dy                                lib
+     00001D8E  _player                            player
+     00001D98  _ghost                             ghost
+     00001DD4  _laby                              laby_data
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSINIT                             000021BC    00000000 =           0. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000021BC  gsinit                             crt0
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSFINAL                            000021BC    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER0                            00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER1                            00000000    00000009 =           9. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+
+Files Linked                              [ module(s) ]
+
+main.rel                                  [ main ]
+lib.rel                                   [ lib ]
+crt0_cpc.rel                              [ crt0 ]
+putchar_cpc.rel                           [  ]
+pacman_sprites.rel                        [ pacman_sprites ]
+ghost_sprites.rel                         [ ghost_sprites ]
+blank_sprites.rel                         [ blank_sprites ]
+player.rel                                [ player ]
+ghost.rel                                 [ ghost ]
+tiles.rel                                 [ tiles ]
+laby_data.rel                             [ laby_data ]
+sprite_collision.rel                      [ sprite_collision ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+
+User Base Address Definitions
+
+_CODE = 0x0138
+_DATA = 0x0000
+
+

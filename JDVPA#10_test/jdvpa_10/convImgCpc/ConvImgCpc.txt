@@ -1,0 +1,38 @@
+Nouveautés de la version 0.16 :
+- Ajout d'une case à cocher "Code->Img", décochée par défaut, qui permet d'inclure le "code" d'affichage de l'image dans celle-ci (le call &C7D0)
+- Sauvegarde du bloc sélectionné (en mode édition) au format .WIN
+- Sauvegarde possible de l'image calculée au format .BMP (ajouter simplement l'extension .BMP au nom du fichier)
+- Possibilité de "swapper" deux couleurs de la palette (pour réorganiser l'ordre des couleurs manuellement)
+
+Nouveautés de la version 0.15 :
+- Affichage des coordonnées X,Y dans le module de retouche
+- Ajout de l'outil "pipette" dans le module de retouche
+- Ajout de l'outil "copie de blocs" dans le module de retouche
+- Utilisation de 2 stylos (bouton gauche/bouton droit) dans le module de retouche
+- Correction d'un bug lors de la lecture d'images "standard" compactées
+
+Nouveautés de la version 0.14b :
+- Ajout d'un bouton "16/15" qui permet de prendre en compte le ratio Largeur/Hauteur d'un écran CPC
+- Sauvegarde de la palette CPC+ au format "OCP+"
+
+Nouveautés de la version 0.14 :
+- Correction bug fonction "Batch" : prise en compte de plus de fichiers maintenant
+- Correction bug bouton "Appliquer palette" en mode CPC+
+- Ajout du mode "Plus proche" pour les calculs en mode "CPC OLD"
+- Ajout tracé en temps réel depuis le mode "édition" dans la fenêtre principale
+
+Nouveautés de la version 0.13 : 
+- Les paramètres de taille d'image sont maintenant des boutons radio.
+- Possibilité de déplacer/zoomer l'image avec la souris en mode "choisir la taille d'affichage"
+ (click droit+déplacement : déplacement image, click gauche+déplacement : zoom image).
+- Ajout d'un curseur de contraste.
+- Ajout d'un bouton "Calc. Auto" qui permet de recalculer automatiquement l'image CPC dès que l'on change un paramètre.
+- Ajout d'un bouton "batch" qui permet de faire du "traitement par lots" : calcul de plusieurs images avec les paramètres choisis. (Suppression des options de la ligne de commande)
+- Ajout d'un bouton "Ordonner palette" qui permet de trier la palette par ordre croissant des couleurs.
+- Ajout d'un bouton "Lissage" permettant de lisser l'image en fonction du mode CPC choisi.
+- Ajout d'un bouton "Noir et Blanc" qui permet de traiter l'image source comme étant en noir & blanc.
+- Ajout des boutons "Réduction 1" et "Réduction 2" qui permettent, en mode CPC+, de réduire le nombre de couleurs calculées.
+- Ajout du bouton "Réduction agressive", qui permet, si "Réduction 1" ou "Réduction 2" est coché, de réduire encore plus le nombre de couleurs calculées.
+- Possibilité de lire des images au format .SCR (calculées avec ConvImgCPC) sans avoir à les recalculer
+- Possibilité de déplacer l'image avec la souris dans l'éditeur (click droit+déplacement)
+- Agrandissement de la fenêtre de l'éditeur en 320x200 points mode 1
