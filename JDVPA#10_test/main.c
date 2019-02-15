@@ -158,7 +158,7 @@ void main(void)
 */	
 	player_init();
 	ghost_init();
-	
+	raster_halt();
 	timer=0;
 	while(1)
 	{

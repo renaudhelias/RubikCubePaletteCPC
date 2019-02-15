@@ -164,6 +164,8 @@ Ensuite sous SDCC, j'ai inséré ce sks3000.bin en &3000, puis le son (.SKS comp
 
 J'ai remarqué que la routine me change des variables (sans ma permission) de type volatile en début de mon main(), du coup je déclanche des fonctions avec les mêmes protections que j'avais utilisé en fait pour la fonction callback de raster.c
 
+__musique5.c musique.dsk__
+
 __combat2.c analyse gameplay__
 
 32 sprites par joueurs
