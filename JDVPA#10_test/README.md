@@ -7,4 +7,6 @@ __main.c jdvpa10.dsk__
 
 ![JDVPA10.dsk.png](JDVPA10.dsk.png)
 
-wip.
+Si un ennemi nous touche, simple retour du pacman à la position de départ.
+
+Quelques glitsh mais globalement ça le fait, la suite au prochain épisode.

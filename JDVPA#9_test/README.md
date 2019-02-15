@@ -8,3 +8,5 @@ __main.c jdvpa9.dsk__
 ![JDVPA9.dsk.png](JDVPA9.dsk.png)
 
 Effectivement ils sont bleu après avalé un gros pac-gum.
+
+Quelques glitsh mais globalement ça le fait, la suite au prochain épisode.
