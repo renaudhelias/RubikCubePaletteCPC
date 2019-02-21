@@ -27,22 +27,22 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000009  l__HEADER1                      
      00000138  s__CODE                         
      00000634  l__DATA                         
-     00001699  l__CODE                         
-     000017D1  s__DATA                         
-     00001E05  s__GSFINAL                      
-     00001E05  s__GSINIT                       
-     00001E05  s__HOME                         
-     00001E05  s__INITIALIZED                  
-     00001E06  s__BSS                          
-     00001E06  s__HEAP                         
-     00001E06  s__INITIALIZER                  
+     000016D2  l__CODE                         
+     0000180A  s__DATA                         
+     00001E3E  s__GSFINAL                      
+     00001E3E  s__GSINIT                       
+     00001E3E  s__HOME                         
+     00001E3E  s__INITIALIZED                  
+     00001E3F  s__BSS                          
+     00001E3F  s__HEAP                         
+     00001E3F  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00000138    00001699 =        5785. bytes (REL,CON)
+_CODE                               00000138    000016D2 =        5842. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -78,56 +78,56 @@ _CODE                               00000138    00001699 =        5785. bytes (R
      00000C47  _ghost_init                        ghost
      00000DA4  _ghost_return_tile_type            ghost
      00000DE6  _ghost_move_rel                    ghost
-     00000E41  _ghost_ia_wait                     ghost
-     00000EE2  _ghost_ia                          ghost
-     000010A7  _ghost_update                      ghost
-     0000123E  _tiles                             tiles
-     000013CE  _laby_init                         laby_data
-     000013E9  _laby_data                         laby_data
+     00000E7A  _ghost_ia_wait                     ghost
+     00000F1B  _ghost_ia                          ghost
+     000010E0  _ghost_update                      ghost
+     00001277  _tiles                             tiles
+     00001407  _laby_init                         laby_data
+     00001422  _laby_data                         laby_data
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_DATA                               000017D1    00000634 =        1588. bytes (REL,CON)
+_DATA                               0000180A    00000634 =        1588. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000017D1  _spr_img                           main
-     00001803  _tiles_img                         main
-     00001837  _timer                             main
-     00001838  _char1                             lib
-     00001839  _char2                             lib
-     0000183A  _char3                             lib
-     0000183B  _char4                             lib
-     0000183C  _aKeyboard                         lib
-     00001846  _precalc_vram                      lib
-     000019D6  _flags                             lib
-     000019D7  _err                               lib
-     000019D9  _dx                                lib
-     000019DA  _dy                                lib
-     000019DB  _player                            player
-     000019E5  _ghost                             ghost
-     00001A1D  _laby                              laby_data
+     0000180A  _spr_img                           main
+     0000183C  _tiles_img                         main
+     00001870  _timer                             main
+     00001871  _char1                             lib
+     00001872  _char2                             lib
+     00001873  _char3                             lib
+     00001874  _char4                             lib
+     00001875  _aKeyboard                         lib
+     0000187F  _precalc_vram                      lib
+     00001A0F  _flags                             lib
+     00001A10  _err                               lib
+     00001A12  _dx                                lib
+     00001A13  _dy                                lib
+     00001A14  _player                            player
+     00001A1E  _ghost                             ghost
+     00001A56  _laby                              laby_data
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSINIT                             00001E05    00000000 =           0. bytes (REL,CON)
+_GSINIT                             00001E3E    00000000 =           0. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00001E05  gsinit                             crt0
+     00001E3E  gsinit                             crt0
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSFINAL                            00001E05    00000001 =           1. bytes (REL,CON)
+_GSFINAL                            00001E3E    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

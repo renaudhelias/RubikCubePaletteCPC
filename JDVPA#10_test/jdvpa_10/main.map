@@ -27,22 +27,22 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000009  l__HEADER1                      
      00000138  s__CODE                         
      00000638  l__DATA                         
-     00001A4C  l__CODE                         
-     00001B84  s__DATA                         
-     000021BC  s__GSFINAL                      
-     000021BC  s__GSINIT                       
-     000021BC  s__HOME                         
-     000021BC  s__INITIALIZED                  
-     000021BD  s__BSS                          
-     000021BD  s__HEAP                         
-     000021BD  s__INITIALIZER                  
+     00001A85  l__CODE                         
+     00001BBD  s__DATA                         
+     000021F5  s__GSFINAL                      
+     000021F5  s__GSINIT                       
+     000021F5  s__HOME                         
+     000021F5  s__INITIALIZED                  
+     000021F6  s__BSS                          
+     000021F6  s__HEAP                         
+     000021F6  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00000138    00001A4C =        6732. bytes (REL,CON)
+_CODE                               00000138    00001A85 =        6789. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -78,59 +78,59 @@ _CODE                               00000138    00001A4C =        6732. bytes (R
      00000CB0  _ghost_init                        ghost
      00000E87  _ghost_return_tile_type            ghost
      00000EC9  _ghost_move_rel                    ghost
-     00000F25  _ghost_ia_wait                     ghost
-     00000FFA  _ghost_ia                          ghost
-     000011C0  _ghost_fear                        ghost
-     000011D4  _ghost_update                      ghost
-     000013B7  _tiles                             tiles
-     00001547  _laby_init                         laby_data
-     00001562  _laby_data                         laby_data
-     0000194A  _isCollision                       sprite_collision
-     000019BB  _col_check                         sprite_collision
+     00000F5E  _ghost_ia_wait                     ghost
+     00001033  _ghost_ia                          ghost
+     000011F9  _ghost_fear                        ghost
+     0000120D  _ghost_update                      ghost
+     000013F0  _tiles                             tiles
+     00001580  _laby_init                         laby_data
+     0000159B  _laby_data                         laby_data
+     00001983  _isCollision                       sprite_collision
+     000019F4  _col_check                         sprite_collision
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_DATA                               00001B84    00000638 =        1592. bytes (REL,CON)
+_DATA                               00001BBD    00000638 =        1592. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00001B84  _spr_img                           main
-     00001BB6  _tiles_img                         main
-     00001BEA  _timer                             main
-     00001BEB  _char1                             lib
-     00001BEC  _char2                             lib
-     00001BED  _char3                             lib
-     00001BEE  _char4                             lib
-     00001BEF  _aKeyboard                         lib
-     00001BF9  _precalc_vram                      lib
-     00001D89  _flags                             lib
-     00001D8A  _err                               lib
-     00001D8C  _dx                                lib
-     00001D8D  _dy                                lib
-     00001D8E  _player                            player
-     00001D98  _ghost                             ghost
-     00001DD4  _laby                              laby_data
+     00001BBD  _spr_img                           main
+     00001BEF  _tiles_img                         main
+     00001C23  _timer                             main
+     00001C24  _char1                             lib
+     00001C25  _char2                             lib
+     00001C26  _char3                             lib
+     00001C27  _char4                             lib
+     00001C28  _aKeyboard                         lib
+     00001C32  _precalc_vram                      lib
+     00001DC2  _flags                             lib
+     00001DC3  _err                               lib
+     00001DC5  _dx                                lib
+     00001DC6  _dy                                lib
+     00001DC7  _player                            player
+     00001DD1  _ghost                             ghost
+     00001E0D  _laby                              laby_data
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSINIT                             000021BC    00000000 =           0. bytes (REL,CON)
+_GSINIT                             000021F5    00000000 =           0. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000021BC  gsinit                             crt0
+     000021F5  gsinit                             crt0
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSFINAL                            000021BC    00000001 =           1. bytes (REL,CON)
+_GSFINAL                            000021F5    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
