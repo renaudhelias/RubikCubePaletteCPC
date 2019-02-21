@@ -66,6 +66,9 @@ unsigned char ghost_return_tile_type(unsigned char x,unsigned char y)
 
 void ghost_move_rel(char i,char mx,char my)
 {
+if (ghost_return_tile_type(ghost[i].x+mx,ghost[i].y+my)!=0)
+	return;
+		
 		ghost[i].oldx = ghost[i].x;
 		ghost[i].oldy = ghost[i].y;
 		

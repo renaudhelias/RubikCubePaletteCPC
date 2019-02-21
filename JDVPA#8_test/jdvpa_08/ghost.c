@@ -65,6 +65,9 @@ unsigned char ghost_return_tile_type(unsigned char x,unsigned char y)
 
 void ghost_move_rel(char i,char mx,char my)
 {
+if (ghost_return_tile_type(ghost[i].x+mx,ghost[i].y+my)!=0)
+	return;
+		
 		ghost[i].oldx = ghost[i].x;
 		ghost[i].oldy = ghost[i].y;
 		
@@ -130,7 +133,7 @@ void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 			if ((ghost[gno].sensx<0) && (ghost_return_tile_type(ghost[gno].x-4,ghost[gno].y)!=0))
 			{
 				ghost[gno].sensx = ghost[gno].sensx *-1;
-			} 	
+			}
 			
 		}
 		else if (ghost[gno].sensy!=0)
@@ -152,7 +155,7 @@ void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 			if ((ghost[gno].sensy<0) && (ghost_return_tile_type(ghost[gno].x,ghost[gno].y-8)!=0))
 			{
 				ghost[gno].sensy = ghost[gno].sensy *-1;
-			} 			
+			}
 		}
 		
 	}
@@ -188,7 +191,7 @@ void ghost_update(void)
 		{				
 			if (i==0) 
 			{
-				ghost_ia(0,player.x,player.y);	
+				 ghost_ia(0,player.x,player.y);	
 			}
 			else if (i==1)
 			{
@@ -222,6 +225,6 @@ void ghost_update(void)
 				}			
 				ghost_ia(3,destx,desty);
 			}			
-		}
+		 }
 	}
 }
