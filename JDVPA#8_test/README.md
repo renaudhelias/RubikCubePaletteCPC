@@ -8,3 +8,5 @@ __main.c jdvpa8.dsk__
 ![JDVPA8.dsk.png](JDVPA8.dsk.png)
 
 Quelques glitsh mais globalement ça le fait, la suite au prochain épisode (pas de glitsh à la version précédente)
+
+Glitsh corrigés OK.
