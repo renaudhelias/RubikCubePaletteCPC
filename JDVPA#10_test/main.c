@@ -16,6 +16,7 @@
 #include "tiles.h"
 //#include "labypac_map.h"
 #include "laby_data.h"
+#include "sprite_collision.h"
 
 #define IMG_BLANK 0
 
@@ -164,6 +165,7 @@ void main(void)
 		check_controller();
 		player_control();			
 		if ((timer&7)==0) {} else {ghost_update();}
+		col_check();
 		
 		/* Rendu graphique */		
 		vsync();	
