@@ -1,8 +1,11 @@
 #include "ghost.h"
 #include "player.h"
-//#include "labypac_map.h"
-#include "laby_data.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+extern s_player player;
+extern unsigned char laby[];
 s_ghost ghost[4];
 
 void ghost_init()
@@ -14,11 +17,8 @@ void ghost_init()
 		ghost[i].oldx=0;
 		ghost[i].oldy=0;
 		ghost[i].x=0;
-		//ghost[i].y=0;
-		//ghost[i].y=12<<3;
-		ghost[i].y=3<<3;
-		//ghost[i].sensx=0;
-		ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
+		ghost[i].y=12<<3;	
+		ghost[i].sensx=GHOST_VITESSE_H;	/* Va Ã  droite de 2 pixels */
 		ghost[i].sensy=0;
 		ghost[i].timer=0;
 		ghost[i].anim=0;	
@@ -27,21 +27,25 @@ void ghost_init()
 
 		if (i==0) 
 		{
+			ghost[i].base_image = 14;
 			ghost[i].wait_timer=100;
 			ghost[i].x=16<<2;
 		}
 		if (i==1) 
 		{
+			ghost[i].base_image = 16;
 			ghost[i].wait_timer=140;
 			ghost[i].x=18<<2;
 		}
 		if (i==2) 
 		{
+			ghost[i].base_image = 18;
 			ghost[i].wait_timer=120;
 			ghost[i].x=20<<2;
 		}
 		if (i==3) 
 		{
+			ghost[i].base_image = 20;
 			ghost[i].wait_timer=150;
 			ghost[i].x=22<<2;
 		}
@@ -56,9 +60,8 @@ unsigned char ghost_return_tile_type(unsigned char x,unsigned char y)
 {
 		unsigned int ntile;
 		
-		// Récupération du code tile en x,y
+		// RÃ©cupÃ©ration du code tile en x,y
 		ntile = (unsigned int)((y>>3)*40)+(x>>2);
-		// case vide ou (pate gum petite ou grosse)
 		if ((laby[ntile]==1) || (laby[ntile]==10) || (laby[ntile]==11)) return 0;
 		
 		return 1;
@@ -66,10 +69,6 @@ unsigned char ghost_return_tile_type(unsigned char x,unsigned char y)
 
 void ghost_move_rel(char i,char mx,char my)
 {
-// dans les choux
-//if (ghost_return_tile_type(ghost[i].x+mx,ghost[i].y+my)!=0)
-//	return;
-		
 		ghost[i].oldx = ghost[i].x;
 		ghost[i].oldy = ghost[i].y;
 		
@@ -85,17 +84,18 @@ void ghost_move_rel(char i,char mx,char my)
 
 }
 
-/* IA très très basique et spécifique au labyrinthe !! */
+/* IA trÃ¨s trÃ¨s basique et spÃ©cifique au labyrinthe !! */
 void ghost_ia_wait(unsigned char gid)
 {		
 		/* N'est plus en mode attente ?*/
 		if (ghost[gid].wait_timer==0)
 		{
 			/* On le fait sortir du labyrinthe, et on lui donne un sens */
-			/* par rapport à la position courant du joueur */
+			/* par rapport Ã  la position courant du joueur */
+			ghost[gid].oldx=ghost[gid].x;
+			ghost[gid].oldy=ghost[gid].y;
 			ghost[gid].x=19<<2;
-			//ghost[gid].y=10<<3;		
-			ghost[gid].y=1<<3;
+			ghost[gid].y=10<<3;		
 			ghost[gid].sensy=0;
 			if (ghost[gid].x<=player.x) ghost[gid].sensx=-GHOST_VITESSE_H; else ghost[gid].sensx=GHOST_VITESSE_H;			
 		}
@@ -113,7 +113,7 @@ void ghost_ia_wait(unsigned char gid)
 
 void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 {
-	/* On arrive à une possible intersection */
+	/* On arrive Ã  une possible intersection */
 	if (((ghost[gno].x&3)==0) && ((ghost[gno].y&7)==0))
 	{	
 		
@@ -163,15 +163,19 @@ void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 		
 	}
 	
-	if (ghost_return_tile_type(ghost[gno].x+ghost[gno].sensx,ghost[gno].y+ghost[gno].sensy)!=0) {
-		// dans les choux
-		ghost[gno].sensx=-ghost[gno].sensx;
-		ghost[gno].sensy=-ghost[gno].sensy;
-	}
+	
 	ghost_move_rel(gno,ghost[gno].sensx,ghost[gno].sensy);
 
 }
 
+void ghost_fear(void)
+{
+	ghost[0].fear_timer = 200;
+	ghost[1].fear_timer = 200;
+	ghost[2].fear_timer = 200;
+	ghost[3].fear_timer = 200;
+	
+}
 
 void ghost_update(void)
 {
@@ -191,8 +195,17 @@ void ghost_update(void)
 		else if (ghost[i].scatter_timer>0) /* Se barre */
 		{
 		}
-		else if (ghost[i].fear_timer>0) /* Se barrre et prêt à se faire bouffer ! */
+		else if ((ghost[i].fear_timer>0) && (ghost[i].wait_timer==0))/* Se barrre et prÃªt Ã  se faire bouffer ! */
 		{
+			ghost[i].fear_timer--;			
+			if (ghost[i].fear_timer==0)
+			{
+				ghost[i].base_image=14+(i<<1);
+			} else
+			{
+				ghost_ia(i,0,0);
+				ghost[i].base_image=22;
+			}
 		}
 		else	/* IA d'attaque classique */
 		{				
