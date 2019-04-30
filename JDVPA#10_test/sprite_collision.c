@@ -28,7 +28,9 @@ void col_check(void)
 						// Ennemi à la niche
 						ghost[i].oldx = ghost[i].x;
 						ghost[i].oldy = ghost[i].y;
-						ghost[i].y=12<<3;
+						//ghost[i].y=12<<3;
+						ghost[i].y=3<<3;
+						ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
 						ghost[i].fear_timer=0;
 
 						if (i==0) 
