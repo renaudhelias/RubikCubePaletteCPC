@@ -63,9 +63,10 @@ unsigned char player_return_tile_type(unsigned char x,unsigned char y)
 }
 
 void player_control(void)
-{		
-		unsigned int ntile;
+{		unsigned int ntile;
+		unsigned char tile_centre;
 		
+		/* On check les contrôles pour savoir ou désire aller le joueur --> Positionnement de la variable direction désirée */
 		player.dd = PLAYER_STOP;
 		if ((get_key(Key_Joy1Left)) || (get_key(Key_O))) 
 		{
@@ -116,30 +117,32 @@ void player_control(void)
 		if (player.dc==PLAYER_LEFT) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x-4,player.y)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(-2,0);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(-PLAYER_VITESSE_H,0);
 		}
 		else
 		if (player.dc==PLAYER_RIGHT)  
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x+4,player.y)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(2,0);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(PLAYER_VITESSE_H,0);
 		}
 		else
 		if (player.dc==PLAYER_UP) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y-8)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(0,-2);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(0,-PLAYER_VITESSE_V);
 		}
 		else
 		if (player.dc==PLAYER_DOWN) 
 		{
 				if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y+8)==3)) player.dc = PLAYER_STOP;
-				if (player.dc!=PLAYER_STOP)	player_move_rel(0,2);
+				if (player.dc!=PLAYER_STOP)	player_move_rel(0,PLAYER_VITESSE_V);
 		}			
 		
 		/* Mangeage de Pacgum ... MIAM */
-		if ((((player.x&3)==0) && ((player.y&7)==0)) && (player_return_tile_type(player.x,player.y)<3))
-		{
+		tile_centre = player_return_tile_type(player.x,player.y);
+		if ((((player.x&3)==0) && ((player.y&7)==0)) && (tile_centre<3))
+		{			
+			if (tile_centre==2) ghost_fear();
 			ntile = (unsigned int)((player.y>>3)*40)+(player.x>>2);
 			laby[ntile]=1;
 		}

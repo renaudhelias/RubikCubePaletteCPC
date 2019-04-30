@@ -163,7 +163,11 @@ void ghost_ia(unsigned char gno,unsigned char destx,unsigned char desty)
 		
 	}
 	
-	
+	if (ghost_return_tile_type(ghost[gno].x+ghost[gno].sensx,ghost[gno].y+ghost[gno].sensy)!=0) {
+		// dans les choux
+		ghost[gno].sensx=-ghost[gno].sensx;
+		ghost[gno].sensy=-ghost[gno].sensy;
+	}
 	ghost_move_rel(gno,ghost[gno].sensx,ghost[gno].sensy);
 
 }

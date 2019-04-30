@@ -17,6 +17,9 @@
 #define PLAYER_SPRITE_LARGEUR_P	4
 #define PLAYER_SPRITE_HAUTEUR	8
 
+#define PLAYER_VITESSE_H		1
+#define	PLAYER_VITESSE_V		1
+
 typedef struct
 {
 	unsigned char oldx;

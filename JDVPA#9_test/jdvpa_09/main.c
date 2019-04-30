@@ -41,8 +41,8 @@ void render_background(unsigned char x,unsigned char y)
 //		unsigned int addr;
 		
 		// Récupération du code tile en x,y
-		xtile = (unsigned int)x>>2;
-		ytile = (unsigned int)y>>3;
+		xtile = (unsigned int)x>>2; // Diviser par 4
+		ytile = (unsigned int)y>>3; // Diviser par 8
 		ntile = (unsigned int)(ytile*40)+xtile;
 		
 		xpix = (xtile<<2);

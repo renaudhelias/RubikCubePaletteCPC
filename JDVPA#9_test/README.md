@@ -10,3 +10,5 @@ __main.c jdvpa9.dsk__
 Effectivement ils sont bleu après avalé un gros pac-gum.
 
 Quelques glitsh mais globalement ça le fait, la suite au prochain épisode.
+
+glitsh corrigés OK.
