@@ -16,7 +16,6 @@
 #include "tiles.h"
 //#include "labypac_map.h"
 #include "laby_data.h"
-#include "sprite_collision.h"
 
 #define IMG_BLANK 0
 
@@ -158,20 +157,18 @@ void main(void)
 */	
 	player_init();
 	ghost_init();
-	raster_halt();
+	
 	timer=0;
 	while(1)
 	{
 		check_controller();
 		player_control();			
 		if ((timer&7)==0) {} else {ghost_update();}
-		col_check();
 		
 		/* Rendu graphique */		
 		vsync();	
 		render_background(player.oldx,player.oldy);
-		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[player.dc+player.anim]);		
-		//put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[tile_dc[player.dc]+player.anim]);		
+		put_frame(screen(player.x,player.y), PLAYER_SPRITE_LARGEUR_O, PLAYER_SPRITE_HAUTEUR, spr_img[tile_dc[player.dc]+player.anim]);		
 	
 		for (i=0;i<4;i++)
 		{	

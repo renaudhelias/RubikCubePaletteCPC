@@ -14,7 +14,10 @@ void ghost_init()
 		ghost[i].oldx=0;
 		ghost[i].oldy=0;
 		ghost[i].x=0;
-		ghost[i].y=12<<3;	
+		//ghost[i].y=0;
+		//ghost[i].y=12<<3;
+		ghost[i].y=3<<3;
+		//ghost[i].sensx=0;
 		ghost[i].sensx=GHOST_VITESSE_H;	/* Va à droite de 2 pixels */
 		ghost[i].sensy=0;
 		ghost[i].timer=0;
@@ -97,7 +100,8 @@ void ghost_ia_wait(unsigned char gid)
 			ghost[gid].oldx=ghost[gid].x;
 			ghost[gid].oldy=ghost[gid].y;
 			ghost[gid].x=19<<2;
-			ghost[gid].y=10<<3;		
+			//ghost[gid].y=10<<3;		
+			ghost[gid].y=1<<3;
 			ghost[gid].sensy=0;
 			if (ghost[gid].x<=player.x) ghost[gid].sensx=-GHOST_VITESSE_H; else ghost[gid].sensx=GHOST_VITESSE_H;			
 		}

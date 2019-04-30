@@ -1,12 +1,14 @@
-# [JDVPA#10] Une histoire de collision.
+# [JDVPA#9] Des fantomes gloutons ont les jetons !
 # Tested by Renaud
 
-Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=20hd40AN4D4
+Basé sur la vidéo CPC de Oldschool is beautiful : http://www.youtube.com/watch?v=c67kyNY9Cfo
 
-__main.c jdvpa10.dsk__
+__main.c jdvpa9.dsk__
 
-![JDVPA10.dsk.png](JDVPA10.dsk.png)
+![JDVPA9.dsk.png](JDVPA9.dsk.png)
 
-Si un ennemi nous touche, simple retour du pacman à la position de départ.
+Effectivement ils sont bleu après avalé un gros pac-gum.
 
 Quelques glitsh mais globalement ça le fait, la suite au prochain épisode.
+
+glitsh corrigés OK.
