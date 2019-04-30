@@ -62,8 +62,9 @@ void col_check(void)
 					{
 						player.oldx=player.x;
 						player.oldy=player.y;
-						player.x=19<<2;
-						player.y=22<<3;
+						//player.x=19<<2; // * 4      xtile --> xtile*4
+						player.x=18<<2; // * 4      xtile --> xtile*4
+						player.y=22<<3; // * 8      ytile --> ytile*8
 						break;			
 					}
 			}
