@@ -27,4 +27,7 @@ CPCDiskXP -File main.bin -AddAmsdosHeader 100 -AddToNewDsk jdvpa10.dsk
 rasm RSXABOUT.asm
 copy rasmoutput.bin RSXABOUT.ROM
 copy rasmoutput.bin RSXABOUT.e04
+rasm CWTAROM.asm
+copy rasmoutput.bin CWTAROM.ROM
+copy rasmoutput.bin CWTAROM.e03
 pause

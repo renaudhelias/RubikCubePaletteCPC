@@ -18,3 +18,7 @@ __RSXABOUT.ROM__
 ![RSXABOUT.rom.png](RSXABOUT.rom.png)
 
 Premier test de RSX : ça affiche dans le welcome et dans la liste des ROM, mais ùabout ne se lance pas.
+
+__CWTAROM.ROM__
+
+Autre test de tuto RSX, ok : http://www.cantrell.org.uk/david/tech/cpc/CWTA-writing-ROMs.html
