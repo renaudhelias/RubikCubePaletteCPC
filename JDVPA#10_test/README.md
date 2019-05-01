@@ -12,3 +12,9 @@ Si un ennemi nous touche, simple retour du pacman à la position de départ.
 Quelques glitsh mais globalement ça le fait, la suite au prochain épisode.
 
 glitchs corrigés.
+
+__RSXABOUT.ROM__
+
+![RSXABOUT.rom.png](RSXABOUT.rom.png)
+
+Premier test de RSX : ça affiche dans le welcome et dans la liste des ROM, mais ùabout ne se lance pas.
