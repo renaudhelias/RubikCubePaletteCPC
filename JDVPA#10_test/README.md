@@ -16,8 +16,9 @@ glitchs corrigés.
 __RSXABOUT.ROM__
 
 ![RSXABOUT.rom.png](RSXABOUT.rom.png)
+![RSXABOUT2.rom.png](RSXABOUT2.rom.png)
 
-Premier test de RSX : ça affiche dans le welcome et dans la liste des ROM, mais ùabout ne se lance pas.
+Premier test de RSX, calibré.
 
 __CWTAROM.ROM__
 

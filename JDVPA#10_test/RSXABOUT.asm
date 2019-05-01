@@ -14,6 +14,9 @@ INIT_AZERTY:
              call ABOUT
              pop DE
              pop hl
+AND A
+LD BC,32:SBC HL,BC ;grab 32 bytes from top of memory
+SCF
              ret
 ABOUT:
              ld hl,ABOUT_TEXT1
@@ -26,6 +29,8 @@ textout:
              ret
 ABOUT_TEXT1:
 defb " Renaud test RSX ABOUT,",10,13
-defb "     tester aussi *help",10,13,10,13,0
+defb "     tester aussi *help",10,13
+defb 10,13
+defb 7,0
 
 
