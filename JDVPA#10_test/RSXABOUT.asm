@@ -29,8 +29,8 @@ textout:
              ret
 ABOUT_TEXT1:
 defb " Renaud test RSX ABOUT,",10,13
-defb "     tester aussi *help",10,13
+defb "      tester aussi HELP",10,13
 defb 10,13
-defb 7,0
+defb 0 ; 7 ça fait beep en fait ^^
 
 
