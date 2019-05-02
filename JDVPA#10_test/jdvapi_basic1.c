@@ -24,7 +24,7 @@ pop ix
 ; .ascii "BORDE"
 ; .db "R"+#0x80
 TABLE:
-.DB 4; border 4
+.DB 11; border 11
 FINFIN:
 
 
