@@ -3,9 +3,34 @@
 void border(unsigned char nColorIndex)
 {
   __asm
-    ld b, 4 (ix)
-    ld c, b
-    call #0xBC38 ;SCR SET INK
+;    ld b, 4 (ix)
+;    ld c, b
+;    call #0xBC38 ;SCR SET INK
+
+
+; LD HL,#RSXNAME
+; CALL #0xBCD4 ;KL_FIND_COMMAND
+; jp NC, FINFIN
+; jp C, FINFIN
+LD A,#0x01 ;un seul paramètre
+push ix
+LD IX,#TABLE ; le paramètre : 4 (border 4)
+LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
+LD C,#0x04 ; ùhelp dit 4
+CALL #0x001B ;lancer la commande RSX
+pop ix
+
+; RSXNAME:
+; .ascii "BORDE"
+; .db "R"+#0x80
+TABLE:
+.DB 4; border 4
+FINFIN:
+
+
+
+; ret
+
     __endasm;
 }
 
