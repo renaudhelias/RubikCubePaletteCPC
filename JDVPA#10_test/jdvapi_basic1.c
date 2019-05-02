@@ -24,7 +24,8 @@ pop ix
 ; .ascii "BORDE"
 ; .db "R"+#0x80
 TABLE:
-.DB 11; border 11
+.DB 6 ; border 6
+.DB 0 ; sinon ça bug, ça semble manger du word
 FINFIN:
 
 
