@@ -122,9 +122,26 @@ void main(void)
 		tiles_img[i+1]= (unsigned char *)tiles + ((2*8)*i);
 	
 	mode(0);
-	border(0);
-	set_palette(game_palette);
-	vsync();
+	//border(0);
+	//border(1); // crash ici : une seule RSX peut être lancé à la fois...
+	//border(2);
+	//set_palette(game_palette);
+	set_color(0,15);
+	//set_color(1,25);
+	//set_color(2,7);
+	//set_color(3,8);
+	//set_color(4,11);
+	//set_color(5,16);
+	//set_color(6,22);
+	//set_color(7,26);
+	//set_color(8,0);
+	/*set_color(9,0);
+	set_color(10,0);
+	set_color(11,0);
+	set_color(12,0);
+	set_color(13,0);
+	set_color(14,0);
+	set_color(15,0);*/
 	
 	cpt=0;
 	
