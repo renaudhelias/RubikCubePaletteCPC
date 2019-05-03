@@ -8,30 +8,21 @@ void border(unsigned char nColorIndex)
 ;    call #0xBC38 ;SCR SET INK
 
 
-; LD HL,#RSXNAME
-; CALL #0xBCD4 ;KL_FIND_COMMAND
-; jp NC, FINFIN
-; jp C, FINFIN
+LD b, #0x00
+LD c, 4 (ix)
+LD (TABLE), bc
 LD A,#0x01 ;un seul paramètre
-; push ix
 LD IX,#TABLE ; le paramètre : 4 (border 4)
 LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
 LD C,#0x04 ; ùhelp dit 4
 CALL #0x001B ;lancer la commande RSX
-; pop ix
 
-; RSXNAME:
-; .ascii "BORDE"
-; .db "R"+#0x80
+RSXNAME:
+.ascii "HEL"
+.db "P"+#0x80
 TABLE:
 .DB 6 ; border 6
 .DB 0 ; sinon ça bug, ça semble manger du word
-FINFIN:
-
-
-
-; ret
-
     __endasm;
 }
 
