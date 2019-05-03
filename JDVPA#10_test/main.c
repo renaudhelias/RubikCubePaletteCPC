@@ -122,8 +122,9 @@ void main(void)
 		tiles_img[i+1]= (unsigned char *)tiles + ((2*8)*i);
 	
 	mode(0);
-	border(6);
+	border(0);
 	set_palette(game_palette);
+	//set_color(6,1);
 	vsync();
 	
 	cpt=0;

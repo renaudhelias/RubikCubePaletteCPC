@@ -30,12 +30,38 @@ TABLE:
 
 void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
+#ifdef RSXABOUT
+  __asm
+	
+;	LD b, #0x00 ;4 (ix)
+;	LD c, #0x01
+;	LD h, #0x00; 5 (ix)
+;	LD l, #0x05
+;	LD (TABLE2), bc
+;	LD (TABLE2bis), hl
+	
+	
+    LD A,#0x02 ;un seul paramètre
+    LD IX,#TABLE2 ; le paramètre : 4 (border 4)
+    LD HL,#0xC00F ; un jp c'est 3, un defw c'est 2
+    LD C,#0x04 ; ùhelp dit 4
+    CALL #0x001B ;lancer la commande RSX
+
+TABLE2:
+    .DB 1 ; setcolor 6,1
+    .DB 0 ; sinon ça bug, ça semble manger du word
+TABLE2bis:
+	.DB 6
+	.DB 0
+  __endasm;
+#else
   __asm
     ld a, 4 (ix)
     ld b, 5 (ix)
     ld c, b
     call #0xBC32 ;SCR SET INK
   __endasm;
+#endif
 }
 
 void set_palette(unsigned char *pPalette)

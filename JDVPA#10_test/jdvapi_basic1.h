@@ -5,6 +5,8 @@ void set_palette(unsigned char *pPalette);
 
 void border(unsigned char nColorIndex);
 
+void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex);
+
 /**
  * JDVA#2 Passage en mode 0 et tracé de point lent
  */
