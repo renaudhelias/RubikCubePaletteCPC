@@ -17,9 +17,6 @@ LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
 LD C,#0x04 ; ùhelp dit 4
 CALL #0x001B ;lancer la commande RSX
 
-RSXNAME:
-.ascii "HEL"
-.db "P"+#0x80
 TABLE:
 .DB 6 ; border 6
 .DB 0 ; sinon ça bug, ça semble manger du word
