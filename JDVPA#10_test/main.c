@@ -123,8 +123,7 @@ void main(void)
 	
 	mode(0);
 	border(0);
-	//set_palette(game_palette);
-	set_color(6,2);
+	set_palette(game_palette);
 	vsync();
 	
 	cpt=0;

@@ -42,10 +42,10 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 ;	LD bc, #0x0000
 	
 	LD b, #0x00
-	LD c, 5 (ix) ; #0x01 palette
+	LD c, 4 (ix) ; #0x01 ; 4 (ix) ; #0x01 palette
 	LD (TABLE2), bc
 	LD b, #0x00
-	LD c, 4 (ix) ;#0x0E ; couleur
+	LD c, 4 (ix) ; #0x0E; 4 (ix) ;#0x0E ; couleur
 	LD (TABLE2bis), bc
 	; LD bc, #0x0000
 	
