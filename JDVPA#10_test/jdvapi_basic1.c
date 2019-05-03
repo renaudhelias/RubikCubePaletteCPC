@@ -2,7 +2,7 @@
 
 void border(unsigned char nColorIndex)
 {
-#ifdef RSXABOUT
+#ifdef RSXABOUT_BORDER
   __asm
     LD b, #0x00
     LD c, 4 (ix)
@@ -30,18 +30,26 @@ TABLE:
 
 void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
-#ifdef RSXABOUT
+#ifdef RSXABOUT_SETCOLOR
   __asm
 	
 ;	LD b, #0x00 ;4 (ix)
-;	LD c, #0x01
-;	LD h, #0x00; 5 (ix)
-;	LD l, #0x05
+;	LD c, 4 (ix) ; #0x01
 ;	LD (TABLE2), bc
-;	LD (TABLE2bis), hl
+;	LD b, #0x00; 5 (ix)
+;	LD c, 5 (ix) ; #0x0E
+;	LD (TABLE2bis), bc
+;	LD bc, #0x0000
 	
+	LD b, #0x00
+	LD c, 5 (ix) ; #0x01 palette
+	LD (TABLE2), bc
+	LD b, #0x00
+	LD c, 4 (ix) ;#0x0E ; couleur
+	LD (TABLE2bis), bc
+	; LD bc, #0x0000
 	
-    LD A,#0x02 ;un seul paramètre
+    LD A,#0x01 ;un seul paramètre
     LD IX,#TABLE2 ; le paramètre : 4 (border 4)
     LD HL,#0xC00F ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
@@ -68,8 +76,9 @@ void set_palette(unsigned char *pPalette)
 {
   unsigned char nColor = 0;
 
-  for(nColor = 0; nColor < 16; nColor++)
+   for(nColor = 0; nColor < 16; nColor++)
     set_color(nColor, pPalette[nColor]);
+
 }
 
 /**
