@@ -71,10 +71,12 @@ void waito(void)
 		
 }
 
+char i;
+unsigned int cpt,x,y;
+
 void main(void)
 {
-	char i;
-	unsigned int cpt,x,y;
+	
 	//unsigned int addr;
 	
 	
@@ -122,27 +124,29 @@ void main(void)
 		tiles_img[i+1]= (unsigned char *)tiles + ((2*8)*i);
 	
 	mode(0);
+	set_palette(game_palette);
 	border(0);
-	border(1);
-	border(3);
-	border(5);
+	//border(1);
+	//border(3);
+	//border(5);
 	//border(0);
 	//halt();
 	//border(1); // crash ici : une seule RSX peut être lancé à la fois ?
 	//halt();
 	//border(3);
 	//halt();
-	set_palette(game_palette);
-	//set_color(0,0);
-	//set_color(1,25);
-	//set_color(2,7);
-	//set_color(3,8);
-	//set_color(4,11);
-	//set_color(5,16);
-	//set_color(6,22);
-	//set_color(7,26);
-	//set_color(8,0);
-	/*set_color(9,0);
+	
+	
+	/*set_color(0,0);
+	set_color(1,25);
+	set_color(2,7);
+	set_color(3,8);
+	set_color(4,11);
+	set_color(5,16);
+	set_color(6,22);
+	set_color(7,26);
+	set_color(8,0);
+	set_color(9,0);
 	set_color(10,0);
 	set_color(11,0);
 	set_color(12,0);

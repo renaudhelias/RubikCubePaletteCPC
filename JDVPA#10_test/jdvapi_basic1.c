@@ -4,6 +4,7 @@ void border(unsigned char nColorIndex)
 {
 #ifdef RSXABOUT_BORDER
   __asm
+	push bc
     LD d, #0x00
     LD e, 4 (ix)
     LD (TABLE), de
@@ -13,6 +14,7 @@ void border(unsigned char nColorIndex)
     LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
     CALL #0x001B ;lancer la commande RSX
+	pop bc
 TABLE:
 	.DW PARAM1 ; PARAM1
 PARAM1:
@@ -33,27 +35,27 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
 #ifdef RSXABOUT_SETCOLOR
   __asm
-	
-	LD b, #0x00
-	LD c, 4 (ix) ; #0x01 palette
-	LD (TABLE2), bc
-	LD b, #0x00
-	LD c, 5 (ix) ; couleur
-	LD (TABLE2bis), bc
+	push bc
+	LD d, #0x00
+	LD e, 4 (ix) ; #0x01 palette
+	LD (TABLE2), de
+	LD d, #0x00
+	LD e, 5 (ix) ; couleur
+	LD (TABLE2+2), de
 	
     LD A,#0x02 ;un seul paramètre
     LD IX,#TABLE2 ; le paramètre : 4 (border 4)
     LD HL,#0xC00F ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
     CALL #0x001B ;lancer la commande RSX
-
+	pop bc
 TABLE2:
-	.DW PARAM1
-	.DW PARAM2
-PARAM1:
+	.DW PARAM21
+	.DW PARAM22
+PARAM21:
     .DB 1 ; setcolor 6,1
     .DB 0 ; sinon ça bug, ça semble manger du word
-PARAM2:
+PARAM22:
 	.DB 6
 	.DB 0
   __endasm;
