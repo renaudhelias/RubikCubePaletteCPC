@@ -4,18 +4,19 @@ void border(unsigned char nColorIndex)
 {
 #ifdef RSXABOUT_BORDER
   __asm
-    LD b, #0x00
-    LD c, 4 (ix)
-    LD (TABLE), bc
+    LD d, #0x00
+    LD e, 4 (ix)
+    LD (TABLE), de
 
     LD A,#0x01 ;un seul paramètre
     LD IX,#TABLE ; le paramètre : 4 (border 4)
     LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
     CALL #0x001B ;lancer la commande RSX
-
 TABLE:
-    .DB 5 ; border 5
+	.DW PARAM1 ; PARAM1
+PARAM1:
+    .DB 6 ; border 6
     .DB 0 ; sinon ça bug, ça semble manger du word
   __endasm;
 #else
@@ -47,9 +48,12 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
     CALL #0x001B ;lancer la commande RSX
 
 TABLE2:
+	.DW PARAM1
+	.DW PARAM2
+PARAM1:
     .DB 1 ; setcolor 6,1
     .DB 0 ; sinon ça bug, ça semble manger du word
-TABLE2bis:
+PARAM2:
 	.DB 6
 	.DB 0
   __endasm;

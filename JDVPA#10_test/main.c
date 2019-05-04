@@ -122,9 +122,10 @@ void main(void)
 		tiles_img[i+1]= (unsigned char *)tiles + ((2*8)*i);
 	
 	mode(0);
-	
 	border(0);
-	
+	border(1);
+	border(3);
+	border(5);
 	//border(0);
 	//halt();
 	//border(1); // crash ici : une seule RSX peut être lancé à la fois ?
