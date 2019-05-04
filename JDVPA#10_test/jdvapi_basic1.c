@@ -4,7 +4,11 @@ void border(unsigned char nColorIndex)
 {
 #ifdef RSXABOUT_BORDER
   __asm
+	; &BC38 AF,BC,DE and HL are corrupted
+	push af
 	push bc
+	push de
+	push hl
     LD d, #0x00
     LD e, 4 (ix)
     LD (TABLE), de
@@ -14,7 +18,10 @@ void border(unsigned char nColorIndex)
     LD HL,#0xC00C ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
     CALL #0x001B ;lancer la commande RSX
+	pop hl
+	pop de
 	pop bc
+	pop af
 TABLE:
 	.DW PARAM1 ; PARAM1
 PARAM1:
@@ -35,7 +42,11 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 {
 #ifdef RSXABOUT_SETCOLOR
   __asm
+	; &BC32 AF,BC,DE and HL are corrupted
+	push af
 	push bc
+	push de
+	push hl
 	LD d, #0x00
 	LD e, 4 (ix) ; #0x01 palette
 	LD (TABLE2), de
@@ -48,7 +59,10 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
     LD HL,#0xC00F ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
     CALL #0x001B ;lancer la commande RSX
+	pop hl
+	pop de
 	pop bc
+	pop af
 TABLE2:
 	.DW PARAM21
 	.DW PARAM22
