@@ -23,10 +23,7 @@ void border(unsigned char nColorIndex)
 	pop bc
 	pop af
 TABLE:
-	.DW PARAM1 ; PARAM1
-PARAM1:
-    .DB 6 ; border 6
-    .DB 0 ; sinon ça bug, ça semble manger du word
+	.DW 0x0006 ; PARAM1
   __endasm;
 #else
   __asm
@@ -54,7 +51,7 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 	LD e, 5 (ix) ; couleur
 	LD (TABLE2+2), de
 	
-    LD A,#0x02 ;un seul paramètre
+    LD A,#0x02 ;deux paramètres
     LD IX,#TABLE2 ; le paramètre : 4 (border 4)
     LD HL,#0xC00F ; un jp c'est 3, un defw c'est 2
     LD C,#0x04 ; ùhelp dit 4
@@ -64,14 +61,8 @@ void set_color(unsigned char nColorIndex, unsigned char nPaletteIndex)
 	pop bc
 	pop af
 TABLE2:
-	.DW PARAM21
-	.DW PARAM22
-PARAM21:
-    .DB 1 ; setcolor 6,1
-    .DB 0 ; sinon ça bug, ça semble manger du word
-PARAM22:
-	.DB 6
-	.DB 0
+	.DW 0x0001 ;PARAM21
+	.DW 0x0006 ;PARAM22
   __endasm;
 #else
   __asm
