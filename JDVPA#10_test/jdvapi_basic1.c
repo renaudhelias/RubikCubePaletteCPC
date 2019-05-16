@@ -91,10 +91,35 @@ void set_palette(unsigned char *pPalette)
 // unsigned --> char 0..255
 void mode(unsigned char m)
 {
+#ifdef RSXABOUT_MODE
+	__asm
+		; #BC32 AF, BC, DE and HL corrupt
+		push af
+		push bc
+		push de
+		push hl
+		LD d, #0x00
+		LD e, 4 (ix)
+		LD (TABLE3), de
+
+		LD A,#0x01 ;un seul paramètre
+		LD IX,#TABLE3 ; le paramètre : 4 (border 4)
+		LD HL,#0xC012 ; un jp c'est 3, un defw c'est 2
+		LD C,#0x04 ; ùhelp dit 4
+		CALL #0x001B ;lancer la commande RSX
+		pop hl
+		pop de
+		pop bc
+		pop af
+	TABLE3:
+		.DW 0x0000 ;PARAM21
+	__endasm;
+#else
 	__asm
 		ld A,4 (IX)
 		call #0xBC0E
 	__endasm;
+#endif
 }
 
 

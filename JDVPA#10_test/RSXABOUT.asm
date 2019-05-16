@@ -46,7 +46,7 @@ SET_COLOR: ; void set_color(unsigned char nColorIndex, unsigned char nPaletteInd
     ld c, b
     call #BC32 ;SCR SET INK
 ret
-MODE:
+MODE: ; void mode(unsigned char m)
 	ld A, (IX+0)
 	call #BC0E
 ret
