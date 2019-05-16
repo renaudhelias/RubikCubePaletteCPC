@@ -3,6 +3,7 @@
 void pen(unsigned char p)
 {
 	__asm
+		; #BBDE AF corrupt.
 		ld A,4 (IX)
 		call #0xBBDE
 	__endasm;
@@ -11,6 +12,8 @@ void pen(unsigned char p)
 void locate(unsigned char x,unsigned char y)
 {
 	__asm
+		; #BB6F AF and HL corrupt.
+		; #BB72 AF and HL corrupt.
 		ld A,4 (IX)
 		call #0xBB6F
 		ld A,5 (IX)
@@ -21,6 +24,7 @@ void locate(unsigned char x,unsigned char y)
 void set_firmcolor(unsigned char firmColor)
 {
   __asm
+    ; out donc pas firmware ici
     ld a, 4 (ix)
     ld bc, #0x7f00
     out (c), c
@@ -62,6 +66,7 @@ return;
 void plot(unsigned int x,unsigned int y)
 {
 	__asm
+		; #BBEA AF, BC, DE and HL corrupt
 		// DE (little-endian :p)
 		ld E,4 (IX)
 		ld D,5 (IX)
@@ -75,6 +80,7 @@ void plot(unsigned int x,unsigned int y)
 void move(unsigned int x,unsigned int y)
 {
 	__asm
+		; #BBC0 AF, BC, DE and HL corrupt.
 		// DE (little-endian :p)
 		ld E,4 (IX)
 		ld D,5 (IX)
@@ -88,6 +94,7 @@ void move(unsigned int x,unsigned int y)
 void line(unsigned int x,unsigned int y)
 {
 	__asm
+		; #BBF6 AF, BC, DE and HL corrupt.
 		// DE (little-endian :p)
 		ld E,4 (IX)
 		ld D,5 (IX)

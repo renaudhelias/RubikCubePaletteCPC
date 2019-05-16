@@ -10,9 +10,11 @@ org #c000
 RSX_TABLE:
              defb "RENAU","D"+#80
              defb "ABOU","T"+#80
+			 ; jdvapi_basic1.c
 			 defb "BORDE","R"+#80
 			 defb "SETCOLO","R"+#80
 			 defb "MOD","E"+#80
+			 ; jdvapi_basic2.c
              defb 0 ; FIN
 INIT_AZERTY:
              push hl
